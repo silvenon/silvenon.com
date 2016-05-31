@@ -1,0 +1,21 @@
+.pagination {
+  display: inline-block;
+  margin-bottom: 1rem;
+  background: rgba(#000, 0.05);
+  border-radius: 2em;
+
+  &-outer {
+    text-align: center;
+  }
+
+  .previous,
+  .next {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+  }
+
+  span.previous,
+  span.next {
+    opacity: 0.5;
+  }
+}
