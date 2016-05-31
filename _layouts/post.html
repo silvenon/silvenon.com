@@ -1,0 +1,43 @@
+---
+layout: default
+---
+
+<div class="container">
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">{{ page.title }}{% if page.subtitle %}: {{ page.subtitle }}{% endif %}</h1>
+
+      <div class="post-meta">
+        <p class="post-byline">
+          By {{ site.author.name }} on
+          <time class="post-date" datetime="{{ page.date }}">
+            {{ page.date | date_to_string }}
+          </time>
+          {% if page.updated %}
+            <span class="post-updated">
+              <a href="https://github.com/silvenon/silvenon.github.io/commits/master/{{ page.path }}">
+                Last edit on {{ page.updated | date_to_string }}
+              </a>
+              <i class="icon icon-github"></i>
+            </span>
+          {% endif %}
+        </p>
+      </div>
+    </header>
+
+    <div class="post-body">
+      {{ content }}
+    </div>
+  </article>
+
+  <div class="share">
+    <a href="https://twitter.com/share" class="twitter-share-button" data-text='"{{ page.title | escape }}" by @{{ site.author.twitter }}' data-size="large" data-count="none" data-dnt="true">Tweet</a>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  </div>
+</div>
+
+{% include bio.html %}
+
+<div class="container">
+  {% include comments.html %}
+</div>

@@ -1,0 +1,114 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: $sans-fallback;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.7;
+  color: #333;
+
+  &.wf-active {
+    font-family: $sans;
+  }
+
+  @include query(sm) {
+    font-size: 18px;
+  }
+}
+
+.container {
+  @include container;
+}
+
+h1, h2, h3, h4, h5, h6,
+p, ol, ul, dl,
+blockquote {
+  margin-top: 0;
+  margin-bottom: .5em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 400;
+  color: #000;
+
+  // our condensed font has no bold weight
+  strong, b {
+    font-weight: inherit;
+  }
+}
+
+h1 {
+  margin-bottom: 0.25em;
+  font-size: 1.8em;
+  font-weight: 400;
+  line-height: 1.3;
+
+  @include query(sm) {
+    font-size: 2em;
+  }
+}
+
+h2 {
+  margin-top: 1em;
+  margin-bottom: 0.25em;
+  font-size: 1.75em;
+}
+
+h3 {
+  margin-top: 1em;
+  font-size: 1.25em;
+  text-transform: uppercase;
+}
+
+h4 {
+  font-size: 1.2em;
+  color: rgba(#000, 0.5);
+}
+
+a {
+  color: $color-primary-light;
+
+  &:hover,
+  &:focus {
+    color: $color-primary-dark;
+  }
+}
+
+strong, b {
+  font-weight: 700;
+}
+
+code, pre {
+  font-family: $monospace-fallback !important;
+  font-size: 0.9em;
+
+  .wf-active & {
+    font-family: $monospace !important;
+  }
+}
+
+blockquote {
+  margin: 1em 0;
+  font-style: italic;
+  color: rgba(#000, 0.5);
+
+  strong, b {
+    color: #666;
+  }
+
+  @include query(sm) {
+    padding-left: 1em;
+    border-left: 0.25em solid rgba(#000, 0.1);
+  }
+}
+
+figure {
+  margin: 0;
+}
+
+img {
+  display: inline-block;
+  max-width: 100%;
+}

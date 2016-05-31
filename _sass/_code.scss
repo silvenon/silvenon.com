@@ -1,0 +1,39 @@
+pre {
+  margin: 1em -1em !important;
+  padding: 1em;
+  border-radius: 0.3em;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+
+  // monokai base
+  background: #272822;
+  color: #f8f8f2;
+
+  @media (max-width: 800px) {
+    border-radius: 0;
+  }
+}
+
+:not(pre) > code {
+  padding: 0 .25em;
+  border: 1px solid rgba(#000, 0.1);
+  border-radius: 0.25rem;
+  background: #f8f8f8;
+  word-wrap: break-word;
+  color: #333;
+  text-transform: none; // resetting in case the parent is uppercase
+}
+
+a {
+  code {
+    color: $color-primary-light;
+    text-decoration: inherit;
+  }
+
+  &:hover,
+  &:focus {
+    code {
+      color: $color-primary-dark;
+    }
+  }
+}

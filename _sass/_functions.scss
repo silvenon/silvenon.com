@@ -1,0 +1,7 @@
+@function tint($color, $amount) {
+  @return adjust-color($color, $lightness: $amount);
+}
+
+@function shade($color, $amount) {
+  @return adjust-color($color, $lightness: -$amount);
+}

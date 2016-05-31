@@ -1,0 +1,92 @@
+.bio {
+  max-width: 320px;
+  margin: 20px auto 40px;
+  color: #000;
+
+  @include query(sm) {
+    max-width: none;
+    margin-bottom: 20px;
+    background: rgba(#000, 0.05);
+  }
+
+  .inner {
+    @include clearfix;
+    position: relative;
+    margin: 0 -1rem;
+    background: rgba(#000, 0.05);
+
+    @include query(sm) {
+      margin: 0;
+      background: transparent;
+    }
+  }
+
+  &-image {
+    max-width: 100%;
+    height: auto;
+
+    @include query(sm) {
+      float: left;
+    }
+  }
+
+  &-text {
+    min-height: 180px;
+    overflow: hidden;
+    padding: 0.5rem 1rem 1.25rem;
+
+    p {
+      @include query(sm) {
+        font-size: 0.9em;
+      }
+    }
+  }
+
+  &-title {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  &-social {
+    @include clearfix;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    bottom: -1em;
+
+    li {
+      float: left;
+
+      + li {
+        margin-left: 0.75em;
+      }
+    }
+
+    a {
+      display: block;
+      width: 2em;
+      height: 2em;
+      line-height: 2.2;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 50%;
+      background: #fff;
+      transition: 0.2s;
+    }
+
+    @each $network, $color in $network-colors {
+      .#{$network} a {
+        box-shadow: 0 0 0 2px rgba($color, 0.25);
+        color: $color;
+
+        &:hover,
+        &:focus {
+          background: $color;
+          box-shadow: 0 0 0 2px $color;
+          color: #fff;
+        }
+      }
+    }
+  }
+}

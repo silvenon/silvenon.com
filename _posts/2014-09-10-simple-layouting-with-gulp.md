@@ -1,0 +1,202 @@
+---
+title: Simple layouting with Gulp
+updated: 11.10.2014.
+tags: short gulp node layout template
+redirect_from: /2014/09/simple-layouting-with-gulp/
+---
+
+Have you ever wanted to make a really quick and simple website using Gulp with
+repeating components like header and footer, but didn't quite manage to find a
+good layouting system? I've gone a bit crazy after a while of searching, so
+crazy that I ended up with Ember, which is not even a layouting system, it's a
+MVC framework and not at all what I wanted. For Grunt there's
+[Assemble][assemble], but even if it existed for Gulp (it [kinda
+does][gulp-assemble]) it's still to complicated. The solution is really dead
+simple—[gulp-wrap][gulp-wrap].
+
+First I thought I wanted a system where I could add partials, but what I really
+wanted was just a single layout file which wraps around pages. Ruby developers
+should be familiar with this pattern.
+
+In my examples I'm assuming the following directory structure:
+
+```
+webapp
+├── app
+│   ├── about.html
+│   ├── contact.html
+│   ├── index.html
+│   ├── layout.html
+│   ├── scripts
+│   │   └── jquery.js
+│   └── styes
+│       └── main.css
+└── gulpfile.js
+```
+
+Our `layout.html` will basically look like this:
+
+```html
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Jobfilter</title>
+    <link rel="stylesheet" href="styles/main.css">
+  </head>
+
+  <body>
+    <nav role="navigation">
+      <!-- navigation stuff -->
+    </nav>
+
+    <main role="main">
+
+      <%= contents %>
+
+    </main>
+
+    <footer role="contentinfo">
+      <!-- footer stuff -->
+    </footer>
+
+    <script src="scripts/jquery.js"></script>
+  </body>
+</html>
+```
+
+Notice the `<%= contents %>`, this is where our pages will be inserted. Let's
+create a Gulp task for layouting (is "layouting" a real word?):
+
+```bash
+$ npm install --save-dev gulp-wrap
+```
+
+```js
+var wrap = require('gulp-wrap');
+
+gulp.task('layout', function () {
+  return gulp.src(['app/**/*.html', '!app/layout.html'])
+    .pipe(wrap({src: 'app/layout.html'}))
+    .pipe(gulp.dest('dist'));
+});
+```
+
+Pretty simple, huh? :smiley:
+
+I'm selecting every `.html` file **except** `layout.html` and inserting them
+into `layout.html`. In this case I'm writing them to `dist`, but you can write
+them wherever it's convenient, based on your workflow. I'll give an example…
+
+Let's say we're temporarily writing these HTML files and serving them with
+assets as sort of a development mode. A common practice I use is to have a
+`.tmp` directory where I put all processed files, so we would need to change the
+destination to:
+
+```js
+.pipe(gulp.dest('.tmp'));
+```
+
+In this example I will serve the files with [connect][connect],
+[serve-static][serve-static] and [serve-index][serve-index]:
+
+```bash
+$ npm install --save-dev connect serve-static serve-index
+```
+
+```js
+var connect = require('connect');
+var serveStatic = require('serve-static');
+var serveIndex = require('serve-index');
+
+gulp.task('connect', ['layout'], function () {
+  var app = require('connect')()
+    .use(serveStatic('.tmp'))
+    .use(serveStatic('app'))
+    .use(serveIndex('app'));
+
+  require('http').createServer(app)
+    .listen(9000)
+    .on('listening', function () {
+      console.log('Started connect web server on http://localhost:9000');
+    });
+});
+```
+
+It's **very** important that you serve `.tmp` before `app`, otherwise `app`
+would have precedence, which means that `app/index.html`, that has no layout,
+would get served instead of the generated `.tmp/index.html`.
+
+We can also create a task that watches HTML files for changes and recompiles
+them:
+
+```js
+gulp.task('watch', ['layout'], function () {
+  gulp.watch('app/**/*.html', ['layout']);
+});
+```
+
+Lastly we can create a default task which combines those 3 tasks:
+
+```js
+gulp.task('default', ['layout', 'connect', 'watch']);
+```
+
+Because we defined that `connect` and `watch` tasks depend on `layout`, we've
+ensured that `layout` will always run first.
+
+This is a partial example, somewhere along the way you would build this into a
+directory, I'll leave it up to you :wink:
+
+## Caveats
+
+With this setup you won't be able to do anything slightly more fancy, like
+changing the page title or designing the current navigation link. For that I
+suggest a cool templating engine I found recently, [Nunjucks][nunjucks], which
+is easy to grasp simple to use.
+
+Your `layout` task should instead use
+[gulp-nunjucks-render][gulp-nunjucks-render]:
+
+```bash
+$ npm install --save-dev gulp-nunjucks-render
+```
+
+```js
+var nunjucksRender = require('gulp-nunjucks-render');
+
+gulp.task('layout', function () {
+  nunjucksRender.nunjucks.configure(['app']);
+
+  return gulp.src(['app/**/*.html', '!app/layout.html'])
+    .pipe(nunjucksRender())
+    .pipe(gulp.dest('.tmp'));
+});
+```
+
+{% raw %}
+In your `layout.html` you can replace `<%= contents %>` with `{% block content
+%}{% endblock %}`.
+
+Lastly, your pages should look something like this:
+
+```html
+{% extends "layout.html" %}
+
+{% block content %}
+  <!-- page content -->
+{% endblock %}
+```
+{% endraw %}
+
+For more features, check out the [docs][nunjucks-docs]!
+
+[assemble]:             http://assemble.io/
+[gulp-assemble]:        https://github.com/assemble/gulp-assemble
+[gulp-wrap]:            https://github.com/adamayres/gulp-wrap
+[connect]:              https://github.com/senchalabs/connect
+[serve-static]:         https://github.com/expressjs/serve-static
+[serve-index]:          https://github.com/expressjs/serve-index
+[nunjucks]:             http://mozilla.github.io/nunjucks/
+[nunjucks-docs]:        http://mozilla.github.io/nunjucks/templating.html
+[gulp-nunjucks-render]: https://github.com/carlosl/gulp-nunjucks-render

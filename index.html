@@ -1,0 +1,22 @@
+---
+---
+
+<div class="container">
+  {% for post in site.posts %}
+    <article class="post-short">
+      <div class="post-short-byline">
+        <time class="post-short-date" datetime="{{ post.date }}">
+          {{ post.date | date_to_string }}
+        </time>
+      </div>
+
+      <h1 class="post-short-title">
+        <a href="{{ post.url }}">{{ post.title }}{% if post.subtitle %}: {{ post.subtitle }}{% endif %}</a>
+      </h1>
+
+      <div class="post-short-body">
+        {{ post.excerpt }}
+      </div>
+    </article>
+  {% endfor %}
+</div>

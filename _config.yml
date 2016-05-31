@@ -1,0 +1,61 @@
+title: Silvenon's Blog
+description: Latest and shiniest buzzwords in frontend development.
+
+paginate: 5
+paginate_path: /page/:num/
+
+author:
+  first_name: Matija
+  last_name: Marohnić
+  name: Matija Marohnić
+  bio: |
+    I'm a frontend developer currently using React. I realize that modern frontend is an overwhelming and scary place, but we're in this together!
+
+    ...right?
+  image: /images/me.jpg
+  github: silvenon
+  twitter: silvenon
+  email: matija.marohnic@gmail.com
+  facebook: silvenon
+
+# I'm using Prism.js because Rouge doesn't support JSX
+kramdown:
+  syntax_highlighter_opts:
+    disable: true
+
+gems:
+  - jemoji
+  - jekyll-redirect-from
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-github-metadata
+
+baseurl: ""
+url: http://silvenon.com
+repository: silvenon/silvenon.github.io
+
+defaults:
+  - scope:
+      path: ""
+      type: pages
+    values:
+      layout: default
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+      permalink: /:title/
+  - scope:
+      path: ""
+      type: drafts
+    values:
+      layout: post
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - .gitignore
+  - .sass-cache
+  - vendor

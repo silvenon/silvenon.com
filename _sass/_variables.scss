@@ -1,0 +1,23 @@
+$sans-fallback:       'helvetica neue', helvetica, arial, sans-serif;
+$sans:                'fira sans', $sans-fallback;
+$monospace-fallback:  monaco, consolas, 'lucida console', monospace;
+$monospace:           'fira mono', $monospace-fallback;
+
+$color-primary-light: #007faa;
+$color-primary-dark:  #e26a6a;
+
+$screen-xs-min:       480px;
+$screen-sm-min:       768px;
+$screen-md-min:       992px;
+$screen-lg-min:       1200px;
+
+$screen-xs-max:       ($screen-sm-min - 1);
+$screen-sm-max:       ($screen-md-min - 1);
+$screen-md-max:       ($screen-lg-min - 1);
+
+$network-colors: (
+  facebook:    #3b5998,
+  twitter:     #00aced,
+  github:      #000000,
+  email:       #d72c2c
+);
