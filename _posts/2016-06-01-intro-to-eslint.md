@@ -3,6 +3,7 @@ title: Intro to ESLint (ft. Daft Punk)
 display_title: Intro to ESLint (ft.&nbsp;Daft&nbsp;Punk)
 tags: eslint react lint ast
 excerpt: If you've never tried ESLint, I strongly recommend it. Setting it up will make things harder, better, faster, stronger.
+redirect_from: /eslint-ft-daft-punk/
 ---
 
 If you've never tried [ESLint], I strongly recommend it. Setting it up will make things:
