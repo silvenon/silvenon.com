@@ -67,12 +67,24 @@
       display: block;
       width: 2em;
       height: 2em;
-      line-height: 2.2;
+      line-height: 2.4;
       text-align: center;
       text-decoration: none;
       border-radius: 50%;
       background: #fff;
       transition: 0.2s;
+    }
+
+    svg {
+      display: inline-block;
+      fill: currentColor;
+      width: 15px;
+      height: 15px;
+
+      @media (min-width: 768px) {
+        width: 17px;
+        height: 17px;
+      }
     }
 
     @each $network, $color in $network-colors {
