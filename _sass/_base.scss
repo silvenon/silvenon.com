@@ -74,6 +74,10 @@ a {
   &:focus {
     color: $color-primary-dark;
   }
+
+  abbr[title] {
+    border-bottom: 0;
+  }
 }
 
 strong, b {
