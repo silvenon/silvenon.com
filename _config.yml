@@ -53,6 +53,8 @@ defaults:
     values:
       layout: post
 
+logo: /images/logo.png
+
 exclude:
   - Gemfile
   - Gemfile.lock
