@@ -40,9 +40,9 @@ defaults:
       path: ""
     values:
       image:
-        path: /images/logo.png
-        width: 80
-        height: 80
+        path: /images/og.png
+        width: 300
+        height: 300
   - scope:
       path: ""
       type: pages
