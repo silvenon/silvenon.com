@@ -31,9 +31,9 @@ For example, if you're a React developer, you might be using `bind` and arrow fu
 
 The linter will warn you if you make a silly mistake, before you even run your program. For example, if you mess up your `import`/`require` statement, [eslint-plugin-import] can warn you about this ahead of time.
 
-To be even faster, you should install an ESLint [plugin for your editor][1], it will improve the speed of catching errors because you'd see warnings as you type, instead of being welcomed by 50 errors when you finally run the lint command :sweat:
-
 Using a linter also eliminates some of the choice fatigue. Things can be written in multiple ways, and ESLint can enforce a certain style so you don't have to think. Remember, there are no crazy rules, what's important is that everyone sticks to them.
+
+To be even faster, you should install an ESLint [plugin for your editor][1], it will improve the speed of catching errors because you'll see warnings as you type, instead of being welcomed by 50 errors when you finally run the lint command :sweat:
 
 Finally, there are [tons of rules][2] to choose from and manually configuring each one would take lots of time and energy. I suggest simply extending [Airbnb's wonderful config][3], which includes React rules, import checks etc. and adjust rules to your liking. If you feel like it, you can even read [Airbnb's JavaScript Style Guide][4]. I don't usually read, but I found it so interesting that I read the whole thing.
 
@@ -45,7 +45,7 @@ Finally, there are [tons of rules][2] to choose from and manually configuring ea
 
 ## Stronger :musical_note:
 
-Instead of making your project's contributors read a style guide (let's be real, who reads `CONTRIBUTING.md`), make linting a part of testing so your contributors won't be able to skip&nbsp;it.
+Instead of making your project's contributors read a style guide (let's be real, who remembers to read `CONTRIBUTING.md`), make linting a part of testing so your contributors won't be able to skip&nbsp;it.
 
 If you'd like to enforce a rule which ESLint or its plugins don't offer yet, you can [write your own][5]! If you've never worked with an AST before, it can be quite a learning curve, but this skill will be really come in handy for using some other tools as well, like [JSCodeShift]. I suggest reading the documentation of [ast-types] a few times, along with playing with the [AST explorer], then try contributing to an existing ESLint plugin.
 
