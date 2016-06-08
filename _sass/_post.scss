@@ -72,3 +72,20 @@
 
   @import "post-short";
 }
+
+.footnotes {
+  margin-top: 2rem;
+  font-size: 0.75em;
+
+  &:before {
+    content: '';
+    display: block;
+    max-width: 300px;
+    margin-bottom: 1rem;
+    border-top: 1px solid rgba(#000, 0.1);
+  }
+
+  ol {
+    padding-left: 1rem;
+  }
+}
