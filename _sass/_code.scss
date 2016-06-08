@@ -1,6 +1,6 @@
 pre {
-  margin: 1em -1em !important;
-  padding: 1em;
+  margin: 1rem -1rem !important;
+  padding: 1rem;
   border-radius: 0.3em;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
@@ -10,7 +10,7 @@ pre {
   color: #f8f8f2;
 
   @media (max-width: 800px) {
-    border-radius: 0;
+    border-radius: 0 !important;
   }
 }
 
