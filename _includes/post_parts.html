@@ -1,0 +1,14 @@
+{% if include.post.multi_part == true %}
+  <ol>
+  {% assign posts = site.posts | sort: 'id' %}
+  {% for post in posts %}
+    {% if post.id contains include.post.id and post.id != include.post.id %}
+      {% unless post.id == page.id %}
+      <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+      {% else %}
+      <li class="active">{{ post.title }}</li>
+      {% endunless %}
+    {% endif %}
+  {% endfor %}
+  </ol>
+{% endif %}
