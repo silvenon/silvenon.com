@@ -2,7 +2,11 @@
 <html class="no-js wf-loading" lang="en">
   <head>
     <meta charset="utf-8">
-    <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
+    {% if page.part == true %}
+      {% assign parent_id = page.id | split: '-pt' | first %}
+      {% assign parent = site.posts | where: 'id', parent_id | first %}
+    {% endif %}
+    <title>{% if page.title %}{% if parent %}{{ parent.title }}: {% endif %}{{ page.title }} | {% endif %}{{ site.title }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {% seo title=false %}
     {% feed_meta %}

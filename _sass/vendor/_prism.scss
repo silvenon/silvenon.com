@@ -109,6 +109,10 @@ pre[class*="language-"] {
 	background: hsla(0, 0%, 100%, .5);
 }
 
+.token.operator {
+	background: transparent;
+}
+
 .token.atrule,
 .token.attr-value,
 .token.keyword {
@@ -170,4 +174,3 @@ pre[class*="language-"] {
 .command-line-prompt > span[data-prompt]:before {
 	content: attr(data-prompt);
 }
-

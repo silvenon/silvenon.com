@@ -70,6 +70,19 @@
     }
   }
 
+  .series {
+    padding-bottom: 0.5em;
+    border-bottom: 1px solid rgba(#000, 0.1);
+    margin-bottom: 1rem;
+    font-size: 0.8em;
+    color: #777;
+
+    li.active {
+      font-weight: bold;
+      color: #333;
+    }
+  }
+
   @import "post-short";
 }
 

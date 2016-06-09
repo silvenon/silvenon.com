@@ -16,6 +16,7 @@
 
       <div class="post-short-body">
         {{ post.excerpt }}
+        {% include post_parts.html post=post %}
       </div>
     </article>
   {% endfor %}
