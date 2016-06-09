@@ -4,10 +4,8 @@ pre {
   border-radius: 0.3em;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
-
-  // monokai base
-  background: #272822;
-  color: #f8f8f2;
+  // fallback
+  background: #f5f2f0;
 
   @media (max-width: 800px) {
     border-radius: 0 !important;
