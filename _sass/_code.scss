@@ -31,13 +31,15 @@ code {
 a {
   code {
     color: $color-primary-light;
-    text-decoration: inherit;
+    border-color: rgba($color-primary-light, 0.5);
+    text-decoration: none;
   }
 
   &:hover,
   &:focus {
     code {
       color: $color-primary-dark;
+      border-color: $color-primary-dark;
     }
   }
 }
