@@ -12,13 +12,13 @@ Frontend testing is hard. I had an on-and-off relationship with it, each time my
 
 I realize that writing tests for most units in your codebase might seem very time-consuming. If you've never done it before, I suggest testing from inside-out: find the part of your application which you absolutely hate manually testing and spend your extra time on writing tests just for that. It might be contagious and encourage you to start testing many other parts of your applications, but it might not, and that's okay. But the confidence that this part of your app is stable will definitely feel good :wink:
 
-This concept is applicable to development in general, it's much easier to develop something from inside-out than outside-in. Testing really simple units which can hardly fail is not very exciting and could easily be misinterpreted as a waste of time, but you can quickly see the value when you solve the most frustrating problem.
+This concept is applicable to development in general, it's much easier to develop something from inside-out than outside-in. Testing really simple units which can hardly fail is not very exciting and could easily be misinterpreted as a waste of time, but you can quickly see the value when you solve the most frustrating problem. You'll also notice that testing forces you to write better code, because it requires a very systematic way of thinking about your code.
 
 Enough chit-chat, let's dive in!
 
 ## Parts
 
-This series is consisted of three parts:
+This series consists of three parts:
 
 {% include post_parts.html post=page %}
 

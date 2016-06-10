@@ -31,7 +31,7 @@ But you don't have to use AVA, you can map these concepts to your framework of c
 
 ## Configuration
 
-Setting AVA up is a [breeze][ava-config]. First I'll just unleash this final configuration upon your poor soul:
+Setting AVA up is a [breeze][ava-config]. This is the final configuration:
 
 ```js
 "ava": {
@@ -44,9 +44,7 @@ Setting AVA up is a [breeze][ava-config]. First I'll just unleash this final con
 },
 ```
 
-It really doesn't get more complicated than that, that's all the configuration I use in my current project.
-
-Let me explain it line by line:
+Let me explain this line by line:
 
 [ava-config]: https://github.com/avajs/ava/tree/402a7d5978a18bb04c22ee40579b089ee5f6234a#configuration
 
@@ -101,10 +99,10 @@ Instead, you can hack those imports using [ignore-styles] (the name of this modu
 
 ### `./test/helpers/setup.js`
 
-This is a good place to make some global accommodations if needed. For example, if you're using webpack's [DefinePlugin] to inject some globals like `__DEV__`, you could mimic that in this file:
+This is a good place to make some global accommodations if needed. For example, if you're using webpack's [DefinePlugin] to inject some globals like `DEV`, you could mimic that in this file:
 
 ```js
-global.__DEV__ = false
+global.DEV = false
 ```
 
 Directories like `helpers` and `fixtures` are automatically ignored, AVA won't try to run files in them as tests.
@@ -156,9 +154,20 @@ Are you *by any chance* using ESLint and extending a version of [eslint-config-a
 npm install --save-dev eslint-import-resolver-node
 ```
 
-and explain our `NODE_PATH` situation to it by adding the following to our ESLint config:
+and explain our `NODE_PATH` situation by adding the following to our ESLint config:
 
 ```yaml
+settings:
+  import/resolver:
+    node:
+      moduleDirectory:
+        - node_modules
+        - src
+```
+
+You could also use `paths` instead of `moduleDirectory`:
+
+```yml
 settings:
   import/resolver:
     node:
@@ -166,7 +175,7 @@ settings:
         - src
 ```
 
-He'll understand.
+But I found that the former works better with my ESLint editor plugin.
 
 [eslint-config-airbnb]: https://www.npmjs.com/package/eslint-config-airbnb
 [eslint-plugin-import]: https://github.com/benmosher/eslint-plugin-import
