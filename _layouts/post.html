@@ -39,6 +39,7 @@ layout: default
         <aside class="series">
           <p>This post is a part of the series <a href="{{ parent.url }}">{{ parent.title }}</a>:</p>
           {% include post_parts.html post=parent %}
+          {% if parent.repo %}<p>To see how this all fits together, you can find all of the code in <a href="https://github.com/silvenon/{{ parent.repo }}">this repo</a>.</p>{% endif %}
         </aside>
       {% endif %}
 

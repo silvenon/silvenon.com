@@ -5,17 +5,19 @@ hidden: true
 part: true
 ---
 
-I started out with [Jest], then [Mocha], but when I found [AVA] it just knocked my socks off. The readme was hypnotizing, I couldn't stop reading.
+I started out with [Jest], then [Mocha], but when I found [AVA] it just knocked my socks off. The readme was hypnotizing, I couldn't stop reading. Some of the killer features are:
 
-Some of the killer features are:
-
-  - [enhanced assertion messages] --- find out why your assertion failed from an ASCII diagram instead of reading boring text
-  - the test name is generated from the file path + test name, so I can just separate tests in files and write short test names like `returns expected output`
+  - tiny assertions --- instead of something like `expect().toBe()`, you can type `t.is()` :sunglasses:
+  - no globals, you import a single `test` module which does its magic
+  - [enhanced assertion messages] --- find out why your assertion failed from a cool ASCII diagram
+  - the test name is generated from the file path + test name, so I can just separate tests in files and write short test names like `'returns expected output'`
   - [todos] --- tests are the best place to write tasks
-  - [failing tests] --- if you have a known bug, but don't have time to fix it, you can write a failing test which won't break CI
-  - [asserting errors] --- if an error is passed to `.ifError`, the assertion will fail with that error nicely printed
+  - [failing tests] --- if you have a known bug, but don't have time to fix it yet, you can write a failing test which won't break CI
+  - asserting errors --- if an error is passed to `t.ifError()`, it will fail with a nicely printed stack trace
 
 They even built an [ESLint plugin], so you can catch errors earlier and keep your tests consistent. Read more about why using ESLint is smart in [my earlier post][Intro to ESLint].
+
+But you don't have to use AVA, you can map concepts in this series to your framework of choice.
 
 [AVA]: https://github.com/avajs/ava
 [Jest]: https://facebook.github.io/jest/
@@ -27,11 +29,27 @@ They even built an [ESLint plugin], so you can catch errors earlier and keep you
 [ESLint plugin]: https://github.com/avajs/eslint-plugin-ava
 [Intro to ESLint]: http://silvenon.com/intro-to-eslint/
 
-But you don't have to use AVA, you can map these concepts to your framework of choice.
+## Directory Structure
+
+There are many patterns of organizing test code, one of which is to scatter `__tests__` directories around in your source directory. This kinda sorta seems fine to me when you're doing only unit tests. But where do you put global helpers? What about integration tests? Isn't it a nice separation of concerns to have a separate test directory alongside your source directory? That's exactly what we'll do:
+
+```
+src/
+  components/
+    MyComp.js
+  reducers/
+  ...
+test/
+  helpers/
+  components/
+    MyComp.spec.js
+  reducers/
+  ...
+```
 
 ## Configuration
 
-Setting AVA up is a [breeze][ava-config]. This is the final configuration:
+Setting AVA up is a [breeze][ava-config], this is the configuration I'll use for this series:
 
 ```js
 "ava": {
@@ -73,7 +91,7 @@ If you're using the [transform-runtime] in your application, you don't need to d
 
 ### `"babel-register"`
 
-AVA uses Babel only for your tests, not the modules you import. Your application code also needs to be parsed, so you need [babel-register]. You could import it in the `setup.js` instead, but this way `setup.js` will also be parsed.
+AVA uses Babel only for your tests, not the modules you import. Your application code also needs to be parsed, so you need [babel-register]. The order is important, this way our `setup.js` will also be parsed.
 
 [babel-register]: https://babeljs.io/docs/usage/require/
 
@@ -87,9 +105,9 @@ import style from '../styles/MyComp.scss';
 import src from '../images/photo.jpg';
 ```
 
-Your tests won't have webpack's help to handle this. While you could compile your tests with Webpack before running them, or run your tests with [Karma] and [karma-webpack], I think both of these are overkills.
+Your tests won't have webpack's help to handle this, Node would be like "whaaat". I mean, you could compile your tests with Webpack before running them, or you could run your tests with [Karma] and [karma-webpack], but I think that's an overkill for unit testing.
 
-Instead, you can hack those imports using [ignore-styles] (the name of this module is probably slightly outdated, it ignores images as well). You can configure it if needed, but [its defaults][ignore-styles-defaults] were enough for me.
+Instead, you can hack those imports using [ignore-styles] (the name of this module is probably outdated, it ignores images as well). If you want to configure it, you can require it in `setup.js` instead, but [its defaults][ignore-styles-defaults] were enough for me.
 
 [webpack]: http://webpack.github.io/
 [ignore-styles]: https://github.com/bkonkle/ignore-styles
@@ -99,31 +117,33 @@ Instead, you can hack those imports using [ignore-styles] (the name of this modu
 
 ### `./test/helpers/setup.js`
 
-This is a good place to make some global accommodations if needed. For example, if you're using webpack's [DefinePlugin] to inject some globals like `DEV`, you could mimic that in this file:
+This is a good place to make some global accommodations. For example, if you're using webpack's [DefinePlugin] to inject some globals like `DEV`, you could mimic that in this file:
 
 ```js
 global.DEV = false
 ```
 
-Directories like `helpers` and `fixtures` are automatically ignored, AVA won't try to run files in them as tests.
+Directories like `helpers` and `fixtures` are automatically ignored, AVA won't try to run them as tests.
 
 [DefinePlugin]: https://webpack.github.io/docs/list-of-plugins.html#defineplugin
 
 ## Mapping the Source Directory
 
-To make your importing life easier, you might want to map your source directory, so instead of typing:
+To make your importing life easier, you might want to map your source directory as a load path, so instead of typing:
 
 ```js
+// test/utils/foo.js
 import foo from '../../src/utils/foo';
 ```
 
 you can type:
 
 ```js
+// test/utils/foo.js
 import foo from 'utils/foo';
 ```
 
-You might already be doing similar mapping in webpack. To mimic this feature in Node you can use the [`NODE_PATH`] environment variable. Your `package.json` test script could look like this:
+You might already be doing a similar mapping in webpack. To mimic this feature in Node you can use the [`NODE_PATH`] environment variable. Let's add a test script to our `package.json`:
 
 ```js
 "scripts": {
@@ -131,10 +151,12 @@ You might already be doing similar mapping in webpack. To mimic this feature in 
 },
 ```
 
-If you want to be a pal to your Windows colleagues (or if you're the Windows colleague), you can fix that command using [cross-env]:
+If you want to be a pal to your Windows colleagues (or if you're the Windows colleague), you can make that enviroment variable cross-platform by using [cross-env]:
 
 ```bash
 npm install --save-dev cross-env
+# or shorter and cooler
+npm i -D cross-env
 ```
 
 ```js
@@ -148,7 +170,7 @@ npm install --save-dev cross-env
 
 ### Linting Import Paths
 
-Are you *by any chance* using ESLint and extending a version of [eslint-config-airbnb] which includes [eslint-plugin-import]? Awesome! But because of the `NODE_PATH` mapping, eslint-plugin-import will treat our "shortcut paths" as invalid. Luckily, we don't have to disable it altogether, we can use [eslint-import-resolver-node]:
+Are you *by any chance* using [eslint-plugin-import]? Awesome! But because of the `NODE_PATH` mapping, it will treat our convenient "shortcut paths" as invalid. Luckily, we don't have to disable it altogether, we can use [eslint-import-resolver-node]:
 
 ```bash
 npm install --save-dev eslint-import-resolver-node
@@ -167,7 +189,7 @@ settings:
 
 You could also use `paths` instead of `moduleDirectory`:
 
-```yml
+```yaml
 settings:
   import/resolver:
     node:
@@ -175,9 +197,8 @@ settings:
         - src
 ```
 
-But I found that the former works better with my ESLint editor plugin.
+but I found that the former works better in some edge cases.
 
-[eslint-config-airbnb]: https://www.npmjs.com/package/eslint-config-airbnb
 [eslint-plugin-import]: https://github.com/benmosher/eslint-plugin-import
 [eslint-import-resolver-node]: https://www.npmjs.com/package/eslint-import-resolver-node
 
@@ -185,6 +206,6 @@ But I found that the former works better with my ESLint editor plugin.
 
 I find AVA the most ambitious and advanced testing framework out there. It has excellent cohesive documentation (with [translations]!) and a really responsive team behind it.
 
-See you in the [next part]({{ page.url | replace: 'pt1', 'pt2' }})!
+Are you ready to write some tests? See you in the [next part]({{ page.url | replace: 'pt1', 'pt2' }})!
 
 [translations]: https://github.com/avajs/ava-docs

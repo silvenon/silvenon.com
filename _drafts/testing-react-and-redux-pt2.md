@@ -5,40 +5,38 @@ hidden: true
 part: true
 ---
 
-I find testing React and Redux code very interesting. You can cover a lot with just Node unit testing, and they are really fast. Tools and concepts that I'll show here are not really tied to a framework, so you can use the one you're comfortable in, but I'll use AVA in this post.
-
 Redux code is composed of many small pieces, so we can test layer by layer.
 
 ## Actions
 
-Depending on your setup, [testing action creators] could be an overkill. I generate my action creators like this:
+Depending on your setup, [testing action creators] could be an overkill. For example, I generate my action creators like this:
 
 ```js
 // src/actions/index.js
+// inspired by Flux Standard Action
 export function action(type, payload) {
-  return typeof payload === 'undefined' ? { type } : { type, payload };
+  if (typeof payload === 'undefined') {
+    return { type };
+  }
+  return { type, payload };
 }
 
-export function createAction(type) {
+function createAction(type) {
   return payload => action(type, payload);
 }
 
-export const ADD_ITEM = 'ADD_ITEM';
-export const DELETE_ITEM = 'DELETE_ITEM';
-
-export const addItem = createAction(ADD_ITEM);
-export const deleteItem = createAction(DELETE_ITEM);
+export const TOGGLE_TODO = 'TOGGLE_TODO';
+export const toggleTodo = createAction(TOGGLE_TODO);
 ```
 
-It doesn't really make sense to test each action creator because they are all created in the same way. However, I could test the _creator_ of these action creators. (I think you would have stopped reading if I said "action creators creator".)
-
-So let's do this:
+and it doesn't really make sense to test each action creator because they are all created in the same way. However, I could test the `action` function:
 
 ```js
-// test/action.js
+// test/action.spec.js
 import test from 'ava';
-import { ava } from 'actions'
+import { action } from 'actions';
 
+// does the result action have the given payload?
 test('returns payload', t => {
   t.deepEqual(
     action('FOO', 'bar'),
@@ -46,6 +44,8 @@ test('returns payload', t => {
   );
 });
 
+// we don't want to set an unefined payload,
+// we'd rather skip it in that case
 test('skips payload if it\'s not defined', t => {
   t.deepEqual(
     action('FOO'),
@@ -53,6 +53,7 @@ test('skips payload if it\'s not defined', t => {
   );
 });
 
+// but we do want it to return other falsy values, like 0 or false
 test('doesn\'t skip a falsy, but defined payload', t => {
   t.deepEqual(
     action('FOO', false),
@@ -61,65 +62,86 @@ test('doesn\'t skip a falsy, but defined payload', t => {
 });
 ```
 
-AVA assertions have an additional optional argument: the failing message. I don't find it particularly useful, but you might :wink:
+AVA assertions have an additional optional argument: the failing message. I don't find it particularly useful, but you might ¯\\_(ツ)\_/¯
 
 [testing action creators]: http://redux.js.org/docs/recipes/WritingTests.html#action-creators
 
 ## Reducers
 
-We reached our reducers. After binge-watching Dan Abramov's [new Redux tutorials], I learned that you can organize your reducers bettery by composing them out of sub-reducers using [`combineReducers`] (so far I only used it once for the root reducer).
-
-This can be our example reducer:
+We reached our reducers, which will consist of two reducers: a single todo and a list of todos:
 
 ```js
-// src/reducers/items.js
-import { ADD_ITEM, DELETE_ITEM } from '../actions';
-import { combineReducers } from 'redux';
+// src/reducers/todos.js
+import { TOGGLE_TODO } from '../actions';
 
-const list = (state = [], action) {
+const todo = (state, action) => {
   switch (action.type) {
-    case ADD_ITEM:
-      return state.concat(action.payload);
-    case DELETE_ITEM:
-      return state.filter(item => item.id !== action.payload);
+    case TOGGLE_TODO:
+      if (state.id !== action.payload) {
+        return state;
+      }
+      return {
+        ...state,
+        completed: !state.completed,
+      };
     default:
       return state;
   }
-}
+};
+
+const todos = (state = [], action) => {
+  switch (action.type) {
+    case TOGGLE_TODO:
+      return state.map(t => todo(t, action));
+    default:
+      return state;
+  }
+};
+
+export default todos;
+```
+
+I learned that composing trick from Dan Abramov's [new Redux tutorials] :grin:
+
+Then we can create our root reducer:
+
+```js
+// src/reducers/index.js
+import { combineReducers } from 'redux';
+import todos from './todos';
 
 export default combineReducers({
-  list,
+  todos,
 });
 ```
+
+which we'll use when configuring the store. (I'll omit store configuration for brevity, but you can see it in [the repo].)
 
 In our tests we can call the reducers with the previous state and the action, then assert the expected output:
 
 ```js
-// test/reducers/items.js
+// test/reducers/todos.spec.js
 import test from 'ava';
-import reducer from 'reducers/items';
-import { ADD_ITEM, DELETE_ITEM } from 'actions';
+import reducer from 'reducers/todos';
+import { TOGGLE_TODO } from 'actions';
 
-test('adds the item', t => {
-  const payload = { id: 1, foo: 'bar' };
-  const state = reducer({ list: [] }, { type: ADD_ITEM, payload });
-  t.deepEqual(state, { list: [payload] });
-});
-
-test('removes the item', t => {
-  const list = [
-    { id: 1, foo: 'bar' },
-    { id: 2, foo: 'bar' },
+test('toggles the todo', t => {
+  const prevState = [
+    { id: 1, text: 'foo', completed: false },
+    { id: 2, text: 'bar', completed: false },
+    { id: 3, text: 'baz', completed: false },
   ];
-  const state = reducer({ list }, { type: DELETE_ITEM, payload: 1 });
-  t.deepEqual(state, { list: [
-    { id: 2, foo: 'bar' },
-  ] });
+  const action = { type: TOGGLE_TODO, payload: 2 };
+  const nextState = reducer(prevState, action);
+  t.deepEqual(nextState, [
+    { id: 1, text: 'foo', completed: false },
+    { id: 2, text: 'bar', completed: true }, // this one should be toggled
+    { id: 3, text: 'baz', completed: false },
+  ]);
 });
 ```
 
 [new Redux tutorials]: https://egghead.io/courses/building-react-applications-with-idiomatic-redux
-[`combineReducers`]: https://github.com/reactjs/redux/blob/ad33fa7314e5db852a306d9475be5cfe22bde180/docs/api/combineReducers.md
 
 ## Selectors
 
@@ -127,59 +149,50 @@ I found about selectors from three different sources:
 
   - Dan Abramov's [selectors tutorial]
   - an optimization library [reselect]
-  - a side-effect library [redux-saga][redux-saga-selectors]
+  - the [`select`] effect in redux-saga
 
-They make code easier to refactor and are testable. A selector can look like this:
-
-```js
-// src/reducers/items.js
-export const getFirstItem = state => state.list[0];
-```
+Selectors make refactoring easier, can be memoized, and are testable. They look like this:
 
 ```js
 // src/reducers/index.js
-import { combineReducers } from 'redux';
-import items, * as fromItems from './items';
-
-export default combineReducers({
-  items,
-});
-
-export const getFirstItem = state => fromItems.getFirstItem(state.items);
+// ...
+export const getTodos = state => state.todos;
 ```
 
-Now we have a composed `getFirstItem` selector. We are only going to test selectors in `src/reducers/index.js` because that will imply that the lower-level selectors work as well:
+Yes, it *is* pretty silly to test this selector, but as you compose selectors it's a good idea to test the most complex ones, which will imply that the lower-level ones work as well. But let's test this one for the sake of an example:
 
 ```js
-// test/selectors.js
+// test/selectors.spec.js
 import test from 'ava';
-import { getFirstItem } from 'reducers';
+import { getTodos } from 'reducers';
 
-test('getFirstItem', t => {
-  const list = [
-    { id: 1, foo: 'bar' },
-    { id: 2, foo: 'bar' },
+test('getTodos', t => {
+  const todos = [
+    { id: 1, text: 'foo', completed: true },
+    { id: 2, text: 'bar', completed: false },
+    { id: 3, text: 'baz', completed: true },
   ];
-  t.deepEqual(getFirstItem({ items: { list } }), list[0]);
+  // we assert that the selector returns todos from the store
+  t.deepEqual(getTodos({ todos }), todos);
 });
 ```
 
 [selectors tutorial]: https://egghead.io/lessons/javascript-redux-colocating-selectors-with-reducers
 [reselect]: https://github.com/reactjs/reselect
-[redux-saga-selectors]: http://yelouafi.github.io/redux-saga/docs/api/index.html#selectselector-args
+[`select`]: http://yelouafi.github.io/redux-saga/docs/api/index.html#selectselector-args
 
 ## API Calls
 
 Let's build a simple API function with the following features:
 
-  - method defaults to GET
-  - sends the (optional) body, in case of a non-GET request
-  - decamelizes body (`fooBar` to `foo_bar`)
-  - camelizes response (`foo_bar` to `fooBar`)
-  - returns a promise
-  - returns an error if status code is 300 or greater
+  - it uses the given method, defaulting to GET
+  - it sends the (optional) body, in case of a non-GET request
+  - it decamelizes the body (`fooBar` to `foo_bar`)
+  - it camelizes the response (`foo_bar` to `fooBar`)
+  - it returns a promise
+  - it returns an error if status code is 300 or greater
 
-For case conversion I'll use [humps], and for promise-based requests I'll use [isomorphic-fetch], which uses GitHub's [Fetch API polyfill] on the client and [node-fetch] in Node, i.e. in our tests.
+For case conversion I'll use [humps], and for promise-based requests I'll use [isomorphic-fetch], which uses GitHub's [Fetch API polyfill] on the client and [node-fetch] in Node:
 
 ```
 npm install --save humps isomorphic-fetch
@@ -192,8 +205,8 @@ Let's write our function, I'll comment as we go:
 import { camelizeKeys, decamelizeKeys } from 'humps';
 import fetch from 'isomorphic-fetch';
 
-// you can't call that an app if it doesn't have .io in the URL
-export const API_URL = 'https://api.your-app.io';
+// you can't call yourself an app if you don't have an .io domain
+export const API_URL = 'https://api.myapp.io';
 
 export default function callApi(endpoint, method = 'get', body) {
   return fetch(`${API_URL}/${endpoint}`, { // power of template strings
@@ -228,17 +241,24 @@ npm install --save-dev nock
 ```
 
 ```js
-// test/utils/call-api.js
+// test/utils/call-api.spec.js
 import test from 'ava';
 import callApi, { API_URL } from 'utils/call-api';
 import nock from 'nock';
 
 test('method defaults to GET', t => {
   const reply = { foo: 'bar' };
+  // we are intercepting https://api.myapp.io/foo
   nock(API_URL)
     .get('/foo')
     .reply(200, reply);
-  return callApi('foo').then(({ response }) => {
+  // AVA will know to wait for the promise if you return it,
+  // alternatively you can use async/await
+  return callApi('foo').then(({ response, error }) => {
+    // if there is an error, this assertion will fail
+    // and it will nicely print out the stack trace
+    t.ifError(error);
+    // we assert that the response body matches
     t.deepEqual(response, reply);
   });
 });
@@ -247,9 +267,10 @@ test('sends the body', t => {
   const body = { id: 5 };
   const reply = { foo: 'bar' };
   nock(API_URL)
-    .post('/foo', body)
+    .post('/foo', body) // if the request is missing this body, nock will throw
     .reply(200, reply);
-  return callApi('foo', body, 'post').then(({ response }) => {
+  return callApi('foo', 'post', body).then(({ response, error }) => {
+    t.ifError(error);
     t.deepEqual(response, reply);
   });
 });
@@ -257,19 +278,24 @@ test('sends the body', t => {
 test('decamelizes the body', t => {
   const reply = { foo: 'bar' };
   nock(API_URL)
-    .post('/foo', { snake_case: 'sssss...' })
+    .post('/foo', { snake_case: 'sssss...' }) // what we expect
     .reply(200, reply);
-  return callApi('foo', { snakeCase: 'sssss...' }).then(({ response }) => {
-    t.deepEqual(response, reply);
-  });
+                                // what we send ↓
+  return callApi('foo', 'post', { snakeCase: 'sssss...' })
+    .then(({ response, error }) => {
+      t.ifError(error);
+      t.deepEqual(response, reply);
+    });
 });
 
 test('camelizes the response', t => {
   nock(API_URL)
     .get('/foo')
     .reply(200, { camel_case: 'mmmh...' });
-    // https://youtu.be/Nn4vJbHOMPo
-  return callApi('foo').then(({ response }) => {
+    // they apparently use camel sounds in Doom when demons die,
+    // I can see why: https://youtu.be/Nn4vJbHOMPo
+  return callApi('foo').then(({ response, error }) => {
+    t.ifError(error);
     t.deepEqual(response, { camelCase: 'mmmh...' });
   });
 });
@@ -297,17 +323,16 @@ test('returns the error', t => {
 
 ### Endpoints
 
-Now that we have defined our API function, we can start adding endpoints:
+Now that we have defined our API function, we can add an endpoint for toggling a todo:
 
 ```js
 // src/services/api.js
 import callApi from '../utils/call-api';
 
-export const addItem = item => callApi('items', 'post', item);
-export const deleteItem = id => callApi(`items/${id}`, 'delete');
+export const toggleTodo = id => callApi(`todos/${id}/toggle`, 'post');
 ```
 
-And we can test them:
+and we can test it:
 
 ```js
 import test from 'ava';
@@ -315,95 +340,92 @@ import nock from 'nock';
 import { API_URL } from 'utils/call-api';
 import * as api from 'services/api';
 
-test('addItem', t => {
-  const item = { id: 3, foo: 'bar' };
+test('toggleTodo', t => {
   const reply = { foo: 'bar' };
   nock(API_URL)
-    .post('/items', item)
+    .post('/todos/3/toggle')
     .reply(200, reply);
-  return api.addItem(item).then(({ response }) => {
-    t.deepEqual(response, reply);
-  });
-});
-
-test('deleteItem', t => {
-  const reply = { foo: 'bar' };
-  nock(API_URL)
-    .delete('/items/3')
-    .reply(200, reply);
-  return api.deleteItem(3).then(({ response }) => {
+  return api.toggleTodo(3).then(({ response, error }) => {
+    t.ifError(error);
     t.deepEqual(response, reply);
   });
 });
 ```
 
+Easy-peasy! If `toggleTodo` makes a request to any other URL (or with a different method), the test will fail.
+
 ## Side-Effects
 
-Actions can have side-effects (besides changing the state), like an API call, a redirect, or even a dispatch of another action. In my experience handling side-effects can get out of hand very quickly, so choosing a good library is important. I highly recommend [redux-saga], which is an excellent example of using Generators. It encourages separating side-effects from action creators, which feels very natural to me, and makes testing extremely simple without any need to mock.
+Actions can have side-effects, like an API call, a redirect, or even a dispatch of another action. In my experience handling side-effects can get out of hand very quickly, so choosing a good library is important. I highly recommend [redux-saga] ([this reddit discussion][reddit-redux-saga] has some great points), which is an excellent example of using Generators. It encourages separating side-effects from action creators, which feels very natural to me, and makes testing extremely simple without having to mock stuff.
 
-If you don't have experience with Generators, I highly recommend reading [this chapter][generators] of "Exploring ES6".
+If you don't have experience with Generators, I highly recommend reading [this chapter][generators] of "Exploring ES6", they are quite something :grin: and take some time getting used to.
 
-Let's create a side effect of the action `DELETE_ITEM`, which will make the API request `deleteItem` which we defined above:
+We want to make an API call after toggling a todo, i.e. we want to call `toggleTodo` as a response to the `TOGGLE_TODO` action:
 
 ```js
 // src/sagas/index.js
 import { take, fork } from 'redux-saga/effects';
-import { DELETE_ITEM } from '../actions';
+import { TOGGLE_TODO } from '../actions';
 import * as api from '../services/api';
 
-export function *watchDeleteItem() {
-  while (true) {
-    const { payload } = yield take(DELETE_ITEM);
-    yield fork(api.deleteItem, payload);
+export function *watchToggleTodo() {
+  while (true) { // endless loops are perfectly normal in generators
+    const { payload } = yield take(TOGGLE_TODO); // extracting the action's payload
+    yield fork(api.toggleTodo, payload); // making a non-blocking API call
   }
 }
 
 export default function *rootSaga() {
   yield [
-    fork(watchDeleteItem),
+    fork(watchToggleTodo),
   ];
 }
 ```
 
-The saga `watchDeleteItem` waits for the store to dispatch the `DELETE_ITEM` action, then calls the `deleteItem` API function with its payload, which is the item's ID.
+Again, I'm omitting adding saga middleware to the store for brevity, but you can check it out in [the repo].
 
-Testing generators can be pretty weird if you've never done it before (the same applies to using them :grin:). Effects from redux-saga output objects when called, these objects serve as instructions to the middleware. This design is great because we can write unit tests for our saga without actually executing the API function.
+The saga `watchToggleTodo` waits for the store to dispatch the `TOGGLE_TODO` action, then calls the `toggleTodo` API function with the action's payload, which is the ID of the todo.
 
-Let's start, I'll comment on the way:
+Testing generators can be pretty weird if you've never done it before (the same applies to using them at all :grin:). The great thing about redux-saga is that its effects output objects, which serve as instructions to the middleware. This means that we can write unit tests for our saga without actually executing the API function. That's because we are testing the generators in isolation, so they never reach the middleware.
+
+Let's start testing:
 
 ```js
-// test/sagas/watchDeleteItem.js
+// test/sagas/watchToggleTodo.spec.js
 import test from 'ava';
 import { take, fork } from 'redux-saga/effects';
-import { DELETE_ITEM } from 'actions';
+import { TOGGLE_TODO } from 'actions';
 import * as api from 'services/api';
-import { watchDeleteItem } from 'sagas';
+import { watchToggleTodo } from 'sagas';
 
 test('calls the API function with the payload', t => {
-  // first we create the generator, nothing inside it has been executed yet
-  const gen = watchDeleteItem();
-  // this way we can assert that the yield block indeed has the expected value
+  // first we create the generator, it won't start until we call next()
+  const gen = watchToggleTodo();
+  // we assert that the yield block indeed has the expected value
   t.deepEqual(
     gen.next().value,
-    take(DELETE_ITEM)
+    take(TOGGLE_TODO)
   );
-  // now we assert that the API call has been called with action's payload
   t.deepEqual(
-    // we resolve the previous yield block with an action containing the payload,
-    // I omitted the action type because we are not using it in our saga
-    gen.next({ payload: 3 }).value,
-    fork(api.deleteItem, 3)
+    // we resolve the previous yield block with the action
+    gen.next({ type: TOGGLE_TODO, payload: 3 }).value,
+    // then we assert that the API call has been called with the ID
+    fork(api.toggleTodo, 3)
   );
-  // we assert that the generators keeps looping, which ensures that
-  // the generator receives the DELETE_ITEM action indefinitely
+  // finally, we assert that the generator keeps looping,
+  // which ensures that the it receives TOGGLE_TODO indefinitely
   t.false(gen.next().done);
 });
 ```
 
+[redux-saga]: http://yelouafi.github.io/redux-saga/
+[reddit-redux-saga]: https://www.reddit.com/r/reactjs/comments/4ng8rr/redux_sagas_benefits/
 [generators]: http://exploringjs.com/es6/ch_generators.html
 
 ## Conclusion
 
-This was quite a handful if you just started testing, but take your time and start small.
+This was quite a handful if you only started testing, but take your time and start small, this blog post is not going anywhere :wink:
 
-Even though your Redux tests pass, it doesn't mean that your UI is working correctly. Let's move to the [last level]({{ page.url | replace: 'pt2', 'pt3' }})!
+Even though our Redux tests pass, it doesn't mean that our UI is working correctly. Let's move to the [last level]({{ page.url | replace: 'pt2', 'pt3' }})!
+
+[the repo]: https://github.com/silvenon/testing-react-and-redux
