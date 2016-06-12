@@ -62,7 +62,7 @@ test('doesn\'t skip a falsy, but defined payload', t => {
 });
 ```
 
-AVA assertions have an additional optional argument: the failing message. I don't find it particularly useful, but you might ¯\\_(ツ)\_/¯
+AVA assertions have an additional optional argument: the failing message. I don't find it particularly useful because the assertion error is very clear, but you might ¯ \\\_(ツ)\_/ ¯
 
 [testing action creators]: http://redux.js.org/docs/recipes/WritingTests.html#action-creators
 
@@ -117,13 +117,13 @@ export default combineReducers({
 
 which we'll use when configuring the store. (I'll omit store configuration for brevity, but you can see it in [the repo].)
 
-In our tests we can call the reducers with the previous state and the action, then assert the expected output:
+In our tests we can call the reducers with the previous state and the action (using the action creator), then assert the expected output:
 
 ```js
 // test/reducers/todos.spec.js
 import test from 'ava';
 import reducer from 'reducers/todos';
-import { TOGGLE_TODO } from 'actions';
+import { toggleTodo } from 'actions';
 
 test('toggles the todo', t => {
   const prevState = [
@@ -131,8 +131,7 @@ test('toggles the todo', t => {
     { id: 2, text: 'bar', completed: false },
     { id: 3, text: 'baz', completed: false },
   ];
-  const action = { type: TOGGLE_TODO, payload: 2 };
-  const nextState = reducer(prevState, action);
+  const nextState = reducer(prevState, toggleTodo(2));
   t.deepEqual(nextState, [
     { id: 1, text: 'foo', completed: false },
     { id: 2, text: 'bar', completed: true }, // this one should be toggled
@@ -141,7 +140,33 @@ test('toggles the todo', t => {
 });
 ```
 
+You could make this test more compact using [redux-ava], which provides a convenient `reducerTest` helper:
+
+```js
+// test/reducers/todos.spec.js
+import test from 'ava';
+import reducer from 'reducers/todos';
+import { toggleTodo } from 'actions';
+import { reducerTest } from 'redux-ava';
+
+test('toggles the todo', reducerTest(
+  reducer,
+  [
+    { id: 1, text: 'foo', completed: false },
+    { id: 2, text: 'bar', completed: false },
+    { id: 3, text: 'baz', completed: false },
+  ],
+  toggleTodo(2),
+  [
+    { id: 1, text: 'foo', completed: false },
+    { id: 2, text: 'bar', completed: true }, // this one should be toggled
+    { id: 3, text: 'baz', completed: false },
+  ]
+));
+```
+
 [new Redux tutorials]: https://egghead.io/courses/building-react-applications-with-idiomatic-redux
+[redux-ava]: https://github.com/sotojuan/redux-ava
 
 ## Selectors
 
