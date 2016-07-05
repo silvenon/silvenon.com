@@ -1,17 +1,6 @@
 pre {
-  margin: 1rem -1rem !important;
   // fallback
   background: #f5f2f0;
-
-  @media (max-width: 800px) {
-    border-radius: 0 !important;
-  }
-}
-
-code {
-  display: inline-block;
-  // ligatures in Fira Mono are awful
-  font-variant-ligatures: no-common-ligatures;
 }
 
 :not(pre) > code {
