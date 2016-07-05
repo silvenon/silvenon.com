@@ -2,20 +2,9 @@
 ---
 
 @import 'variables';
-@import 'functions';
-@import 'mixins';
 
-@import 'normalize';
-@import 'base';
-
+@import '../assets/styles/main';
 @import 'vendor/prism';
 
-@import '404';
-@import 'bio';
+@import 'base';
 @import 'code';
-@import 'float';
-@import 'header';
-@import 'navigation';
-@import 'pagination';
-@import 'post';
-@import 'share';

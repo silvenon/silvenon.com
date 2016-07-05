@@ -1,9 +1,5 @@
 pre {
   margin: 1rem -1rem !important;
-  padding: 1rem;
-  border-radius: 0.3em;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
   // fallback
   background: #f5f2f0;
 
@@ -19,27 +15,7 @@ code {
 }
 
 :not(pre) > code {
-  padding: 0 .25em;
   border: 1px solid rgba(#000, 0.1);
-  border-radius: 0.25rem;
   background: #f8f8f8;
-  word-wrap: break-word;
   color: #333;
-  text-transform: none; // resetting in case the parent is uppercase
-}
-
-a {
-  code {
-    color: $color-primary-light;
-    border-color: rgba($color-primary-light, 0.5);
-    text-decoration: none;
-  }
-
-  &:hover,
-  &:focus {
-    code {
-      color: $color-primary-dark;
-      border-color: $color-primary-dark;
-    }
-  }
 }
