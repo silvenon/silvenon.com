@@ -14,33 +14,33 @@ If you've never tried [ESLint], I strongly recommend it. Setting it up will make
 
 It takes some getting used to. Configuring countless rules, checking them up online, accidentally pushing code with linting errors... but you'll get there.
 
-One gotcha is that ESLint doesn't support [experimental ECMAScript features][0] out of the box, except for the highly requested object rest/spread feature. If you want experimental features, you could plug in the [babel-eslint] parser, but you shouldn't use them in production anyway :wink:
+One gotcha is that ESLint doesn't support [experimental ECMAScript features][0] out of the box, except for the highly requested object rest/spread feature. If you want experimental features, you could plug in the [babel-eslint] parser, but you shouldn't use those features in production anyway :wink:
 
 [0]: https://babeljs.io/docs/plugins/#experimental
 [babel-eslint]: https://github.com/babel/babel-eslint
 
 ## Better :microphone:
 
-You'll become a better developer because you'll learn **why** some rules are enforced, and you'll quickly learn to follow them. Fortunately, ESLint and many of its plugins are very well documented, so you can learn a lot there.
+You'll become a better developer because you'll learn **why** some rules are enforced, and you'll quickly learn to follow them. ESLint and many of its plugins are very well documented, so you can learn a lot there.
 
-For example, if you're a React developer, you might be using `bind` and arrow functions in your component's `render` method, but this is bad for performance because it creates new functions on each render, as described in the [jsx-no-bind] rule of eslint-plugin-react.
+For example, if you're a React developer, you might be tempted to use `bind` and arrow functions in your component's `render` method, but this hurts performance because it creates new functions on each render, as described in the [jsx-no-bind] rule of eslint-plugin-react.
 
 [jsx-no-bind]: https://github.com/yannickcr/eslint-plugin-react/blob/82b3aa9101aa2124b934add61734cec026b4c278/docs/rules/jsx-no-bind.md
 
 ## Faster :headphones:
 
-The linter will warn you if you make a silly mistake, before you even run your program. For example, if you mess up your `import`/`require` statement, [eslint-plugin-import] can warn you about this ahead of time.
+Before you even run your script, the linter can warn you if you made a silly mistake. For example, if you mess up an `import`/`require` statement, [eslint-plugin-import] can warn you about this ahead of time.
 
-Using a linter also eliminates some of the choice fatigue. Things can be written in multiple ways, and ESLint can enforce a certain style so you don't have to think. Remember, there are no crazy rules, what's important is that everyone sticks to them.
+Using a linter also eliminates some of the choice fatigue. Things can be written in multiple ways, and often one choice is not particularly better than the other. ESLint can enforce a certain style so you don't have to waste time trying to decide. Remember, there are no crazy rules, what's important is that everyone sticks to them.
 
 To be even faster, you should install an ESLint [plugin for your editor][1], it will improve the speed of catching errors because you'll see warnings as you type, instead of being welcomed by 50 errors when you finally run the lint command :sweat:
 
-Finally, there are [tons of rules][2] to choose from and manually configuring each one would take lots of time and energy. I suggest simply extending [Airbnb's wonderful config][3], which includes React rules, import checks etc. and adjust rules to your liking. If you feel like it, you can even read [Airbnb's JavaScript Style Guide][4]. I don't usually read, but I found it so interesting that I read the whole thing.
+Finally, there are [tons of rules][2] to choose from and manually configuring each one would take lots of time and energy. I suggest simply extending an existing shareable configuration package, like the wonderful [eslint-config-airbnb], which includes React rules, import checks etc. and adjust rules to your liking. If you feel like it, you can even read [Airbnb's JavaScript Style Guide][4]. I don't usually read, but I found it so interesting that I read the whole thing.
 
 [eslint-plugin-import]: https://github.com/benmosher/eslint-plugin-import
+[eslint-config-airbnb]: https://www.npmjs.com/package/eslint-config-airbnb
 [1]: http://eslint.org/docs/user-guide/integrations#editors
 [2]: http://eslint.org/docs/rules/
-[3]: https://www.npmjs.com/package/eslint-config-airbnb
 [4]: https://github.com/airbnb/javascript
 
 ## Stronger :musical_note:
