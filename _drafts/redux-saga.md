@@ -1,5 +1,5 @@
 ---
-title: The Twilight Redux Saga
+title: The Twilight (Redux) Saga
 tags: react redux saga generators
 ---
 
