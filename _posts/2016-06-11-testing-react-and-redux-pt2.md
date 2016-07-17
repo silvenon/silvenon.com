@@ -44,7 +44,7 @@ test('returns payload', t => {
   );
 });
 
-// we don't want to set an unefined payload,
+// we don't want to set an undefined payload,
 // we'd rather skip it in that case
 test('skips payload if it\'s not defined', t => {
   t.deepEqual(
