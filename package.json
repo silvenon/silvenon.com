@@ -1,0 +1,26 @@
+{
+  "private": true,
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "babel-macros": "^1.2.0",
+    "emotion": "^8.0.9",
+    "emotion-server": "^8.0.9",
+    "next": "^4.1.4",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "react-emotion": "^8.0.9",
+    "react-icons": "^2.2.7"
+  },
+  "devDependencies": {
+    "babel-eslint": "^8.0.1",
+    "eslint": "^4.10.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-react": "^7.4.0"
+  }
+}

@@ -1,0 +1,10 @@
+root: true
+parser: babel-eslint
+extends:
+  - airbnb
+rules:
+  semi:
+    - error
+    - never
+  react/jsx-filename-extension: off
+  react/jsx-wrap-multilines: off

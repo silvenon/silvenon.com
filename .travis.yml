@@ -1,8 +1,0 @@
-language: ruby
-cache: bundler
-rvm:
-- 2.2
-notifications:
-  email: false
-  slack:
-    secure: Ziy5siLNdOHp88VX/bJTliCWCOpwDAf1DDkETGvVqCHY7Vrh/Y0ppt/YlAnuJe47bP7FaZ6BycgF+vU4hz6kqXXm2Gzwv9e7Hi5lK9Jq7sSoj8te5w5HAbm62QKRQz/bFgoS+WAtyvOmL/n9VTef4dKaQ3ndnmVgO7omIGGq6Nw=
