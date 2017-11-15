@@ -2,6 +2,7 @@ import React from 'react'
 import { injectGlobal } from 'emotion/macro'
 import { hydrate } from 'react-emotion/macro'
 import Container from '../components/container'
+import Card from '../components/card'
 import Avatar from '../components/avatar'
 import Name from '../components/name'
 import Biography from '../components/biography'
@@ -32,14 +33,16 @@ const Home = () => {
         alt="photo of Matija Marohnić"
         src="//res.cloudinary.com/silvenon/image/upload/c_scale,w_300/v1510308691/avatar.jpg"
       />
-      <Name>Matija Marohnić</Name>
-      <Biography>
-        {BIOGRAPHY.split('\n\n').map((paragraph, i) =>
-          // eslint-disable-next-line react/no-array-index-key
-          <p key={i}>
-            {paragraph}
-          </p>)}
-      </Biography>
+      <Card>
+        <Name>Matija Marohnić</Name>
+        <Biography>
+          {BIOGRAPHY.split('\n\n').map((paragraph, i) =>
+            // eslint-disable-next-line react/no-array-index-key
+            <p key={i}>
+              {paragraph}
+            </p>)}
+        </Biography>
+      </Card>
       <Branches />
     </Container>
   )

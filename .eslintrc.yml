@@ -6,5 +6,6 @@ rules:
   semi:
     - error
     - never
+  import/prefer-default-export: off
   react/jsx-filename-extension: off
   react/jsx-wrap-multilines: off

@@ -1,8 +1,9 @@
 import styled from 'react-emotion/macro'
+import { BREAKPOINT } from '../constants'
 
 const Biography = styled('div')`
   max-width: 26em;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   line-height: 1.5em;
   > p {
     margin-top: 0;
@@ -10,10 +11,9 @@ const Biography = styled('div')`
       margin-bottom: 0;
     }
   }
-
-  padding-bottom: 2rem;
-  border-bottom: 0.25rem solid currentColor;
-  margin-bottom: 2rem;
+  @media (min-width: ${BREAKPOINT}) {
+    font-size: 1.5rem;
+  }
 `
 
 export default Biography
