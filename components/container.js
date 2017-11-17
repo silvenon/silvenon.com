@@ -9,8 +9,8 @@ const Container = styled('div')`
   align-items: center;
   justify-content: center;
   padding: ${SITE_PADDING}rem;
-  background-color: #090909;
-  background: url(https://res.cloudinary.com/silvenon/image/upload/v1510768262/skulls_qjersh.png);
+  background-color: #f7f7df;
+  background-image: url(https://res.cloudinary.com/silvenon/image/upload/v1510768262/skulls_qjersh.png);
 `
 
 export default Container
