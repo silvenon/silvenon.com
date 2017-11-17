@@ -1,13 +1,12 @@
 import React from 'react'
-import { injectGlobal } from 'emotion/macro'
 import { hydrate } from 'react-emotion/macro'
-import Container from '../components/container'
+import Page from '../components/page'
 import Card from '../components/card'
 import Avatar from '../components/avatar'
-import Name from '../components/name'
-import Biography from '../components/biography'
+import Title from '../components/title'
+import Paragraph from '../components/paragraph'
 import Branches from '../components/branches'
-import { SYSTEM_FONT_FAMILY, BREAKPOINT, BIOGRAPHY } from '../constants'
+import { BIOGRAPHY } from '../constants'
 
 // Adds server generated styles to emotion cache.
 // '__NEXT_DATA__.ids' is set in '_document.js'
@@ -16,36 +15,23 @@ if (typeof window !== 'undefined') {
   hydrate(window.__NEXT_DATA__.ids)
 }
 
-const Home = () => {
-  // eslint-disable-next-line no-unused-expressions
-  injectGlobal`
-    html {
-      font-family: ${SYSTEM_FONT_FAMILY};
-      font-size: 14px;
-      @media (min-width: ${BREAKPOINT}) {
-        font-size: 16px;
-      }
-    }
-  `
-  return (
-    <Container>
-      <Avatar
-        alt="photo of Matija Marohnić"
-        src="//res.cloudinary.com/silvenon/image/upload/c_scale,w_300/v1510308691/avatar.jpg"
-      />
-      <Card>
-        <Name>Matija Marohnić</Name>
-        <Biography>
-          {BIOGRAPHY.split('\n\n').map((paragraph, i) =>
+const Home = () =>
+  <Page>
+    <Avatar
+      alt="photo of Matija Marohnić"
+      src="//res.cloudinary.com/silvenon/image/upload/c_scale,w_300/v1510308691/avatar.jpg"
+    />
+    <Card>
+      <Title>Matija Marohnić</Title>
+      <Paragraph>
+        {BIOGRAPHY.split('\n\n').map((paragraph, i) =>
             // eslint-disable-next-line react/no-array-index-key
-            <p key={i}>
-              {paragraph}
-            </p>)}
-        </Biography>
-      </Card>
-      <Branches />
-    </Container>
-  )
-}
+          <p key={i}>
+            {paragraph}
+          </p>)}
+      </Paragraph>
+    </Card>
+    <Branches />
+  </Page>
 
 export default Home

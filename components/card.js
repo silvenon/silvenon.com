@@ -1,12 +1,13 @@
 import styled from 'react-emotion/macro'
-import { SITE_PADDING, BREAKPOINT, BOX_SHADOW } from '../constants'
+import { SITE_PADDING, BREAKPOINT } from '../constants'
+import { boxShadow } from '../styles'
 
 const Card = styled.div`
   align-self: stretch;
   margin: 0 ${-SITE_PADDING}rem;
   padding: ${SITE_PADDING}rem;
   background: #fff;
-  ${BOX_SHADOW}
+  ${boxShadow};
   @media (min-width: ${BREAKPOINT}) {
     align-self: center;
     margin: 0;

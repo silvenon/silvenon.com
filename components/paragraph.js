@@ -1,8 +1,7 @@
 import styled from 'react-emotion/macro'
 import { BREAKPOINT } from '../constants'
 
-const Biography = styled('div')`
-  max-width: 26em;
+const Paragraph = styled('div')`
   font-size: 1.25rem;
   line-height: 1.5em;
   > p {
@@ -12,8 +11,9 @@ const Biography = styled('div')`
     }
   }
   @media (min-width: ${BREAKPOINT}) {
+    max-width: 26em;
     font-size: 1.5rem;
   }
 `
 
-export default Biography
+export default Paragraph

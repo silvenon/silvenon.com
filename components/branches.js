@@ -1,15 +1,8 @@
 import React from 'react'
-import { css } from 'emotion/macro'
 import styled from 'react-emotion/macro'
 import { FaGithub, FaMedium, FaLinkedinSquare } from 'react-icons/lib/fa'
-import { BREAKPOINT, BOX_SHADOW } from '../constants'
-
-const styleCenter = css`
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-`
+import LinkedIcon from './linked-icon'
+import { BREAKPOINT } from '../constants'
 
 const Container = styled('div')`
   align-self: flex-start;
@@ -60,24 +53,8 @@ const BranchTitle = styled('h2')`
   }
 `
 
-const BranchIcon = styled('a')`
-  order: 1;
-  position: relative;
-  display: block;
-  width: 5rem;
-  height: 5rem;
+const BranchIcon = styled(LinkedIcon)`
   margin-right: 1rem;
-  border: 0.5rem solid #fff;
-  border-radius: 1rem;
-  background: ${props => props.color};
-  ${BOX_SHADOW}
-  color: #fff;
-  text-decoration: none;
-  > svg {
-      ${styleCenter};
-      width: ${props => props.size}rem;
-      height: ${props => props.size}rem;
-  }
   @media (min-width: ${BREAKPOINT}) {
     margin: 0 auto;
   }
