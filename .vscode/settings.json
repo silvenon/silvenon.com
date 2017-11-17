@@ -4,5 +4,6 @@
     "**/bower_components": true,
     "**/.next": true,
     "**/silvenon": true
-  }
+  },
+  "editor.rulers": [100]
 }
