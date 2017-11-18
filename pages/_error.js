@@ -1,12 +1,10 @@
 import React from 'react'
 import styled from 'react-emotion/macro'
-import { FaMedium } from 'react-icons/lib/fa'
 import Page from '../components/page'
 import Card from '../components/card'
 import Title from '../components/title'
 import Paragraph from '../components/paragraph'
-import LinkedIcon from '../components/linked-icon'
-import { BREAKPOINT } from '../constants'
+import * as Link from '../components/links'
 
 const Inner = styled('div')`
   display: flex;
@@ -27,7 +25,7 @@ const Back = styled('a')`
   }
 `
 
-const BlogIcon = styled(LinkedIcon)`
+const BlogLink = styled(Link.Blog)`
   align-self: center;
   margin-top: 1rem;
 `
@@ -64,14 +62,7 @@ class Error extends React.Component {
                 </p>
               </Paragraph>
             </Card>
-            <BlogIcon
-              title="Medium"
-              href="https://blog.silvenon.com"
-              color="#00ab6c"
-              size={3}
-            >
-              <FaMedium />
-            </BlogIcon>
+            <BlogLink />
           </Inner>
         ) : (
           <Card>

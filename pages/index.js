@@ -5,7 +5,7 @@ import Card from '../components/card'
 import Avatar from '../components/avatar'
 import Title from '../components/title'
 import Paragraph from '../components/paragraph'
-import Branches from '../components/branches'
+import Links from '../components/links'
 import { BIOGRAPHY } from '../constants'
 
 // Adds server generated styles to emotion cache.
@@ -31,7 +31,7 @@ const Home = () =>
           </p>)}
       </Paragraph>
     </Card>
-    <Branches />
+    <Links />
   </Page>
 
 export default Home
