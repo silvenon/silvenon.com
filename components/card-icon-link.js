@@ -1,6 +1,5 @@
 import React from 'react'
 import Media from 'react-media'
-import { css } from 'emotion/macro'
 import styled from 'react-emotion/macro'
 import { boxShadow } from '../styles'
 import { BREAKPOINT } from '../constants'
@@ -24,10 +23,10 @@ const Container = styled('a')`
     transition:
       background 0.2s,
       color 0.2s;
-    ${props => props.isInteracting ? css`
+    &:hover, &:focus {
       background: #fff;
-      color: ${props.color};
-    ` : null}
+      color: ${props => props.color};
+    }
   }
 `
 
@@ -67,61 +66,29 @@ const IconBase = styled('svg')`
   }
 `
 
-class CardIconLink extends React.Component {
-  state = {
-    isInteracting: false,
-  }
-
-  handleStartInteracting = () => {
-    this.setState({
-      isInteracting: true,
-    })
-  }
-
-  handleStopInteracting = () => {
-    this.setState({
-      isInteracting: false,
-    })
-  }
-
-  render() {
-    const { label, icon, ...props } = this.props
-    const { isInteracting } = this.state
-
-    const Icon = IconBase.withComponent(icon.Component)
-
-    return (
-      <Media query={{ minWidth: BREAKPOINT }}>
-        {matches => matches ? (
-          <Container
-            {...props}
-            isInteracting={isInteracting}
-            onMouseEnter={this.handleStartInteracting}
-            onMouseLeave={this.handleStopInteracting}
-            onFocus={this.handleStartInteracting}
-            onBlur={this.handleStopInteracting}
-          >
-            <IconContainer size={props.size}>
-              <Icon size={icon.size} />
-            </IconContainer>
-            <Label
-              color={props.color}
-              isInteracting={isInteracting}
-            >
-              {label}
-            </Label>
-          </Container>
-        ) : (
-          <Container {...props}>
-            <IconContainer size={props.size}>
-              <Icon size={icon.size} />
-            </IconContainer>
-            <Label>{label}</Label>
-          </Container>
-        )}
-      </Media>
-    )
-  }
+const CardIconLink = ({ label, icon, ...props }) => {
+  const Icon = IconBase.withComponent(icon.Component)
+  return (
+    <Media query={{ minWidth: BREAKPOINT }}>
+      {matches => matches ? (
+        <Container {...props}>
+          <IconContainer size={props.size}>
+            <Icon size={icon.size} />
+          </IconContainer>
+          <Label color={props.color}>
+            {label}
+          </Label>
+        </Container>
+      ) : (
+        <Container {...props}>
+          <IconContainer size={props.size}>
+            <Icon size={icon.size} />
+          </IconContainer>
+          <Label>{label}</Label>
+        </Container>
+      )}
+    </Media>
+  )
 }
 
 export { CardIconLink }
