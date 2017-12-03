@@ -1,6 +1,7 @@
 import React from 'react'
 import Document, { Head, Main, NextScript } from 'next/document'
 import { extractCritical } from 'emotion-server'
+import { GitHubCorner } from '../components/github-corner'
 import { TrackingCode } from '../components/tracking-code'
 import { BIO } from '../constants'
 
@@ -36,6 +37,7 @@ class MyDocument extends Document {
         </Head>
         <body>
           <Main />
+          <GitHubCorner />
           <NextScript />
           <TrackingCode />
         </body>
