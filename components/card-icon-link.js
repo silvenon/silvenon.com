@@ -9,7 +9,7 @@ const BORDER_RADIUS = 1
 const Container = styled('a')`
   display: flex;
   align-items: center;
-  padding: 0 1rem;
+  padding: 0 2rem 0 1rem;
   border: 0.5rem solid #fff;
   border-radius: ${BORDER_RADIUS}rem;
   background: ${props => props.color};
@@ -19,6 +19,7 @@ const Container = styled('a')`
   @media (min-width: ${BREAKPOINT}) {
     flex-direction: column;
     justify-content: center;
+    width: 10rem;
     padding: 0;
     transition:
       background 0.2s,

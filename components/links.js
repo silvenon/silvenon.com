@@ -21,7 +21,6 @@ const Container = styled('ul')`
 const Item = styled('li')`
   margin: 0.5rem 0;
   @media (min-width: ${BREAKPOINT}) {
-    width: 10rem;
     margin: 0 1rem;
   }
 `
