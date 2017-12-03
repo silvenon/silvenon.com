@@ -17,4 +17,8 @@ export const BIO = "I'm a design-savvy frontend developer from Croatia."
 export const BIOGRAPHY = `
 I'm a design-savvy frontend developer from Croatia. I love React.js and enjoy creating delightful, maintainable UIs.
 `.trim()
+export const COLOR = {
+  BLUE_LIGHTER: '#007FAA',
+  BLUE_DARKER: '#34495E',
+}
 
