@@ -1,14 +1,15 @@
 {
   "private": true,
   "scripts": {
-    "dev": "next",
+    "dev": "node server.js",
     "build": "next build",
-    "start": "next start"
+    "start": "NODE_ENV=production node server.js"
   },
   "dependencies": {
     "babel-macros": "^1.2.0",
     "emotion": "^8.0.12",
     "emotion-server": "^8.0.12",
+    "express": "^4.16.2",
     "next": "^4.1.4",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
