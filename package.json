@@ -3,7 +3,6 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "build:static": "next build && next export -o silvenon",
     "start": "next start"
   },
   "dependencies": {
