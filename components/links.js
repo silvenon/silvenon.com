@@ -2,7 +2,7 @@ import React from 'react'
 import withProps from 'recompose/withProps'
 import styled from 'react-emotion/macro'
 import { FaGithub, FaMedium, FaLinkedinSquare } from 'react-icons/lib/fa'
-import CardIconLink from './card-icon-link'
+import { CardIconLink } from './card-icon-link'
 import { BREAKPOINT } from '../constants'
 
 const Container = styled('ul')`
@@ -26,7 +26,7 @@ const Item = styled('li')`
   }
 `
 
-export const OpenSource = withProps({
+export const GitHubLink = withProps({
   label: 'Open Source',
   href: 'https://github.com/silvenon',
   icon: {
@@ -37,7 +37,7 @@ export const OpenSource = withProps({
   color: '#333',
 })(CardIconLink)
 
-export const Blog = withProps({
+export const MediumLink = withProps({
   label: 'Blog',
   href: 'https://blog.silvenon.com',
   icon: {
@@ -48,7 +48,7 @@ export const Blog = withProps({
   color: '#00ab6c',
 })(CardIconLink)
 
-export const Background = withProps({
+export const LinkedInLink = withProps({
   label: 'Background',
   href: 'https://www.linkedin.com/in/silvenon/',
   icon: {
@@ -59,17 +59,17 @@ export const Background = withProps({
   color: '#0077b5',
 })(CardIconLink)
 
-const Links = () =>
+const AllLinks = () =>
   <Container>
     <Item>
-      <OpenSource />
+      <GitHubLink />
     </Item>
     <Item>
-      <Blog />
+      <MediumLink />
     </Item>
     <Item>
-      <Background />
+      <LinkedInLink />
     </Item>
   </Container>
 
-export default Links
+export { AllLinks }

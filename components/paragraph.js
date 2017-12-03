@@ -16,4 +16,4 @@ const Paragraph = styled('div')`
   }
 `
 
-export default Paragraph
+export { Paragraph }

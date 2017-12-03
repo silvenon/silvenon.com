@@ -1,10 +1,10 @@
 import React from 'react'
 import styled from 'react-emotion/macro'
-import Page from '../components/page'
-import Card from '../components/card'
-import Title from '../components/title'
-import Paragraph from '../components/paragraph'
-import * as Link from '../components/links'
+import { Page } from '../components/page'
+import { Card } from '../components/card'
+import { Title } from '../components/title'
+import { Paragraph } from '../components/paragraph'
+import { MediumLink } from '../components/links'
 
 const Inner = styled('div')`
   display: flex;
@@ -25,7 +25,7 @@ const Back = styled('a')`
   }
 `
 
-const BlogLink = styled(Link.Blog)`
+const BlogLink = styled(MediumLink)`
   align-self: center;
   margin-top: 1rem;
 `

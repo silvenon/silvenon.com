@@ -124,4 +124,4 @@ class CardIconLink extends React.Component {
   }
 }
 
-export default CardIconLink
+export { CardIconLink }

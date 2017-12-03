@@ -1,7 +1,7 @@
 import React from 'react'
 import Document, { Head, Main, NextScript } from 'next/document'
 import { extractCritical } from 'emotion-server'
-import TrackingCode from '../components/tracking-code'
+import { TrackingCode } from '../components/tracking-code'
 import { BIO } from '../constants'
 
 class MyDocument extends Document {

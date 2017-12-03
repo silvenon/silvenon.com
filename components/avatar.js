@@ -14,4 +14,4 @@ const Avatar = styled('img')`
   }
 `
 
-export default Avatar
+export { Avatar }

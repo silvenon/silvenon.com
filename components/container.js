@@ -13,4 +13,4 @@ const Container = styled('div')`
   background-image: url(https://res.cloudinary.com/silvenon/image/upload/v1510768262/skulls_qjersh.png);
 `
 
-export default Container
+export { Container }

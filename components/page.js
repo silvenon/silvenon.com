@@ -1,6 +1,6 @@
 import React from 'react'
 import { injectGlobal } from 'emotion/macro'
-import Container from './container'
+import { Container } from './container'
 import { SYSTEM_FONT_FAMILY, BREAKPOINT } from '../constants'
 
 const Page = ({ children }) => {
@@ -28,4 +28,4 @@ const Page = ({ children }) => {
   )
 }
 
-export default Page
+export { Page }

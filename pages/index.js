@@ -1,11 +1,11 @@
 import React from 'react'
 import { hydrate } from 'react-emotion/macro'
-import Page from '../components/page'
-import Card from '../components/card'
-import Avatar from '../components/avatar'
-import Title from '../components/title'
-import Paragraph from '../components/paragraph'
-import Links from '../components/links'
+import { Page } from '../components/page'
+import { Card } from '../components/card'
+import { Avatar } from '../components/avatar'
+import { Title } from '../components/title'
+import { Paragraph } from '../components/paragraph'
+import { AllLinks } from '../components/links'
 import { BIOGRAPHY } from '../constants'
 
 // Adds server generated styles to emotion cache.
@@ -31,7 +31,7 @@ const Home = () =>
           </p>)}
       </Paragraph>
     </Card>
-    <Links />
+    <AllLinks />
   </Page>
 
 export default Home
