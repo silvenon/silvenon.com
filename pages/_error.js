@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'react-emotion/macro'
 import { Page } from '../components/page'
+import { GoHome } from '../components/go-home'
 import { Card } from '../components/card'
 import { Title } from '../components/title'
 import { Paragraph } from '../components/paragraph'
@@ -10,19 +11,6 @@ const Inner = styled('div')`
   display: flex;
   flex-direction: column;
   align-items: center;
-`
-
-const Back = styled('a')`
-  display: block;
-  margin-bottom: 1rem;
-  text-decoration: none;
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #000;
-  opacity: 0.5;
-  &:hover, &:focus {
-    opacity: 1;
-  }
 `
 
 const BlogLink = styled(MediumLink)`
@@ -46,9 +34,7 @@ class Error extends React.Component {
       <Page>
         {this.props.statusCode === 404 ? (
           <Inner>
-            <Back href="/">
-              ← Back
-            </Back>
+            <GoHome />
             <Card>
               <Title>Page Not Found</Title>
               <Paragraph>
