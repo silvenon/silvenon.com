@@ -2,10 +2,22 @@
   publish = "out"
   command = "npm run build"
 
-redirects = [
-  {from = "/intro-to-eslint",             to = "https://blog.silvenon.com/intro-to-eslint-81f6c9f24ce5"},
-  {from = "/testing-react-and-redux",     to = "https://semaphoreci.com/community/series/how-to-test-a-react-and-redux-application-with-ava"},
-  {from = "/testing-react-and-redux-pt1", to = "https://semaphoreci.com/community/tutorials/getting-started-with-create-react-app-and-ava"},
-  {from = "/testing-react-and-redux-pt2", to = "https://semaphoreci.com/community/tutorials/testing-common-redux-patterns-in-react-using-ava"},
-  {from = "/testing-react-and-redux-pt3", to = "https://semaphoreci.com/community/tutorials/testing-react-components-with-ava"},
-]
+[[redirects]]
+  from = "/intro-to-eslint"
+  to = "https://blog.silvenon.com/intro-to-eslint-81f6c9f24ce5"
+
+[[redirects]]
+  from = "/testing-react-and-redux"
+  to = "https://semaphoreci.com/community/series/how-to-test-a-react-and-redux-application-with-ava"
+
+[[redirects]]
+  from = "/testing-react-and-redux-pt1"
+  to = "https://semaphoreci.com/community/tutorials/getting-started-with-create-react-app-and-ava"
+
+[[redirects]]
+  from = "/testing-react-and-redux-pt2"
+  to = "https://semaphoreci.com/community/tutorials/testing-common-redux-patterns-in-react-using-ava"
+
+[[redirects]]
+  from = "/testing-react-and-redux-pt3"
+  to = "https://semaphoreci.com/community/tutorials/testing-react-components-with-ava"
