@@ -1,7 +1,6 @@
-import styled from 'react-emotion/macro'
-import { BREAKPOINT } from '../constants'
+import styled from 'react-emotion'
 
-const Paragraph = styled('div')`
+const Paragraph = styled.div`
   font-size: 1.25rem;
   line-height: 1.5em;
   > p {
@@ -10,7 +9,7 @@ const Paragraph = styled('div')`
       margin-bottom: 0;
     }
   }
-  @media (min-width: ${BREAKPOINT}) {
+  ${props => props.theme.mqMin.sm} {
     max-width: 26em;
     font-size: 1.5rem;
   }

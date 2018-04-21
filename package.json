@@ -1,30 +1,52 @@
 {
+  "name": "silvenon.com",
+  "description": "My personal website",
+  "author": "Matija Marohnić <matija.marohnic@gmail.com> (https://silvenon.com)",
+  "version": "1.0.0",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/silvenon/silvenon.com.git"
+  },
+  "keywords": [
+    "gatsby"
+  ],
+  "license": "MIT",
   "scripts": {
-    "dev": "node server.js",
-    "build": "next build && next export",
-    "start": "next start"
+    "develop": "gatsby develop",
+    "build": "gatsby build"
   },
   "dependencies": {
-    "babel-macros": "^1.2.0",
-    "emotion": "^8.0.12",
-    "emotion-server": "^8.0.12",
-    "express": "^4.16.2",
-    "next": "^4.1.4",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "react-emotion": "^8.0.12",
+    "babel-plugin-emotion": "^9.1.2",
+    "babel-plugin-polished": "^1.1.0",
+    "emotion": "^9.1.2",
+    "emotion-server": "^9.1.2",
+    "emotion-theming": "^9.1.2",
+    "gatsby": "^1.9.253",
+    "gatsby-link": "^1.6.41",
+    "gatsby-plugin-emotion": "^1.1.16",
+    "gatsby-plugin-react-helmet": "^2.0.11",
+    "gatsby-plugin-react-next": "^1.0.11",
+    "polished": "^1.9.2",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "react-emotion": "^9.1.2",
+    "react-helmet": "^5.2.0",
     "react-icons": "^2.2.7",
-    "react-media": "^1.6.1",
-    "recompose": "^0.26.0"
+    "react-media": "^1.8.0",
+    "recompose": "^0.27.0"
   },
   "devDependencies": {
-    "babel-eslint": "^8.0.3",
-    "eslint": "^4.12.1",
+    "babel-eslint": "^8.2.3",
+    "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
-    "eslint-plugin-import": "^2.8.0",
-    "eslint-plugin-jsx-a11y": "^6.0.2",
-    "eslint-plugin-react": "^7.5.1",
-    "netlify-cli": "^1.2.2"
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-import": "^2.11.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-prettier": "^2.6.0",
+    "eslint-plugin-react": "^7.7.0",
+    "husky": "^1.0.0-rc.1",
+    "lint-staged": "^7.0.4",
+    "prettier": "^1.12.1"
   }
 }

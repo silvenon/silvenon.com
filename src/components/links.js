@@ -1,16 +1,15 @@
 import React from 'react'
 import withProps from 'recompose/withProps'
-import styled from 'react-emotion/macro'
+import styled from 'react-emotion'
 import { FaGithub, FaMedium, FaLinkedinSquare } from 'react-icons/lib/fa'
 import { CardIconLink } from './card-icon-link'
-import { BREAKPOINT } from '../constants'
 
-const Container = styled('ul')`
+const Container = styled.ul`
   align-self: center;
   display: flex;
   flex-direction: column;
   margin-top: 1rem;
-  @media (min-width: ${BREAKPOINT}) {
+  ${props => props.theme.mqMin.sm} {
     flex-direction: row;
     justify-content: space-around;
     margin-top: 2rem;
@@ -18,9 +17,9 @@ const Container = styled('ul')`
   }
 `
 
-const Item = styled('li')`
+const Item = styled.li`
   margin: 0.5rem 0;
-  @media (min-width: ${BREAKPOINT}) {
+  ${props => props.theme.mqMin.sm} {
     margin: 0 1rem;
   }
 `
@@ -58,7 +57,7 @@ export const LinkedInLink = withProps({
   color: '#0077b5',
 })(CardIconLink)
 
-const AllLinks = () =>
+const AllLinks = () => (
   <Container>
     <Item>
       <GitHubLink />
@@ -70,5 +69,6 @@ const AllLinks = () =>
       <LinkedInLink />
     </Item>
   </Container>
+)
 
 export { AllLinks }

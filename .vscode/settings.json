@@ -1,9 +1,0 @@
-{
-  "search.exclude": {
-    "**/node_modules": true,
-    "**/bower_components": true,
-    "**/.next": true,
-    "**/silvenon": true
-  },
-  "editor.rulers": [100]
-}

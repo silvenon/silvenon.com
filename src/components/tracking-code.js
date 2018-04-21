@@ -1,6 +1,6 @@
 import React from 'react'
 
-const TrackingCode = () =>
+const TrackingCode = () => (
   <script
     type="text/javascript"
     // eslint-disable-next-line react/no-danger
@@ -19,7 +19,8 @@ const TrackingCode = () =>
             s.parentNode.insertBefore(t, s);
           })();
         `,
-      }}
+    }}
   />
+)
 
 export { TrackingCode }
