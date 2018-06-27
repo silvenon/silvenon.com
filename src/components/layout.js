@@ -51,7 +51,6 @@ const Layout = ({ children }: Props) => (
         <>
           <Helmet titleTemplate={`%s · ${title}`} defaultTitle={title}>
             <html lang="en" />
-            <meta charSet="utf-8" />
             <meta name="description" content={biography.short} />
             <meta
               name="viewport"
