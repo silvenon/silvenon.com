@@ -4238,12 +4238,13 @@ gatsby-plugin-emotion@^2.0.0-beta.2:
   dependencies:
     "@babel/runtime" "7.0.0-beta.51"
 
-gatsby-plugin-netlify@^1.0.21:
-  version "1.0.21"
-  resolved "https://registry.yarnpkg.com/gatsby-plugin-netlify/-/gatsby-plugin-netlify-1.0.21.tgz#a4cd6631e2c73d73177f1ce8532f125601c8c426"
+gatsby-plugin-netlify@^2.0.0-beta.2:
+  version "2.0.0-beta.2"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-netlify/-/gatsby-plugin-netlify-2.0.0-beta.2.tgz#5d9f64939da0a679f30bba8bd9dfbdc2b2e56231"
   dependencies:
-    babel-runtime "^6.26.0"
+    "@babel/runtime" "7.0.0-beta.51"
     fs-extra "^4.0.2"
+    kebab-hash "^0.1.2"
     lodash "^4.17.4"
     webpack-assets-manifest "^1.0.0"
 
