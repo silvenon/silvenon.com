@@ -1,4 +1,5 @@
-import React from 'react'
+// @flow
+import * as React from 'react'
 import styled from 'react-emotion'
 import { Layout } from '../components/layout'
 import { GoHome } from '../components/go-home'

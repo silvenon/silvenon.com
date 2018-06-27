@@ -1,5 +1,6 @@
-import React from 'react'
-import withProps from 'recompose/withProps'
+// @flow
+import * as React from 'react'
+import { withProps } from 'recompose'
 import styled from 'react-emotion'
 import { FaGithub, FaMedium, FaLinkedinSquare } from 'react-icons/lib/fa'
 import { CardIconLink } from './card-icon-link'

@@ -1,11 +1,13 @@
-import React from 'react'
+// @flow
+import * as React from 'react'
 
-const TrackingCode = () => (
-  <script
-    type="text/javascript"
-    // eslint-disable-next-line react/no-danger
-    dangerouslySetInnerHTML={{
-      __html: `
+const TrackingCode = () =>
+  process.env.NODE_ENV === 'production' ? (
+    <script
+      type="text/javascript"
+      // eslint-disable-next-line react/no-danger
+      dangerouslySetInnerHTML={{
+        __html: `
           var _gauges = _gauges || [];
           (function() {
             var t   = document.createElement('script');
@@ -19,8 +21,8 @@ const TrackingCode = () => (
             s.parentNode.insertBefore(t, s);
           })();
         `,
-    }}
-  />
-)
+      }}
+    />
+  ) : null
 
 export { TrackingCode }

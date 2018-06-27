@@ -7,6 +7,9 @@
 exports.onCreateBabelConfig = ({ actions }) => {
   actions.setBabelPlugin(
     {
+      name: 'babel-plugin-lodash',
+    },
+    {
       name: 'babel-plugin-polished',
     },
     {

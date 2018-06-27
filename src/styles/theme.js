@@ -1,4 +1,6 @@
+// @flow
 import { css } from 'react-emotion'
+import { mapValues } from 'lodash'
 
 const screenWidth = {
   xs: 0,
@@ -11,20 +13,8 @@ const screenWidth = {
 
 export default {
   screenWidth,
-  mqMin: Object.keys(screenWidth).reduce(
-    (accumulator, label) => ({
-      ...accumulator,
-      [label]: `@media (min-width: ${screenWidth[label]}px)`,
-    }),
-    {},
-  ),
-  mqMax: Object.keys(screenWidth).reduce(
-    (accumulator, label) => ({
-      ...accumulator,
-      [label]: `@media (max-width: ${screenWidth[label] - 1}px)`,
-    }),
-    {},
-  ),
+  mqMin: mapValues(screenWidth, width => `@media (min-width: ${width}px)`),
+  mqMax: mapValues(screenWidth, width => `@media (max-width: ${width - 1}px)`),
   fontFamily: {
     base:
       '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',

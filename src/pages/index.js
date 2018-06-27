@@ -1,4 +1,5 @@
-import React from 'react'
+// @flow
+import * as React from 'react'
 import { graphql } from 'gatsby'
 import { Layout } from '../components/layout'
 import { Card } from '../components/card'
@@ -7,13 +8,26 @@ import { Title } from '../components/title'
 import { Paragraph } from '../components/paragraph'
 import { AllLinks } from '../components/links'
 
+type Props = {
+  data: {
+    site: {
+      siteMetadata: {
+        biography: {
+          short: string,
+          long: string,
+        },
+      },
+    },
+  },
+}
+
 const Home = ({
   data: {
     site: {
       siteMetadata: { biography },
     },
   },
-}) => (
+}: Props) => (
   <Layout>
     <Avatar
       alt="photo of Matija Marohnić"

@@ -2,9 +2,12 @@ root: true
 parser: babel-eslint
 plugins:
   - prettier
+  - flowtype
 extends:
   - airbnb
+  - plugin:flowtype/recommended
   - prettier
+  - prettier/flowtype
   - prettier/react
 rules:
   no-shadow: off

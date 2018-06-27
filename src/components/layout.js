@@ -1,4 +1,5 @@
-import React from 'react'
+// @flow
+import * as React from 'react'
 import { graphql, StaticQuery } from 'gatsby'
 import Helmet from 'react-helmet'
 import { ThemeProvider } from 'emotion-theming'
@@ -7,6 +8,7 @@ import { Container } from './container'
 import { GitHubCorner } from './github-corner'
 import { TrackingCode } from './tracking-code'
 import theme from '../styles/theme'
+// $FlowFixMe
 import favicon from '../images/favicon.ico'
 import '../styles/reboot.css'
 import '../styles/minireset.css'
@@ -22,7 +24,11 @@ injectGlobal`
   }
 `
 
-const Layout = ({ children }) => (
+type Props = {
+  children: React.Node,
+}
+
+const Layout = ({ children }: Props) => (
   <StaticQuery
     query={graphql`
       query LayoutQuery {

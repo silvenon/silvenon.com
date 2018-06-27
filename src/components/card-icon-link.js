@@ -1,4 +1,5 @@
-import React from 'react'
+// @flow
+import * as React from 'react'
 import Media from 'react-media'
 import styled from 'react-emotion'
 import theme from '../styles/theme'
@@ -69,7 +70,17 @@ const IconBase = styled.svg`
   }
 `
 
-const CardIconLink = ({ label, icon, ...props }) => {
+type Props = {
+  label: string,
+  icon: {
+    Component: React.ComponentType<*>,
+    size: number,
+  },
+  size: number,
+  color: string,
+}
+
+const CardIconLink = ({ label, icon, ...props }: Props) => {
   const Icon = IconBase.withComponent(icon.Component)
   return (
     <Media query={{ minWidth: theme.mqMin.sm }}>

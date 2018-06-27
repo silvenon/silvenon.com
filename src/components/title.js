@@ -1,3 +1,4 @@
+// @flow
 import styled from 'react-emotion'
 
 const Title = styled.h1`
