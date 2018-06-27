@@ -26,6 +26,7 @@
     "emotion-theming": "^9.1.2",
     "gatsby": "^2.0.0-beta.12",
     "gatsby-plugin-emotion": "^2.0.0-beta.2",
+    "gatsby-plugin-netlify": "^1.0.21",
     "gatsby-plugin-react-helmet": "^3.0.0-beta.3",
     "gatsby-plugin-react-next": "^2.0.1-13",
     "lodash": "^4.17.10",

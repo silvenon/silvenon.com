@@ -13,5 +13,6 @@ module.exports = {
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-react-next',
     'gatsby-plugin-emotion',
+    'gatsby-plugin-netlify',
   ],
 }
