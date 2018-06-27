@@ -7,6 +7,7 @@ import { Avatar } from '../components/avatar'
 import { Title } from '../components/title'
 import { Paragraph } from '../components/paragraph'
 import { AllLinks } from '../components/links'
+import { cl } from '../utils/cloudinary'
 
 type Props = {
   data: {
@@ -29,10 +30,7 @@ const Home = ({
   },
 }: Props) => (
   <Layout>
-    <Avatar
-      alt="photo of Matija Marohnić"
-      src="//res.cloudinary.com/silvenon/image/upload/c_scale,w_300/v1510308691/avatar.jpg"
-    />
+    <Avatar alt="photo of Matija Marohnić" src={cl.url('avatar')} />
     <Card>
       <Title>Matija Marohnić</Title>
       <Paragraph>

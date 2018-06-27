@@ -20,6 +20,7 @@
     "babel-plugin-emotion": "^9.1.2",
     "babel-plugin-lodash": "^3.3.4",
     "babel-plugin-polished": "^1.1.0",
+    "cloudinary-core": "^2.5.0",
     "emotion": "^9.1.2",
     "emotion-server": "^9.1.2",
     "emotion-theming": "^9.1.2",

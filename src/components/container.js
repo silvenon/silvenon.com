@@ -1,5 +1,6 @@
 // @flow
 import styled from 'react-emotion'
+import { cl } from '../utils/cloudinary'
 
 const Container = styled.div`
   box-sizing: border-box;
@@ -10,7 +11,7 @@ const Container = styled.div`
   justify-content: center;
   padding: ${props => props.theme.sitePadding}rem;
   background-color: #f7f7df;
-  background-image: url(https://res.cloudinary.com/silvenon/image/upload/v1510768262/skulls_qjersh.png);
+  background-image: url(${cl.url('skulls_qjersh')});
 `
 
 export { Container }
