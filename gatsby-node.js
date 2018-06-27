@@ -4,12 +4,14 @@
  * See: https://www.gatsbyjs.org/docs/node-apis/
  */
 
-exports.modifyBabelrc = ({ babelrc }) =>
-  Object.assign({}, babelrc, {
-    plugins: babelrc.plugins.concat([
-      'polished',
-      [
-        'emotion',
+exports.onCreateBabelConfig = ({ actions }) => {
+  actions.setBabelPlugin(
+    {
+      name: 'babel-plugin-polished',
+    },
+    {
+      name: 'babel-plugin-emotion',
+      options:
         process.env.NODE_ENV === 'production'
           ? {
               hoist: true,
@@ -18,6 +20,6 @@ exports.modifyBabelrc = ({ babelrc }) =>
               sourceMap: true,
               autoLabel: true,
             },
-      ],
-    ]),
-  })
+    },
+  )
+}

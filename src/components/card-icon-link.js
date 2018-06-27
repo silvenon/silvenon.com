@@ -1,7 +1,7 @@
 import React from 'react'
 import Media from 'react-media'
 import styled from 'react-emotion'
-import { mqMin } from '../styles/theme'
+import theme from '../styles/theme'
 
 const Container = styled.a`
   display: flex;
@@ -72,7 +72,7 @@ const IconBase = styled.svg`
 const CardIconLink = ({ label, icon, ...props }) => {
   const Icon = IconBase.withComponent(icon.Component)
   return (
-    <Media query={{ minWidth: mqMin.sm }}>
+    <Media query={{ minWidth: theme.mqMin.sm }}>
       {matches =>
         matches ? (
           <Container {...props}>

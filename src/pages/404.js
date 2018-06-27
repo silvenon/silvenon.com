@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'react-emotion'
+import { Layout } from '../components/layout'
 import { GoHome } from '../components/go-home'
 import { Card } from '../components/card'
 import { Title } from '../components/title'
@@ -18,22 +19,24 @@ const BlogLink = styled(MediumLink)`
 `
 
 const NotFoundPage = () => (
-  <Inner>
-    <GoHome />
-    <Card>
-      <Title>Page Not Found</Title>
-      <Paragraph>
-        <p>
-          This page no longer exists. It's likely that you got here by following
-          a link to my blog post which no longer has this URL. My blog is now on
-          Medium and, while I moved some of my old posts there, I didn't move
-          the posts I no longer stand by.
-        </p>
-        <p>Try to find that post in my Medium publication.</p>
-      </Paragraph>
-    </Card>
-    <BlogLink />
-  </Inner>
+  <Layout>
+    <Inner>
+      <GoHome />
+      <Card>
+        <Title>Page Not Found</Title>
+        <Paragraph>
+          <p>
+            This page no longer exists. It's likely that you got here by
+            following a link to my blog post which no longer has this URL. My
+            blog is now on Medium and, while I moved some of my old posts there,
+            I didn't move the posts I no longer stand by.
+          </p>
+          <p>Try to find that post in my Medium publication.</p>
+        </Paragraph>
+      </Card>
+      <BlogLink />
+    </Inner>
+  </Layout>
 )
 
 export default NotFoundPage

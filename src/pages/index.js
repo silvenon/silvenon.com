@@ -1,4 +1,6 @@
 import React from 'react'
+import { graphql } from 'gatsby'
+import { Layout } from '../components/layout'
 import { Card } from '../components/card'
 import { Avatar } from '../components/avatar'
 import { Title } from '../components/title'
@@ -12,7 +14,7 @@ const Home = ({
     },
   },
 }) => (
-  <React.Fragment>
+  <Layout>
     <Avatar
       alt="photo of Matija Marohnić"
       src="//res.cloudinary.com/silvenon/image/upload/c_scale,w_300/v1510308691/avatar.jpg"
@@ -27,7 +29,7 @@ const Home = ({
       </Paragraph>
     </Card>
     <AllLinks />
-  </React.Fragment>
+  </Layout>
 )
 
 export default Home
