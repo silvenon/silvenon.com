@@ -3,6 +3,11 @@
   to = "/"
 
 [[redirects]]
+  from = "https://silvenon.netlify.com/*"
+  to = "https://silvenon.com/:splat"
+  force = true
+
+[[redirects]]
   from = "/intro-to-eslint"
   to = "https://blog.silvenon.com/intro-to-eslint-81f6c9f24ce5"
 
