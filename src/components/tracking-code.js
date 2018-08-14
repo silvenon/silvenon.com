@@ -25,4 +25,4 @@ const TrackingCode = () =>
     />
   ) : null
 
-export { TrackingCode }
+export default TrackingCode

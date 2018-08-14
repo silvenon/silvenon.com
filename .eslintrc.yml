@@ -22,4 +22,12 @@ rules:
   react/require-default-props:
     - error
     - forbidDefaultForRequired: false
+  react/sort-comp: off
   prettier/prettier: error
+
+overrides:
+  - files:
+      - "**/*.test.js"
+      - "__tests__/**/*.js"
+    env:
+      jest: true

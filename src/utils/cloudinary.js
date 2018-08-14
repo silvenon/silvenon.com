@@ -6,4 +6,4 @@ const cl = Cloudinary.new({
   secure: true,
 })
 
-export { cl }
+export default cl

@@ -1,70 +1,189 @@
 // @flow
 import * as React from 'react'
-import { graphql, StaticQuery } from 'gatsby'
+import { graphql, StaticQuery, withPrefix } from 'gatsby'
 import Helmet from 'react-helmet'
 import { ThemeProvider } from 'emotion-theming'
-import { injectGlobal } from 'react-emotion'
-import { Container } from './container'
-import { GitHubCorner } from './github-corner'
-import { TrackingCode } from './tracking-code'
+import { MDXProvider } from '@mdx-js/tag'
+import { mapKeys } from 'lodash'
+import { camelCase } from 'change-case'
+import { components } from './body'
+import TrackingCode from './tracking-code'
+import cl from '../utils/cloudinary'
+import * as LOCALE from '../constants/locales'
 import theme from '../styles/theme'
-// $FlowFixMe
-import favicon from '../images/favicon.ico'
+import '../styles/fonts'
 import '../styles/reboot.css'
 import '../styles/minireset.css'
-
-// eslint-disable-next-line no-unused-expressions
-injectGlobal`
-  html {
-    font-family: ${theme.fontFamily.base};
-    font-size: 14px;
-    ${theme.mqMin.sm} {
-      font-size: 16px;
-    }
-  }
-`
+import 'prism-themes/themes/prism-atom-dark.css'
+import '../styles/base'
 
 type Props = {
+  title: string,
+  description: string,
+  lang: string,
+  image: ?{
+    id: string,
+    aspectRatio: number,
+    alt: string,
+  },
+  article: ?{
+    publishedTime: string,
+    modifiedTime: ?string,
+    author: string,
+    tags: string[],
+  },
   children: React.Node,
 }
 
-const Layout = ({ children }: Props) => (
+const Layout = ({
+  title,
+  description,
+  lang,
+  image,
+  article,
+  children,
+}: Props) => (
   <StaticQuery
     query={graphql`
       query LayoutQuery {
         site {
           siteMetadata {
-            title
-            biography {
-              short
-            }
+            name
           }
         }
       }
     `}
     render={({
       site: {
-        siteMetadata: { title, biography },
+        siteMetadata: { name },
       },
-    }) => (
-      <ThemeProvider theme={theme}>
-        <>
-          <Helmet titleTemplate={`%s · ${title}`} defaultTitle={title}>
-            <html lang="en" />
-            <meta name="description" content={biography.short} />
-            <meta
-              name="viewport"
-              content="initial-scale=1.0, width=device-width"
-            />
-            <link rel="icon" href={favicon} />
-          </Helmet>
-          <Container>{children}</Container>
-          <GitHubCorner />
-          <TrackingCode />
-        </>
-      </ThemeProvider>
-    )}
+    }: {
+      site: {
+        siteMetadata: { name: string },
+      },
+    }) => {
+      const metaImage =
+        image != null
+          ? {
+              url: cl.url(image.id, { width: 280, crop: 'scale' }),
+              alt: image.alt,
+              width: 280,
+              height: 280 * image.aspectRatio,
+            }
+          : null
+      return (
+        <ThemeProvider theme={theme}>
+          <>
+            <Helmet>
+              <html lang={lang.toLowerCase()} />
+              <title>{title === name ? title : `${title} · ${name}`}</title>
+              <meta name="description" content={description} />
+              <link rel="icon" href={withPrefix('/favicon.ico')} />
+
+              {/* Schema.org markup for Google+ */}
+              <meta itemProp="name" content={title} />
+              <meta itemProp="description" content={description} />
+              {metaImage != null ? (
+                <meta itemProp="image" content={metaImage.url} />
+              ) : null}
+
+              {/* Twitter Card data */}
+              <meta name="twitter:card" content="summary" />
+              <meta name="twitter:title" content={title} />
+              <meta name="twitter:description" content={description} />
+              <meta name="twitter:creator" content="@silvenon" />
+              {metaImage != null
+                ? [
+                    <meta
+                      key="twitter:image"
+                      name="twitter:image"
+                      content={metaImage.url}
+                    />,
+                    <meta
+                      key="twitter:image:alt"
+                      name="twitter:image:alt"
+                      content={metaImage.alt}
+                    />,
+                  ]
+                : null}
+
+              {/* Open Graph data */}
+              <meta property="og:title" content={title} />
+              <meta property="og:url" content="http://www.example.com/" />
+              {article != null
+                ? [
+                    <meta key="og:type" property="og:type" content="article" />,
+                    <meta
+                      key="article:published_time"
+                      property="article:published_time"
+                      content={article.publishedTime}
+                    />,
+                    article.modifiedTime != null ? (
+                      <meta
+                        key="article:modified_time"
+                        property="article:modified_time"
+                        content={article.modifiedTime}
+                      />
+                    ) : null,
+                    <meta
+                      key="article:author"
+                      property="article:author"
+                      content={article.author}
+                    />,
+                    article.tags.map(tag => (
+                      <meta
+                        key={`article:tag ${tag}`}
+                        property="article:tag"
+                        content={tag}
+                      />
+                    )),
+                  ]
+                : null}
+              {metaImage != null
+                ? [
+                    <meta
+                      key="og:image"
+                      property="og:image"
+                      content={metaImage.url}
+                    />,
+                    <meta
+                      key="og:image:width"
+                      property="og:image:width"
+                      content={metaImage.width}
+                    />,
+                    <meta
+                      key="og:image:height"
+                      property="og:image:height"
+                      content={metaImage.height}
+                    />,
+                    <meta
+                      key="og:image:alt"
+                      property="og:image:alt"
+                      content={metaImage.alt}
+                    />,
+                  ]
+                : null}
+              <meta property="og:description" content={description} />
+              <meta property="og:locale" content={LOCALE[lang]} />
+              <meta property="og:site_name" content={name} />
+            </Helmet>
+            <MDXProvider
+              components={mapKeys(components, (value, key) => camelCase(key))}
+            >
+              <>{children}</>
+            </MDXProvider>
+            <TrackingCode />
+          </>
+        </ThemeProvider>
+      )
+    }}
   />
 )
 
-export { Layout }
+Layout.defaultProps = {
+  lang: 'EN',
+  image: null,
+  article: null,
+}
+
+export default Layout

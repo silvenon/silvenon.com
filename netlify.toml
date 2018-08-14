@@ -1,28 +1,82 @@
-[[redirects]]
-  from = "/uses"
-  to = "/"
+# the official way to redirect the default Netlify subdomain to my primary domain
 
 [[redirects]]
   from = "https://silvenon.netlify.com/*"
   to = "https://silvenon.com/:splat"
+  status = 301
   force = true
+
+# my early blog posts had a different URL structure
 
 [[redirects]]
   from = "/intro-to-eslint"
-  to = "https://blog.silvenon.com/intro-to-eslint-81f6c9f24ce5"
+  to = "/blog/posts/intro-to-eslint"
+
+# I wrote these for Semaphore CI
 
 [[redirects]]
   from = "/testing-react-and-redux"
   to = "https://semaphoreci.com/community/series/how-to-test-a-react-and-redux-application-with-ava"
-
 [[redirects]]
   from = "/testing-react-and-redux-pt1"
   to = "https://semaphoreci.com/community/tutorials/getting-started-with-create-react-app-and-ava"
-
 [[redirects]]
   from = "/testing-react-and-redux-pt2"
   to = "https://semaphoreci.com/community/tutorials/testing-common-redux-patterns-in-react-using-ava"
-
 [[redirects]]
   from = "/testing-react-and-redux-pt3"
   to = "https://semaphoreci.com/community/tutorials/testing-react-components-with-ava"
+
+# migrating away from Medium
+
+[[redirects]]
+  from = "/why-are-breakups-so-hard-da03ce029ce5"
+  to = "/blog/why-are-breakups-so-hard"
+[[redirects]]
+  from = "/your-partner-likes-other-people-7ce4eb52b465"
+  to = "/blog/your-partner-likes-other-people"
+[[redirects]]
+  from = "/beer-pressure-cc46f04ad351"
+  to = "/blog/beer-pressure"
+[[redirects]]
+  from = "/the-subjectivity-police-ff720d83e461"
+  to = "/blog/subjectivity-police"
+[[redirects]]
+  from = "/intro-to-eslint-81f6c9f24ce5"
+  to = "/blog/intro-to-eslint"
+[[redirects]]
+  from = "/a-way-of-not-getting-over-an-ex-fbd8bf654844"
+  to = "/blog/getting-over-your-ex"
+[[redirects]]
+  from = "/downvoting-comments-on-youtube-does-nothing-a6a456d740ef"
+  to = "/blog/downvoting-comments-on-youtube"
+[[redirects]]
+  from = "/a-fictional-web-app-for-creating-comics-b10d660b6939"
+  to = "/blog/fictional-web-app-for-creating-comics"
+[[redirects]]
+  from = "/getting-rid-of-pantry-moths-cf43ef14b2ac"
+  to = "/blog/getting-rid-of-pantry-moths"
+[[redirects]]
+  from = "/cultural-myths-about-relationships-a08b6c55b27e"
+  to = "/blog/cultural-myths-about-relationships"
+[[redirects]]
+  from = "/could-polyamory-be-for-you-9b8f1e61e441"
+  to = "/blog/could-polyamory-be-for-you"
+[[redirects]]
+  from = "/dependencies-or-devdependencies-7715b24b6abf"
+  to = "/blog/dependencies-or-devdependencies"
+[[redirects]]
+  from = "/dont-split-render-into-functions-9e73fb75a05b"
+  to = "/blog/dont-split-render-into-functions"
+[[redirects]]
+  from = "/custom-project-based-eslint-rules-b7b4e3aaf951"
+  to = "/blog/custom-project-based-eslint-rules"
+[[redirects]]
+  from = "/the-nuances-of-react-transition-group-9214b2302138"
+  to = "/blog/the-nuances-of-react-transition-group"
+[[redirects]]
+  from = "/code-folding-and-minimaps-43b2cfdd4359"
+  to = "/blog/code-folding-and-minimaps"
+[[redirects]]
+  from = "/avoiding-masculinity-and-femininity-altogether-9a32c6bce3c2"
+  to = "/blog/ditching-masculinity-and-femininity"

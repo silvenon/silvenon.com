@@ -1,0 +1,51 @@
+import { Tweet } from '../components/media'
+
+export const meta = {
+  title: 'Why I Migrated Away from Medium',
+  lang: 'EN',
+  category: 'DEV',
+  lastModified: '',
+}
+
+I used to have my own Jekyll blog, but then I moved completely to Medium. I had my own publication there, I was even a premium member for a while. Eventually I decided to create my own blog again, much more advanced than the one I previously had, combining features I liked on Medium with the ones I missed.
+
+## Writing
+
+I generally like the writing experience on Medium. It's very minimalistic and the typography is beautiful. But I'm a developer, I want to write code. There are multiple ways to do this, you can just open a code block, but there won't be any syntax highlighting. Either for the time being or it will never ever happen, nobody knows, Medium people don't like talking with the public. Look at how bland this is:
+
+```
+function boooooring() {
+  // is this supposed to be a comment?
+  // I can't tell, it looks like everything else
+  const iCantEven = 'kill me'
+}
+```
+
+Another solution is to embed a GitHub gist or services like CodeSandbox. I don't know about you, but to me using an `<iframe>` just to get some colors is an overkill. Here I can have all the colors I want! Compare the previous code block with this one:
+
+```js
+function lookAtAllTheseColors() {
+  // just look at how subtle this comment is,
+  // it doesn't get in the way,
+  // but it's here for you when you need it
+  const color = '#aaa';
+}
+```
+
+I can actually read this.
+
+## Posts and comments
+
+On Medium you can follow people you like, that way you receive notifications when they post something new. It even automatically follows people you already follow on Twitter, which is nice. You can also comment, like, highlight text and other fun things.
+
+But at certain point it stopped being fun. On Medium, _stories_ are all the posts you've ever written, **including comments**. Yep, there's nothing distinguishing comments from blog posts as far as Medium is concerned. My list of stories is a mix of carefully worded blog posts that I've been working on for days and one-sentence comments.
+
+This decision was probably meant to encourage us to write more thoughtful and constructive comments, which is just a guess becuase there's no official explanation, but it only discourages me from writing comments at all. And I'm not the only one:
+
+<Tweet tweetId="936653171761430528" />
+
+## Custom domain
+
+I bought a custom domain for my publication, it was pretty pricy for a subdomain that I already owned, but I didn't want to depend on Medium's domain in case I want to switch to something else later on. Guess what. 😄
+
+However, they removed that feature! People like me who got them when they were available are able to keep them, but the fact that this important feature is just gone is incredibly off-putting. 😨

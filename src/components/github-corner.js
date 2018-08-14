@@ -1,7 +1,9 @@
 // @flow
 import * as React from 'react'
+import theme from '../styles/theme'
+import '../styles/github-corner.css'
 
-export const GitHubCorner = () => (
+const GitHubCorner = () => (
   <>
     <a
       key="github-corner-icon"
@@ -14,8 +16,8 @@ export const GitHubCorner = () => (
         height={80}
         viewBox="0 0 250 250"
         style={{
-          fill: '#333',
-          color: '#f7f7df',
+          fill: theme.colors.blue,
+          color: '#fff',
           position: 'absolute',
           top: 0,
           border: 0,
@@ -39,13 +41,7 @@ export const GitHubCorner = () => (
         />
       </svg>
     </a>
-    <style
-      key="github-corner-style"
-      // eslint-disable-next-line react/no-danger
-      dangerouslySetInnerHTML={{
-        __html:
-          '.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}',
-      }}
-    />
   </>
 )
+
+export default GitHubCorner
