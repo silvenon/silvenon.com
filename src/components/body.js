@@ -2,7 +2,6 @@
 import styled from 'react-emotion'
 import { lighten, transparentize } from 'polished'
 import typeset, { hangingDoubleQuotes } from './typeset'
-import rule from '../images/rule.svg'
 
 export const H1 = styled.h1`
   margin-bottom: 2rem;
@@ -73,7 +72,6 @@ export const HR = styled.hr`
   margin: 2rem auto;
   border: 0;
   border-bottom: 1px solid ${transparentize(0.75, '#000')};
-  /* background: url('${rule}') center / 281px 19px repeat-x; */
 `
 
 export const OL = styled.ol`
