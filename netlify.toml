@@ -6,7 +6,7 @@
   status = 301
   force = true
 [[redirects]]
-  from = "https://blog.silvenon.netlify.com/*"
+  from = "https://blog.silvenon.com/*"
   to = "https://silvenon.com/:splat"
   status = 301
   force = true
