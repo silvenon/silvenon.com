@@ -32,8 +32,13 @@ const ButtonList = styled.ul`
     margin-left: 1rem;
   }
 `
-
 const ButtonLink = Button.withComponent(A)
+const ButtonLabel = styled.span`
+  display: none;
+  ${props => props.theme.mqMin.sm} {
+    display: inline;
+  }
+`
 
 type Props = {
   data: {
@@ -123,7 +128,7 @@ const Home = ({
             color={ButtonLinks.gitHub.color}
           >
             <FaGithub />
-            <div>GitHub</div>
+            <ButtonLabel>GitHub</ButtonLabel>
           </ButtonLink>
         </li>
         <li>
@@ -133,7 +138,7 @@ const Home = ({
             color={ButtonLinks.linkedIn.color}
           >
             <FaLinkedin />
-            <div>LinkedIn</div>
+            <ButtonLabel>LinkedIn</ButtonLabel>
           </ButtonLink>
         </li>
         <li>
@@ -143,7 +148,7 @@ const Home = ({
             color={ButtonLinks.twitter.color}
           >
             <FaTwitter />
-            <div>Twitter</div>
+            <ButtonLabel>Twitter</ButtonLabel>
           </ButtonLink>
         </li>
       </ButtonList>
