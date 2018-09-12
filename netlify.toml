@@ -5,6 +5,11 @@
   to = "https://silvenon.com/:splat"
   status = 301
   force = true
+[[redirects]]
+  from = "https://blog.silvenon.netlify.com/*"
+  to = "https://silvenon.com/:splat"
+  status = 301
+  force = true
 
 # my early blog posts had a different URL structure
 
