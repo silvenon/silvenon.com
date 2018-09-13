@@ -2,7 +2,6 @@
 import * as React from 'react'
 import styled from 'react-emotion'
 import { graphql } from 'gatsby'
-import { FaCode, FaGlobe } from 'react-icons/fa'
 import Layout from '../components/layout'
 import Spacer from '../components/spacer'
 import Container from '../components/container'
@@ -12,6 +11,7 @@ import { H1 as Title } from '../components/body'
 import Filters from '../components/filters'
 import PostPreview from '../components/post-preview'
 import Pager from '../components/pager'
+import * as CATEGORY from '../constants/categories'
 
 const Divider = styled.div`
   margin: 2rem 0;
@@ -19,6 +19,7 @@ const Divider = styled.div`
 
 type Props = {
   pageContext: {
+    category: $Keys<typeof CATEGORY>,
     categoryPath: string,
     pageNumber: *,
     numberOfPages: *,
@@ -47,6 +48,7 @@ type Props = {
 
 const Blog = ({
   pageContext: {
+    category,
     categoryPath,
     pageNumber,
     numberOfPages,
@@ -58,7 +60,7 @@ const Blog = ({
   },
 }: Props) => (
   <Layout
-    title="Blog"
+    title={category != null ? `Blog (${CATEGORY[category].name})` : 'Blog'}
     description="Posts about frontend development, love and other topics"
   >
     <Header>
@@ -68,20 +70,7 @@ const Blog = ({
       <Filters
         basePath="/blog"
         currentPath={categoryPath}
-        items={[
-          {
-            path: '/category/dev',
-            name: 'Development',
-            shortName: 'Dev',
-            Icon: FaCode,
-          },
-          {
-            path: '/category/non-dev',
-            name: 'Non-Development',
-            shortName: 'Non-Dev',
-            Icon: FaGlobe,
-          },
-        ]}
+        items={['DEV', 'NON_DEV'].map(category => CATEGORY[category])}
         closePath="/blog"
       />
     </Header>
