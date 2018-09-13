@@ -75,7 +75,7 @@ Lastly, I wanted to add the actual pre-commit git hook that would run Flow and l
 
 And, finally, [Netlify][netlify] made all of the deployment and DNS stuff a breeze. I quickly set it up, told it how to build the site and configured each Medium story URL to redirect to the corresponding post URL here in about 15 minutes.
 
-[silvenon.com]: https:silvenon.com
+[silvenon.com]: https://silvenon.com
 [gatsby]: https://next.gatsbyjs.org/
 [emotion]: https://emotion.sh/
 [mdx]: https://mdxjs.com/
