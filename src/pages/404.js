@@ -25,10 +25,17 @@ const Icon = styled(NotificationIcon)`
 
 const WithLogo = styled(WithLogoBase)``
 
-const NotFoundPage = () => (
+type Props = {
+  location: {
+    pathname: string,
+  },
+}
+
+const NotFoundPage = ({ location: { pathname } }: Props) => (
   <Layout
     title="Page Not Found"
     description="This page no longer exists, but the content probably exists elsewhere on this site."
+    pathname={pathname}
   >
     <Container>
       <Header>

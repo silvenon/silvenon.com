@@ -18,6 +18,9 @@ const Divider = styled.div`
 `
 
 type Props = {
+  location: {
+    pathname: string,
+  },
   pageContext: {
     category: $Keys<typeof CATEGORY>,
     categoryPath: string,
@@ -47,6 +50,7 @@ type Props = {
 }
 
 const Blog = ({
+  location: { pathname },
   pageContext: {
     category,
     categoryPath,
@@ -62,6 +66,7 @@ const Blog = ({
   <Layout
     title={category != null ? `Blog (${CATEGORY[category].name})` : 'Blog'}
     description="Posts about frontend development, love and other topics"
+    pathname={pathname}
   >
     <Header>
       <WithLogo>

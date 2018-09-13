@@ -41,9 +41,13 @@ const ButtonLabel = styled.span`
 `
 
 type Props = {
+  location: {
+    pathname: string,
+  },
   data: {
     site: {
       siteMetadata: {
+        siteUrl: string,
         name: string,
         avatar: {
           id: string,
@@ -75,6 +79,7 @@ type Props = {
 }
 
 const Home = ({
+  location: { pathname },
   data: {
     site: {
       siteMetadata: { name, avatar, biography },
@@ -85,6 +90,7 @@ const Home = ({
   <Layout
     title={name}
     description={biography.short}
+    pathname={pathname}
     image={{ ...avatar, alt: 'avatar' }}
   >
     <Header>
@@ -161,6 +167,7 @@ export const query = graphql`
   query HomeQuery {
     site {
       siteMetadata {
+        siteUrl
         name
         avatar {
           id

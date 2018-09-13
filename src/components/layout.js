@@ -17,6 +17,7 @@ import '../styles/base'
 type Props = {
   title: string,
   description: string,
+  pathname: string,
   lang: string,
   image: ?{
     id: string,
@@ -35,6 +36,7 @@ type Props = {
 const Layout = ({
   title,
   description,
+  pathname,
   lang,
   image,
   article,
@@ -45,6 +47,7 @@ const Layout = ({
       query LayoutQuery {
         site {
           siteMetadata {
+            siteUrl
             name
           }
         }
@@ -52,11 +55,14 @@ const Layout = ({
     `}
     render={({
       site: {
-        siteMetadata: { name },
+        siteMetadata: { siteUrl, name },
       },
     }: {
       site: {
-        siteMetadata: { name: string },
+        siteMetadata: {
+          siteUrl: string,
+          name: string,
+        },
       },
     }) => {
       const metaImage =
@@ -106,7 +112,10 @@ const Layout = ({
 
               {/* Open Graph data */}
               <meta property="og:title" content={title} />
-              <meta property="og:url" content="http://www.example.com/" />
+              <meta
+                property="og:url"
+                content={pathname === '/' ? siteUrl : `${siteUrl}${pathname}`}
+              />
               {article != null
                 ? [
                     <meta key="og:type" property="og:type" content="article" />,

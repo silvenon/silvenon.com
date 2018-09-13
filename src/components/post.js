@@ -58,11 +58,13 @@ type ReadNext = {
 
 type Props = {
   children: React.Node,
+  location: {
+    pathname: string,
+  },
   pageContext: {
     node: {
       fields: {
         date: string,
-        path: string,
         slug: string,
       },
       exports: {
@@ -99,9 +101,10 @@ class Post extends React.Component<Props, State> {
   render() {
     const {
       children,
+      location: { pathname },
       pageContext: {
         node: {
-          fields: { date, path, slug },
+          fields: { date, slug },
           exports: {
             meta: { title, lang, lastModified },
           },
@@ -146,6 +149,7 @@ class Post extends React.Component<Props, State> {
           <Layout
             title={title}
             description={excerpt}
+            pathname={pathname}
             lang={lang}
             article={{
               publishedTime: date,
@@ -174,7 +178,7 @@ class Post extends React.Component<Props, State> {
               {children}
               <TwitterShareContainer>
                 <TwitterShare
-                  url={`${siteUrl}${path}`}
+                  url={`${siteUrl}${pathname}`}
                   options={{ text: title, via: 'silvenon', size: 'large' }}
                 />
               </TwitterShareContainer>
@@ -195,7 +199,7 @@ class Post extends React.Component<Props, State> {
               <DiscussionEmbed
                 shortname="silvenon"
                 config={{
-                  url: `${siteUrl}${path}`,
+                  url: `${siteUrl}${pathname}`,
                   identifier: slug,
                   title,
                 }}
