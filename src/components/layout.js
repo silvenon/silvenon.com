@@ -12,9 +12,6 @@ import cl from '../utils/cloudinary'
 import * as LOCALE from '../constants/locales'
 import theme from '../styles/theme'
 import '../styles/fonts'
-import '../styles/reboot.css'
-import '../styles/minireset.css'
-import 'prism-themes/themes/prism-atom-dark.css'
 import '../styles/base'
 
 type Props = {
