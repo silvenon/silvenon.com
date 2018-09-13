@@ -130,7 +130,11 @@ const Layout = ({
                     />
                   ))}
                 </>
-              ) : null}
+              ) : (
+                <>
+                  <meta property="og:type" content="website" />
+                </>
+              )}
               {metaImage != null ? (
                 <>
                   <meta property="og:image" content={metaImage.url} />
