@@ -104,10 +104,7 @@ const Layout = ({
 
               {/* Open Graph data */}
               <meta property="og:title" content={title} />
-              <meta
-                property="og:url"
-                content={pathname === '/' ? siteUrl : `${siteUrl}${pathname}`}
-              />
+              <meta property="og:url" content={`${siteUrl}${pathname}`} />
               {article != null ? (
                 <>
                   <meta property="og:type" content="article" />
