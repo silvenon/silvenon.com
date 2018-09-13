@@ -113,61 +113,61 @@ const Layout = ({
               {/* Open Graph data */}
               <meta property="og:title" content={title} />
               <meta property="og:url" content={`${siteUrl}${pathname}`} />
-              {article != null
-                ? [
-                    <meta key="og:type" property="og:type" content="article" />,
-                    <meta
-                      key="article:published_time"
-                      property="article:published_time"
-                      content={article.publishedTime}
-                    />,
-                    article.modifiedTime != null ? (
-                      <meta
-                        key="article:modified_time"
-                        property="article:modified_time"
-                        content={article.modifiedTime}
-                      />
-                    ) : null,
-                    <meta
-                      key="article:author"
-                      property="article:author"
-                      content={article.author}
-                    />,
-                    article.tags.map(tag => (
-                      <meta
-                        key={`article:tag ${tag}`}
-                        property="article:tag"
-                        content={tag}
-                      />
-                    )),
-                  ]
-                : null}
-              {metaImage != null ? (
+              {article != null ? (
                 [
+                  <meta key="og:type" property="og:type" content="article" />,
                   <meta
-                    key="og:image"
-                    property="og:image"
-                    content={metaImage.url}
+                    key="article:published_time"
+                    property="article:published_time"
+                    content={article.publishedTime}
                   />,
+                  article.modifiedTime != null ? (
+                    <meta
+                      key="article:modified_time"
+                      property="article:modified_time"
+                      content={article.modifiedTime}
+                    />
+                  ) : null,
                   <meta
-                    key="og:image:width"
-                    property="og:image:width"
-                    content={metaImage.width}
+                    key="article:author"
+                    property="article:author"
+                    content={article.author}
                   />,
-                  <meta
-                    key="og:image:height"
-                    property="og:image:height"
-                    content={metaImage.height}
-                  />,
-                  <meta
-                    key="og:image:alt"
-                    property="og:image:alt"
-                    content={metaImage.alt}
-                  />,
+                  article.tags.map(tag => (
+                    <meta
+                      key={`article:tag ${tag}`}
+                      property="article:tag"
+                      content={tag}
+                    />
+                  )),
                 ]
               ) : (
                 <meta property="og:type" content="website" />
               )}
+              {metaImage != null
+                ? [
+                    <meta
+                      key="og:image"
+                      property="og:image"
+                      content={metaImage.url}
+                    />,
+                    <meta
+                      key="og:image:width"
+                      property="og:image:width"
+                      content={metaImage.width}
+                    />,
+                    <meta
+                      key="og:image:height"
+                      property="og:image:height"
+                      content={metaImage.height}
+                    />,
+                    <meta
+                      key="og:image:alt"
+                      property="og:image:alt"
+                      content={metaImage.alt}
+                    />,
+                  ]
+                : null}
               <meta property="og:description" content={description} />
               <meta property="og:locale" content={LOCALE[lang]} />
               <meta property="og:site_name" content={name} />
