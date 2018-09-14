@@ -12,10 +12,8 @@ export const Figure = styled.figure``
 const MediaContainer = styled.div`
   display: flex;
   justify-content: center;
-  margin: 0 -${props => props.theme.sitePadding} 1rem;
-  ${props => props.theme.mqMin.sm} {
-    margin-bottom: 1.5rem;
-  }
+  margin: 0 -${props => props.theme.sitePadding};
+  ${props => props.theme.marginBottom};
   ${props => props.theme.mqMin.lg} {
     margin-left: 0;
     margin-right: 0;
@@ -116,23 +114,18 @@ Iframe.defaultProps = {
 
 export const Caption = styled.figcaption`
   max-width: 36rem;
-  margin: -0.5rem auto 1rem;
+  margin: -0.5rem auto;
+  ${props => props.theme.marginBottom};
   text-align: center;
   font-size: 0.75rem;
   font-style: italic;
   color: ${lighten(0.5, '#000')};
-  ${props => props.theme.mqMin.sm} {
-    margin-bottom: 1.5rem;
-  }
 `
 
 const Center = styled.div`
   display: flex;
   justify-content: center;
-  margin-bottom: 1rem;
-  ${props => props.theme.mqMin.sm} {
-    margin-bottom: 1.5rem;
-  }
+  ${props => props.theme.marginBottom};
 `
 export const Tweet = (props: *) => (
   <Center>

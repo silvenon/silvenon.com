@@ -20,17 +20,20 @@ type MediaQueries = {
   [$Keys<typeof screenWidth>]: string,
 }
 
+const mqMin: MediaQueries = mapValues(
+  screenWidth,
+  (width: ScreenWidth) => `@media (min-width: ${width}px)`,
+)
+const mqMax: MediaQueries = mapValues(
+  screenWidth,
+  (width: ScreenWidth) => `@media (max-width: ${width - 1}px)`,
+)
+
 const theme = {
   dprs: [1, 2],
   screenWidth,
-  mqMin: (mapValues(
-    screenWidth,
-    (width: ScreenWidth) => `@media (min-width: ${width}px)`,
-  ): MediaQueries),
-  mqMax: (mapValues(
-    screenWidth,
-    (width: ScreenWidth) => `@media (max-width: ${width - 1}px)`,
-  ): MediaQueries),
+  mqMin,
+  mqMax,
   sitePadding: '1rem',
   containerMaxWidth: screenWidth.lg,
   borderRadius: '0.5rem',
@@ -47,6 +50,12 @@ const theme = {
     blueDark: '#33495e',
     grey: '#999',
   },
+  marginBottom: css`
+    margin-bottom: 1rem;
+    ${mqMin.sm} {
+      margin-bottom: 1.5rem;
+    }
+  `,
   // natural box shadow
   // https://codepen.io/Aryck/pen/DExLs
   boxShadow: css`

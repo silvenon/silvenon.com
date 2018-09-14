@@ -51,10 +51,7 @@ export const H3 = styled(TypesetH3)`
 `
 
 export const P = styled.p`
-  margin-bottom: 1rem;
-  ${props => props.theme.mqMin.sm} {
-    margin-bottom: 1.5rem;
-  }
+  ${props => props.theme.marginBottom};
 `
 
 export const A = styled.a`
@@ -121,16 +118,19 @@ export const Pre = styled.pre`
   overflow: visible;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  margin: 0 -${props => props.theme.sitePadding} 1rem !important;
   padding: 1rem;
   background: ${transparentize(0.95, '#000')};
-  border-radius: 0 !important;
-  ${props => props.theme.mqMin.sm} {
-    margin-bottom: 1.5rem;
-  }
-  ${props => props.theme.mqMin.lg} {
-    margin: 0 0 1rem !important;
-    border-radius: ${props => props.theme.borderRadius} !important;
+  /* matching specificity from Prism theme */
+  &,
+  &[class*='language-'] {
+    margin: 0 -${props => props.theme.sitePadding};
+    ${props => props.theme.marginBottom};
+    border-radius: 0;
+    ${props => props.theme.mqMin.lg} {
+      margin-left: 0;
+      margin-right: 0;
+      border-radius: ${props => props.theme.borderRadius};
+    }
   }
 `
 
