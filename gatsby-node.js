@@ -160,10 +160,7 @@ exports.createPages = async ({ graphql, actions }) => {
           ({ node }) => node.exports.meta.category === category,
         ),
         perPage,
-        context: {
-          category,
-          categoryPath: `/category/${categorySlug[category]}`,
-        },
+        context: { category },
       })
     })
 

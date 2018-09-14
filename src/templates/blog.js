@@ -23,7 +23,6 @@ type Props = {
   },
   pageContext: {
     category: $Keys<typeof CATEGORY>,
-    categoryPath: string,
     pageNumber: *,
     numberOfPages: *,
     previousPagePath: *,
@@ -53,7 +52,6 @@ const Blog = ({
   location: { pathname },
   pageContext: {
     category,
-    categoryPath,
     pageNumber,
     numberOfPages,
     previousPagePath,
@@ -74,7 +72,7 @@ const Blog = ({
       </WithLogo>
       <Filters
         basePath="/blog"
-        currentPath={categoryPath}
+        currentPath={category != null ? CATEGORY[category].path : null}
         items={['DEV', 'NON_DEV'].map(category => CATEGORY[category])}
         closePath="/blog"
       />
@@ -120,7 +118,7 @@ const Blog = ({
 
 Blog.defaultProps = {
   pageContext: {
-    categoryPath: null,
+    category: null,
   },
 }
 
