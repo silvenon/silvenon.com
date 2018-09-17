@@ -6,7 +6,7 @@ import typeset, { hangingDoubleQuotes } from './typeset'
 export const H1 = styled.h1`
   margin-bottom: 2rem;
   font-family: ${props => props.theme.fontFamily.alt};
-  font-size: 2rem;
+  font-size: 1.75rem;
   font-weight: 900;
   line-height: 1.15;
   color: #000;
@@ -99,7 +99,7 @@ export const Blockquote = styled(TypesetBlockquote)`
   font-weight: 300;
   color: ${lighten(0.5, '#000')};
   &.${hangingDoubleQuotes} {
-    text-indent: -0.5em;
+    text-indent: -0.35em;
   }
   ${props => props.theme.mqMin.sm} {
     padding-left: 1rem;
