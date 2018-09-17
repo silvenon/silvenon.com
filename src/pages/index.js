@@ -5,14 +5,12 @@ import styled from 'react-emotion'
 import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa'
 import Layout from '../components/layout'
 import Header from '../components/header'
-import WithLogo from '../components/with-logo'
 import Container from '../components/container'
 import AuthorBase from '../components/author'
 import { H1 as Title, H2, A } from '../components/body'
 import Link from '../components/link'
 import PostPreview from '../components/post-preview'
 import Button from '../components/button'
-import GitHubCorner from '../components/github-corner'
 import ButtonLinks from '../constants/social-links'
 
 const Author = styled(AuthorBase)`
@@ -94,9 +92,9 @@ const Home = ({
     image={{ ...avatar, alt: 'avatar' }}
   >
     <Header>
-      <WithLogo>
+      <Header.TopBar>
         <Title>Silvenon</Title>
-      </WithLogo>
+      </Header.TopBar>
     </Header>
     <Author inColor name={name} avatar={avatar} biography={biography.long} />
     <Container>
@@ -159,7 +157,6 @@ const Home = ({
         </li>
       </ButtonList>
     </Container>
-    <GitHubCorner />
   </Layout>
 )
 

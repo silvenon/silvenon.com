@@ -33,6 +33,15 @@ type Props = {
   children: React.Node,
 }
 
+type QueryData = {
+  site: {
+    siteMetadata: {
+      siteUrl: string,
+      name: string,
+    },
+  },
+}
+
 const Layout = ({
   title,
   description,
@@ -57,14 +66,7 @@ const Layout = ({
       site: {
         siteMetadata: { siteUrl, name },
       },
-    }: {
-      site: {
-        siteMetadata: {
-          siteUrl: string,
-          name: string,
-        },
-      },
-    }) => {
+    }: QueryData) => {
       const metaImage =
         image != null
           ? {

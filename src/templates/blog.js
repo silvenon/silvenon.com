@@ -6,7 +6,6 @@ import Layout from '../components/layout'
 import Spacer from '../components/spacer'
 import Container from '../components/container'
 import Header from '../components/header'
-import WithLogo from '../components/with-logo'
 import { H1 as Title } from '../components/body'
 import Filters from '../components/filters'
 import PostPreview from '../components/post-preview'
@@ -67,9 +66,9 @@ const Blog = ({
     pathname={pathname}
   >
     <Header>
-      <WithLogo>
+      <Header.TopBar>
         <Title>Blog</Title>
-      </WithLogo>
+      </Header.TopBar>
       <Filters
         basePath="/blog"
         currentPath={category != null ? CATEGORY[category].path : null}

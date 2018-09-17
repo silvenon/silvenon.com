@@ -8,7 +8,7 @@ import LinkBase from './link'
 const Link = styled(LinkBase)`
   display: flex;
   align-items: center;
-  padding: 0 1rem;
+  padding: 0.5rem 1rem;
   background: ${props => transparentize(0.85, props.theme.colors.blue)};
   border-radius: 1rem;
   font-family: ${props => props.theme.fontFamily.alt};

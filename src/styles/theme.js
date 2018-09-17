@@ -50,11 +50,29 @@ const theme = {
     blueDark: '#33495e',
     grey: '#999',
   },
+  zIndex: ['search'].reduce(
+    (map, key, index) => ({
+      ...map,
+      [key]: index + 1,
+    }),
+    {},
+  ),
   marginBottom: css`
     margin-bottom: 1rem;
     ${mqMin.sm} {
       margin-bottom: 1.5rem;
     }
+  `,
+  // https://www.w3.org/WAI/tutorials/forms/labels/#note-on-hiding-elements
+  visuallyHidden: css`
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
   `,
   // natural box shadow
   // https://codepen.io/Aryck/pen/DExLs

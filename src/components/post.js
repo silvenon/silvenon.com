@@ -11,7 +11,6 @@ import Layout from './layout'
 import Spacer from './spacer'
 import Container from './container'
 import Header from './header'
-import WithLogo from './with-logo'
 import { H1 } from './body'
 import Link from './link'
 import BackLink from './back-link'
@@ -159,9 +158,9 @@ class Post extends React.Component<Props, State> {
             }}
           >
             <Header>
-              <WithLogo>
+              <Header.TopBar>
                 <BackLink to="/blog">All posts</BackLink>
-              </WithLogo>
+              </Header.TopBar>
               <Title>{title}</Title>
               <Meta>
                 <MetaRow>
