@@ -1,7 +1,6 @@
 const path = require('path')
 const prism = require('@mapbox/rehype-prism')
 const smartypants = require('./utils/remark-smartypants')
-const codeLanguageFix = require('./utils/rehype-code-language-fix')
 
 module.exports = {
   siteMetadata: {
@@ -44,7 +43,7 @@ module.exports = {
           default: require.resolve('./src/components/layout.js'),
         },
         mdPlugins: [smartypants],
-        hastPlugins: [prism, codeLanguageFix],
+        hastPlugins: [prism],
       },
     },
     ...(process.env.NODE_ENV !== 'production'
