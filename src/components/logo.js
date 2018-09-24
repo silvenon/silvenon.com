@@ -6,8 +6,8 @@ import { Link } from 'gatsby'
 const LogoLink = styled(Link)`
   display: block;
   ${props => props.theme.logoSize`
-    width: ${({ size }) => size};
-    height: ${({ size }) => size};
+    width: ${size => size.width};
+    height: ${size => size.height};
   `};
   line-height: 0;
   border-radius: 0.5rem;

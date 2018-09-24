@@ -50,7 +50,7 @@ const theme = {
     blueDark: '#33495e',
     grey: '#999',
   },
-  zIndex: ['search'].reduce(
+  zIndex: ['header'].reduce(
     (map, key, index) => ({
       ...map,
       [key]: index + 1,
@@ -76,8 +76,14 @@ const theme = {
   `,
   // natural box shadow
   // https://codepen.io/Aryck/pen/DExLs
-  boxShadow: css`
-    box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.16), 0 3px 3px 0 rgba(0, 0, 0, 0.23);
+  card1: css`
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  `,
+  card2: css`
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  `,
+  card3: css`
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
   `,
   fontSmoothing: css`
     -webkit-font-smoothing: antialiased;
@@ -85,19 +91,25 @@ const theme = {
   `,
   logoSize: (
     strings: string[],
-    ...fns: Array<({ size: string }) => string>
-  ) => (props: { theme: typeof theme }) => css`
-    ${strings.reduce(
-      (acc, string, i) =>
-        `${acc}${string}${fns[i] != null ? fns[i]({ size: '2rem' }) : ''}`,
-      '',
-    )};
-    ${props.theme.mqMin.sm} {
-      ${strings.reduce(
-        (acc, string, i) =>
-          `${acc}${string}${fns[i] != null ? fns[i]({ size: '3rem' }) : ''}`,
-        '',
-      )};
+    ...interpolations: Array<?(
+      | string
+      | number
+      | (({ width: string, height: string }) => string)
+    )>
+  ) => css`
+    ${strings.reduce((acc, string, i) => {
+      const interpolation = interpolations[i]
+      return typeof interpolation === 'function'
+        ? `${acc}${string}${interpolation({ width: '2rem', height: '2rem' })}`
+        : `${acc}${string}${interpolation || ''}`
+    }, '')};
+    ${mqMin.sm} {
+      ${strings.reduce((acc, string, i) => {
+        const interpolation = interpolations[i]
+        return typeof interpolation === 'function'
+          ? `${acc}${string}${interpolation({ width: '3rem', height: '3rem' })}`
+          : `${acc}${string}${interpolation || ''}`
+      }, '')};
     }
   `,
 }

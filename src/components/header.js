@@ -6,12 +6,15 @@ import Logo from './logo'
 import Search from './search'
 
 const HeaderContainer = styled.header`
+  position: relative;
+  z-index: ${props => props.theme.zIndex.header};
   text-align: center;
 `
 
 const TopBarContainer = styled.div`
   display: grid;
-  grid-template-columns: 1fr 4fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
+  grid-column-gap: 1rem;
   align-items: center;
   height: 3rem;
   margin: 1rem 0;
@@ -28,10 +31,7 @@ const Middle = styled.div`
     margin: 0 !important;
   }
 `
-const Right = styled.div`
-  display: flex;
-  justify-content: flex-end;
-`
+const Right = styled.div``
 
 type Props = {
   children: React.Node,
@@ -44,15 +44,17 @@ const Header = ({ children }: Props) => (
 )
 
 Header.TopBar = ({ children }: { children: React.Element<any> }) => (
-  <TopBarContainer>
-    <Left>
-      <Logo />
-    </Left>
-    <Middle>{children}</Middle>
-    <Right>
-      <Search />
-    </Right>
-  </TopBarContainer>
+  <Search>
+    {({ searchBar, styleHide }) => (
+      <TopBarContainer>
+        <Left>
+          <Logo />
+        </Left>
+        <Middle className={styleHide}>{children}</Middle>
+        <Right>{searchBar}</Right>
+      </TopBarContainer>
+    )}
+  </Search>
 )
 
 export default Header
