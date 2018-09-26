@@ -13,6 +13,7 @@ const Link = styled(LinkBase)`
   border-radius: 1rem;
   font-family: ${props => props.theme.fontFamily.alt};
   text-decoration: none;
+  white-space: nowrap;
   &:hover,
   &:focus {
     text-decoration: none;
