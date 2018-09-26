@@ -105,7 +105,7 @@ export const Iframe = ({ rounded, ...props }: IframeProps) => (
     height={props.height}
   >
     {/* eslint-disable-next-line jsx-a11y/iframe-has-title */}
-    <iframe {...props} />
+    <iframe {...props} style={{ height: '100%' }} />
   </Media>
 )
 Iframe.defaultProps = {
