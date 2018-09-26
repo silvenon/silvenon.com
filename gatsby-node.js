@@ -5,7 +5,6 @@
  */
 
 const path = require('path')
-const { format } = require('date-fns')
 const { range } = require('lodash')
 
 exports.onCreateBabelConfig = ({ actions }) => {
@@ -41,10 +40,23 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
   const { createNodeField } = actions
   if (node.internal.type === 'Mdx') {
     const fileNode = getNode(node.parent)
-    const hasDate = fileNode.name.indexOf('_') !== -1
-    const fileNameParts = fileNode.name.split('_')
-    const date = hasDate ? fileNameParts[0] : format(Date.now(), 'YYYY-MM-DD')
-    const slug = fileNameParts[hasDate ? 1 : 0]
+    let date
+    let slug
+    switch (fileNode.sourceInstanceName) {
+      case 'posts':
+        ;[date, slug] = fileNode.name.split('_')
+        break
+      case 'drafts':
+        date = fileNode.modifiedTime
+        slug = fileNode.name
+        break
+      default:
+        throw new Error(
+          `Source name "${
+            fileNode.sourceInstanceName
+          }" for MDX files not recognized`,
+        )
+    }
     if (/^\d+-\d+-\d+/.test(slug)) {
       throw new Error(`Invalid file name format: "${fileNode.name}"`)
     }
