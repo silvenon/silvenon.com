@@ -19,7 +19,7 @@ const TypesetH2 = typeset('h2')
 export const H2 = styled(TypesetH2)`
   margin-bottom: 1rem;
   font-family: ${props => props.theme.fontFamily.alt};
-  font-size: 1.35rem;
+  font-size: 1.5rem;
   font-weight: 700;
   line-height: 1.25;
   color: #000;
@@ -34,19 +34,18 @@ export const H2 = styled(TypesetH2)`
 const TypesetH3 = typeset('h3')
 export const H3 = styled(TypesetH3)`
   margin-bottom: 0.75rem;
-  font-family: ${props => props.theme.fontFamily.alt};
+  font-family: ${props => props.theme.fontFamily.base};
   font-size: 1.25rem;
-  font-weight: 500;
-  line-height: 1.15;
-  text-transform: lowercase;
-  font-variant: small-caps;
+  font-weight: bold;
+  line-height: 1.25;
+  font-style: italic;
   letter-spacing: 1px;
   color: #000;
   &.${hangingDoubleQuotes} {
     text-indent: -0.5em;
   }
   ${props => props.theme.mqMin.sm} {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
   }
 `
 
