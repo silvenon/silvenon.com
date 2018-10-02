@@ -45,9 +45,12 @@ const TwitterShareContainer = styled.div`
 `
 
 const NextPost = styled.p`
-  margin-bottom: 2rem;
   font-family: ${props => props.theme.fontFamily.alt};
   color: ${lighten(0.5, '#000')};
+`
+
+const Disqus = styled.div`
+  margin-top: 2rem;
 `
 
 type ReadNext = {
@@ -65,6 +68,7 @@ type Props = {
       fields: {
         date: string,
         slug: string,
+        isDraft: boolean,
       },
       exports: {
         meta: {
@@ -103,7 +107,7 @@ class Post extends React.Component<Props, State> {
       location: { pathname },
       pageContext: {
         node: {
-          fields: { date, slug },
+          fields: { date, slug, isDraft },
           exports: {
             meta: { title, lang, lastModified },
           },
@@ -195,14 +199,18 @@ class Post extends React.Component<Props, State> {
                   <Link to={readNext.path}>{readNext.title}</Link>
                 </NextPost>
               ) : null}
-              <DiscussionEmbed
-                shortname="silvenon"
-                config={{
-                  url: `${siteUrl}${pathname}`,
-                  identifier: slug,
-                  title,
-                }}
-              />
+              {isDraft ? null : (
+                <Disqus>
+                  <DiscussionEmbed
+                    shortname="silvenon"
+                    config={{
+                      url: `${siteUrl}${pathname}`,
+                      identifier: slug,
+                      title,
+                    }}
+                  />
+                </Disqus>
+              )}
             </Container>
             <Spacer />
           </Layout>

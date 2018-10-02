@@ -40,23 +40,10 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
   const { createNodeField } = actions
   if (node.internal.type === 'Mdx') {
     const fileNode = getNode(node.parent)
-    let date
-    let slug
-    switch (fileNode.sourceInstanceName) {
-      case 'posts':
-        ;[date, slug] = fileNode.name.split('_')
-        break
-      case 'drafts':
-        date = fileNode.modifiedTime
-        slug = fileNode.name
-        break
-      default:
-        throw new Error(
-          `Source name "${
-            fileNode.sourceInstanceName
-          }" for MDX files not recognized`,
-        )
-    }
+    const isDraft = fileNode.sourceInstanceName === 'drafts'
+    const [date, slug] = isDraft
+      ? [fileNode.modifiedTime, fileNode.name]
+      : fileNode.name.split('_')
     if (/^\d+-\d+-\d+/.test(slug)) {
       throw new Error(`Invalid file name format: "${fileNode.name}"`)
     }
@@ -74,6 +61,11 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
       node,
       name: 'path',
       value: `/blog/${slug}`,
+    })
+    createNodeField({
+      node,
+      name: 'isDraft',
+      value: isDraft,
     })
   }
 }
@@ -126,6 +118,7 @@ exports.createPages = async ({ graphql, actions }) => {
               date
               path
               slug
+              isDraft
             }
             exports {
               meta {
