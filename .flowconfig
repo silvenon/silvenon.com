@@ -1,7 +1,6 @@
 [ignore]
 
 [include]
-<PROJECT_ROOT>/src/.*
 
 [libs]
 
