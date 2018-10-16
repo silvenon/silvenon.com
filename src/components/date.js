@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react'
-import styled from 'react-emotion'
+import styled from 'astroturf'
 import { format } from 'date-fns'
 
 type Props = {

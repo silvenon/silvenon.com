@@ -1,12 +1,10 @@
 // @flow
-import styled from 'react-emotion'
-import { darken } from 'polished'
-import theme from '../styles/theme'
+import styled from 'astroturf'
 
 const Meta = styled.div`
-  font-family: ${theme.fontFamily.base};
+  font-family: var(--base-font-family);
   font-style: italic;
-  color: ${darken(0.1, theme.colors.grey)};
+  color: color(var(--grey) shade(10%));
 `
 
 export default Meta

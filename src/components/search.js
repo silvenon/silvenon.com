@@ -1,33 +1,34 @@
 // @flow
 import * as React from 'react'
 import { StaticQuery, graphql, navigate } from 'gatsby'
-import styled, { cx, css } from 'react-emotion'
-import { lighten } from 'polished'
+import styled, { css } from 'astroturf'
+import classNames from 'classnames'
 import Downshift from 'downshift'
 import { FaSearch } from 'react-icons/fa'
 import fuzzaldrin from 'fuzzaldrin-plus'
 import Link from './link'
-import theme from '../styles/theme'
 
 const fieldHeight = '2rem'
-const fieldBgColor = lighten(0.95, '#000')
+const fieldBgColor = 'color(#fff shade(5%))'
 const menuBgColor = '#fff'
 const transitionDuration = 300
 
-const hideBase = css`
-  transition: opacity ${transitionDuration}ms;
-`
-const hide = css`
-  ${theme.mqMax.md} {
-    opacity: 0;
+const hideStyles = css`
+  .base {
+    transition: opacity ${transitionDuration}ms;
+  }
+  .hidden {
+    @media (--max-small) {
+      opacity: 0;
+    }
   }
 `
 
 const Container = styled.div`
   position: relative;
   height: ${fieldHeight};
-  font-family: ${props => props.theme.fontFamily.alt};
-  ${props => props.theme.mqMin.md} {
+  font-family: var(--alt-font-family);
+  @media (--min-medium) {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -38,18 +39,15 @@ const FieldContainer = styled.div`
   position: relative;
   width: ${fieldHeight};
   transition: width ${transitionDuration}ms;
-  ${props => props.theme.mqMax.md} {
+  @media (--max-small) {
     position: absolute;
     top: 50%;
     right: 0;
     transform: translateY(-50%);
   }
   &.focused {
-    ${props => props.theme.logoSize`
-      width: calc(100vw - ${props.theme.sitePadding} * 2 - ${size =>
-      size.width} - 1rem);
-    `};
-    ${props => props.theme.mqMin.md} {
+    width: calc(100vw - var(--site-padding) * 2 - var(--logo-width) - 1rem);
+    @media (--min-medium) {
       width: 100%;
     }
   }
@@ -63,7 +61,7 @@ const Label = styled.label`
   height: ${fieldHeight};
   margin: 0;
   padding: 0 0.5rem;
-  color: ${lighten(0.5, '#000')};
+  color: color(#000 tint(50%));
   cursor: pointer;
   line-height: ${fieldHeight};
 `
@@ -74,7 +72,7 @@ const SearchIcon = styled(FaSearch)`
   transform: translate(-50%, -50%);
 `
 const LabelText = styled.span`
-  ${props => props.theme.visuallyHidden};
+  composes: visuallyHidden from '../styles/common.module.css';
 `
 
 const Input = styled.input`
@@ -92,7 +90,7 @@ const Input = styled.input`
   }
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 3px #fff, 0 0 0 5px ${props => props.theme.colors.blue};
+    box-shadow: 0 0 0 3px #fff, 0 0 0 5px var(--blue);
     &::placeholder {
       opacity: 1;
     }
@@ -103,22 +101,21 @@ const Menu = styled.ul`
   position: absolute;
   white-space: nowrap;
   top: 100%;
-  right: calc(50vw - ${props => props.theme.sitePadding});
+  right: calc(50vw - var(--site-padding));
   transform: translateX(50%);
-  width: calc(100vw - ${props => props.theme.sitePadding} * 2);
+  width: calc(100vw - var(--site-padding) * 2);
   margin-top: 0.75rem;
   text-align: left;
   font-size: 0.85rem;
-  ${props => props.theme.mqMin.sm} {
-    ${props => props.theme.logoSize`
-      right: calc((100vw - ${props.theme.sitePadding} * 2 - ${size =>
-      size.width} - 1rem) / 2);
-    `};
+  @media (--min-small) {
+    right: calc(
+      (100vw - var(--site-padding) * 2 - var(--logo-width) - 1rem) / 2
+    );
     width: auto;
     min-width: 24em;
-    max-width: calc(100vw - ${props => props.theme.sitePadding} * 2);
+    max-width: calc(100vw - var(--site-padding) * 2);
   }
-  ${props => props.theme.mqMin.md} {
+  @media (--min-medium) {
     right: 0;
     transform: none;
   }
@@ -126,8 +123,8 @@ const Menu = styled.ul`
     padding: 0.5rem 0;
     background: ${menuBgColor};
     border-top: 1px solid ${fieldBgColor};
-    border-radius: ${props => props.theme.borderRadius};
-    ${props => props.theme.card2};
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow-card2);
   }
 `
 
@@ -135,7 +132,7 @@ const Item = styled.li``
 const ItemLink = styled(Link)`
   display: block;
   padding: 0.25rem 0.75rem;
-  color: ${lighten(0.3, '#000')};
+  color: color(#000 tint(30%));
   text-decoration: none;
   white-space: nowrap;
   overflow: hidden;
@@ -241,7 +238,7 @@ class Search extends React.Component<Props, State> {
                   <Container
                     {...getRootProps({ refKey: 'innerRef', ...props })}
                   >
-                    <FieldContainer className={cx({ focused: isFocused })}>
+                    <FieldContainer focused={isFocused}>
                       <Label {...getLabelProps()}>
                         <SearchIcon />
                         <LabelText>Find posts</LabelText>
@@ -261,7 +258,7 @@ class Search extends React.Component<Props, State> {
                     <Menu
                       {...getMenuProps({
                         refKey: 'innerRef',
-                        className: cx({ open: isOpen && posts.length > 0 }),
+                        open: isOpen && posts.length > 0,
                       })}
                     >
                       {posts.map(({ title, path }, index) => (
@@ -274,9 +271,7 @@ class Search extends React.Component<Props, State> {
                         >
                           <ItemLink
                             to={path}
-                            className={cx({
-                              highlighted: index === highlightedIndex,
-                            })}
+                            highlighted={index === highlightedIndex}
                             dangerouslySetInnerHTML={{
                               __html: fuzzaldrin.wrap(title, inputValue),
                             }}
@@ -299,7 +294,9 @@ class Search extends React.Component<Props, State> {
     return typeof children === 'function'
       ? children({
           searchBar,
-          styleHide: cx(hideBase, { [hide]: isFocused }),
+          styleHide: classNames(hideStyles.base, {
+            [hideStyles.hidden]: isFocused,
+          }),
         })
       : searchBar
   }

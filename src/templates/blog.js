@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react'
-import styled from 'react-emotion'
+import styled from 'astroturf'
 import { graphql } from 'gatsby'
 import Layout from '../components/layout'
 import Spacer from '../components/spacer'

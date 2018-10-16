@@ -1,7 +1,7 @@
 // @flow
 import * as React from 'react'
 import { render, cleanup } from 'react-testing-library'
-import typeset, { hangingSingleQuotes, hangingDoubleQuotes } from './typeset'
+import typeset from './typeset'
 
 afterEach(cleanup)
 
@@ -51,7 +51,7 @@ describe('typeset() HOC', () => {
       const { container } = render(<Component>‘Single quotes’</Component>)
       // $FlowFixMe
       const className: string = container.firstChild.getAttribute('class')
-      expect(className).toContain(hangingSingleQuotes)
+      expect(className).toMatchInlineSnapshot(`".hanging-single-quotes"`)
     })
 
     test('double quotes', () => {
@@ -59,7 +59,7 @@ describe('typeset() HOC', () => {
       const { container } = render(<Component>“Double quotes”</Component>)
       // $FlowFixMe
       const className: string = container.firstChild.getAttribute('class')
-      expect(className).toContain(hangingDoubleQuotes)
+      expect(className).toMatchInlineSnapshot(`".hanging-double-quotes"`)
     })
   })
 })

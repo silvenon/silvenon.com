@@ -1,6 +1,6 @@
-// https://next.gatsbyjs.org/docs/babel/#how-to-use-a-custom-babelrc-file
+// https://www.gatsbyjs.org/docs/babel/#how-to-use-a-custom-babelrc-file
 
-module.exports = () => ({
+module.exports = {
   presets: [
     [
       '@babel/preset-env',
@@ -9,10 +9,6 @@ module.exports = () => ({
         modules: process.env.NODE_ENV === 'test' ? 'commonjs' : false,
         useBuiltIns: 'usage',
         shippedProposals: true,
-        targets:
-          process.env.NODE_ENV === 'test'
-            ? 'current node'
-            : '> 0.25%, not dead',
       },
     ],
     [
@@ -40,5 +36,13 @@ module.exports = () => ({
         regenerator: true,
       },
     ],
+    process.env.NODE_ENV === 'test'
+      ? [
+          'astroturf/plugin',
+          {
+            writeFile: false,
+          },
+        ]
+      : null,
   ],
-})
+}

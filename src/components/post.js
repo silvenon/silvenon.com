@@ -1,8 +1,7 @@
 // @flow
 import * as React from 'react'
 import { graphql, StaticQuery } from 'gatsby'
-import styled from 'react-emotion'
-import { lighten } from 'polished'
+import styled from 'astroturf'
 import { shuffle } from 'lodash'
 import { Share as TwitterShare } from 'react-twitter-widgets'
 import { FaUser, FaCalendarAlt } from 'react-icons/fa'
@@ -45,8 +44,8 @@ const TwitterShareContainer = styled.div`
 `
 
 const NextPost = styled.p`
-  font-family: ${props => props.theme.fontFamily.alt};
-  color: ${lighten(0.5, '#000')};
+  font-family: var(--alt-font-family);
+  color: color(#000 tint(50%));
 `
 
 const Disqus = styled.div`

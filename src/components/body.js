@@ -1,16 +1,15 @@
 // @flow
-import styled from 'react-emotion'
-import { lighten, transparentize } from 'polished'
-import typeset, { hangingDoubleQuotes } from './typeset'
+import styled from 'astroturf'
+import typeset from './typeset'
 
 export const H1 = styled.h1`
   margin-bottom: 2rem;
-  font-family: ${props => props.theme.fontFamily.alt};
+  font-family: var(--alt-font-family);
   font-size: 1.75rem;
   font-weight: 900;
   line-height: 1.15;
   color: #000;
-  ${props => props.theme.mqMin.sm} {
+  @media (--min-small) {
     font-size: 3rem;
   }
 `
@@ -18,15 +17,15 @@ export const H1 = styled.h1`
 const TypesetH2 = typeset('h2')
 export const H2 = styled(TypesetH2)`
   margin-bottom: 1rem;
-  font-family: ${props => props.theme.fontFamily.alt};
+  font-family: var(--alt-font-family);
   font-size: 1.5rem;
   font-weight: 700;
   line-height: 1.25;
   color: #000;
-  &.${hangingDoubleQuotes} {
+  &:--hanging-double-quotes {
     text-indent: -0.525em;
   }
-  ${props => props.theme.mqMin.sm} {
+  @media (--min-small) {
     font-size: 2.25rem;
   }
 `
@@ -34,27 +33,27 @@ export const H2 = styled(TypesetH2)`
 const TypesetH3 = typeset('h3')
 export const H3 = styled(TypesetH3)`
   margin-bottom: 0.75rem;
-  font-family: ${props => props.theme.fontFamily.base};
+  font-family: var(--base-font-family);
   font-size: 1.25rem;
   font-weight: bold;
   line-height: 1.25;
   font-style: italic;
   letter-spacing: 1px;
   color: #000;
-  &.${hangingDoubleQuotes} {
+  &:--hanging-double-quotes {
     text-indent: -0.5em;
   }
-  ${props => props.theme.mqMin.sm} {
+  @media (--min-small) {
     font-size: 1.5rem;
   }
 `
 
 export const P = styled.p`
-  ${props => props.theme.marginBottom};
+  margin-bottom: var(--margin-bottom);
 `
 
 export const A = styled.a`
-  color: ${props => props.theme.colors.blue};
+  color: var(--blue);
   text-decoration: underline;
   &:hover,
   &:focus {
@@ -67,7 +66,7 @@ export const HR = styled.hr`
   max-width: 25rem;
   margin: 2rem auto;
   border: 0;
-  border-bottom: 1px solid ${transparentize(0.75, '#000')};
+  border-bottom: 1px solid color(#000 a(25%));
 `
 
 export const OL = styled.ol`
@@ -82,9 +81,9 @@ export const UL = styled.ul`
 `
 
 export const LI = styled.li`
-  ${P} {
+  p {
     margin-bottom: 0.5rem;
-    ${props => props.theme.mqMin.sm} {
+    @media (--min-small) {
       margin-bottom: 0.75rem;
     }
   }
@@ -96,11 +95,11 @@ export const Blockquote = styled(TypesetBlockquote)`
   font-style: italic;
   font-size: 1.15rem;
   font-weight: 300;
-  color: ${lighten(0.5, '#000')};
-  &.${hangingDoubleQuotes} {
+  color: color(#000 tint(50%));
+  &:--hanging-double-quotes {
     text-indent: -0.35em;
   }
-  ${props => props.theme.mqMin.sm} {
+  @media (--min-small) {
     padding-left: 1rem;
     font-size: 1.25rem;
   }
@@ -109,8 +108,8 @@ export const Blockquote = styled(TypesetBlockquote)`
 export const Code = styled.code`
   padding: 0.25rem 0.35rem;
   white-space: nowrap;
-  background: ${transparentize(0.95, '#000')};
-  border-radius: ${props => props.theme.borderRadius};
+  background: color(#000 a(5%));
+  border-radius: var(--border-radius);
 `
 
 export const Pre = styled.pre`
@@ -118,17 +117,17 @@ export const Pre = styled.pre`
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   padding: 1rem;
-  background: ${transparentize(0.95, '#000')};
+  background: color(#000 a(5%));
   /* matching specificity from Prism theme */
   &,
   &[class*='language-'] {
-    margin: 0 -${props => props.theme.sitePadding};
-    ${props => props.theme.marginBottom};
+    margin: 0 calc(var(--site-padding) * -1);
+    margin-bottom: var(--margin-bottom);
     border-radius: 0;
-    ${props => props.theme.mqMin.lg} {
+    @media (--min-large) {
       margin-left: 0;
       margin-right: 0;
-      border-radius: ${props => props.theme.borderRadius};
+      border-radius: var(--border-radius);
     }
   }
 `

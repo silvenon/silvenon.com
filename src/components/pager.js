@@ -1,46 +1,62 @@
 // @flow
 import * as React from 'react'
-import styled, { css } from 'react-emotion'
-import { darken } from 'polished'
+import styled, { css } from 'astroturf'
 import Link from './link'
 
 const Container = styled.div`
   display: flex;
   justify-content: center;
-  font-family: ${props => props.theme.fontFamily.alt};
+  font-family: var(--alt-font-family);
 `
 
 const Inner = styled.div`
   display: flex;
   align-items: center;
-  background: ${darken(0.1, '#fff')};
-  border-radius: ${props => props.theme.borderRadius};
+  background: color(#fff shade(10%));
+  border-radius: var(--border-radius);
 `
 
-const navItem = css`
-  display: block;
-  width: 5rem;
-  text-align: center;
-  padding: 0.5rem 0;
+// eslint-disable-next-line no-unused-vars
+const styles = css`
+  .base {
+    display: block;
+    width: 5rem;
+    text-align: center;
+    padding: 0.5rem 0;
+  }
 `
-const NavDisabled = styled.div`
-  ${navItem};
-  color: ${darken(0.35, '#fff')};
-`
+
 const NavLink = styled(Link)`
-  ${navItem};
-  ${({ side, theme }) => css`
-    border-top-${side}-radius: ${theme.borderRadius};
-    border-bottom-${side}-radius: ${theme.borderRadius};
-    border-${side}: 0.25rem solid transparent;
+  composes: base from './pager-styles.module.css';
+  &.left {
+    border-top-left-radius: var(--border-radius);
+    border-bottom-left-radius: var(--border-radius);
+    border-left: 0.25rem solid transparent;
     transition: border-color 0.2s;
     &:hover,
     &:focus {
-      color: ${theme.colors.blueDark};
-      border-${side}-color: ${theme.colors.blue};
+      color: var(--blue-dark);
+      border-left-color: var(--blue);
     }
-  `};
+  }
+  &.right {
+    border-top-right-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
+    border-right: 0.25rem solid transparent;
+    transition: border-color 0.2s;
+    &:hover,
+    &:focus {
+      color: var(--blue-dark);
+      border-right-color: var(--blue);
+    }
+  }
 `
+
+const NavDisabled = styled.div`
+  composes: base from './pager-styles.module.css';
+  color: color(#fff shade(35%));
+`
+
 const Status = styled.div`
   margin: 0 1rem;
 `
@@ -65,7 +81,7 @@ const Pager = ({
   <Container>
     <Inner>
       {prevPath != null ? (
-        <NavLink to={prevPath} side="left">
+        <NavLink to={prevPath} left>
           {prevLabel}
         </NavLink>
       ) : (
@@ -75,7 +91,7 @@ const Pager = ({
         Page {page + 1} of {total}
       </Status>
       {nextPath != null ? (
-        <NavLink to={nextPath} side="right">
+        <NavLink to={nextPath} right>
           {nextLabel}
         </NavLink>
       ) : (

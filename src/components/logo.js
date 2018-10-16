@@ -1,14 +1,12 @@
 // @flow
 import * as React from 'react'
-import styled from 'react-emotion'
+import styled from 'astroturf'
 import { Link } from 'gatsby'
 
 const LogoLink = styled(Link)`
   display: block;
-  ${props => props.theme.logoSize`
-    width: ${size => size.width};
-    height: ${size => size.height};
-  `};
+  width: var(--logo-width);
+  height: var(--logo-height);
   line-height: 0;
   border-radius: 0.5rem;
   overflow: hidden;

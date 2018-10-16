@@ -1,7 +1,6 @@
 // @flow
 import * as React from 'react'
-import styled from 'react-emotion'
-import { transparentize } from 'polished'
+import styled from 'astroturf'
 import { FaArrowLeft } from 'react-icons/fa'
 import LinkBase from './link'
 
@@ -9,15 +8,15 @@ const Link = styled(LinkBase)`
   display: flex;
   align-items: center;
   padding: 0.5rem 1rem;
-  background: ${props => transparentize(0.85, props.theme.colors.blue)};
+  background: color(var(--blue) a(15%));
   border-radius: 1rem;
-  font-family: ${props => props.theme.fontFamily.alt};
+  font-family: var(--alt-font-family);
   text-decoration: none;
   white-space: nowrap;
   &:hover,
   &:focus {
     text-decoration: none;
-    background: ${props => transparentize(0.75, props.theme.colors.blue)};
+    background: color(var(--blue) a(25%));
   }
 `
 

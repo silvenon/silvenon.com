@@ -1,12 +1,12 @@
 // @flow
 import * as React from 'react'
-import styled from 'react-emotion'
+import styled from 'astroturf'
 
 // https://css-tricks.com/aspect-ratio-boxes
 
 const Container = styled.div`
   max-width: 100vw;
-  ${props => props.theme.mqMin.lg} {
+  @media (--min-large) {
     max-width: 100%;
   }
 `
@@ -32,9 +32,11 @@ type Props = {
 }
 
 const IntrinsicRatio = ({ width, height, children }: Props) => (
-  <Container css={{ width }}>
+  <Container style={{ width }}>
     <Inner
-      css={{ paddingTop: `${(parseFloat(height) / parseFloat(width)) * 100}%` }}
+      style={{
+        paddingTop: `${(parseFloat(height) / parseFloat(width)) * 100}%`,
+      }}
     >
       {children}
     </Inner>

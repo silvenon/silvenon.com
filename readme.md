@@ -8,9 +8,9 @@ The most important technology powering this site is [Gatsby][gatsby]. I love cod
 
 ## CSS-in-JS
 
-I'm very passionate about CSS, but I was bad at controlling the cascade and errors were hard to detect. Methodologies like BEM were too much typing, so when I first saw CSS-in-JS, especially the ones that utilize tagged template literals like styled-components and emotion, something just clicked and styling became fun again.
+I'm very passionate about CSS, but I was bad at controlling the cascade and errors were hard to detect. Methodologies like BEM were too much typing, so when I first saw CSS-in-JS, especially the ones that utilize tagged template literals like styled-components, emotion and astroturf, something just clicked and styling became fun again.
 
-On this site I'm using [emotion], which is very similar to styled-components.
+On this site I'm using [astroturf], which has a an API similar to styled-components and emotion, but it's based on CSS Modules and is able to extract CSS into a file.
 
 ## MDX
 
@@ -55,9 +55,13 @@ Integrating [Jest][jest] with Gatsby wasn't very fun because Gatsby currently do
 
 But it works! I only have a few tests so far, but it's so useful to be able to test components so easily. I'm using the wonderful [react-testing-library].
 
-## ESLint, Prettier and Flow
+## Prettier & ESLint
 
-ESLint is amazing for warning you about potential antipatterns and common pitfalls, and Prettier is excellent for enforcing code style with its opinionated nature and simple config. I combined these two using an [eslint-plugin-prettier], then I undid ESLint rules which collide with Prettier using [eslint-config-prettier]. This is the key of integrating these two tools, because ESLint's autofix will now use Prettier in the background. This means that you don't need a text editor plugin for Prettier at all, simply set plugin for ESLint to autofix on file save!
+ESLint is amazing for warning you about potential antipatterns and common pitfalls, and Prettier is excellent for enforcing code style with its opinionated nature and simple config. Code that's not prettified is turned into ESLint errors using [eslint-plugin-prettier], then I undid ESLint rules which collide with Prettier using [eslint-config-prettier]. For the final step I set up my ESLint VS Code extension to autofix on save.
+
+Integrating these three tools is pretty complex, isn't it? 😄
+
+## Flow
 
 I also integrated Flow, which is probably the biggest overkill in this project, but I want to become good at it and this is a good playground.
 
@@ -77,7 +81,7 @@ And, finally, [Netlify][netlify] made all of the deployment and DNS stuff a bree
 
 [silvenon.com]: https://silvenon.com
 [gatsby]: https://next.gatsbyjs.org/
-[emotion]: https://emotion.sh/
+[astroturf]: https://github.com/4Catalyzer/astroturf
 [mdx]: https://mdxjs.com/
 [cloudinary]: overengineered
 [@mapbox/rehype-prism]: https://github.com/mapbox/rehype-prism/blob/master/index.js

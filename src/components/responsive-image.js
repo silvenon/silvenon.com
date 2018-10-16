@@ -1,8 +1,10 @@
 // @flow
 import * as React from 'react'
 import { range } from 'lodash'
+import { MAX_WIDTH } from './container'
+import { DPRS } from './media'
 import cl from '../utils/cloudinary'
-import theme from '../styles/theme'
+import { customProperties } from '../styles/imports'
 
 const STEP_WIDTH = 200
 
@@ -64,7 +66,9 @@ const ResponsiveImage = ({
         sizes: [
           `(min-width: ${maxDisplayWidth}px) ${
             maxDisplayWidth === containerMaxWidth
-              ? `calc(${maxDisplayWidth}px - ${theme.sitePadding} * 2)`
+              ? `calc(${maxDisplayWidth}px - ${
+                  customProperties['--site-padding']
+                } * 2)`
               : `${maxDisplayWidth}px`
           }`,
           '100vw',
@@ -78,8 +82,8 @@ const ResponsiveImage = ({
 }
 
 ResponsiveImage.defaultProps = {
-  containerMaxWidth: theme.containerMaxWidth,
-  dprs: theme.dprs,
+  containerMaxWidth: MAX_WIDTH,
+  dprs: DPRS,
   onlyDpr: false,
 }
 

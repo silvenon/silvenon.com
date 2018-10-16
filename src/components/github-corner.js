@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react'
-import theme from '../styles/theme'
+import { customProperties } from '../styles/imports'
 import '../styles/github-corner.css'
 
 const GitHubCorner = () => (
@@ -16,7 +16,7 @@ const GitHubCorner = () => (
         height={80}
         viewBox="0 0 250 250"
         style={{
-          fill: theme.colors.blue,
+          fill: customProperties['--blue'],
           color: '#fff',
           position: 'absolute',
           top: 0,

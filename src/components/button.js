@@ -1,14 +1,15 @@
 // @flow
-import styled from 'react-emotion'
+import * as React from 'react'
+import styled from 'astroturf'
 import { darken } from 'polished'
 
-const Button = styled.button`
+const ButtonBase = styled.button`
   display: inline-flex;
   align-items: center;
   padding: 0.5rem 1rem;
-  background: ${props => props.color};
+  background: var(--color);
   border-radius: 0.5rem;
-  font-family: ${props => props.theme.fontFamily.alt};
+  font-family: var(--alt-font-family);
   font-size: 1.25rem;
   font-weight: 600;
   letter-spacing: 1px;
@@ -16,7 +17,7 @@ const Button = styled.button`
   text-decoration: none;
   &:hover,
   &:focus {
-    background: ${props => darken(0.15, props.color)};
+    background: var(--color-hover);
     color: #fff;
     text-decoration: none;
   }
@@ -25,5 +26,25 @@ const Button = styled.button`
     margin-left: 0.5rem;
   }
 `
+
+type Props = {
+  color: string,
+  style: ?{},
+}
+
+const Button = ({ color, style, ...props }: Props) => (
+  <ButtonBase
+    style={{
+      '--color': color,
+      '--color-hover': darken(0.15, color),
+      ...style,
+    }}
+    {...props}
+  />
+)
+
+Button.defaultProps = {
+  style: null,
+}
 
 export default Button

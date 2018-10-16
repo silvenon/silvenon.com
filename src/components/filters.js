@@ -1,24 +1,23 @@
 // @flow
 import * as React from 'react'
 import { Link } from 'gatsby'
-import styled, { css } from 'react-emotion'
+import styled, { css } from 'astroturf'
 import { FaTimes } from 'react-icons/fa'
-import { lighten, darken } from 'polished'
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-bottom: 1rem;
-  font-family: ${props => props.theme.fontFamily.alt};
-  ${props => props.theme.mqMin.sm} {
+  font-family: var(--alt-font-family);
+  @media (--min-small) {
     margin-bottom: 2rem;
   }
 `
 
 const FilterState = styled.p`
   margin-top: 0.5rem;
-  color: ${props => props.theme.colors.grey};
+  color: var(--grey);
 `
 
 const FilterList = styled.div`
@@ -31,39 +30,42 @@ const FilterList = styled.div`
 
 const iconSize = 24
 
-const commonFilterStyles = props => css`
-  display: flex;
-  align-items: center;
-  padding: 0.5rem 1rem;
-  border-radius: ${props.theme.borderRadius};
+// eslint-disable-next-line no-unused-vars
+const styles = css`
+  .base {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+  }
 `
 
 const Filter = styled(Link)`
-  ${commonFilterStyles};
-  background: ${props => lighten(0.3, props.theme.colors.red)};
-  color: ${props => props.theme.colors.red};
+  composes: base from './filters-styles.module.css';
+  background: color(var(--red) tint(90%));
+  color: var(--red);
   &:hover,
   &:focus {
-    color: ${props => darken(0.25, props.theme.colors.red)};
+    color: color(var(--red) shade(85%));
     text-decoration: none;
   }
 `
 
 const FilterActive = styled.div`
-  ${commonFilterStyles};
-  background: ${props => props.theme.colors.red};
+  composes: base from './filters-styles.module.css';
+  background: var(--red);
   color: #fff;
 `
 
 const FilterShortName = styled.div`
   display: block;
-  ${props => props.theme.mqMin.sm} {
+  @media (--min-small) {
     display: none;
   }
 `
 const FilterName = styled.div`
   display: none;
-  ${props => props.theme.mqMin.sm} {
+  @media (--min-small) {
     display: block;
   }
 `
@@ -74,7 +76,8 @@ const IconContainer = styled.div`
   line-height: 0;
 `
 
-const Close = styled(IconContainer.withComponent(Link))`
+const IconContainerLink = (props: *) => <IconContainer as={Link} {...props} />
+const Close = styled(IconContainerLink)`
   color: inherit;
   &:hover,
   &:focus {

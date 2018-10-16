@@ -1,11 +1,11 @@
 // @flow
 import * as React from 'react'
-import styled, { css } from 'react-emotion'
+import styled, { css } from 'astroturf'
 import { darken } from 'polished'
 import Container from './container'
 import { H2, A } from './body'
-import theme from '../styles/theme'
 import cl from '../utils/cloudinary'
+import { customMedia } from '../styles/imports'
 
 type Props = {
   inColor: boolean,
@@ -25,20 +25,20 @@ type Props = {
   },
 }
 
-const breakpoint = 'md'
+const breakpoint = '--min-medium'
 
 const Wrapper = styled.section`
   margin: 2rem 0 3rem;
-  background: ${darken(0.1, '#fff')};
-  font-family: ${props => props.theme.fontFamily.base};
+  background: color(#fff shade(10%));
+  font-family: var(--base-font-family);
   text-align: center;
-  ${props => props.theme.mqMin[breakpoint]} {
+  @media (${breakpoint}) {
     text-align: left;
   }
 `
 
 const FlexContainer = styled(Container)`
-  ${props => props.theme.mqMin[breakpoint]} {
+  @media (${breakpoint}) {
     display: flex;
     align-items: stretch;
   }
@@ -49,7 +49,7 @@ const Avatar = styled.img`
   width: 128px;
   height: 128px;
   border-radius: 0 0 0.5rem 0.5rem;
-  ${props => props.theme.mqMin[breakpoint]} {
+  @media (${breakpoint}) {
     width: 256px;
     height: 256px;
     margin: 0 1rem 0 0;
@@ -57,28 +57,28 @@ const Avatar = styled.img`
   }
 `
 
+const contentStyles = css`
+  .with-links {
+    padding-top: 1rem;
+    padding-bottom: 2.5rem;
+  }
+  .without-links {
+    padding-top: 1rem;
+    padding-bottom: 1.5rem;
+    @media (${breakpoint}) {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+  }
+`
 const Content = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   position: relative;
-  ${props =>
-    props.hasLinks
-      ? css`
-          padding-top: 1rem;
-          padding-bottom: 2.5rem;
-        `
-      : css`
-          padding-top: 1rem;
-          padding-bottom: 1.5rem;
-          ${props.theme.mqMin[breakpoint]} {
-            padding-top: 0;
-            padding-bottom: 0;
-          }
-        `};
 `
 
-const Name = H2.withComponent('h1')
+const Name = (props: *) => <H2 as="h1" {...props} />
 const Biography = styled.div`
   font-style: italic;
 `
@@ -90,7 +90,7 @@ const SocialContainer = styled.div`
   left: 50%;
   bottom: 0;
   transform: translate(-50%, 50%);
-  ${props => props.theme.mqMin[breakpoint]} {
+  @media (${breakpoint}) {
     left: auto;
     transform: translate(0%, 50%);
   }
@@ -101,12 +101,12 @@ const SocialLink = styled(A)`
   padding: 0.5rem;
   border: 0.25rem solid #fff;
   border-radius: 50%;
-  background: ${props => props.color};
+  background: var(--color);
   color: #fff;
   line-height: 0;
   &:hover,
   &:focus {
-    background: ${props => darken(0.15, props.color)};
+    background: var(--color-hover);
     color: #fff;
     text-decoration: none;
   }
@@ -124,7 +124,7 @@ const Author = ({
     <FlexContainer>
       <Avatar
         alt="avatar"
-        sizes={`(min-width: ${theme.screenWidth[breakpoint]}px) 256px, 128px`}
+        sizes={`${customMedia[breakpoint]} 256px, 128px`}
         srcSet={[128, 256, 512]
           .map(
             size =>
@@ -141,7 +141,13 @@ const Author = ({
           effect: inColor ? null : 'grayscale',
         })}
       />
-      <Content hasLinks={Object.keys(links).length > 0}>
+      <Content
+        className={
+          Object.keys(links).length > 0
+            ? contentStyles.withLinks
+            : contentStyles.withoutLinks
+        }
+      >
         <Name>{name}</Name>
         <Biography>
           <p>{biography}</p>
@@ -150,7 +156,15 @@ const Author = ({
           {Object.keys(links).map(key => {
             const { name, url, color, Icon } = links[key]
             return (
-              <SocialLink key={key} title={name} href={url} color={color}>
+              <SocialLink
+                key={key}
+                title={name}
+                href={url}
+                style={{
+                  '--color': color,
+                  '--color-hover': darken(0.15, color),
+                }}
+              >
                 <Icon size={28} />
               </SocialLink>
             )

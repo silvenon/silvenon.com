@@ -1,28 +1,30 @@
 // @flow
 import * as React from 'react'
-import styled from 'react-emotion'
-import { lighten } from 'polished'
+import styled from 'astroturf'
 import { Tweet as ReactTweet } from 'react-twitter-widgets'
 import IntrinsicRatio from './intrinsic-ratio'
 import ResponsiveImage from './responsive-image'
-import theme from '../styles/theme'
+
+export const DPRS = [1, 2]
 
 export const Figure = styled.figure``
 
 const MediaContainer = styled.div`
   display: flex;
   justify-content: center;
-  margin: 0 -${props => props.theme.sitePadding};
-  ${props => props.theme.marginBottom};
-  ${props => props.theme.mqMin.lg} {
+  margin: 0 calc(var(--site-padding) * -1);
+  margin-bottom: var(--margin-bottom);
+  @media (--min-large) {
     margin-left: 0;
     margin-right: 0;
   }
 `
 const MediaWrapper = styled.div`
-  ${props => props.theme.mqMin.lg} {
+  @media (--min-large) {
     overflow: hidden;
-    border-radius: ${props => (props.rounded ? props.theme.borderRadius : 0)};
+    &.rounded {
+      border-radius: var(--border-radius);
+    }
   }
 
   img,
@@ -43,9 +45,9 @@ const Media = ({ fullWidth, rounded, width, height, children }: MediaProps) => (
     {fullWidth ? (
       <MediaWrapper
         rounded={rounded}
-        css={{
+        style={{
           width: '100%',
-          height,
+          height: parseFloat(height),
         }}
       >
         {children}
@@ -89,7 +91,7 @@ export const Image = ({
 }
 Image.defaultProps = {
   rounded: true,
-  dprs: theme.dprs,
+  dprs: DPRS,
 }
 
 type IframeProps = {
@@ -115,17 +117,17 @@ Iframe.defaultProps = {
 export const Caption = styled.figcaption`
   max-width: 36rem;
   margin: -0.5rem auto;
-  ${props => props.theme.marginBottom};
+  margin-bottom: var(--margin-bottom);
   text-align: center;
   font-size: 0.75rem;
   font-style: italic;
-  color: ${lighten(0.5, '#000')};
+  color: color(#000 tint(50%));
 `
 
 const Center = styled.div`
   display: flex;
   justify-content: center;
-  ${props => props.theme.marginBottom};
+  margin-bottom: var(--margin-bottom);
 `
 export const Tweet = (props: *) => (
   <Center>

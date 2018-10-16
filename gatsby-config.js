@@ -20,20 +20,11 @@ module.exports = {
     },
   },
   plugins: [
-    'gatsby-plugin-react-helmet',
+    'gatsby-plugin-flow',
     'gatsby-plugin-lodash',
-    {
-      resolve: 'gatsby-plugin-emotion',
-      options:
-        process.env.NODE_ENV === 'production'
-          ? {
-              hoist: true,
-            }
-          : {
-              sourceMap: true,
-              autoLabel: true,
-            },
-    },
+    'gatsby-plugin-postcss',
+    'gatsby-plugin-astroturf',
+    'gatsby-plugin-react-helmet',
     {
       resolve: 'gatsby-mdx',
       options: {
@@ -53,7 +44,7 @@ module.exports = {
       resolve: 'gatsby-source-filesystem',
       options: {
         name,
-        path: path.resolve(`./src/${name}`),
+        path: path.resolve(__dirname, `./src/${name}`),
       },
     })),
     {

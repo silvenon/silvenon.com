@@ -1,10 +1,8 @@
 // @flow
 import * as React from 'react'
-import { cx } from 'react-emotion'
+import classNames from 'classnames'
 import getDisplayName from '../utils/get-display-name'
-
-export const hangingSingleQuotes = 'hanging-single-quotes'
-export const hangingDoubleQuotes = 'hanging-double-quotes'
+import { customSelectors } from '../styles/imports'
 
 const typeset = (WrappedComponent: string): React.ComponentType<*> => {
   type Props = {
@@ -13,9 +11,7 @@ const typeset = (WrappedComponent: string): React.ComponentType<*> => {
   }
 
   type State = {
-    classNames: {
-      [string]: boolean,
-    },
+    classNames: { [className: string]: boolean },
   }
 
   class Typeset extends React.Component<Props, State> {
@@ -44,6 +40,12 @@ const typeset = (WrappedComponent: string): React.ComponentType<*> => {
     componentDidMount() {
       if (this.container != null) {
         const { textContent } = this.container
+        const hangingSingleQuotes = customSelectors[
+          ':--hanging-single-quotes'
+        ].slice(0)
+        const hangingDoubleQuotes = customSelectors[
+          ':--hanging-double-quotes'
+        ].slice(0)
         this.setState({
           classNames: {
             [hangingSingleQuotes]: textContent.startsWith('‘'),
@@ -55,12 +57,11 @@ const typeset = (WrappedComponent: string): React.ComponentType<*> => {
 
     render() {
       const { forwardedRef, className, ...props } = this.props
-      const { classNames } = this.state
 
       return (
         <WrappedComponent
           ref={this.refContainer}
-          className={cx(className, classNames)}
+          className={classNames(className, this.state.classNames)}
           {...props}
         />
       )

@@ -1,7 +1,7 @@
 // @flow
 import * as React from 'react'
 import { graphql } from 'gatsby'
-import styled from 'react-emotion'
+import styled from 'astroturf'
 import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa'
 import Layout from '../components/layout'
 import Header from '../components/header'
@@ -30,10 +30,10 @@ const ButtonList = styled.ul`
     margin-left: 1rem;
   }
 `
-const ButtonLink = Button.withComponent(A)
+const ButtonLink = (props: *) => <Button as={A} {...props} />
 const ButtonLabel = styled.span`
   display: none;
-  ${props => props.theme.mqMin.sm} {
+  @media (--min-small) {
     display: inline;
   }
 `

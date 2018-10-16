@@ -1,6 +1,7 @@
 // @flow
 import * as React from 'react'
-import styled, { css } from 'react-emotion'
+import styled, { css } from 'astroturf'
+import classNames from 'classnames'
 import MetaBase from './meta'
 import DateBase from './date'
 import { P, H2, H3 } from './body'
@@ -10,29 +11,43 @@ const Container = styled.article``
 
 const Meta = styled(MetaBase)`
   margin-bottom: 0.5rem;
-  ${props => props.theme.mqMin.sm} {
+  @media (--min-small) {
     margin-bottom: 1rem;
   }
 `
 
 const Date = styled(DateBase)`
-  color: ${props => props.theme.colors.grey};
+  color: var(--grey);
 `
 
-const titleStyle = css`
-  margin-bottom: 0.5rem;
+const styles = css`
+  .title {
+    margin-bottom: 0.5rem;
+  }
 `
-const Title = styled(H2.withComponent('h1'))`
-  ${titleStyle};
-`
-const SmallTitle = styled(H3.withComponent('h1'))`
-  ${titleStyle};
-`
+const Title = (props: { className: ?string }) => (
+  <H2
+    {...props}
+    as="h1"
+    className={classNames(styles.title, props.className)}
+  />
+)
+const SmallTitle = (props: { className: ?string }) => (
+  <H3
+    {...props}
+    as="h1"
+    className={classNames(styles.title, props.className)}
+  />
+)
+// eslint-disable-next-line no-multi-assign
+Title.defaultProps = SmallTitle.defaultProps = {
+  className: null,
+}
 
 const More = styled.div`
   margin-top: -0.5rem;
-  font-family: ${props => props.theme.fontFamily.alt};
-  ${props => props.theme.mqMin.sm} {
+  font-family: var(--alt-font-family);
+  @media (--min-small) {
     margin-top: -1rem;
   }
 `

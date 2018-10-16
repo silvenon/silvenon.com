@@ -5,4 +5,7 @@ module.exports = {
     ...defaults.testPathIgnorePatterns,
     '<rootDir>/.cache/',
   ],
+  moduleNameMapper: {
+    '\\.css$': '<rootDir>/__mocks__/style-mock.js',
+  },
 }

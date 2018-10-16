@@ -1,5 +1,8 @@
 // @flow
-import { Link } from 'gatsby'
+import * as React from 'react'
+import { Link as GatsbyLink } from 'gatsby'
 import { A } from './body'
 
-export default A.withComponent(Link)
+const Link = (props: *) => <A as={GatsbyLink} {...props} />
+
+export default Link

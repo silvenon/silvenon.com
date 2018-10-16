@@ -1,9 +1,9 @@
 // @flow
-import styled from 'react-emotion'
+import styled from 'astroturf'
 
 const Spacer = styled.div`
   height: 1rem;
-  ${props => props.theme.mqMin.sm} {
+  @media (--min-small) {
     height: 2rem;
   }
 `

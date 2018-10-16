@@ -1,7 +1,7 @@
 // @flow
 // this component is based on the official Unsplash embed code
 import * as React from 'react'
-import styled from 'react-emotion'
+import styled from 'astroturf'
 import { CameraIcon } from './icons'
 
 const Button = styled.a`
@@ -9,7 +9,7 @@ const Button = styled.a`
   color: #fff;
   text-decoration: none;
   padding: 4px 6px;
-  font-family: ${props => props.theme.fontFamily.alt};
+  font-family: var(--alt-font-family);
   font-style: normal;
   font-weight: bold;
   line-height: 1.2;
@@ -17,7 +17,7 @@ const Button = styled.a`
   border-radius: 3px;
   &:hover,
   &:focus {
-    box-shadow: 0 0 0 2px #fff, 0 0 0 4px ${props => props.theme.colors.blue};
+    box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--blue);
     color: #fff;
   }
 `

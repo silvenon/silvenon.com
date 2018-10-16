@@ -1,13 +1,13 @@
 // @flow
 import * as React from 'react'
-import styled from 'react-emotion'
+import styled from 'astroturf'
 import Container from './container'
 import Logo from './logo'
 import Search from './search'
 
 const HeaderContainer = styled.header`
   position: relative;
-  z-index: ${props => props.theme.zIndex.header};
+  z-index: var(--z-header);
   text-align: center;
 `
 
@@ -18,7 +18,7 @@ const TopBarContainer = styled.div`
   align-items: center;
   height: 3rem;
   margin: 1rem 0;
-  ${props => props.theme.mqMin.sm} {
+  @media (--min-small) {
     height: 3.5rem;
   }
 `

@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react'
-import styled from 'react-emotion'
+import styled from 'astroturf'
 import Layout from '../components/layout'
 import Container from '../components/container'
 import Header from '../components/header'
@@ -16,7 +16,7 @@ const IconContainer = styled.div`
 const Icon = styled(NotificationIcon)`
   width: 96px;
   height: 96px;
-  fill: ${props => props.theme.colors.red};
+  fill: var(--red);
 `
 
 type Props = {
