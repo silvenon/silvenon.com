@@ -1,42 +1,16 @@
 // @flow
 import * as React from 'react'
 import { graphql } from 'gatsby'
-import styled from 'astroturf'
-import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa'
 import Layout from '../components/layout'
 import Header from '../components/header'
 import Container from '../components/container'
-import AuthorBase from '../components/author'
-import { H1 as Title, H2, A } from '../components/body'
+import Author from '../components/author'
+import { H1 as Title, H2 } from '../components/body'
 import Link from '../components/link'
 import PostPreview from '../components/post-preview'
 import Button from '../components/button'
-import ButtonLinks from '../constants/social-links'
-
-const Author = styled(AuthorBase)`
-  margin: 1.5rem 0;
-`
-
-const Blog = styled.div`
-  margin-bottom: 2rem;
-`
-
-const ButtonList = styled.ul`
-  display: flex;
-  align-items: center;
-  margin-bottom: 2rem;
-
-  & > * + * {
-    margin-left: 1rem;
-  }
-`
-const ButtonLink = (props: *) => <Button as={A} {...props} />
-const ButtonLabel = styled.span`
-  display: none;
-  @media (--min-small) {
-    display: inline;
-  }
-`
+import socialLinks from '../constants/social-links'
+import styles from './index.module.css'
 
 type Props = {
   location: {
@@ -96,12 +70,18 @@ const Home = ({
         <Title>Silvenon</Title>
       </Header.TopBar>
     </Header>
-    <Author inColor name={name} avatar={avatar} biography={biography.long} />
+    <Author
+      inColor
+      name={name}
+      avatar={avatar}
+      biography={biography.long}
+      className={styles.author}
+    />
     <Container>
       <H2>
         Latest from <Link to="/blog">my blog</Link>:
       </H2>
-      <Blog>
+      <div className={styles.blog}>
         {edges.map(
           ({
             node: {
@@ -122,40 +102,19 @@ const Home = ({
             />
           ),
         )}
-      </Blog>
+      </div>
       <H2>More about me:</H2>
-      <ButtonList>
-        <li>
-          <ButtonLink
-            href={ButtonLinks.gitHub.url}
-            title={ButtonLinks.gitHub.name}
-            color={ButtonLinks.gitHub.color}
-          >
-            <FaGithub />
-            <ButtonLabel>GitHub</ButtonLabel>
-          </ButtonLink>
-        </li>
-        <li>
-          <ButtonLink
-            href={ButtonLinks.linkedIn.url}
-            title={ButtonLinks.linkedIn.name}
-            color={ButtonLinks.linkedIn.color}
-          >
-            <FaLinkedin />
-            <ButtonLabel>LinkedIn</ButtonLabel>
-          </ButtonLink>
-        </li>
-        <li>
-          <ButtonLink
-            href={ButtonLinks.twitter.url}
-            title={ButtonLinks.twitter.name}
-            color={ButtonLinks.twitter.color}
-          >
-            <FaTwitter />
-            <ButtonLabel>Twitter</ButtonLabel>
-          </ButtonLink>
-        </li>
-      </ButtonList>
+      <ul className={styles.buttonList}>
+        {/* $FlowFixMe */}
+        {Object.values(socialLinks).map(({ name, url, color, Icon }) => (
+          <li key={name}>
+            <Button as="a" href={url} title={name} color={color}>
+              <Icon />
+              <span className={styles.buttonLabel}>{name}</span>
+            </Button>
+          </li>
+        ))}
+      </ul>
     </Container>
   </Layout>
 )

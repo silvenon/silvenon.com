@@ -31,7 +31,6 @@
     "@mdx-js/loader": "^0.15.3",
     "@mdx-js/mdx": "^0.15.5",
     "@mdx-js/tag": "^0.15.0",
-    "astroturf": "^0.7.1",
     "babel-plugin-date-fns": "^0.2.0",
     "babel-plugin-lodash": "^3.3.4",
     "babel-plugin-macros": "^2.4.2",
@@ -46,7 +45,6 @@
     "fuzzaldrin-plus": "^0.6.0",
     "gatsby": "^2.0.7",
     "gatsby-mdx": "^0.1.4",
-    "gatsby-plugin-astroturf": "^0.1.0",
     "gatsby-plugin-flow": "^1.0.2",
     "gatsby-plugin-lodash": "^3.0.1",
     "gatsby-plugin-netlify": "^2.0.0",
@@ -96,7 +94,6 @@
     "jest-config": "^23.5.0",
     "lint-staged": "^7.3.0",
     "prettier": "^1.14.3",
-    "react-test-renderer": "^16.5.2",
     "react-testing-library": "^5.1.0"
   }
 }

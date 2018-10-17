@@ -23,7 +23,6 @@ module.exports = {
     'gatsby-plugin-flow',
     'gatsby-plugin-lodash',
     'gatsby-plugin-postcss',
-    'gatsby-plugin-astroturf',
     'gatsby-plugin-react-helmet',
     {
       resolve: 'gatsby-mdx',

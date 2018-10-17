@@ -36,13 +36,5 @@ module.exports = {
         regenerator: true,
       },
     ],
-    process.env.NODE_ENV === 'test'
-      ? [
-          'astroturf/plugin',
-          {
-            writeFile: false,
-          },
-        ]
-      : null,
   ],
 }

@@ -1,10 +1,7 @@
 // @flow
-import styled from 'astroturf'
+import withClassNames from './with-class-names'
+import styles from './meta.module.css'
 
-const Meta = styled.div`
-  font-family: var(--base-font-family);
-  font-style: italic;
-  color: color(var(--grey) shade(10%));
-`
+const Meta = withClassNames(styles.meta)('div')
 
 export default Meta

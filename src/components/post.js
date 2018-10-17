@@ -1,7 +1,6 @@
 // @flow
 import * as React from 'react'
 import { graphql, StaticQuery } from 'gatsby'
-import styled from 'astroturf'
 import { shuffle } from 'lodash'
 import { Share as TwitterShare } from 'react-twitter-widgets'
 import { FaUser, FaCalendarAlt } from 'react-icons/fa'
@@ -13,44 +12,11 @@ import Header from './header'
 import { H1 } from './body'
 import Link from './link'
 import BackLink from './back-link'
-import BaseMeta from './meta'
+import Meta from './meta'
 import Date from './date'
 import Author from './author'
 import socialLinks from '../constants/social-links'
-
-const Meta = styled(BaseMeta)`
-  margin: 0.5rem 1rem 1rem;
-  display: inline-block;
-`
-
-const MetaRow = styled.div`
-  display: flex;
-  align-items: center;
-  & > * + * {
-    margin-left: 0.5rem;
-  }
-`
-
-const Title = styled(H1)`
-  margin-bottom: 0;
-  color: #000;
-`
-
-const TwitterShareContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 2rem;
-  line-height: 0;
-`
-
-const NextPost = styled.p`
-  font-family: var(--alt-font-family);
-  color: color(#000 tint(50%));
-`
-
-const Disqus = styled.div`
-  margin-top: 2rem;
-`
+import styles from './post.module.css'
 
 type ReadNext = {
   title: string,
@@ -164,26 +130,26 @@ class Post extends React.Component<Props, State> {
               <Header.TopBar>
                 <BackLink to="/blog">All posts</BackLink>
               </Header.TopBar>
-              <Title>{title}</Title>
-              <Meta>
-                <MetaRow>
+              <H1 className={styles.title}>{title}</H1>
+              <Meta className={styles.meta}>
+                <div className={styles.metaRow}>
                   <FaUser />
                   <div>{name}</div>
-                </MetaRow>
-                <MetaRow>
+                </div>
+                <div className={styles.metaRow}>
                   <FaCalendarAlt />
                   <Date dateTime={date} />
-                </MetaRow>
+                </div>
               </Meta>
             </Header>
             <Container>
               {children}
-              <TwitterShareContainer>
+              <div className={styles.twitterShare}>
                 <TwitterShare
                   url={`${siteUrl}${pathname}`}
                   options={{ text: title, via: 'silvenon', size: 'large' }}
                 />
-              </TwitterShareContainer>
+              </div>
             </Container>
             <Author
               name={name}
@@ -193,13 +159,13 @@ class Post extends React.Component<Props, State> {
             />
             <Container>
               {readNext != null ? (
-                <NextPost>
+                <p className={styles.nextPost}>
                   <span>Read next → </span>
                   <Link to={readNext.path}>{readNext.title}</Link>
-                </NextPost>
+                </p>
               ) : null}
               {isDraft ? null : (
-                <Disqus>
+                <div className={styles.disqus}>
                   <DiscussionEmbed
                     shortname="silvenon"
                     config={{
@@ -208,7 +174,7 @@ class Post extends React.Component<Props, State> {
                       title,
                     }}
                   />
-                </Disqus>
+                </div>
               )}
             </Container>
             <Spacer />

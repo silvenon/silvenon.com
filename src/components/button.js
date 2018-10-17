@@ -1,39 +1,20 @@
 // @flow
 import * as React from 'react'
-import styled from 'astroturf'
 import { darken } from 'polished'
+import withClassNames from './with-class-names'
+import styles from './button.module.css'
 
-const ButtonBase = styled.button`
-  display: inline-flex;
-  align-items: center;
-  padding: 0.5rem 1rem;
-  background: var(--color);
-  border-radius: 0.5rem;
-  font-family: var(--alt-font-family);
-  font-size: 1.25rem;
-  font-weight: 600;
-  letter-spacing: 1px;
-  color: #fff;
-  text-decoration: none;
-  &:hover,
-  &:focus {
-    background: var(--color-hover);
-    color: #fff;
-    text-decoration: none;
-  }
-
-  & > * + * {
-    margin-left: 0.5rem;
-  }
-`
+// eslint-disable-next-line react/button-has-type
+const ButtonComponent = (props: { type: string }) => <button {...props} />
 
 type Props = {
+  as: React.ElementType,
   color: string,
-  style: ?{},
+  style: {},
 }
 
-const Button = ({ color, style, ...props }: Props) => (
-  <ButtonBase
+const Button = ({ as: Component, color, style, ...props }: Props) => (
+  <Component
     style={{
       '--color': color,
       '--color-hover': darken(0.15, color),
@@ -44,7 +25,8 @@ const Button = ({ color, style, ...props }: Props) => (
 )
 
 Button.defaultProps = {
-  style: null,
+  as: ButtonComponent,
+  style: {},
 }
 
-export default Button
+export default withClassNames(styles.button)(Button)

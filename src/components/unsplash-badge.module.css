@@ -1,0 +1,36 @@
+.button {
+  background-color: #000;
+  color: #fff;
+  text-decoration: none;
+  padding: 4px 6px;
+  font-family: var(--alt-font-family);
+  font-style: normal;
+  font-weight: bold;
+  line-height: 1.2;
+  display: inline-block;
+  border-radius: 3px;
+  &:hover,
+  &:focus {
+    box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--blue);
+    color: #fff;
+  }
+}
+
+.iconContainer {
+  display: inline-block;
+  padding: 2px 3px;
+}
+
+.icon {
+  height: 12px;
+  width: auto;
+  position: relative;
+  vertical-align: middle;
+  top: -1px;
+  fill: #fff;
+}
+
+.name {
+  display: inline-block;
+  padding: 2px 3px;
+}

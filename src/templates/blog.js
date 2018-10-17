@@ -1,6 +1,5 @@
 // @flow
 import * as React from 'react'
-import styled from 'astroturf'
 import { graphql } from 'gatsby'
 import Layout from '../components/layout'
 import Spacer from '../components/spacer'
@@ -11,10 +10,7 @@ import Filters from '../components/filters'
 import PostPreview from '../components/post-preview'
 import Pager from '../components/pager'
 import * as CATEGORY from '../constants/categories'
-
-const Divider = styled.div`
-  margin: 2rem 0;
-`
+import styles from './blog.module.css'
 
 type Props = {
   location: {
@@ -97,7 +93,10 @@ const Blog = ({
         if (i > 0) {
           const prevPath = edges[i - 1].node.fields.path
           const dividerKey = `${prevPath}-${path}`
-          return acc.concat(<Divider key={dividerKey} />, post)
+          return acc.concat(
+            <div key={dividerKey} className={styles.divider} />,
+            post,
+          )
         }
         return acc.concat(post)
       }, [])}

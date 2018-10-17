@@ -1,151 +1,12 @@
 // @flow
 import * as React from 'react'
 import { StaticQuery, graphql, navigate } from 'gatsby'
-import styled, { css } from 'astroturf'
-import classNames from 'classnames'
 import Downshift from 'downshift'
 import { FaSearch } from 'react-icons/fa'
 import fuzzaldrin from 'fuzzaldrin-plus'
 import Link from './link'
-
-const fieldHeight = '2rem'
-const fieldBgColor = 'color(#fff shade(5%))'
-const menuBgColor = '#fff'
-const transitionDuration = 300
-
-const hideStyles = css`
-  .base {
-    transition: opacity ${transitionDuration}ms;
-  }
-  .hidden {
-    @media (--max-small) {
-      opacity: 0;
-    }
-  }
-`
-
-const Container = styled.div`
-  position: relative;
-  height: ${fieldHeight};
-  font-family: var(--alt-font-family);
-  @media (--min-medium) {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-  }
-`
-
-const FieldContainer = styled.div`
-  position: relative;
-  width: ${fieldHeight};
-  transition: width ${transitionDuration}ms;
-  @media (--max-small) {
-    position: absolute;
-    top: 50%;
-    right: 0;
-    transform: translateY(-50%);
-  }
-  &.focused {
-    width: calc(100vw - var(--site-padding) * 2 - var(--logo-width) - 1rem);
-    @media (--min-medium) {
-      width: 100%;
-    }
-  }
-`
-
-const Label = styled.label`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: ${fieldHeight};
-  height: ${fieldHeight};
-  margin: 0;
-  padding: 0 0.5rem;
-  color: color(#000 tint(50%));
-  cursor: pointer;
-  line-height: ${fieldHeight};
-`
-const SearchIcon = styled(FaSearch)`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-`
-const LabelText = styled.span`
-  composes: visuallyHidden from '../styles/common.module.css';
-`
-
-const Input = styled.input`
-  display: block;
-  width: 100%;
-  height: ${fieldHeight};
-  line-height: ${fieldHeight};
-  padding-left: ${fieldHeight};
-  border: 0;
-  background: ${fieldBgColor};
-  border-radius: ${fieldHeight};
-  &::placeholder {
-    opacity: 0;
-    transition: opacity ${transitionDuration}ms;
-  }
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px #fff, 0 0 0 5px var(--blue);
-    &::placeholder {
-      opacity: 1;
-    }
-  }
-`
-
-const Menu = styled.ul`
-  position: absolute;
-  white-space: nowrap;
-  top: 100%;
-  right: calc(50vw - var(--site-padding));
-  transform: translateX(50%);
-  width: calc(100vw - var(--site-padding) * 2);
-  margin-top: 0.75rem;
-  text-align: left;
-  font-size: 0.85rem;
-  @media (--min-small) {
-    right: calc(
-      (100vw - var(--site-padding) * 2 - var(--logo-width) - 1rem) / 2
-    );
-    width: auto;
-    min-width: 24em;
-    max-width: calc(100vw - var(--site-padding) * 2);
-  }
-  @media (--min-medium) {
-    right: 0;
-    transform: none;
-  }
-  &.open {
-    padding: 0.5rem 0;
-    background: ${menuBgColor};
-    border-top: 1px solid ${fieldBgColor};
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow-card2);
-  }
-`
-
-const Item = styled.li``
-const ItemLink = styled(Link)`
-  display: block;
-  padding: 0.25rem 0.75rem;
-  color: color(#000 tint(30%));
-  text-decoration: none;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  &:hover,
-  &:focus {
-    color: #000;
-    text-decoration: none;
-  }
-  &.highlighted {
-    background: ${fieldBgColor};
-  }
-`
+import withClassNames from './with-class-names'
+import styles from './search.module.css'
 
 type Props = {
   children: ({
@@ -180,6 +41,8 @@ class Search extends React.Component<Props, State> {
     isFocused: false,
   }
 
+  rootRef = React.createRef()
+
   render() {
     const { children, ...props } = this.props
     const { isFocused } = this.state
@@ -211,7 +74,6 @@ class Search extends React.Component<Props, State> {
               itemToString={post => (post != null ? post.title : '')}
             >
               {({
-                getRootProps,
                 getLabelProps,
                 getInputProps,
                 getMenuProps,
@@ -235,17 +97,19 @@ class Search extends React.Component<Props, State> {
                     })
                   : []
                 return (
-                  <Container
-                    {...getRootProps({ refKey: 'innerRef', ...props })}
-                  >
-                    <FieldContainer focused={isFocused}>
-                      <Label {...getLabelProps()}>
-                        <SearchIcon />
-                        <LabelText>Find posts</LabelText>
-                      </Label>
-                      <Input
+                  <div {...props}>
+                    <div
+                      className={isFocused ? styles.fieldFocused : styles.field}
+                    >
+                      {/* eslint-disable-next-line jsx-a11y/label-has-associated-control, jsx-a11y/label-has-for */}
+                      <label {...getLabelProps({ className: styles.label })}>
+                        <FaSearch className={styles.labelIcon} />
+                        <span className={styles.labelText}>Find posts</span>
+                      </label>
+                      <input
                         {...getInputProps({
                           placeholder: 'Find posts',
+                          className: styles.input,
                           onFocus: () => {
                             this.setState({ isFocused: true })
                           },
@@ -254,24 +118,31 @@ class Search extends React.Component<Props, State> {
                           },
                         })}
                       />
-                    </FieldContainer>
-                    <Menu
+                    </div>
+                    <ul
                       {...getMenuProps({
-                        refKey: 'innerRef',
-                        open: isOpen && posts.length > 0,
+                        className:
+                          isOpen && posts.length > 0
+                            ? styles.menuOpen
+                            : styles.menu,
                       })}
                     >
                       {posts.map(({ title, path }, index) => (
-                        <Item
+                        <li
                           {...getItemProps({
                             key: title,
                             index,
                             item: { title, path },
+                            className: styles.item,
                           })}
                         >
-                          <ItemLink
+                          <Link
                             to={path}
-                            highlighted={index === highlightedIndex}
+                            className={
+                              index === highlightedIndex
+                                ? styles.itemLinkHighlighted
+                                : styles.itemLink
+                            }
                             dangerouslySetInnerHTML={{
                               __html: fuzzaldrin.wrap(title, inputValue),
                             }}
@@ -279,10 +150,10 @@ class Search extends React.Component<Props, State> {
                               event.stopPropagation()
                             }}
                           />
-                        </Item>
+                        </li>
                       ))}
-                    </Menu>
-                  </Container>
+                    </ul>
+                  </div>
                 )
               }}
             </Downshift>
@@ -294,12 +165,10 @@ class Search extends React.Component<Props, State> {
     return typeof children === 'function'
       ? children({
           searchBar,
-          styleHide: classNames(hideStyles.base, {
-            [hideStyles.hidden]: isFocused,
-          }),
+          styleHide: isFocused ? styles.hidden : styles.hiddenBase,
         })
       : searchBar
   }
 }
 
-export default Search
+export default withClassNames(styles.container)(Search)

@@ -1,0 +1,28 @@
+.meta {
+  margin-bottom: 0.5rem;
+  @media (--min-small) {
+    margin-bottom: 1rem;
+  }
+}
+
+.date {
+  color: var(--grey);
+}
+
+.title {
+  composes: h2 from './body.module.css';
+  margin-bottom: 0.5rem;
+}
+
+.smallTitle {
+  composes: h3 from './body.module.css';
+  margin-bottom: 0.5rem;
+}
+
+.more {
+  margin-top: -0.5rem;
+  font-family: var(--alt-font-family);
+  @media (--min-small) {
+    margin-top: -1rem;
+  }
+}

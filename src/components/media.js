@@ -1,37 +1,14 @@
 // @flow
 import * as React from 'react'
-import styled from 'astroturf'
 import { Tweet as ReactTweet } from 'react-twitter-widgets'
 import IntrinsicRatio from './intrinsic-ratio'
 import ResponsiveImage from './responsive-image'
+import withClassNames from './with-class-names'
+import styles from './media.module.css'
 
 export const DPRS = [1, 2]
 
-export const Figure = styled.figure``
-
-const MediaContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  margin: 0 calc(var(--site-padding) * -1);
-  margin-bottom: var(--margin-bottom);
-  @media (--min-large) {
-    margin-left: 0;
-    margin-right: 0;
-  }
-`
-const MediaWrapper = styled.div`
-  @media (--min-large) {
-    overflow: hidden;
-    &.rounded {
-      border-radius: var(--border-radius);
-    }
-  }
-
-  img,
-  iframe {
-    display: block;
-  }
-`
+export const Figure = 'figure'
 
 type MediaProps = {
   fullWidth: boolean,
@@ -41,25 +18,25 @@ type MediaProps = {
   children: React.Node,
 }
 const Media = ({ fullWidth, rounded, width, height, children }: MediaProps) => (
-  <MediaContainer>
+  <div className={styles.media}>
     {fullWidth ? (
-      <MediaWrapper
-        rounded={rounded}
+      <div
+        className={rounded ? styles.innerRounded : styles.inner}
         style={{
           width: '100%',
           height: parseFloat(height),
         }}
       >
         {children}
-      </MediaWrapper>
+      </div>
     ) : (
-      <MediaWrapper rounded={rounded}>
+      <div className={rounded ? styles.innerRounded : styles.inner}>
         <IntrinsicRatio width={width} height={height}>
           {children}
         </IntrinsicRatio>
-      </MediaWrapper>
+      </div>
     )}
-  </MediaContainer>
+  </div>
 )
 Media.defaultProps = {
   fullWidth: false,
@@ -114,23 +91,13 @@ Iframe.defaultProps = {
   rounded: true,
 }
 
-export const Caption = styled.figcaption`
-  max-width: 36rem;
-  margin: -0.5rem auto;
-  margin-bottom: var(--margin-bottom);
-  text-align: center;
-  font-size: 0.75rem;
-  font-style: italic;
-  color: color(#000 tint(50%));
-`
+export const Caption = withClassNames(styles.caption)('figcaption')
 
-const Center = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-bottom: var(--margin-bottom);
-`
-export const Tweet = (props: *) => (
-  <Center>
+export const Tweet = ({ className, ...props }: { className: ?string }) => (
+  <div className={styles.tweet}>
     <ReactTweet {...props} />
-  </Center>
+  </div>
 )
+Tweet.defaultProps = {
+  className: null,
+}

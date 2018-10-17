@@ -1,0 +1,11 @@
+.iconContainer {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0 2rem;
+}
+
+.icon {
+  width: 96px;
+  height: 96px;
+  fill: var(--red);
+}

@@ -1,26 +1,13 @@
 // @flow
 import * as React from 'react'
-import styled from 'astroturf'
 import { Link } from 'gatsby'
-
-const LogoLink = styled(Link)`
-  display: block;
-  width: var(--logo-width);
-  height: var(--logo-height);
-  line-height: 0;
-  border-radius: 0.5rem;
-  overflow: hidden;
-
-  svg {
-    width: 100%;
-    height: 100%;
-  }
-`
+import withClassNames from './with-class-names'
+import styles from './logo.module.css'
 
 type Props = {}
 
 const Logo = (props: Props) => (
-  <LogoLink to="/" {...props}>
+  <Link to="/" {...props}>
     <svg width={64} height={64} viewBox="0 0 64 64">
       <title>Logo</title>
       <clipPath id="topLeft">
@@ -44,7 +31,7 @@ const Logo = (props: Props) => (
         />
       </g>
     </svg>
-  </LogoLink>
+  </Link>
 )
 
-export default Logo
+export default withClassNames(styles.link)(Logo)

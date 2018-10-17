@@ -1,65 +1,7 @@
 // @flow
 import * as React from 'react'
-import styled, { css } from 'astroturf'
 import Link from './link'
-
-const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  font-family: var(--alt-font-family);
-`
-
-const Inner = styled.div`
-  display: flex;
-  align-items: center;
-  background: color(#fff shade(10%));
-  border-radius: var(--border-radius);
-`
-
-// eslint-disable-next-line no-unused-vars
-const styles = css`
-  .base {
-    display: block;
-    width: 5rem;
-    text-align: center;
-    padding: 0.5rem 0;
-  }
-`
-
-const NavLink = styled(Link)`
-  composes: base from './pager-styles.module.css';
-  &.left {
-    border-top-left-radius: var(--border-radius);
-    border-bottom-left-radius: var(--border-radius);
-    border-left: 0.25rem solid transparent;
-    transition: border-color 0.2s;
-    &:hover,
-    &:focus {
-      color: var(--blue-dark);
-      border-left-color: var(--blue);
-    }
-  }
-  &.right {
-    border-top-right-radius: var(--border-radius);
-    border-bottom-right-radius: var(--border-radius);
-    border-right: 0.25rem solid transparent;
-    transition: border-color 0.2s;
-    &:hover,
-    &:focus {
-      color: var(--blue-dark);
-      border-right-color: var(--blue);
-    }
-  }
-`
-
-const NavDisabled = styled.div`
-  composes: base from './pager-styles.module.css';
-  color: color(#fff shade(35%));
-`
-
-const Status = styled.div`
-  margin: 0 1rem;
-`
+import styles from './pager.module.css'
 
 type Props = {
   page: number,
@@ -78,27 +20,27 @@ const Pager = ({
   nextLabel,
   nextPath,
 }: Props) => (
-  <Container>
-    <Inner>
+  <div className={styles.container}>
+    <div className={styles.inner}>
       {prevPath != null ? (
-        <NavLink to={prevPath} left>
+        <Link to={prevPath} className={styles.navLinkLeft}>
           {prevLabel}
-        </NavLink>
+        </Link>
       ) : (
-        <NavDisabled>{prevLabel}</NavDisabled>
+        <div className={styles.navDisabled}>{prevLabel}</div>
       )}
-      <Status>
+      <div className={styles.status}>
         Page {page + 1} of {total}
-      </Status>
+      </div>
       {nextPath != null ? (
-        <NavLink to={nextPath} right>
+        <Link to={nextPath} className={styles.navLinkRight}>
           {nextLabel}
-        </NavLink>
+        </Link>
       ) : (
-        <NavDisabled>{nextLabel}</NavDisabled>
+        <div className={styles.navDisabled}>{nextLabel}</div>
       )}
-    </Inner>
-  </Container>
+    </div>
+  </div>
 )
 
 Pager.defaultProps = {

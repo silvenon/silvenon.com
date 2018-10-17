@@ -1,29 +1,8 @@
 // @flow
 import * as React from 'react'
-import styled from 'astroturf'
+import styles from './intrinsic-ratio.module.css'
 
 // https://css-tricks.com/aspect-ratio-boxes
-
-const Container = styled.div`
-  max-width: 100vw;
-  @media (--min-large) {
-    max-width: 100%;
-  }
-`
-
-const Inner = styled.div`
-  position: relative;
-  height: 0;
-
-  img,
-  iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
-`
 
 type Props = {
   width: string | number,
@@ -32,15 +11,16 @@ type Props = {
 }
 
 const IntrinsicRatio = ({ width, height, children }: Props) => (
-  <Container style={{ width }}>
-    <Inner
+  <div className={styles.container} style={{ width }}>
+    <div
+      className={styles.inner}
       style={{
         paddingTop: `${(parseFloat(height) / parseFloat(width)) * 100}%`,
       }}
     >
       {children}
-    </Inner>
-  </Container>
+    </div>
+  </div>
 )
 
 export default IntrinsicRatio

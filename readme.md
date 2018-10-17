@@ -6,11 +6,9 @@ Medium wasn't good enough for me, so I decided to roll my own overengineered sit
 
 The most important technology powering this site is [Gatsby][gatsby]. I love coding in React, but I also needed this site to be static. Gatsby proved to be a perfect companion for combining these two needs. It has a great community and many plugins for popular tools.
 
-## CSS-in-JS
+## CSS Modules
 
-I'm very passionate about CSS, but I was bad at controlling the cascade and errors were hard to detect. Methodologies like BEM were too much typing, so when I first saw CSS-in-JS, especially the ones that utilize tagged template literals like styled-components, emotion and astroturf, something just clicked and styling became fun again.
-
-On this site I'm using [astroturf], which has a an API similar to styled-components and emotion, but it's based on CSS Modules and is able to extract CSS into a file.
+I'm very passionate about CSS, but I was bad at controlling the cascade and errors were hard to detect. Methodologies like BEM were too much typing, CSS-in-JS solutions introduced too much overhead, so I finally decided on using CSS Modules with PostCSS. Gatsby already has support for CSS Modules and there was already a plugin for PostCSS, so it was really easy to get started. My code relies heavily on [custom properties][], which aren't supported on IE 11, but you might be able to get around it using [postcss-preset-env][].
 
 ## MDX
 
@@ -81,7 +79,9 @@ And, finally, [Netlify][netlify] made all of the deployment and DNS stuff a bree
 
 [silvenon.com]: https://silvenon.com
 [gatsby]: https://next.gatsbyjs.org/
-[astroturf]: https://github.com/4Catalyzer/astroturf
+[CSS Modules]: https://github.com/css-modules/css-modules
+[custom properties]: https://developer.mozilla.org/en-US/docs/Web/CSS/--*
+[postcss-preset-env]: https://preset-env.cssdb.org/
 [mdx]: https://mdxjs.com/
 [cloudinary]: overengineered
 [@mapbox/rehype-prism]: https://github.com/mapbox/rehype-prism/blob/master/index.js

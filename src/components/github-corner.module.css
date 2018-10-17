@@ -1,0 +1,35 @@
+/* http://tholman.com/github-corners/ */
+
+.githubCorner {
+  @keyframes octocatWave {
+    0%, 100% {
+      transform: rotate(0)
+    }
+    20%, 60% {
+      transform: rotate(-25deg)
+    }
+    40%, 80% {
+      transform: rotate(10deg)
+    }
+  }
+
+  &:hover,
+  &:focus {
+    .octoArm {
+      animation: octocatWave 560ms ease-in-out
+    }
+  }
+
+  @media (max-width: 500px) {
+    &:hover,
+    &:focus {
+      .octoArm {
+        animation: none
+      }
+    }
+
+    .octoArm {
+      animation: octocatWave 560ms ease-in-out
+    }
+  }
+}

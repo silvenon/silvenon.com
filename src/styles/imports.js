@@ -22,6 +22,8 @@ module.exports = {
     '--max-medium': `(max-width: ${screen.large - 1}px)`,
     '--max-large': `(max-width: ${screen.xLarge - 1}px)`,
     '--max-x-large': `(max-width: ${screen.xxLarge - 1}px)`,
+
+    '--author-breakpoint': `(min-width: ${screen.medium}px)`,
   },
   customProperties: {
     '--site-padding': '1rem',

@@ -1,11 +1,5 @@
 // @flow
-import styled from 'astroturf'
+import withClassNames from './with-class-names'
+import styles from './spacer.module.css'
 
-const Spacer = styled.div`
-  height: 1rem;
-  @media (--min-small) {
-    height: 2rem;
-  }
-`
-
-export default Spacer
+export default withClassNames(styles.spacer)('div')
