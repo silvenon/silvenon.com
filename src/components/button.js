@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react'
-import { darken } from 'polished'
+import * as polished from 'polished'
 import withClassNames from './with-class-names'
 import styles from './button.module.css'
 
@@ -17,7 +17,7 @@ const Button = ({ as: Component, color, style, ...props }: Props) => (
   <Component
     style={{
       '--color': color,
-      '--color-hover': darken(0.15, color),
+      '--color-hover': polished.darken(0.15, color),
       ...style,
     }}
     {...props}

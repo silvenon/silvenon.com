@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react'
-import { darken } from 'polished'
+import * as polished from 'polished'
 import Container from './container'
 import { H2, A } from './body'
 import cl from '../utils/cloudinary'
@@ -78,7 +78,7 @@ const Author = ({
                 href={url}
                 style={{
                   '--color': color,
-                  '--color-hover': darken(0.15, color),
+                  '--color-hover': polished.darken(0.15, color),
                 }}
               >
                 <Icon size={28} />
