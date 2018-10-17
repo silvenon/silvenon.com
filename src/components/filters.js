@@ -1,7 +1,7 @@
 // @flow
 import * as React from 'react'
-import { Link } from 'gatsby'
 import { FaTimes } from 'react-icons/fa'
+import Link from './link'
 import styles from './filters.module.css'
 
 const iconSize = 24

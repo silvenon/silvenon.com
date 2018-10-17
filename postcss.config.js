@@ -1,5 +1,6 @@
 module.exports = ctx => ({
   plugins: {
+    'postcss-import': {},
     'postcss-nested': {},
     'postcss-preset-env': {
       stage: 0,

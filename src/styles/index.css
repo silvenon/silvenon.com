@@ -1,6 +1,6 @@
-@import url('~bootstrap/dist/css/bootstrap-reboot.min.css');
-@import url('~minireset.css');
-@import url('~prism-themes/themes/prism-atom-dark.css');
+@import 'bootstrap/dist/css/bootstrap-reboot.min.css';
+@import 'minireset.css';
+@import 'prism-themes/themes/prism-atom-dark.css';
 
 :root {
   --base-font-family: Lora, Georgia, Times, "Times New Roman", serif;

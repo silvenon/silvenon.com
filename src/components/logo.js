@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react'
-import { Link } from 'gatsby'
+import Link from './link'
 import withClassNames from './with-class-names'
 import styles from './logo.module.css'
 
