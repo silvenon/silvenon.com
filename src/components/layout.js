@@ -6,6 +6,7 @@ import { MDXProvider } from '@mdx-js/tag'
 import { mapKeys } from 'lodash'
 import { camelCase } from 'change-case'
 import { components } from './body'
+import GitHubCorner from './github-corner'
 import TrackingCode from './tracking-code'
 import cl from '../utils/cloudinary'
 import * as LOCALE from '../constants/locales'
@@ -176,6 +177,7 @@ const Layout = ({
           >
             <>{children}</>
           </MDXProvider>
+          <GitHubCorner />
           <TrackingCode />
         </>
       )

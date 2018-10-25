@@ -18,10 +18,7 @@ const GitHubCorner = () => (
         style={{
           fill: customProperties['--blue'],
           color: '#fff',
-          position: 'absolute',
-          top: 0,
           border: 0,
-          right: 0,
         }}
         aria-hidden="true"
       >

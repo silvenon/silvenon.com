@@ -1,6 +1,17 @@
 /* http://tholman.com/github-corners/ */
 
 .githubCorner {
+  display: none;
+
+  @media (--min-x-large) {
+    display: block;
+    position: absolute;
+    z-index: var(--z-github-corner);
+    top: 0;
+    right: 0;
+    text-decoration: none;
+  }
+
   @keyframes octocatWave {
     0%, 100% {
       transform: rotate(0)
