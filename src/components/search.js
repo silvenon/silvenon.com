@@ -133,7 +133,6 @@ class Search extends React.Component<Props, State> {
                             key: title,
                             index,
                             item: { title, path },
-                            className: styles.item,
                           })}
                         >
                           <Link

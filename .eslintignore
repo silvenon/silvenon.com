@@ -1,3 +1,4 @@
 flow-typed
 .cache
 public
+*.flow

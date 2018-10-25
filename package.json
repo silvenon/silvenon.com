@@ -39,6 +39,7 @@
     "change-case": "^3.0.2",
     "classnames": "^2.2.6",
     "cloudinary-core": "^2.5.0",
+    "css-modules-flow-types-loader": "^1.1.1",
     "date-fns": "^1.29.0",
     "disqus-react": "^1.0.5",
     "downshift": "^3.1.1",
