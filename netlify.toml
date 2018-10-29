@@ -85,3 +85,9 @@
 [[redirects]]
   from = "/blog/avoiding-masculinity-and-femininity-altogether-9a32c6bce3c2"
   to = "/blog/ditching-masculinity-and-femininity"
+
+# redirect posts before simplifying paths
+
+[[redirects]]
+  from = "/blog/posts/*"
+  to = "/blog/:splat"
