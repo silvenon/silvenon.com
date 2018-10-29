@@ -1,6 +1,7 @@
 const path = require('path')
 const prism = require('@mapbox/rehype-prism')
 const smartypants = require('./utils/remark-smartypants')
+const { customProperties } = require('./src/styles/imports')
 
 module.exports = {
   siteMetadata: {
@@ -60,6 +61,19 @@ module.exports = {
         exclude: ['/blog/category/*'],
       },
     },
+    {
+      resolve: 'gatsby-plugin-manifest',
+      options: {
+        name: 'Matija Marohnić',
+        short_name: 'Silvenon',
+        start_url: '/',
+        background_color: '#fff',
+        theme_color: customProperties['--blue'],
+        display: 'minimal-ui',
+        icon: 'src/images/icon.png', // This path is relative to the root of the site.
+      },
+    },
+    'gatsby-plugin-offline',
     'gatsby-plugin-remove-trailing-slashes',
     'gatsby-plugin-netlify',
   ],
