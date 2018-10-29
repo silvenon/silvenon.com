@@ -1,7 +1,6 @@
 @import 'bootstrap/dist/css/bootstrap-reboot.min.css';
 @import 'minireset.css';
 @import 'prism-themes/themes/prism-atom-dark.css';
-@import './index.css';
 
 html {
   font-size: var(--base-font-size);
