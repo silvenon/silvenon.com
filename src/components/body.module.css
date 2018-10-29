@@ -17,7 +17,7 @@
   font-weight: 700;
   line-height: 1.25;
   color: #000;
-  &:--hanging-double-quotes {
+  &:global(:--hanging-double-quotes) {
     text-indent: -0.525em;
   }
   @media (--min-small) {
@@ -34,7 +34,7 @@
   font-style: italic;
   letter-spacing: 1px;
   color: #000;
-  &:--hanging-double-quotes {
+  &:global(:--hanging-double-quotes) {
     text-indent: -0.5em;
   }
   @media (--min-small) {
@@ -89,7 +89,7 @@
   font-size: 1.15rem;
   font-weight: 300;
   color: color(#000 tint(50%));
-  &:--hanging-double-quotes {
+  &:global(:--hanging-double-quotes) {
     text-indent: -0.35em;
   }
   @media (--min-small) {

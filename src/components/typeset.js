@@ -42,10 +42,10 @@ const typeset = (WrappedComponent: string): React.ComponentType<*> => {
         const { textContent } = this.container
         const hangingSingleQuotes = customSelectors[
           ':--hanging-single-quotes'
-        ].slice(0)
+        ].slice(1)
         const hangingDoubleQuotes = customSelectors[
           ':--hanging-double-quotes'
-        ].slice(0)
+        ].slice(1)
         this.setState({
           classNames: {
             [hangingSingleQuotes]: textContent.startsWith('‘'),

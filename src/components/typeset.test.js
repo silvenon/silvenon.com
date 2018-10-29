@@ -51,7 +51,7 @@ describe('typeset() HOC', () => {
       const { container } = render(<Component>‘Single quotes’</Component>)
       // $FlowFixMe
       const className: string = container.firstChild.getAttribute('class')
-      expect(className).toMatchInlineSnapshot(`".hanging-single-quotes"`)
+      expect(className).toMatchInlineSnapshot(`"hanging-single-quotes"`)
     })
 
     test('double quotes', () => {
@@ -59,7 +59,7 @@ describe('typeset() HOC', () => {
       const { container } = render(<Component>“Double quotes”</Component>)
       // $FlowFixMe
       const className: string = container.firstChild.getAttribute('class')
-      expect(className).toMatchInlineSnapshot(`".hanging-double-quotes"`)
+      expect(className).toMatchInlineSnapshot(`"hanging-double-quotes"`)
     })
   })
 })
