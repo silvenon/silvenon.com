@@ -1,0 +1,18 @@
+@import 'bootstrap/dist/css/bootstrap-reboot.min.css';
+@import 'minireset.css';
+@import 'prism-themes/themes/prism-atom-dark.css';
+@import './index.css';
+
+html {
+  font-size: var(--base-font-size);
+}
+
+body {
+  font-family: var(--base-font-family);
+  line-height: 1.75;
+}
+
+code {
+  font-family: var(--code-font-family);
+  font-size: var(--code-font-size);
+}

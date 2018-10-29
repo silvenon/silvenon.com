@@ -60,6 +60,7 @@
     "minireset.css": "^0.0.3",
     "null-loader": "^0.1.1",
     "polished": "^2.1.1",
+    "postcss": "^7.0.5",
     "postcss-color-function": "^4.0.1",
     "postcss-import": "^12.0.0",
     "postcss-nested": "^4.1.0",

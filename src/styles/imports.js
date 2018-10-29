@@ -26,7 +26,16 @@ module.exports = {
     '--author-breakpoint': `(min-width: ${screen.medium}px)`,
   },
   customProperties: {
+    '--base-font-family': 'Lora, Georgia, Times, "Times New Roman", serif',
+    '--alt-font-family': 'system-ui',
+    '--code-font-family':
+      'Inconsolata, Monaco, Consolas, "Courier New", Courier, monospace',
+
     '--site-padding': '1rem',
+    '--border-radius': '0.5rem',
+
+    '--z-header': 1,
+    '--z-github-corner': 2,
 
     /* http://www.colourlovers.com/palette/4581821/Haunted */
     '--beige-light': '#faead3',
