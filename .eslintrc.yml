@@ -27,7 +27,12 @@ rules:
 
 overrides:
   - files:
+      - "src/**/*.js"
+    env:
+      browser: true
+  - files:
       - "**/*.test.js"
       - "__tests__/**/*.js"
     env:
+      browser: true
       jest: true

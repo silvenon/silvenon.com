@@ -72,6 +72,7 @@ const Home = ({
     </Header>
     <Author
       inColor
+      lazy={false}
       name={name}
       avatar={avatar}
       biography={biography.long}
