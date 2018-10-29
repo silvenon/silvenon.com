@@ -53,6 +53,7 @@
     "gatsby-plugin-react-helmet": "^3.0.0",
     "gatsby-plugin-remove-trailing-slashes": "^2.0.3",
     "gatsby-plugin-sitemap": "^2.0.1",
+    "gatsby-plugin-web-font-loader": "^1.0.4",
     "gatsby-source-filesystem": "^2.0.4",
     "lodash": "^4.17.10",
     "mdx-deck": "^1.7.7",
@@ -74,7 +75,6 @@
     "retext": "^5.0.0",
     "retext-smartypants": "^3.0.1",
     "unist-util-visit": "^1.4.0",
-    "webfontloader": "^1.6.28",
     "webpack": "^4.19.1"
   },
   "devDependencies": {

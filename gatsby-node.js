@@ -40,19 +40,6 @@ exports.onCreateWebpackConfig = ({ getConfig, stage, actions }) => {
     )
     actions.replaceWebpackConfig(config)
   }
-
-  if (stage === 'build-html') {
-    actions.setWebpackConfig({
-      module: {
-        rules: [
-          {
-            test: /webfontloader/,
-            loader: 'null-loader',
-          },
-        ],
-      },
-    })
-  }
 }
 
 exports.onCreateNode = ({ node, getNode, actions }) => {
