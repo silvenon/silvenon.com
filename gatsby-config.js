@@ -52,6 +52,7 @@ module.exports = {
         exclude: ['/blog/category/*'],
       },
     },
+    'gatsby-plugin-remove-trailing-slashes',
     'gatsby-plugin-netlify',
   ],
 }

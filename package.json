@@ -51,6 +51,7 @@
     "gatsby-plugin-netlify": "^2.0.1",
     "gatsby-plugin-postcss": "^2.0.0",
     "gatsby-plugin-react-helmet": "^3.0.0",
+    "gatsby-plugin-remove-trailing-slashes": "^2.0.3",
     "gatsby-plugin-sitemap": "^2.0.1",
     "gatsby-source-filesystem": "^2.0.4",
     "lodash": "^4.17.10",
