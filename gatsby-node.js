@@ -112,9 +112,10 @@ exports.createPages = async ({ graphql, actions }) => {
   const { createPage } = actions
   const result = await graphql(`
     {
-      allMdx {
+      allMdx(sort: { fields: [fields___date], order: DESC }) {
         edges {
           node {
+            id
             parent {
               ... on File {
                 absolutePath
@@ -175,20 +176,28 @@ exports.createPages = async ({ graphql, actions }) => {
       })
     })
 
-    blogPosts.forEach(({ node }, index) => {
-      const readNextSuggestions = blogPosts.filter(
-        ({ node: n }, i) =>
-          n.exports.meta.category === node.exports.meta.category && i !== index,
+    blogPosts.forEach(({ node }) => {
+      const readNextCandidates = blogPosts.filter(
+        ({ node: n }) => n.exports.meta.category === node.exports.meta.category,
       )
+      const currentIndex = readNextCandidates.findIndex(
+        ({ node: n }) => n.id === node.id,
+      )
+      const readNext =
+        currentIndex !== -1 ? readNextCandidates[currentIndex + 1] : null
+
       createPage({
         path: node.fields.path,
         component: node.parent.absolutePath,
         context: {
           node,
-          readNextSuggestions: readNextSuggestions.map(({ node }) => ({
-            title: node.exports.meta.title,
-            path: node.fields.path,
-          })),
+          readNext:
+            readNext != null
+              ? {
+                  title: readNext.node.exports.meta.title,
+                  path: readNext.node.fields.path,
+                }
+              : null,
         },
       })
     })
