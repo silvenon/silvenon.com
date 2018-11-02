@@ -6,6 +6,6 @@ module.exports = {
     '<rootDir>/.cache/',
   ],
   moduleNameMapper: {
-    '\\.css$': '<rootDir>/__mocks__/style-mock.js',
+    '\\.css$': 'identity-obj-proxy',
   },
 }
