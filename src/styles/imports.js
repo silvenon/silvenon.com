@@ -43,7 +43,7 @@ module.exports = {
     '--red': '#ee7266',
     '--blue': '#007faa',
     '--blue-dark': '#33495e',
-    '--grey': '#999',
+    '--grey': '#696969', // http://colorsafe.co
   },
   customSelectors: {
     ':--hanging-single-quotes': '.hanging-single-quotes',

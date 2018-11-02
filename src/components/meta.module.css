@@ -1,5 +1,4 @@
 .meta {
-  font-family: var(--base-font-family);
-  font-style: italic;
-  color: color(var(--grey) shade(10%));
+  font-family: var(--alt-font-family);
+  color: var(--grey);
 }

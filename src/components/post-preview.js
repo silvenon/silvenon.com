@@ -20,7 +20,7 @@ const PostPreview = ({ isSmall, path, title, dateTime, excerpt }: Props) => (
       <Link to={path}>{title}</Link>
     </h1>
     <Meta className={styles.meta}>
-      <Date dateTime={dateTime} className={styles.date} />
+      <Date dateTime={dateTime} />
     </Meta>
     <P>{excerpt}</P>
     <div className={styles.more}>

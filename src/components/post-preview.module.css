@@ -5,10 +5,6 @@
   }
 }
 
-.date {
-  color: var(--grey);
-}
-
 .title {
   composes: h2 from './body.module.css';
   margin-bottom: 0.5rem;

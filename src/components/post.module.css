@@ -24,8 +24,7 @@
 }
 
 .nextPost {
-  font-family: var(--alt-font-family);
-  color: color(#000 tint(50%));
+  color: var(--grey);
 }
 
 .disqus {

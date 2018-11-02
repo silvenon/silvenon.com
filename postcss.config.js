@@ -12,7 +12,7 @@ module.exports = ctx => ({
       },
     }),
     require('postcss-color-function'),
-    require(`${__dirname}/utils/postcss-font-fallback`)({
+    require('postcss-webfontloader')({
       modules: true,
       families: ['Lora'],
     }),
