@@ -13,8 +13,9 @@ export const OL = withClassNames(styles.ol)('ol')
 export const UL = withClassNames(styles.ul)('ul')
 export const LI = withClassNames(styles.li)('li')
 export const Blockquote = withClassNames(styles.blockquote)(typeset('blockquote')) // eslint-disable-line prettier/prettier
-export const Code = withClassNames(styles.code)('code')
+export const InlineCode = withClassNames(styles.inlineCode)('code')
 export const Pre = withClassNames(styles.pre)('pre')
+export const Code = withClassNames(styles.code)('code')
 export const Figure = withClassNames(styles.figure)('figure')
 export const Img = withClassNames(styles.img)('img')
 
@@ -39,7 +40,8 @@ export const components = {
   LI,
   Blockquote,
   Pre,
-  InlineCode: Code,
+  InlineCode,
+  Code,
   Figure,
   Img,
 }

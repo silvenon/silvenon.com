@@ -98,7 +98,7 @@
   }
 }
 
-.code {
+.inlineCode {
   padding: 0.25rem 0.35rem;
   white-space: nowrap;
   background: color(#000 a(5%));
@@ -123,6 +123,10 @@
       border-radius: var(--border-radius);
     }
   }
+}
+
+.code {
+  /* TBD */
 }
 
 .figure {

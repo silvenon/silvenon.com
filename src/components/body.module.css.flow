@@ -10,6 +10,7 @@ declare module.exports: {|
   +'h3': string;
   +'hr': string;
   +'img': string;
+  +'inlineCode': string;
   +'li': string;
   +'ol': string;
   +'p': string;
