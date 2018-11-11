@@ -13,7 +13,8 @@
   "license": "MIT",
   "scripts": {
     "start": "gatsby develop",
-    "test": "jest",
+    "test": "flow && eslint . && jest",
+    "test:watch": "jest --watch",
     "coverage": "flow-coverage-report -i 'src/**/*.js' -x 'src/**/*.test.js' -x '__tests__/**/*.js'",
     "build": "gatsby build",
     "serve": "gatsby serve"
