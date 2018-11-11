@@ -103,5 +103,25 @@
     "lint-staged": "^7.3.0",
     "prettier": "^1.14.3",
     "react-testing-library": "^5.2.0"
+  },
+  "browserslist": [
+    "> 0.25%",
+    "not dead"
+  ],
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "all"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "flow && lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint",
+      "jest --findRelatedTests"
+    ]
   }
 }
