@@ -24,29 +24,28 @@ const Filters = ({ basePath, items, currentPath }: Props) => {
   return (
     <div className={styles.container}>
       <div className={styles.list}>
-        {items.map(
-          ({ path, name, shortName, Icon }) =>
-            path === currentPath ? (
-              <div key={path} className={styles.filterActive}>
-                <div className={styles.name}>{name}</div>
-                <div className={styles.shortName}>{shortName}</div>
-                <Link to={basePath} className={styles.close}>
-                  <FaTimes size={iconSize} />
-                </Link>
-              </div>
-            ) : (
-              <Link
-                key={path}
-                to={`${basePath}${path}`}
-                className={styles.filter}
-              >
-                <div className={styles.name}>{name}</div>
-                <div className={styles.shortName}>{shortName}</div>
-                <div className={styles.iconContainer}>
-                  <Icon size={iconSize} />
-                </div>
+        {items.map(({ path, name, shortName, Icon }) =>
+          path === currentPath ? (
+            <div key={path} className={styles.filterActive}>
+              <div className={styles.name}>{name}</div>
+              <div className={styles.shortName}>{shortName}</div>
+              <Link to={basePath} className={styles.close}>
+                <FaTimes size={iconSize} />
               </Link>
-            ),
+            </div>
+          ) : (
+            <Link
+              key={path}
+              to={`${basePath}${path}`}
+              className={styles.filter}
+            >
+              <div className={styles.name}>{name}</div>
+              <div className={styles.shortName}>{shortName}</div>
+              <div className={styles.iconContainer}>
+                <Icon size={iconSize} />
+              </div>
+            </Link>
+          ),
         )}
       </div>
       <div className={styles.state}>
