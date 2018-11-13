@@ -12,7 +12,7 @@
   ],
   "license": "MIT",
   "scripts": {
-    "css": "postcss src/styles/globals.css > /dev/null",
+    "css": "echo '' | postcss",
     "start": "yarn css && gatsby develop",
     "test": "yarn css && flow && eslint . && jest",
     "test:watch": "jest --watch",
