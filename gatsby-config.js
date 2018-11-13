@@ -24,6 +24,7 @@ module.exports = {
     'gatsby-plugin-flow',
     'gatsby-plugin-lodash',
     'gatsby-plugin-postcss',
+    'gatsby-plugin-css-modules-flow-types',
     {
       resolve: 'gatsby-plugin-web-font-loader',
       options: {

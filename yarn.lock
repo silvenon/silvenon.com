@@ -6549,6 +6549,13 @@ gatsby-mdx@^0.2.0:
     unist-util-remove "^1.0.1"
     unist-util-visit "^1.4.0"
 
+gatsby-plugin-css-modules-flow-types@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-css-modules-flow-types/-/gatsby-plugin-css-modules-flow-types-0.1.0.tgz#4628cef3cacceae4efcbeb1bbe075d310c7dc666"
+  integrity sha512-AedE0dRCK6rNsbv/G0xsr1bdLtmkvez+bYb4TxKca6umf1YyioZVkoKnJI1NY0P27t7c5qW10uLMqVOAGqkpqw==
+  dependencies:
+    css-modules-flow-types-loader "^1.1.1"
+
 gatsby-plugin-flow@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/gatsby-plugin-flow/-/gatsby-plugin-flow-1.0.2.tgz#e27315899a1bbffa213e7518e69c2b4b7387b8e7"
