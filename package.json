@@ -12,12 +12,12 @@
   ],
   "license": "MIT",
   "scripts": {
-    "css": "echo '' | postcss",
-    "start": "yarn css && gatsby develop",
-    "test": "yarn css && flow && eslint . && jest",
+    "css:globals": "echo '' | postcss",
+    "start": "yarn css:globals && gatsby develop",
+    "test": "yarn css:globals && flow && eslint . && jest",
     "test:watch": "jest --watch",
     "coverage": "flow-coverage-report -i 'src/**/*.js' -x 'src/**/*.test.js' -x '__tests__/**/*.js'",
-    "build": "yarn css && gatsby build",
+    "build": "yarn css:globals && gatsby build",
     "serve": "gatsby serve"
   },
   "dependencies": {
