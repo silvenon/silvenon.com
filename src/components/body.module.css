@@ -60,7 +60,7 @@
   max-width: 25rem;
   margin: 2rem auto;
   border: 0;
-  border-bottom: 1px solid color(#000 a(25%));
+  border-bottom: 1px solid color-mod(#000 a(25%));
 }
 
 .ol {
@@ -88,7 +88,7 @@
   font-style: italic;
   font-size: 1.15rem;
   font-weight: 300;
-  color: color(#000 tint(50%));
+  color: color-mod(#000 tint(50%));
   &:global(:--hanging-double-quotes) {
     text-indent: -0.35em;
   }
@@ -101,7 +101,7 @@
 .inlineCode {
   padding: 0.25rem 0.35rem;
   white-space: nowrap;
-  background: color(#000 a(5%));
+  background: color-mod(#000 a(5%));
   border-radius: var(--border-radius);
 }
 
@@ -110,7 +110,7 @@
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   padding: 1rem;
-  background: color(#000 a(5%));
+  background: color-mod(#000 a(5%));
   /* matching specificity from Prism theme */
   &,
   &[class*='language-'] {

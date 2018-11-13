@@ -7,7 +7,7 @@
 .inner {
   display: flex;
   align-items: center;
-  background: color(#fff shade(10%));
+  background: color-mod(#fff shade(10%));
   border-radius: var(--border-radius);
 }
 
@@ -46,7 +46,7 @@
 
 .navDisabled {
   composes: navItem;
-  color: color(#fff shade(35%));
+  color: color-mod(#fff shade(35%));
 }
 
 .status {

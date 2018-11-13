@@ -12,11 +12,12 @@
   ],
   "license": "MIT",
   "scripts": {
-    "start": "gatsby develop",
-    "test": "flow && eslint . && jest",
+    "css": "postcss src/styles/globals.css > /dev/null",
+    "start": "yarn css && gatsby develop",
+    "test": "yarn css && flow && eslint . && jest",
     "test:watch": "jest --watch",
     "coverage": "flow-coverage-report -i 'src/**/*.js' -x 'src/**/*.test.js' -x '__tests__/**/*.js'",
-    "build": "gatsby build",
+    "build": "yarn css && gatsby build",
     "serve": "gatsby serve"
   },
   "dependencies": {
@@ -64,10 +65,10 @@
     "null-loader": "^0.1.1",
     "polished": "^2.3.0",
     "postcss": "^7.0.5",
-    "postcss-color-function": "^4.0.1",
+    "postcss-cli": "^6.0.1",
     "postcss-import": "^12.0.1",
     "postcss-nested": "^4.1.0",
-    "postcss-preset-env": "^6.1.1",
+    "postcss-preset-env": "^6.4.0",
     "postcss-webfontloader": "^0.0.1",
     "prism-themes": "^1.0.1",
     "prop-types": "^15.6.2",

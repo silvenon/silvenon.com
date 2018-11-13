@@ -1,6 +1,6 @@
 .wrapper {
   margin: 2rem 0 3rem;
-  background: color(#fff shade(10%));
+  background: color-mod(#fff shade(10%));
   font-family: var(--base-font-family);
   text-align: center;
   @media (--author-breakpoint) {

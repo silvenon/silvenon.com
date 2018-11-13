@@ -10,8 +10,8 @@ import GitHubCorner from './github-corner'
 import TrackingCode from './tracking-code'
 import cl from '../utils/cloudinary'
 import * as LOCALE from '../constants/locales'
+import '../styles/globals.css'
 import '../styles/index.css'
-import '../styles/base.css'
 
 type Props = {
   title: string,

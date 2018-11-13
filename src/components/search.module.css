@@ -4,7 +4,7 @@
 
 .container {
   --field-height: 2rem;
-  --field-bg-color: color(#fff shade(5%));
+  --field-bg-color: color-mod(#fff shade(5%));
   position: relative;
   height: var(--field-height);
   font-family: var(--alt-font-family);
@@ -42,7 +42,7 @@
   height: var(--field-height);
   margin: 0;
   padding: 0 0.5rem;
-  color: color(#000 tint(50%));
+  color: color-mod(#000 tint(50%));
   cursor: pointer;
   line-height: var(--field-height);
 }
@@ -114,7 +114,7 @@
 .itemLink {
   display: block;
   padding: 0.25rem 0.75rem;
-  color: color(#000 tint(30%));
+  color: color-mod(#000 tint(30%));
   text-decoration: none;
   white-space: nowrap;
   overflow: hidden;

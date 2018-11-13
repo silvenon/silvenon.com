@@ -31,7 +31,7 @@
   text-align: center;
   font-size: 0.75rem;
   font-style: italic;
-  color: color(#000 tint(50%));
+  color: color-mod(#000 tint(50%));
 }
 
 .tweet {

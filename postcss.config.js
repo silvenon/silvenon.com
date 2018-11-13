@@ -1,20 +1,20 @@
 /* eslint-disable global-require, import/no-dynamic-require */
-module.exports = ctx => ({
+module.exports = {
   plugins: [
     require('postcss-import'),
     require('postcss-nested'),
     require('postcss-preset-env')({
       stage: 0,
-      preserve: ctx.file.basename === 'index.css',
-      importFrom: './src/styles/imports.js',
+      importFrom: './src/styles/globals.css',
+      exportTo: './src/styles/globals.js',
       features: {
         'nesting-rules': false, // in favor of postcss-nested
+        'color-mod-function': true,
       },
     }),
-    require('postcss-color-function'),
     require('postcss-webfontloader')({
       modules: true,
       families: ['Lora'],
     }),
   ],
-})
+}

@@ -2,3 +2,5 @@ flow-typed
 .cache
 public
 *.flow
+
+/src/styles/globals.js

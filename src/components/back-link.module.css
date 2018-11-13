@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   padding: 0.5rem 1rem;
-  border: 1px solid color(var(--blue) tint(25%));
+  border: 1px solid color-mod(var(--blue) tint(25%));
   border-radius: 1rem;
   font-family: var(--alt-font-family);
   text-decoration: none;
@@ -10,8 +10,8 @@
   &:hover,
   &:focus {
     text-decoration: none;
-    background: color(var(--blue) tint(90%));
-    border-color: color(var(--blue-dark) tint(25%));
+    background: color-mod(var(--blue) tint(90%));
+    border-color: color-mod(var(--blue-dark) tint(25%));
   }
 }
 

@@ -1,0 +1,54 @@
+@custom-media --max-x-small (min-width: 575px);
+@custom-media --min-small (min-width: 576px);
+@custom-media --max-small (min-width: 767px);
+@custom-media --min-medium (min-width: 768px);
+@custom-media --max-medium (min-width: 991px);
+@custom-media --min-large (min-width: 992px);
+@custom-media --max-large (min-width: 1199px);
+@custom-media --min-x-large (min-width: 1200px);
+@custom-media --max-x-large (min-width: 1439px);
+@custom-media --min-xx-large (min-width: 1440px);
+
+@custom-media --author-breakpoint (min-width: 768px);
+
+@custom-selector :--hanging-single-quotes .hanging-single-quotes;
+@custom-selector :--hanging-double-quotes .hanging-double-quotes;
+
+:root {
+  --base-font-family: Lora, Georgia, Times, "Times New Roman", serif;
+  --alt-font-family: system-ui;
+  --code-font-family: Inconsolata, Monaco, Consolas, "Courier New", Courier, monospace;
+
+  --base-font-size: 18px;
+  --code-font-size: 16px;
+
+  --site-padding: 1rem;
+  --margin-bottom: 1rem;
+  --border-radius: 0.5rem;
+
+  --z-header: 1;
+  --z-github-corner: 2;
+
+  --logo-width: 2rem;
+  --logo-height: 2rem;
+
+  /* http://www.colourlovers.com/palette/4581821/Haunted */
+  --beige-light: #faead3;
+  --beige: #fee2cc;
+  --red: #ee7266;
+  --blue: #007faa;
+  --blue-dark: #33495e;
+  --grey: #696969; /* http://colorsafe.co */
+}
+
+@media (--min-small) {
+  :root {
+    --base-font-size: 20px;
+    --code-font-size: 18px;
+
+    --margin-bottom: 1.5rem;
+
+    --logo-width: 3rem;
+    --logo-height: 3rem;
+  }
+}

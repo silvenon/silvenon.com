@@ -1,21 +1,17 @@
-:root {
-  --base-font-size: 18px;
-  --code-font-size: 16px;
+@import 'bootstrap/dist/css/bootstrap-reboot.min.css';
+@import 'minireset.css';
+@import 'prism-themes/themes/prism-atom-dark.css';
 
-  --margin-bottom: 1rem;
-
-  --logo-width: 2rem;
-  --logo-height: 2rem;
+html {
+  font-size: var(--base-font-size);
 }
 
-@media (--min-small) {
-  :root {
-    --base-font-size: 20px;
-    --code-font-size: 18px;
+body {
+  font-family: var(--base-font-family);
+  line-height: 1.75;
+}
 
-    --margin-bottom: 1.5rem;
-
-    --logo-width: 3rem;
-    --logo-height: 3rem;
-  }
+code {
+  font-family: var(--code-font-family);
+  font-size: var(--code-font-size);
 }

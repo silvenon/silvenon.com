@@ -1,7 +1,7 @@
 const path = require('path')
 const prism = require('@mapbox/rehype-prism')
 const smartypants = require('./utils/remark-smartypants')
-const { customProperties } = require('./src/styles/imports')
+const { customProperties } = require('./src/styles/globals')
 
 module.exports = {
   siteMetadata: {

@@ -7,3 +7,6 @@ yarn-error.log
 /public
 .DS_Store
 .vscode
+
+# Auto-generated files
+/src/styles/globals.js

@@ -31,13 +31,13 @@
 
 .filter {
   composes: filterBase;
-  background: color(var(--red) tint(90%));
+  background: color-mod(var(--red) tint(90%));
   color: var(--red);
   text-decoration: none !important;
   &:hover,
   &:focus {
-    background: color(var(--red) tint(85%));
-    color: color(var(--red) shade(30%));
+    background: color-mod(var(--red) tint(85%));
+    color: color-mod(var(--red) shade(30%));
   }
 }
 
