@@ -108,8 +108,7 @@
     "react-testing-library": "^5.2.3"
   },
   "browserslist": [
-    "> 0.25%",
-    "not dead"
+    "defaults"
   ],
   "prettier": {
     "semi": false,
