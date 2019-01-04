@@ -14,7 +14,9 @@
   "scripts": {
     "css:globals": "echo '' | postcss",
     "start": "yarn css:globals && gatsby develop",
-    "test": "yarn css:globals && flow && eslint . --report-unused-disable-directives && jest",
+    "eslint-check": "eslint --print-config . | eslint-config-prettier-check",
+    "eslint": "eslint --report-unused-disable-directives",
+    "test": "yarn css:globals && flow && yarn eslint-check && yarn eslint . && jest",
     "test:watch": "jest --watch",
     "coverage": "flow-coverage-report -i 'src/**/*.js' -x 'src/**/*.test.js' -x '__tests__/**/*.js'",
     "build": "yarn css:globals && gatsby build",
