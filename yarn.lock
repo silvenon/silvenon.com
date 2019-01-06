@@ -4312,18 +4312,6 @@ css-loader@^1.0.0:
     postcss-value-parser "^3.3.0"
     source-list-map "^2.0.0"
 
-css-modules-flow-types-loader@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/css-modules-flow-types-loader/-/css-modules-flow-types-loader-1.1.1.tgz#2fb7476dd5e161d16f7f8294214d91d316357a73"
-  integrity sha512-jRFhOgQNyFtqHU1ye/Vib6dhwYwd6RySFwULgBUkM7f6b83g/faBZFUFz1ER3sdG1lYBkxpkZBPDYmejylzo0Q==
-  dependencies:
-    css-modules-flow-types-printer "^1.1.1"
-
-css-modules-flow-types-printer@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/css-modules-flow-types-printer/-/css-modules-flow-types-printer-1.1.1.tgz#c2ddd13ce882407d3c3a21888cf3755fad10af1a"
-  integrity sha512-K8sFwmHwRtmBC8lMKV3gqQgtxq3fBA/gI/tXzZEouI9XxQH9rd7x6ayXT0tmbJ+6owbwn4aLFAHHCjp7fDGZeQ==
-
 css-prefers-color-scheme@^3.0.0:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/css-prefers-color-scheme/-/css-prefers-color-scheme-3.1.1.tgz#6f830a2714199d4f0d0d0bb8a27916ed65cff1f4"
@@ -6548,13 +6536,6 @@ gatsby-mdx@^0.2.0:
     unist-util-map "^1.0.4"
     unist-util-remove "^1.0.1"
     unist-util-visit "^1.4.0"
-
-gatsby-plugin-css-modules-flow-types@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/gatsby-plugin-css-modules-flow-types/-/gatsby-plugin-css-modules-flow-types-0.1.0.tgz#4628cef3cacceae4efcbeb1bbe075d310c7dc666"
-  integrity sha512-AedE0dRCK6rNsbv/G0xsr1bdLtmkvez+bYb4TxKca6umf1YyioZVkoKnJI1NY0P27t7c5qW10uLMqVOAGqkpqw==
-  dependencies:
-    css-modules-flow-types-loader "^1.1.1"
 
 gatsby-plugin-flow@^1.0.2:
   version "1.0.2"

@@ -48,7 +48,6 @@
     "fuzzaldrin-plus": "^0.6.0",
     "gatsby": "=2.0.22",
     "gatsby-mdx": "^0.2.0",
-    "gatsby-plugin-css-modules-flow-types": "^0.1.0",
     "gatsby-plugin-flow": "^1.0.2",
     "gatsby-plugin-lodash": "^3.0.2",
     "gatsby-plugin-manifest": "^2.0.8",
