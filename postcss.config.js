@@ -1,4 +1,4 @@
-/* eslint-disable global-require, import/no-dynamic-require */
+/* eslint-disable global-require */
 module.exports = {
   plugins: [
     require('postcss-import'),
