@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@babel/core": "^7.2.2",
+    "@babel/preset-flow": "^7.0.0",
     "@mapbox/rehype-prism": "^0.3.0",
     "@mdx-js/loader": "^0.16.0",
     "@mdx-js/mdx": "^0.16.0",

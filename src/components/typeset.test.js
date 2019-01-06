@@ -3,6 +3,13 @@ import * as React from 'react'
 import { render, cleanup } from 'react-testing-library'
 import typeset from './typeset'
 
+jest.mock('../styles/globals.css', () => ({
+  customSelectors: {
+    ':--hanging-single-quotes': '.hanging-single-quotes',
+    ':--hanging-double-quotes': '.hanging-double-quotes',
+  },
+}))
+
 afterEach(cleanup)
 
 describe('typeset() HOC', () => {

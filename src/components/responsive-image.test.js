@@ -3,6 +3,12 @@ import * as React from 'react'
 import { render } from 'react-testing-library'
 import ResponsiveImage from './responsive-image'
 
+jest.mock('../styles/globals.css', () => ({
+  customProperties: {
+    '--site-padding': '1rem',
+  },
+}))
+
 describe('<ResponsiveImage>', () => {
   describe('src', () => {
     it('uses maximum 1x width', () => {
