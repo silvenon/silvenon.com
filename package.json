@@ -12,13 +12,12 @@
   ],
   "license": "MIT",
   "scripts": {
-    "css:globals": "echo '' | postcss",
-    "start": "yarn css:globals && gatsby develop",
+    "start": "gatsby develop",
     "eslint-check": "eslint --print-config . | eslint-config-prettier-check",
     "eslint": "eslint --report-unused-disable-directives",
-    "test": "yarn css:globals && flow && yarn eslint-check && yarn eslint . && jest",
+    "test": "flow && yarn eslint-check && yarn eslint . && jest",
     "coverage": "flow-coverage-report -i 'src/**/*.js' -x 'src/**/*.test.js' -x '__tests__/**/*.js'",
-    "build": "yarn css:globals && gatsby build",
+    "build": "gatsby build",
     "serve": "gatsby serve"
   },
   "dependencies": {
@@ -48,6 +47,7 @@
     "fuzzaldrin-plus": "^0.6.0",
     "gatsby": "=2.0.22",
     "gatsby-mdx": "^0.2.0",
+    "gatsby-plugin-css-customs": "^0.2.2",
     "gatsby-plugin-flow": "^1.0.2",
     "gatsby-plugin-lodash": "^3.0.2",
     "gatsby-plugin-manifest": "^2.0.8",
@@ -64,8 +64,6 @@
     "minireset.css": "^0.0.3",
     "null-loader": "^0.1.1",
     "polished": "^2.3.0",
-    "postcss": "^7.0.5",
-    "postcss-cli": "^6.0.1",
     "postcss-import": "^12.0.1",
     "postcss-nested": "^4.1.0",
     "postcss-preset-env": "^6.4.0",

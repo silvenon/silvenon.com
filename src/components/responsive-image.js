@@ -4,7 +4,7 @@ import { range } from 'lodash'
 import { MAX_WIDTH } from './container'
 import { DPRS } from './media'
 import cl from '../utils/cloudinary'
-import { customProperties } from '../styles/globals'
+import { customProperties } from '../styles/globals.css'
 
 const STEP_WIDTH = 200
 

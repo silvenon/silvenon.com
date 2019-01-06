@@ -1,7 +1,6 @@
 const path = require('path')
 const prism = require('@mapbox/rehype-prism')
 const smartypants = require('./utils/remark-smartypants')
-const { customProperties } = require('./src/styles/globals')
 
 module.exports = {
   siteMetadata: {
@@ -24,6 +23,7 @@ module.exports = {
     'gatsby-plugin-flow',
     'gatsby-plugin-lodash',
     'gatsby-plugin-postcss',
+    'gatsby-plugin-css-customs',
     {
       resolve: 'gatsby-plugin-web-font-loader',
       options: {
@@ -68,7 +68,7 @@ module.exports = {
         short_name: 'Silvenon',
         start_url: '/',
         background_color: '#fff',
-        theme_color: customProperties['--blue'],
+        theme_color: '#007faa',
         display: 'minimal-ui',
         icon: 'src/images/icon.png', // This path is relative to the root of the site.
       },

@@ -6,7 +6,6 @@ module.exports = {
     require('postcss-preset-env')({
       stage: 0,
       importFrom: './src/styles/globals.css',
-      exportTo: './src/styles/globals.js',
       features: {
         'nesting-rules': false, // in favor of postcss-nested
         'color-mod-function': true,

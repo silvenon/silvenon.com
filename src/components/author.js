@@ -6,7 +6,7 @@ import { H2, A } from './body'
 import LazyImage from './lazy-image'
 import cl from '../utils/cloudinary'
 import withClassNames from './with-class-names'
-import { customMedia } from '../styles/globals'
+import { customMedia } from '../styles/globals.css'
 import styles from './author.module.css'
 
 type Props = {
