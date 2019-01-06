@@ -9,7 +9,7 @@ import withClassNames from './with-class-names'
 import styles from './search.module.css'
 
 type Props = {
-  children: ({
+  children: ?({
     searchBar: React.Node,
     styleHide: string,
   }) => React.Node,
@@ -34,7 +34,7 @@ type QueryData = {
 
 class Search extends React.Component<Props, State> {
   static defaultProps = {
-    children: undefined,
+    children: null,
   }
 
   state = {

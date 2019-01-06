@@ -7,7 +7,7 @@ import { customSelectors } from '../styles/globals.css'
 const typeset = (WrappedComponent: string): React.ComponentType<*> => {
   type Props = {
     forwardedRef: React.Ref<typeof WrappedComponent>,
-    className: string,
+    className: ?string,
   }
 
   type State = {

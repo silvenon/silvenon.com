@@ -1,5 +1,8 @@
 [ignore]
 
+[untyped]
+<PROJECT_ROOT>/node_modules/polished/lib/color/.*
+
 [include]
 
 [libs]
