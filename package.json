@@ -42,7 +42,7 @@
     "fuzzaldrin-plus": "^0.6.0",
     "gatsby": "2.0.85",
     "gatsby-mdx": "^0.3.2",
-    "gatsby-plugin-css-customs": "^0.2.3",
+    "gatsby-plugin-css-customs": "^0.3.0",
     "gatsby-plugin-flow": "^1.0.2",
     "gatsby-plugin-lodash": "^3.0.2",
     "gatsby-plugin-manifest": "^2.0.8",

@@ -2,7 +2,7 @@
 import * as React from 'react'
 import classNames from 'classnames'
 import getDisplayName from '../utils/get-display-name'
-import { customSelectors } from '../styles/globals.css'
+import { customSelectors } from '../styles/globals.module.css'
 
 const typeset = (WrappedComponent: string): React.ComponentType<*> => {
   type Props = {

@@ -3,7 +3,7 @@ import * as React from 'react'
 import { render } from 'react-testing-library'
 import ResponsiveImage from './responsive-image'
 
-jest.mock('../styles/globals.css', () => ({
+jest.mock('../styles/globals.module.css', () => ({
   customProperties: {
     '--site-padding': '1rem',
   },

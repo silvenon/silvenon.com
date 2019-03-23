@@ -4301,10 +4301,10 @@ css-color-names@0.0.4, css-color-names@^0.0.4, css-color-names@~0.0.3:
   resolved "https://registry.yarnpkg.com/css-color-names/-/css-color-names-0.0.4.tgz#808adc2e79cf84738069b646cb20ec27beb629e0"
   integrity sha1-gIrcLnnPhHOAabZGyyDsJ762KeA=
 
-css-customs-loader@^0.2.3:
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/css-customs-loader/-/css-customs-loader-0.2.3.tgz#f8c48a8f48e0b9187940323fc73c150da9aa9302"
-  integrity sha512-NYGF1rkDDnHBfFnwBOWG6Fj8ix9DQz0SaVDJ3L6RFA2R/3ditZOgyFhy4mZaxcWJbe1fqsgFWiq/wZrNAUw4cw==
+css-customs-loader@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/css-customs-loader/-/css-customs-loader-0.3.0.tgz#2131d5b6dc751bfa8f3ee624c512b9a80d18cd44"
+  integrity sha512-ka4YVIQzWrSqfVH1+WALmWvjba7Wte0GIGuenCsJ/LyvXG9ImIkamJi0dy2hJtic9waRQiR5VPKFWU4fP9pyzQ==
   dependencies:
     loader-utils "^1.1.0"
     postcss "^7.0.5"
@@ -6549,12 +6549,12 @@ gatsby-mdx@^0.3.2:
     unist-util-remove "^1.0.1"
     unist-util-visit "^1.4.0"
 
-gatsby-plugin-css-customs@^0.2.3:
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/gatsby-plugin-css-customs/-/gatsby-plugin-css-customs-0.2.3.tgz#aa26cf2a46b449cc88675910e6148f58830983e6"
-  integrity sha512-12snOJ4dZ7Mbrqknhx/lbeiiVuxnzWhnSqKJ10ILK4PA61vEW9xDc/thxUgYwWbqYT9rwwds9q7x8v9Js3HWaw==
+gatsby-plugin-css-customs@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-css-customs/-/gatsby-plugin-css-customs-0.3.0.tgz#a07dbc8e641c1f1aef89ebd7efded56981168b09"
+  integrity sha512-hrYVVeww7wSu+iK9vqgj52yGSodMUIx+15V4OllJVN7EET0+poB2MllyaM3ZSqcXIdYtFA3geh/xNb9DmWmBLg==
   dependencies:
-    css-customs-loader "^0.2.3"
+    css-customs-loader "^0.3.0"
     postcss-loader "^3.0.0"
     postcss-preset-env "^6.5.0"
 
