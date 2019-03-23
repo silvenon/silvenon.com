@@ -61,19 +61,6 @@ module.exports = {
         exclude: ['/blog/category/*'],
       },
     },
-    {
-      resolve: 'gatsby-plugin-manifest',
-      options: {
-        name: 'Matija Marohnić',
-        short_name: 'Silvenon',
-        start_url: '/',
-        background_color: '#fff',
-        theme_color: '#007faa',
-        display: 'minimal-ui',
-        icon: 'src/images/icon.png', // This path is relative to the root of the site.
-      },
-    },
-    'gatsby-plugin-offline',
     'gatsby-plugin-remove-trailing-slashes',
     'gatsby-plugin-netlify',
   ],
