@@ -1,5 +1,5 @@
 // @flow
-import * as React from 'react'
+import React from 'react'
 import { range } from 'lodash'
 import { MAX_WIDTH } from './container'
 import { DPRS } from './media'

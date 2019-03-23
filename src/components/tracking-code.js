@@ -1,5 +1,5 @@
 // @flow
-import * as React from 'react'
+import React from 'react'
 
 const TrackingCode = () =>
   process.env.NODE_ENV === 'production' ? (

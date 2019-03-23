@@ -19,10 +19,7 @@ declare module 'gatsby' {
   declare export function withPrefix(string): string
   declare export function graphql(string[]): GraphQLOutput
   declare export function navigate(string): void
-  declare export class StaticQuery extends React$Component<{
-    query: GraphQLOutput,
-    render: (*) => React$Node,
-  }, *> {}
+  declare export function useStaticQuery<Result>(GraphQLOutput): Result
   declare export class Link extends React$Component<{
     to: string,
     activeStyle?: {},

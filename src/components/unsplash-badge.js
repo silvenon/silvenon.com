@@ -1,6 +1,6 @@
 // @flow
 // this component is based on the official Unsplash embed code
-import * as React from 'react'
+import React from 'react'
 import { CameraIcon } from './icons'
 import styles from './unsplash-badge.module.css'
 

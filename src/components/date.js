@@ -1,5 +1,5 @@
 // @flow
-import * as React from 'react'
+import React from 'react'
 import { format } from 'date-fns'
 import withClassNames from './with-class-names'
 import styles from './date.module.css'

@@ -1,5 +1,5 @@
 // @flow
-import * as React from 'react'
+import React, { type ElementType } from 'react'
 import classNames from 'classnames'
 import getDisplayName from '../utils/get-display-name'
 
@@ -10,7 +10,7 @@ type Props = {
 }
 
 const withClassNames = (...classes: Array<ClassName | ClassName[]>) => {
-  const enhance = (WrappedComponent: React.ElementType) => {
+  const enhance = (WrappedComponent: ElementType) => {
     const ComponentWithClassNames = ({ className, ...props }: Props) => (
       <WrappedComponent
         className={classNames(...classes, className)}

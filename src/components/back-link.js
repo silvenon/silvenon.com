@@ -1,12 +1,12 @@
 // @flow
-import * as React from 'react'
+import React, { type Node } from 'react'
 import { FaArrowLeft } from 'react-icons/fa'
 import Link from './link'
 import withClassNames from './with-class-names'
 import styles from './back-link.module.css'
 
 type Props = {
-  children: React.Node,
+  children: Node,
 }
 
 const BackLink = ({ children, ...props }: Props) => (

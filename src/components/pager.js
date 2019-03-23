@@ -1,5 +1,5 @@
 // @flow
-import * as React from 'react'
+import React from 'react'
 import Link from './link'
 import styles from './pager.module.css'
 

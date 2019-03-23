@@ -1,5 +1,5 @@
 // @flow
-import * as React from 'react'
+import React, { type Node } from 'react'
 import { Tweet as ReactTweet } from 'react-twitter-widgets'
 import IntrinsicRatio from './intrinsic-ratio'
 import ResponsiveImage from './responsive-image'
@@ -15,7 +15,7 @@ type MediaProps = {
   rounded: boolean,
   width: string | number,
   height: string | number,
-  children: React.Node,
+  children: Node,
 }
 const Media = ({ fullWidth, rounded, width, height, children }: MediaProps) => (
   <div className={styles.media}>

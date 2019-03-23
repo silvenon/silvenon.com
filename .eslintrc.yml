@@ -1,12 +1,11 @@
 root: true
 parser: babel-eslint
 plugins:
-  - prettier
-  - flowtype
+  - react-hooks
 extends:
   - airbnb
   - plugin:flowtype/recommended
-  - prettier
+  - plugin:prettier/recommended
   - prettier/flowtype
   - prettier/react
 rules:
@@ -23,6 +22,8 @@ rules:
     - error
     - forbidDefaultForRequired: false
   react/sort-comp: off
+  react-hooks/rules-of-hooks: error
+  react-hooks/exhaustive-deps: warn
   prettier/prettier: error
 
 overrides:

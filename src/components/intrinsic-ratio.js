@@ -1,5 +1,5 @@
 // @flow
-import * as React from 'react'
+import React, { type Node } from 'react'
 import styles from './intrinsic-ratio.module.css'
 
 // https://css-tricks.com/aspect-ratio-boxes
@@ -7,7 +7,7 @@ import styles from './intrinsic-ratio.module.css'
 type Props = {
   width: string | number,
   height: string | number,
-  children: React.Node,
+  children: Node,
 }
 
 const IntrinsicRatio = ({ width, height, children }: Props) => (

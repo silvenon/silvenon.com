@@ -1,5 +1,5 @@
 // @flow
-import * as React from 'react'
+import React from 'react'
 import * as polished from 'polished'
 import Container from './container'
 import { H2, A } from './body'

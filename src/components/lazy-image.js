@@ -1,5 +1,5 @@
 // @flow
-import * as React from 'react'
+import React, { useState, useEffect } from 'react'
 
 type Props = {
   alt: string,
@@ -8,61 +8,47 @@ type Props = {
   sizes: ?string,
 }
 
-type State = {
-  isLoaded: boolean,
-}
+function LazyImage({ alt, src, srcSet, sizes, ...props }: Props) {
+  const [isLoaded, setIsLoaded] = useState(false)
 
-class LazyImage extends React.Component<Props, State> {
-  static defaultProps = {
-    srcSet: null,
-    sizes: null,
-  }
+  useEffect(() => {
+    setIsLoaded(false)
 
-  state = {
-    isLoaded: false,
-  }
-
-  img: ?Image = null
-
-  componentDidMount() {
-    const { src, srcSet, sizes } = this.props
-    this.img = new Image()
-    this.img.onload = () => {
-      this.setState({ isLoaded: true })
+    const img = new Image()
+    img.onload = () => {
+      setIsLoaded(true)
     }
-    this.img.src = src
+    img.src = src
     if (srcSet != null) {
-      this.img.srcset = srcSet
+      img.srcset = srcSet
     }
     if (sizes != null) {
-      this.img.sizes = sizes
+      img.sizes = sizes
     }
-  }
 
-  componentWillUnmount() {
-    if (this.img != null) {
-      this.img.onload = null
+    return function cleanup() {
+      if (img != null) {
+        img.onload = null
+      }
     }
-  }
+  }, [src, srcSet, sizes])
 
-  render() {
-    const { alt, src, srcSet, sizes, ...props } = this.props
-    const { isLoaded } = this.state
-    if (isLoaded) {
-      return (
-        <img alt={alt} src={src} srcSet={srcSet} sizes={sizes} {...props} />
-      )
-    }
-    return (
-      <img
-        alt={alt}
-        data-src={src}
-        data-srcset={srcSet}
-        data-sizes={sizes}
-        {...props}
-      />
-    )
-  }
+  return isLoaded ? (
+    <img alt={alt} src={src} srcSet={srcSet} sizes={sizes} {...props} />
+  ) : (
+    <img
+      alt={alt}
+      data-src={src}
+      data-srcset={srcSet}
+      data-sizes={sizes}
+      {...props}
+    />
+  )
+}
+
+LazyImage.defaultProps = {
+  srcSet: null,
+  sizes: null,
 }
 
 export default LazyImage

@@ -1,5 +1,5 @@
 // @flow
-import * as React from 'react'
+import React from 'react'
 import { customProperties } from '../styles/globals.module.css'
 import styles from './github-corner.module.css'
 

@@ -1,7 +1,7 @@
 // @flow
-import * as React from 'react'
+import { type ElementType } from 'react'
 
-const getDisplayName = (WrappedComponent: React.ElementType): string =>
+const getDisplayName = (WrappedComponent: ElementType): string =>
   typeof WrappedComponent === 'string'
     ? WrappedComponent
     : WrappedComponent.displayName || WrappedComponent.name || 'Component'

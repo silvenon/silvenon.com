@@ -1,5 +1,5 @@
 // @flow
-import * as React from 'react'
+import React from 'react'
 import Meta from './meta'
 import Date from './date'
 import { P } from './body'

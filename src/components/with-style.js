@@ -1,5 +1,5 @@
 // @flow
-import * as React from 'react'
+import React, { type ElementType } from 'react'
 import getDisplayName from '../utils/get-display-name'
 
 type Style = {}
@@ -9,7 +9,7 @@ type Props = {
 }
 
 const withClassNames = (initialStyle: Style) => {
-  const enhance = (WrappedComponent: React.ElementType) => {
+  const enhance = (WrappedComponent: ElementType) => {
     const ComponentWithStyle = ({ style, ...props }: Props) => (
       <WrappedComponent
         style={{

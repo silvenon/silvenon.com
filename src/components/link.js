@@ -1,12 +1,12 @@
 // @flow
-import * as React from 'react'
+import React, { type Node } from 'react'
 import { Link as GatsbyLink } from 'gatsby'
 import withClassNames from './with-class-names'
 import styles from './link.module.css'
 
 type Props = {
   to: string,
-  children: React.Node,
+  children: Node,
 }
 
 // avoiding Gatsby's <Link> in production until style duplication gets resolved

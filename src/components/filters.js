@@ -1,5 +1,5 @@
 // @flow
-import * as React from 'react'
+import React, { type ComponentType } from 'react'
 import { FaTimes } from 'react-icons/fa'
 import Link from './link'
 import styles from './filters.module.css'
@@ -12,7 +12,7 @@ type Props = {
     path: string,
     name: string,
     shortName: string,
-    Icon: React.ComponentType<*>,
+    Icon: ComponentType<*>,
   }>,
   currentPath: ?string,
 }

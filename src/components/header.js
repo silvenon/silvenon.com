@@ -1,5 +1,5 @@
 // @flow
-import * as React from 'react'
+import React, { type Node, type Element } from 'react'
 import classNames from 'classnames'
 import Container from './container'
 import Logo from './logo'
@@ -7,7 +7,7 @@ import Search from './search'
 import styles from './header.module.css'
 
 type Props = {
-  children: React.Node,
+  children: Node,
 }
 
 const Header = ({ children }: Props) => (
@@ -16,7 +16,7 @@ const Header = ({ children }: Props) => (
   </header>
 )
 
-Header.TopBar = ({ children }: { children: React.Element<any> }) => (
+Header.TopBar = ({ children }: { children: Element<any> }) => (
   <Search>
     {({ searchBar, styleHide }) => (
       <div className={styles.topBar}>

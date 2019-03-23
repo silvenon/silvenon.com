@@ -1,5 +1,5 @@
 // @flow
-import * as React from 'react'
+import React, { type ElementType } from 'react'
 import * as polished from 'polished'
 import withClassNames from './with-class-names'
 import styles from './button.module.css'
@@ -8,7 +8,7 @@ import styles from './button.module.css'
 const ButtonComponent = (props: { type: string }) => <button {...props} />
 
 type Props = {
-  as: React.ElementType,
+  as: ElementType,
   color: string,
   style: {},
 }

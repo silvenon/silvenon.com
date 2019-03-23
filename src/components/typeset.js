@@ -1,79 +1,64 @@
 // @flow
-import * as React from 'react'
+import React, {
+  useState,
+  useRef,
+  useImperativeHandle,
+  useEffect,
+  type ComponentType,
+  type Node,
+} from 'react'
 import classNames from 'classnames'
 import getDisplayName from '../utils/get-display-name'
 import { customSelectors } from '../styles/globals.module.css'
 
-const typeset = (WrappedComponent: string): React.ComponentType<*> => {
+function getClassName(customSelector: string): string {
+  return customSelectors[customSelector].slice(1)
+}
+
+function typeset(WrappedComponent: string): ComponentType<*> {
   type Props = {
-    forwardedRef: React.Ref<typeof WrappedComponent>,
     className: ?string,
+    children: Node,
   }
 
-  type State = {
-    classNames: { [className: string]: boolean },
-  }
+  const Typeset = React.forwardRef(function Typeset(
+    { className, children, ...props }: Props,
+    ref,
+  ) {
+    const [typesetClassName, setTypesetClassName] = useState('')
+    const typesetEl = useRef(null)
 
-  class Typeset extends React.Component<Props, State> {
-    static defaultProps = {
-      className: null,
-    }
-
-    state = {
-      classNames: {},
-    }
-
-    container: null | React.ElementRef<typeof WrappedComponent> = null
-
-    refContainer = node => {
-      const { forwardedRef } = this.props
-      if (forwardedRef != null && typeof forwardedRef !== 'string') {
-        if (typeof forwardedRef === 'function') {
-          forwardedRef(node)
-        } else if (forwardedRef.current === null) {
-          forwardedRef.current = node
-        }
+    useImperativeHandle(ref, () => typesetEl.current)
+    useEffect(() => {
+      if (typesetEl.current != null) {
+        const { textContent } = typesetEl.current
+        setTypesetClassName(
+          classNames({
+            [getClassName(':--hanging-single-quotes')]: textContent.startsWith(
+              '‘',
+            ),
+            [getClassName(':--hanging-double-quotes')]: textContent.startsWith(
+              '“',
+            ),
+          }),
+        )
       }
-      this.container = node
-    }
+    }, [children])
 
-    componentDidMount() {
-      if (this.container != null) {
-        const { textContent } = this.container
-        const hangingSingleQuotes = customSelectors[
-          ':--hanging-single-quotes'
-        ].slice(1)
-        const hangingDoubleQuotes = customSelectors[
-          ':--hanging-double-quotes'
-        ].slice(1)
-        this.setState({
-          classNames: {
-            [hangingSingleQuotes]: textContent.startsWith('‘'),
-            [hangingDoubleQuotes]: textContent.startsWith('“'),
-          },
-        })
-      }
-    }
-
-    render() {
-      const { forwardedRef, className, ...props } = this.props
-
-      return (
-        <WrappedComponent
-          ref={this.refContainer}
-          className={classNames(className, this.state.classNames)}
-          {...props}
-        />
-      )
-    }
-  }
+    return (
+      <WrappedComponent
+        ref={typesetEl}
+        className={classNames(className, typesetClassName)}
+        {...props}
+      >
+        {children}
+      </WrappedComponent>
+    )
+  })
 
   Typeset.displayName = `Typeset(${getDisplayName(WrappedComponent)})`
 
-  // $FlowFixMe
-  return React.forwardRef((props: *, ref: *) => (
-    <Typeset forwardedRef={ref} {...props} />
-  ))
+  return Typeset
 }
 
 export default typeset

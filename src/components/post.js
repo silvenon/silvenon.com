@@ -1,6 +1,6 @@
 // @flow
-import * as React from 'react'
-import { graphql, StaticQuery } from 'gatsby'
+import React, { type Node } from 'react'
+import { graphql, useStaticQuery } from 'gatsby'
 import { Share as TwitterShare } from 'react-twitter-widgets'
 import { FaUser, FaCalendarAlt } from 'react-icons/fa'
 import { DiscussionEmbed } from 'disqus-react'
@@ -18,7 +18,7 @@ import socialLinks from '../constants/social-links'
 import styles from './post.module.css'
 
 type Props = {
-  children: React.Node,
+  children: Node,
   location: {
     pathname: string,
   },
@@ -45,6 +45,17 @@ type Props = {
   },
 }
 
+type QueryData = {
+  site: {
+    siteMetadata: {
+      siteUrl: string,
+      name: string,
+      avatar: { id: string, aspectRatio: number },
+      biography: { long: string },
+    },
+  },
+}
+
 const Post = ({ children, location, pageContext }: Props) => {
   const { pathname } = location
   const {
@@ -57,106 +68,91 @@ const Post = ({ children, location, pageContext }: Props) => {
     },
     readNext,
   } = pageContext
-  return (
-    <StaticQuery
-      query={graphql`
-        query PostQuery {
-          site {
-            siteMetadata {
-              siteUrl
-              name
-              avatar {
-                id
-                aspectRatio
-              }
-              biography {
-                long
-              }
-            }
+  const { site }: QueryData = useStaticQuery(graphql`
+    query PostQuery {
+      site {
+        siteMetadata {
+          siteUrl
+          name
+          avatar {
+            id
+            aspectRatio
+          }
+          biography {
+            long
           }
         }
-      `}
-      render={({
-        site: {
-          siteMetadata: { siteUrl, name, avatar, biography },
-        },
-      }: {
-        site: {
-          siteMetadata: {
-            siteUrl: string,
-            name: string,
-            avatar: { id: string, aspectRatio: number },
-            biography: { long: string },
-          },
-        },
-      }) => (
-        <Layout
-          title={title}
-          description={excerpt}
-          pathname={pathname}
-          lang={lang}
-          article={{
-            publishedTime: date,
-            modifiedTime: lastModified !== '' ? lastModified : null,
-            author: name,
-            tags: [],
-          }}
-        >
-          <Header>
-            <Header.TopBar>
-              <BackLink to="/blog">All posts</BackLink>
-            </Header.TopBar>
-            <H1 className={styles.title}>{title}</H1>
-            <Meta className={styles.meta}>
-              <div className={styles.metaRow}>
-                <FaUser />
-                <div>{name}</div>
-              </div>
-              <div className={styles.metaRow}>
-                <FaCalendarAlt />
-                <Date dateTime={date} />
-              </div>
-            </Meta>
-          </Header>
-          <Container>
-            {children}
-            <div className={styles.twitterShare}>
-              <TwitterShare
-                url={`${siteUrl}${pathname}`}
-                options={{ text: title, via: 'silvenon', size: 'large' }}
-              />
-            </div>
-          </Container>
-          <Author
-            name={name}
-            avatar={avatar}
-            biography={biography.long}
-            links={socialLinks}
+      }
+    }
+  `)
+  const { siteUrl, name, avatar, biography } = site.siteMetadata
+
+  return (
+    <Layout
+      title={title}
+      description={excerpt}
+      pathname={pathname}
+      lang={lang}
+      article={{
+        publishedTime: date,
+        modifiedTime: lastModified !== '' ? lastModified : null,
+        author: name,
+        tags: [],
+      }}
+    >
+      <Header>
+        <Header.TopBar>
+          <BackLink to="/blog">All posts</BackLink>
+        </Header.TopBar>
+        <H1 className={styles.title}>{title}</H1>
+        <Meta className={styles.meta}>
+          <div className={styles.metaRow}>
+            <FaUser />
+            <div>{name}</div>
+          </div>
+          <div className={styles.metaRow}>
+            <FaCalendarAlt />
+            <Date dateTime={date} />
+          </div>
+        </Meta>
+      </Header>
+      <Container>
+        {children}
+        <div className={styles.twitterShare}>
+          <TwitterShare
+            url={`${siteUrl}${pathname}`}
+            options={{ text: title, via: 'silvenon', size: 'large' }}
           />
-          <Container>
-            {readNext != null ? (
-              <p className={styles.nextPost}>
-                <span>Read next → </span>
-                <Link to={readNext.path}>{readNext.title}</Link>
-              </p>
-            ) : null}
-            {isDraft ? null : (
-              <div className={styles.disqus}>
-                <DiscussionEmbed
-                  shortname="silvenon"
-                  config={{
-                    url: `${siteUrl}${pathname}`,
-                    identifier: slug,
-                    title,
-                  }}
-                />
-              </div>
-            )}
-          </Container>
-          <Spacer />
-        </Layout>
-      )}
-    />
+        </div>
+      </Container>
+      <Author
+        name={name}
+        avatar={avatar}
+        biography={biography.long}
+        links={socialLinks}
+      />
+      <Container>
+        {readNext != null ? (
+          <p className={styles.nextPost}>
+            <span>Read next → </span>
+            <Link to={readNext.path}>{readNext.title}</Link>
+          </p>
+        ) : null}
+        {isDraft ? null : (
+          <div className={styles.disqus}>
+            <DiscussionEmbed
+              shortname="silvenon"
+              config={{
+                url: `${siteUrl}${pathname}`,
+                identifier: slug,
+                title,
+              }}
+            />
+          </div>
+        )}
+      </Container>
+      <Spacer />
+    </Layout>
   )
 }
 
