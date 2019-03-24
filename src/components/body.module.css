@@ -106,23 +106,13 @@
 }
 
 .pre {
+  composes: bleedIntoMargins from '../styles/common.module.css';
   overflow: visible;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  padding: 1rem;
+  margin-bottom: var(--margin-bottom) !important;
+  padding: var(--site-padding);
   background: color-mod(#000 a(5%));
-  /* matching specificity from Prism theme */
-  &,
-  &[class*='language-'] {
-    margin: 0 calc(var(--site-padding) * -1);
-    margin-bottom: var(--margin-bottom);
-    border-radius: 0;
-    @media (--min-large) {
-      margin-left: 0;
-      margin-right: 0;
-      border-radius: var(--border-radius);
-    }
-  }
 }
 
 .code {
