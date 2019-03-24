@@ -33,12 +33,60 @@
   --logo-height: 2rem;
 
   /* http://www.colourlovers.com/palette/4581821/Haunted */
-  --beige-light: #faead3;
-  --beige: #fee2cc;
-  --red: #ee7266;
-  --blue: #007faa;
-  --blue-dark: #33495e;
-  --grey: #696969; /* http://colorsafe.co */
+  --h-beige-light: 35;
+  --s-beige-light: 80%;
+  --l-beige-light: 90%;
+  --beige-light: hsl(
+    var(--h-beige-light),
+    var(--s-beige-light),
+    var(--l-beige-light)
+  );
+
+  --h-beige: 26;
+  --s-beige: 96%;
+  --l-beige: 90%;
+  --beige: hsl(
+    var(--h-beige),
+    var(--s-beige),
+    var(--l-beige)
+  );
+
+  --h-red: 5;
+  --s-red: 80%;
+  --l-red: 67%;
+  --red: hsl(
+    var(--h-red),
+    var(--s-red),
+    var(--l-red)
+  );
+
+  --h-blue: 195;
+  --s-blue: 100%;
+  --l-blue: 33%;
+  --blue: hsl(
+    var(--h-blue),
+    var(--s-blue),
+    var(--l-blue)
+  );
+
+  --h-blue-dark: 209;
+  --s-blue-dark: 30%;
+  --l-blue-dark: 28%;
+  --blue-dark: hsl(
+    var(--h-blue-dark),
+    var(--s-blue-dark),
+    var(--l-blue-dark)
+  );
+
+  /* http://colorsafe.co */
+  --h-grey: 0;
+  --s-grey: 0%;
+  --l-grey: 41%;
+  --grey: hsl(
+    var(--h-grey),
+    var(--s-grey),
+    var(--l-grey)
+  );
 }
 
 @media (--min-small) {
