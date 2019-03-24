@@ -1,0 +1,27 @@
+.container {
+  composes: bleedIntoMargins from '../styles/common.module.css';
+  margin-bottom: var(--margin-bottom);
+  padding: 1rem;
+  background: hsl(
+    var(--h-blue),
+    var(--s-blue),
+    90%
+  );
+  > *:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.title {
+  position: relative;
+  display: inline-block;
+  margin-bottom: calc(var(--margin-bottom) / 3);
+  margin-left: -1rem;
+  padding: 0 calc(1rem);
+  color: #fff;
+  background: var(--blue);
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
