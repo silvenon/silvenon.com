@@ -1,4 +1,5 @@
 import HotTip from '../../components/hot-tip'
+import Diagram from './diagram'
 
 export const meta = {
   title: "A Guide to Integrating and Enforcing Prettier & ESLint",
@@ -7,7 +8,15 @@ export const meta = {
   lastModified: "",
 }
 
-There are many tools for ensuring consistency and improving the quality of JavaScript code. In this article I'm going to focus on [Prettier](https://prettier.io/) and [ESLint](https://eslint.org/) because they have an **overlap** in functionalities, often in subtle ways, which makes integrating and enforcing both of them challenging.
+There are many tools for ensuring consistency and improving the quality of JavaScript code. At first were using tools like JSLint, JSHint and JSCS, but then [ESLint](https://eslint.org/) emerged, and later [Prettier](https://prettier.io/), and eventually those two became mainstream. Tools like these are powerful because they allow us to spot possible mistakes before we even run our code, which makes coding efficient especially if we're using text editor extensions becuase then our mistakes get literally underlined as we type, like spell check.
+
+Different tools cover different aspects of coding:
+
+- objective errors, like using undefined variables
+- patterns that might not behave like we think they do, like `==` instead of `===`
+- code style, like indentation or semicolons
+
+The scope of some tools is too big, for others it's too little. I think this is important to take into account when using multiple tools in the same project. In this article I'm going to talk about ESLint and Prettier because they are popular tools often used together, even though they have an **overlap** in functionality, which makes integrating and enforcing them challenging.
 
 I'll assume that you have a basic understanding of what both of these tools do, otherwise I don't recommend using them just yet because they will probably get in your way too much and hurt your productivity.
 
@@ -20,7 +29,8 @@ eslint file.js
 # automatically fixes what it can, and fails only
 # if there are any remaining ESLint errors
 eslint --fix file.js
-
+```
+```shell
 # fails if code in file.js is not properly formatted
 prettier --check file.js
 
@@ -28,26 +38,51 @@ prettier --check file.js
 prettier --write file.js
 ```
 
+All caught up? Great, let's talk about the elephant in the room.
+
 ## Overlap
 
-Other than the countless [built-in rules](https://eslint.org/docs/rules/), ESLint also has a vast [ecosystem of plugins](https://www.npmjs.com/search?q=eslint-plugin), allowing you to endlessly configure and fine-tune many aspects of authoring code. Its main strengths are detecting problems, discouraging anti-patterns and enforcing consistent code practices.
+<Diagram
+  title="Overlap between ESLint and Prettier"
+  description="A Venn diagram showing that the intersection between ESLint and
+          Prettier is code formatting"
+  variant="overlap"
+  side="right"
+/>
 
-On the other hand, Prettier is very opinionated, it gives you several basic options because its point is to get code formatting out of the way, so we can focus on _functionality_. ESLint has many rules regarding code formatting as well, but Prettier is much more powerful.
+ESLint, in addition to countless [built-in rules](https://eslint.org/docs/rules/), also has a vast [ecosystem of plugins](https://www.npmjs.com/search?q=eslint-plugin), allowing us to endlessly configure and fine-tune many aspects of authoring code. Its strengths are detecting problems, discouraging anti-patterns and enforcing consistent code practices.
+
+On the other hand, Prettier is very opinionated, it gives us several basic options because its point is to get code formatting out of the way, so we can focus on _functionality_. ESLint has many rules regarding code formatting as well, but Prettier is much more powerful.
+
 
 Since there's an overlap in functionalities, e.g. both [ESLint](https://eslint.org/docs/rules/semi) and [Prettier](https://prettier.io/docs/en/options.html#semicolons) can enforce semicolons (or lack thereof), how can we prevent these tools from stepping on each other's toes?
 
 ### Solution A: always run ESLint after Prettier
 
-One way to get around this would be to always run ESLint _after_ Prettier. That way Prettier does its thing, then ESLint fixes the overlapping rules. This would get rid of ESLint errors caused by Prettier.
+<Diagram
+  title="ESLint over Prettier"
+  description="A Venn diagram showing ESLint circle on top, covering part of Prettier circle"
+  variant="eslint"
+  side="right"
+/>
+
+One way to get around this would be to always run ESLint _after_ Prettier. So Prettier first does its thing, then ESLint fixes the overlapping rules and whatever else we configured it to do. This would get rid of ESLint errors caused by Prettier.
 
 [prettier-eslint](https://github.com/prettier/prettier-eslint) is an official tool that does this, and it has already been implemented in tools like [Prettier for VS Code](https://github.com/prettier/prettier-vscode/tree/5800b23f7fdd42d199b0315b665fe0dbbb8bc8f8#prettiereslintintegration-default-false---javascript-and-typescript-only). However, I don't find this solution good enough for two reasons:
 
-1. code processed with prettier-eslint can still be considered incorrectly formatted by Prettier (`prettier --check file.js`) because this is just a hack
+1. code processed with prettier-eslint can still be considered incorrectly formatted by Prettier (`prettier --check file.js`) because it's just a hack
 2. we're assuming that everyone has prettier-eslint integration in their text editor, but we shouldn't count on anything that we can't enforce
 
 So let's keep looking.
 
-### Solution B: disable overlapping ESLint rules
+### Solution B: disable conflicting ESLint rules
+
+<Diagram
+  title="Prettier over ESLint"
+  description="A Venn diagram showing Prettier circle on top, covering part of ESLint circle, but with a white stroke, illustrating that the overlapping part of ESLint circle has been cut out"
+  variant="prettier"
+  side="right"
+/>
 
 Another way would be to disable all ESLint rules that are in conflict with Prettier. But there are so many of them, it would be nice to be able to reliably cover all bases.
 
@@ -66,7 +101,9 @@ yarn add --dev eslint-config-airbnb eslint-config-prettier
 }
 ```
 
-eslint-config-prettier has a few more tricks up its sleeve, like having shareable configs for common ESLint plugins. If we wanted to include all recommended rules from eslint-plugin-react, but disable those that conflict with Prettier, we would do that with `prettier/react`:
+To clarify, this solution isn't merely the opposite of Solution A because we're _disabling_ a part of ESLint functionality that would interfere with Prettier, so it doesn't matter which tool runs first because they are mutually compatible.
+
+eslint-config-prettier has a few more tricks up its sleeve, like having shareable configs for common ESLint plugins. If we wanted to include all recommended rules from eslint-plugin-react, but disable those that conflict with Prettier, we could do that with `prettier/react`:
 
 ```shell
 yarn add --dev eslint-plugin-react
@@ -85,11 +122,11 @@ yarn add --dev eslint-plugin-react
 
 <HotTip>
 
-`plugin:react/recommended` includes **itself** as part of the recommended configuration. This is actually how most ESLint plugins behave.
+Notice that we didn't have to add eslint-plugin-react to `plugins`. This is because most ESLint plugins already _include themselves_ as part of the recommended configuration.
 
 </HotTip>
 
-eslint-config-prettier also offers a way to check whether your ESLint configuration has any conflicting rules. This is very useful for ensuring that you didn't accidentally reintroduce a conflicting rule. For example, one of the rules disabled by eslint-config-prettier is `semi`, which we mentioned earlier. Even though we extended the shareable config, this doesn't prevent us from reintroducing the conflicting rule:
+eslint-config-prettier also offers a way to check whether your ESLint configuration has any conflicting rules. This is very useful for ensuring that you didn't accidentally reintroduce a conflicting rule. For example, one of the rules disabled by eslint-config-prettier is `semi`, which we mentioned earlier. Even though we extended the shareable config, this doesn't prevent us from reintroducing conflicting rules:
 
 ```json
 {
@@ -103,14 +140,12 @@ eslint-config-prettier also offers a way to check whether your ESLint configurat
 }
 ```
 
-This is a conflict because Prettier by default adds semicolons. Uh-oh!
-
-Luckily, eslint-config-prettier saves our asses yet again by including a [CLI utility](https://github.com/prettier/eslint-config-prettier/tree/a2fceb9024838ea27c0c1b1184e7ff69ee76974f#cli-helper-tool) that analyzes ESLint configuration and fails if there are conflicting rules. We can create a npm script in `package.json`:
+Prettier by default _adds_ semicolons, uh-oh! Luckily, eslint-config-prettier saves our asses yet again by including a [CLI utility](https://github.com/prettier/eslint-config-prettier/tree/a2fceb9024838ea27c0c1b1184e7ff69ee76974f#cli-helper-tool) that analyzes ESLint configuration and fails if there are conflicting rules. We can create a npm script in `package.json`:
 
 ```json
 {
   "scripts": {
-    "eslint-config-check": "eslint --print-config . | eslint-config-prettier-check"
+    "check-eslint-config": "eslint --print-config . | eslint-config-prettier-check"
   }
 }
 ```
@@ -130,31 +165,41 @@ Have you ever worked on a project which contains npm scripts like these?
 }
 ```
 
-Maybe you have been told that you should use these script, but what if you forget? Probably nothing will happen. You might enable your text extensions for ESLint and Prettier, but when you start working on an existing file it might happen that it hasn't been formatted and has a bunch of distracting ESLint errors. You could make commits like "format with Prettier" and "fix ESLint errors", but if there are many of them it's pointless. In my case I eventually disabled my extensions so I can focus on working.
+Maybe you have been told that you should use these script, but what if you forget? Probably nothing will happen. You might enable your text extensions for ESLint and Prettier and start working on an existing file, but then you realize that it hasn't been formatted and has a bunch of distracting ESLint errors. You could make commits like "format with Prettier" and "fix ESLint errors", but if there are many of them it's pointless. In my case I eventually disabled my extensions so I can focus on working. 🙄
 
 This happens often--people introduce new tools, but then they don't **enforce** them. The point of tools like Prettier is to help you code better, but if you have to remember to use them (which you often won't) they're probably going to become a nuisance later on. So let's think of ways to enforce them.
 
-We shouldn't rely on text editor extensions because we can't control for that. Our first step might be to perform checks on CI, so it fails if any file in our codebase has ESLint errors or hasn't been formatted with Prettier. This will prevent merge requests from passing, and it's a minimal step required to force people to fix their code (a good analogy for this is server-side form validation). So before running tests on your CI, you can configure it to run something similar to this:
+We shouldn't rely on text editor extensions because we can't control for that. Our first step might be to perform checks on CI, so it fails if any file in our codebase has ESLint errors or hasn't been formatted with Prettier. This will prevent merge requests from passing, and it's a minimal step required to force people to fix their code (a good analogy for this is server-side form validation). So before running tests on your CI, let's run the following npm scripts:
 
+```json
+{
+  "scripts": {
+    "check-eslint-config": "eslint --print-config . | eslint-config-prettier-check",
+    "check-code": "eslint src && prettier --check 'src/**/*.js'"
+  }
+}
 ```
-eslint src && prettier --check 'src/**/*.js'
+
+```shell
+# on CI
+yarn check-eslint-config && yarn check-code
 ```
 
-However, we might have been working for days on a feature, then we finally opened a PR only to see a ton of errors on CI. Plus, CI is slow. Let's find a way to automatically let developers know about errors before they push their code. Maybe even before they commit it?
+This is a step up. However, we might have been working for days on a feature, then we finally opened a PR only to see a ton of errors on CI. This is a slow process especially because CI itself is slow. Let's find a way to automatically let developers know about errors before they push their code. Maybe even before they commit it?
 
-The first thing that might come to your mind are [git hooks](https://git-scm.com/docs/githooks), but the tricky part is that you can't commit them to your repo and force people to install them... or can you?   😄 [husky](https://github.com/typicode/husky) is a wonderful tool that allows us to configure git hooks, which install themselves automatically to our local repository (`.git` folder) when we install dependencies. We have no choice, which is exactly what we want! 😉
+The first thing that might come to your mind are [git hooks](https://git-scm.com/docs/githooks), but the tricky part is that you can't force people to install them... or can you? 😈 [husky](https://github.com/typicode/husky) is a wonderful tool that allows us to configure git hooks, which install themselves automatically to our local repository (`.git` folder) when we install dependencies. We have no choice, which is exactly what we want!
 
 ```shell
 yarn add --dev husky
 ```
 
-You can configure husky by adding the following to your `package.json`:
+You can configure husky by adding the following to our `package.json`:
 
 ```json
 {
   "husky": {
     "hooks": {
-      "pre-push": "eslint src && prettier --check 'src/**/*.js'"
+      "pre-push": "yarn check-eslint-config && yarn check-code"
     }
   }
 }
@@ -162,7 +207,7 @@ You can configure husky by adding the following to your `package.json`:
 
 This is better, but what if we've been coding for a looong time before we decided to push our code? We might be welcomed with a wall of errors again, only sooner. We would ideally want to check our code before we commit it, but checking our entire codebase on every commit would be _very_ slow, especially because we're often committing stuff like Markdown files which can't possibly result in lint or formatting errors.
 
-This is where [lint-staged](https://github.com/okonet/lint-staged) comes in, which enables us to run commands only on files that have been staged with git. So much faster! ⚡️ Let's use it with a `pre-commit` hook:
+This is where [lint-staged](https://github.com/okonet/lint-staged) comes in, which enables us to run commands only on files that have been staged with git. So much faster! ⚡️ Let's use it with a `pre-commit` hook, while keeping our `pre-push` hook (I'll explain why in a second):
 
 ```shell
 yarn add --dev lint-staged
@@ -172,7 +217,8 @@ yarn add --dev lint-staged
 {
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged",
+      "pre-push": "yarn check-eslint-config && yarn check-code"
     }
   },
   "lint-staged": {
@@ -186,7 +232,9 @@ yarn add --dev lint-staged
 
 This will check only staged `.js` files. What an amazing combination of tools, right?!
 
-lint-staged also supports a neat trick: we can automatically fix and format staged files:
+Btw, the reason why we kept our `pre-push` hook is because if we change Prettier or ESLint configuration, we could introduce an error somewhere in our code. lint-staged wouldn't catch because it only checks staged files. Running a slower script on `pre-push` is ok because we usually don't push code very often, and this prevents us from pushing bad code.
+
+Moving on, lint-staged supports a neat trick: we can automatically fix and format staged files:
 
 ```json
     "*.js": [
@@ -232,9 +280,9 @@ yarn add --dev eslint-plugin-prettier
 
 We can also shorten the above with eslint-plugin-prettier's _recommended_ configuration, which does three things:
 
-1. enables the `prettier/prettier` rule
-2. adds eslint-config-prettier to `extends`
-3. adds itself to `plugins`
+1. adds itself to `plugins`
+2. enables the `prettier/prettier` rule
+3. adds eslint-config-prettier to `extends`
 
 ```json
 {
@@ -247,19 +295,18 @@ We can also shorten the above with eslint-plugin-prettier's _recommended_ config
 
 Now when you run `eslint --fix index.js`, ESLint will automatically fix whatever it can _as well as_ format the file with Prettier, while writing to the file only once. This also means that you can ditch the text editor extension for Prettier, you don't need it anymore. Just enable automatically fixing on save in your ESLint extension and you're good to go. ✨
 
-Now we can simplify our CI script:
-
-```shell
-eslint src
-```
-
-and our git hook:
+Now we can simplify our `package.json` configuration:
 
 ```json
 {
+  "scripts": {
+    "check-eslint-config": "eslint --print-config . | eslint-config-prettier-check",
+    "check-code": "eslint src"
+  },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged",
+      "pre-push": "yarn check-eslint-config && yarn check-code"
     }
   },
   "lint-staged": {
@@ -270,6 +317,8 @@ and our git hook:
   }
 }
 ```
+
+Notice that we're no longer running Prettier directly.
 
 Btw, you probably know that Prettier supports other languages too, like CSS, GraphQL, even CSS-in-JS! Our integration works only for `.js` files, but I suggest that you take a look at repositories in [Prettier's GitHub organization](https://github.com/prettier), where you will find projects like stylelint-config-prettier and stylelint-prettier, which allow you to do for CSS files exactly what we did for JS.
 

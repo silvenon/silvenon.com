@@ -1,0 +1,42 @@
+.container {
+  margin-bottom: var(--spacing);
+  font-family: var(--alt-font-family);
+  color: #fff;
+
+  svg {
+    display: block;
+    margin: 0 auto;
+  }
+
+  @media (--min-small) {
+    &.left {
+      float: left;
+      margin-right: var(--spacing);
+    }
+
+    &.right {
+      float: right;
+      margin-left: var(--spacing);
+    }
+  }
+}
+
+.eslint,
+.prettier {
+  text {
+    font-size: 2rem;
+    font-weight: bold;
+  }
+}
+
+.intersection {
+  text {
+    font-size: 1.25rem;
+  }
+}
+
+.eslint {
+}
+
+.prettier {
+}
