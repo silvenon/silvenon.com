@@ -24,7 +24,7 @@ Since MDX uses rehype under the hood, it was fairly easy to implement syntax hig
 
 ## Responsive images
 
-I'm very passionate about responsive images, and [Cloudinary][cloudinary] makes this ridiculously easy becuase I can apply image transformations just by changing the URL. This allowed me to build a React component and add responsive images to my blog posts with [5 lines of code][responsive-image].
+I'm very passionate about responsive images, and [Cloudinary][cloudinary] makes this ridiculously easy because I can apply image transformations just by changing the URL. This allowed me to build a React component and add responsive images to my blog posts with [5 lines of code][responsive-image].
 
 ## Intrinsic ratio
 
@@ -71,7 +71,7 @@ This is where [lint-staged] comes in, it's a tool that runs commands only on fil
 
 Flow doesn't need to be run on per-file basis because it has a smart server running in the background, so running it across the entire codebase usually takes a fraction of a second. ⚡️
 
-Lastly, I wanted to add the actual pre-commit git hook that would run Flow and lint-staged. [Husky][husky] is an excellent tool for maintaining git hooks becuase it automatically installs them to my `.git` folder as soon as I run `npm install`.
+Lastly, I wanted to add the actual pre-commit git hook that would run Flow and lint-staged. [Husky][husky] is an excellent tool for maintaining git hooks because it automatically installs them to my `.git` folder as soon as I run `npm install`.
 
 ## Netlify
 
