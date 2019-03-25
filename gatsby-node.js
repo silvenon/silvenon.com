@@ -24,10 +24,12 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
     const fileNode = getNode(node.parent)
     const isDraft = fileNode.sourceInstanceName === 'drafts'
     const [date, slug] = isDraft
-      ? [fileNode.modifiedTime, fileNode.name]
-      : fileNode.name.split('_')
+      ? [fileNode.modifiedTime, fileNode.relativeDirectory]
+      : fileNode.relativeDirectory.split('_')
     if (/^\d+-\d+-\d+/.test(slug)) {
-      throw new Error(`Invalid file name format: "${fileNode.name}"`)
+      throw new Error(
+        `Invalid file name format: "${fileNode.relativeDirectory}"`,
+      )
     }
     createNodeField({
       node,
