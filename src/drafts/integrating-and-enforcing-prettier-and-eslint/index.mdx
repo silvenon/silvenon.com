@@ -8,6 +8,7 @@ export const meta = {
   lastModified: "",
 }
 
+<<<<<<< HEAD
 There are many tools for ensuring consistency and improving the quality of JavaScript code. At first were using tools like JSLint, JSHint and JSCS, but then [ESLint](https://eslint.org/) emerged, and later [Prettier](https://prettier.io/), and eventually those two became mainstream. Tools like these are powerful because they allow us to spot possible mistakes before we even run our code, which makes coding efficient especially if we're using text editor extensions becuase then our mistakes get literally underlined as we type, like spell check.
 
 Different tools cover different aspects of coding:
@@ -17,6 +18,11 @@ Different tools cover different aspects of coding:
 - code style, like indentation or semicolons
 
 The scope of some tools is too big, for others it's too little. I think this is important to take into account when using multiple tools in the same project. In this article I'm going to talk about ESLint and Prettier because they are popular tools often used together, even though they have an **overlap** in functionality, which makes integrating and enforcing them challenging.
+||||||| merged common ancestors
+There are many tools for ensuring consistency and improving the quality of JavaScript code. In this article I'm going to focus on [Prettier](https://prettier.io/) and [ESLint](https://eslint.org/) because they have an **overlap** in functionalities, often in subtle ways, which makes integrating and enforcing both of them challenging.
+=======
+There are many tools for ensuring consistency and improving the quality of JavaScript code. In this article I'm going to focus on [Prettier](https://prettier.io/) and [ESLint](https://eslint.org/), because they have an **overlap** in functionalities, often in subtle ways, which makes integrating and enforcing both of them challenging.
+>>>>>>> Some possible wording improvements
 
 I'll assume that you have a basic understanding of what both of these tools do, otherwise I don't recommend using them just yet because they will probably get in your way too much and hurt your productivity.
 
@@ -50,12 +56,11 @@ All caught up? Great, let's talk about the elephant in the room.
   side="right"
 />
 
-ESLint, in addition to countless [built-in rules](https://eslint.org/docs/rules/), also has a vast [ecosystem of plugins](https://www.npmjs.com/search?q=eslint-plugin), allowing us to endlessly configure and fine-tune many aspects of authoring code. Its strengths are detecting problems, discouraging anti-patterns and enforcing consistent code practices.
+ESLint, in addition to countless [built-in rules](https://eslint.org/docs/rules/), has a vast [ecosystem of plugins](https://www.npmjs.com/search?q=eslint-plugin), allowing us to endlessly configure and fine-tune many aspects of authoring code. Its strengths are detecting problems, discouraging anti-patterns and enforcing consistent code practices.
 
-On the other hand, Prettier is very opinionated, it gives us several basic options because its point is to get code formatting out of the way, so we can focus on _functionality_. ESLint has many rules regarding code formatting as well, but Prettier is much more powerful.
+On the other hand, Prettier is very opinionated; it gives us several basic options because its point is to get code formatting out of the way, so we can focus on _functionality_. ESLint has many rules regarding code formatting as well, but Prettier is much more powerful.
 
-
-Since there's an overlap in functionalities, e.g. both [ESLint](https://eslint.org/docs/rules/semi) and [Prettier](https://prettier.io/docs/en/options.html#semicolons) can enforce semicolons (or lack thereof), how can we prevent these tools from stepping on each other's toes?
+Since there's an overlap in functionalities (e.g. both [ESLint](https://eslint.org/docs/rules/semi) and [Prettier](https://prettier.io/docs/en/options.html#semicolons) can enforce semicolons, or lack thereof), how can we prevent these tools from stepping on each other's toes?
 
 ### Solution A: always run ESLint after Prettier
 
@@ -70,10 +75,10 @@ One way to get around this would be to always run ESLint _after_ Prettier. So Pr
 
 [prettier-eslint](https://github.com/prettier/prettier-eslint) is an official tool that does this, and it has already been implemented in tools like [Prettier for VS Code](https://github.com/prettier/prettier-vscode/tree/5800b23f7fdd42d199b0315b665fe0dbbb8bc8f8#prettiereslintintegration-default-false---javascript-and-typescript-only). However, I don't find this solution good enough for two reasons:
 
-1. code processed with prettier-eslint can still be considered incorrectly formatted by Prettier (`prettier --check file.js`) because it's just a hack
+1. code processed with prettier-eslint can still be considered incorrectly formatted by Prettier because this is just a hack
 2. we're assuming that everyone has prettier-eslint integration in their text editor, but we shouldn't count on anything that we can't enforce
 
-So let's keep looking.
+So, let's keep looking.
 
 ### Solution B: disable conflicting ESLint rules
 
@@ -165,11 +170,11 @@ Have you ever worked on a project which contains npm scripts like these?
 }
 ```
 
-Maybe you have been told that you should use these script, but what if you forget? Probably nothing will happen. You might enable your text extensions for ESLint and Prettier and start working on an existing file, but then you realize that it hasn't been formatted and has a bunch of distracting ESLint errors. You could make commits like "format with Prettier" and "fix ESLint errors", but if there are many of them it's pointless. In my case I eventually disabled my extensions so I can focus on working. 🙄
+Maybe you have been told that you should use these scripts, but what if you forget? Probably nothing will happen. You might enable your text extensions for ESLint and Prettier and start working on an existing file, but then you realize that it hasn't been formatted and has a bunch of distracting ESLint errors. You could make commits like "format with Prettier" and "fix ESLint errors", but if there are many of them it's pointless. In my case I eventually disabled my extensions so I can focus on working. 🙄
 
 This happens often--people introduce new tools, but then they don't **enforce** them. The point of tools like Prettier is to help you code better, but if you have to remember to use them (which you often won't) they're probably going to become a nuisance later on. So let's think of ways to enforce them.
 
-We shouldn't rely on text editor extensions because we can't control for that. Our first step might be to perform checks on CI, so it fails if any file in our codebase has ESLint errors or hasn't been formatted with Prettier. This will prevent merge requests from passing, and it's a minimal step required to force people to fix their code (a good analogy for this is server-side form validation). So before running tests on your CI, let's run the following npm scripts:
+We shouldn't rely on text editor extensions because we can't control for that. Our first step might be to perform checks as part of our CI build, so it fails if any file in our codebase has ESLint errors or hasn't been formatted with Prettier. This will prevent merge requests from passing, and it's a minimal step required to force people to fix their code (a good analogy for this is server-side form validation). So before running tests on your CI, let's run the following npm scripts:
 
 ```json
 {
