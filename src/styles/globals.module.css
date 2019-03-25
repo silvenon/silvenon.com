@@ -24,7 +24,7 @@
   --line-height: 1.75;
 
   --site-padding: 1rem;
-  --margin-bottom: 1rem;
+  --spacing: 1rem;
   --border-radius: 0.5rem;
 
   --z-header: 1;
@@ -95,7 +95,7 @@
     --base-font-size: 20px;
     --code-font-size: 18px;
 
-    --margin-bottom: 1.5rem;
+    --spacing: 1.5rem;
 
     --logo-width: 3rem;
     --logo-height: 3rem;

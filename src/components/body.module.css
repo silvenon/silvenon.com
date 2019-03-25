@@ -43,7 +43,7 @@
 }
 
 .p {
-  margin-bottom: var(--margin-bottom);
+  margin-bottom: var(--spacing);
 }
 
 .a {
@@ -110,7 +110,7 @@
   overflow: visible;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  margin-bottom: var(--margin-bottom) !important;
+  margin-bottom: var(--spacing) !important;
   padding: var(--site-padding);
   background: color-mod(#000 a(5%));
 }

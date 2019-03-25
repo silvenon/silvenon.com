@@ -1,6 +1,6 @@
 .container {
   composes: bleedIntoMargins from '../styles/common.module.css';
-  margin-bottom: var(--margin-bottom);
+  margin-bottom: var(--spacing);
   padding: 1rem;
   background: hsl(
     var(--h-blue),
@@ -15,7 +15,7 @@
 .title {
   position: relative;
   display: inline-block;
-  margin-bottom: calc(var(--margin-bottom) / 3);
+  margin-bottom: calc(var(--spacing) / 3);
   margin-left: -1rem;
   padding: 0 calc(1rem);
   color: #fff;
