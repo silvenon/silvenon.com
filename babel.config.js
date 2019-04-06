@@ -2,4 +2,5 @@
 
 module.exports = {
   presets: ['babel-preset-gatsby', '@babel/preset-flow'],
+  plugins: ['babel-plugin-date-fns', 'babel-plugin-polished'],
 }

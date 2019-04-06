@@ -7,17 +7,6 @@
 const path = require('path')
 const paginate = require('./utils/paginate')
 
-exports.onCreateBabelConfig = ({ actions }) => {
-  actions.setBabelPlugin(
-    {
-      name: 'babel-plugin-date-fns',
-    },
-    {
-      name: 'babel-plugin-polished',
-    },
-  )
-}
-
 exports.onCreateNode = ({ node, getNode, actions }) => {
   const { createNodeField } = actions
   if (node.internal.type === 'Mdx') {
