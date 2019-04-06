@@ -1,3 +1,5 @@
+/* eslint-disable flowtype/require-valid-file-annotation */
+
 // PostCSS will import this into every stylesheet
 // in order to be able to polyfill these features
 
