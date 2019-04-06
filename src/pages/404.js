@@ -5,7 +5,7 @@ import Container from '../components/container'
 import Header from '../components/header'
 import { H1 as Title, P } from '../components/body'
 import BackLink from '../components/back-link'
-import { NotificationIcon } from '../components/icons'
+import Icon from '../components/icon'
 import styles from './404.module.css'
 
 type Props = {
@@ -28,7 +28,7 @@ const NotFoundPage = ({ location: { pathname } }: Props) => (
     </Header>
     <Container>
       <div className={styles.iconContainer}>
-        <NotificationIcon className={styles.icon} />
+        <Icon id="exclamation-mark" size={96} className={styles.icon} />
       </div>
       <P>
         This page no longer exists. It's likely that you got here by following a

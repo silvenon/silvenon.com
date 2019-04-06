@@ -1,7 +1,7 @@
 // @flow
 // this component is based on the official Unsplash embed code
 import React from 'react'
-import { CameraIcon } from './icons'
+import Icon from './icon'
 import styles from './unsplash-badge.module.css'
 
 type Props = {
@@ -18,7 +18,7 @@ const UnsplashBadge = ({ fullName, userName }: Props) => (
     className={styles.button}
   >
     <span className={styles.iconContainer}>
-      <CameraIcon className={styles.icon} />
+      <Icon id="camera" className={styles.icon} />
     </span>
     <span className={styles.name}>{fullName}</span>
   </a>

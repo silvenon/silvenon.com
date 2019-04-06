@@ -9,6 +9,7 @@ import { H1 as Title, H2 } from '../components/body'
 import Link from '../components/link'
 import PostPreview from '../components/post-preview'
 import Button from '../components/button'
+import Icon from '../components/icon'
 import socialLinks from '../constants/social-links'
 import styles from './index.module.css'
 
@@ -107,10 +108,10 @@ const Home = ({
       <H2>More about me:</H2>
       <ul className={styles.buttonList}>
         {/* $FlowFixMe */}
-        {Object.values(socialLinks).map(({ name, url, color, Icon }) => (
+        {Object.values(socialLinks).map(({ name, url, color, iconId }) => (
           <li key={name}>
             <Button as="a" href={url} title={name} color={color}>
-              <Icon />
+              <Icon id={iconId} />
               <span className={styles.buttonLabel}>{name}</span>
             </Button>
           </li>

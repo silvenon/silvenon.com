@@ -2,9 +2,9 @@
 import React, { type Node } from 'react'
 import { graphql, useStaticQuery } from 'gatsby'
 import { Share as TwitterShare } from 'react-twitter-widgets'
-import { FaUser, FaCalendarAlt } from 'react-icons/fa'
 import { DiscussionEmbed } from 'disqus-react'
 import Layout from './layout'
+import Icon from './icon'
 import Spacer from './spacer'
 import Container from './container'
 import Header from './header'
@@ -107,11 +107,11 @@ const Post = ({ children, location, pageContext }: Props) => {
         <H1 className={styles.title}>{title}</H1>
         <Meta className={styles.meta}>
           <div className={styles.metaRow}>
-            <FaUser />
+            <Icon id="user" />
             <div>{name}</div>
           </div>
           <div className={styles.metaRow}>
-            <FaCalendarAlt />
+            <Icon id="calendar" />
             <Date dateTime={date} />
           </div>
         </Meta>

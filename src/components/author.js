@@ -4,6 +4,7 @@ import * as polished from 'polished'
 import Container from './container'
 import { H2, A } from './body'
 import LazyImage from './lazy-image'
+import Icon from './icon'
 import cl from '../utils/cloudinary'
 import withClassNames from './with-class-names'
 import { customMedia } from '../styles/globals.module.css'
@@ -23,7 +24,7 @@ type Props = {
       name: string,
       url: string,
       color: string,
-      Icon: string,
+      iconId: string,
     },
   },
 }
@@ -74,7 +75,7 @@ const Author = ({
           </div>
           <div className={styles.socialContainer}>
             {Object.keys(links).map(key => {
-              const { name, url, color, Icon } = links[key]
+              const { name, url, color, iconId } = links[key]
               return (
                 <A
                   className={styles.socialLink}
@@ -86,7 +87,7 @@ const Author = ({
                     '--color-hover': polished.darken(0.15, color),
                   }}
                 >
-                  <Icon size={28} />
+                  <Icon id={iconId} size={28} />
                 </A>
               )
             })}

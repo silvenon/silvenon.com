@@ -1,6 +1,6 @@
 // @flow
-import React, { type ComponentType } from 'react'
-import { FaTimes } from 'react-icons/fa'
+import React from 'react'
+import Icon from './icon'
 import Link from './link'
 import styles from './filters.module.css'
 
@@ -12,7 +12,7 @@ type Props = {
     path: string,
     name: string,
     shortName: string,
-    Icon: ComponentType<*>,
+    iconId: string,
   }>,
   currentPath: ?string,
 }
@@ -24,13 +24,13 @@ const Filters = ({ basePath, items, currentPath }: Props) => {
   return (
     <div className={styles.container}>
       <div className={styles.list}>
-        {items.map(({ path, name, shortName, Icon }) =>
+        {items.map(({ path, name, shortName, iconId }) =>
           path === currentPath ? (
             <div key={path} className={styles.filterActive}>
               <div className={styles.name}>{name}</div>
               <div className={styles.shortName}>{shortName}</div>
               <Link to={basePath} className={styles.close}>
-                <FaTimes size={iconSize} />
+                <Icon id="cross" size={iconSize} />
               </Link>
             </div>
           ) : (
@@ -42,7 +42,7 @@ const Filters = ({ basePath, items, currentPath }: Props) => {
               <div className={styles.name}>{name}</div>
               <div className={styles.shortName}>{shortName}</div>
               <div className={styles.iconContainer}>
-                <Icon size={iconSize} />
+                <Icon id={iconId} size={iconSize} />
               </div>
             </Link>
           ),

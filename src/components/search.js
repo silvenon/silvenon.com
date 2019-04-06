@@ -2,9 +2,9 @@
 import React, { useState, type Node } from 'react'
 import { useStaticQuery, graphql, navigate } from 'gatsby'
 import Downshift from 'downshift'
-import { FaSearch } from 'react-icons/fa'
 import fuzzaldrin from 'fuzzaldrin-plus'
 import Link from './link'
+import Icon from './icon'
 import withClassNames from './with-class-names'
 import styles from './search.module.css'
 
@@ -82,7 +82,7 @@ function Search({ children, ...props }: Props) {
             <div className={isFocused ? styles.fieldFocused : styles.field}>
               {/* eslint-disable-next-line jsx-a11y/label-has-associated-control, jsx-a11y/label-has-for */}
               <label {...getLabelProps({ className: styles.label })}>
-                <FaSearch className={styles.labelIcon} />
+                <Icon id="search" className={styles.labelIcon} />
                 <span className={styles.labelText}>Find posts</span>
               </label>
               <input

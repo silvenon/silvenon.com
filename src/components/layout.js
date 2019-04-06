@@ -5,6 +5,7 @@ import Helmet from 'react-helmet'
 import { MDXProvider } from '@mdx-js/tag'
 import { mapKeys } from 'lodash'
 import { camelCase } from 'change-case'
+import { SvgDefs } from './icon'
 import { components } from './body'
 import GitHubCorner from './github-corner'
 import TrackingCode from './tracking-code'
@@ -168,6 +169,7 @@ const Layout = ({
         <meta property="og:locale" content={LOCALE[lang]} />
         <meta property="og:site_name" content={name} />
       </Helmet>
+      <SvgDefs />
       <MDXProvider
         components={mapKeys(components, (value, key) => camelCase(key))}
       >
