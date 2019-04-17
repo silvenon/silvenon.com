@@ -36,13 +36,8 @@ module.exports = {
     {
       resolve: 'gatsby-mdx',
       options: {
-        defaultLayouts: {
-          posts: require.resolve('./src/components/post.js'),
-          drafts: require.resolve('./src/components/post.js'),
-          default: require.resolve('./src/components/layout.js'),
-        },
-        mdPlugins: [smartypants],
-        hastPlugins: [prism],
+        remarkPlugins: [smartypants],
+        rehypePlugins: [prism],
       },
     },
     ...(process.env.NODE_ENV !== 'production'

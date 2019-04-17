@@ -1,29 +1,43 @@
 // @flow
-import React, { type Node } from 'react'
-import { graphql, useStaticQuery } from 'gatsby'
+import React from 'react'
+import { graphql } from 'gatsby'
+import { MDXRenderer } from 'gatsby-mdx'
 import { Share as TwitterShare } from 'react-twitter-widgets'
 import { DiscussionEmbed } from 'disqus-react'
-import Layout from './layout'
-import Icon from './icon'
-import Spacer from './spacer'
-import Container from './container'
-import Header from './header'
-import { H1 } from './body'
-import Link from './link'
-import BackLink from './back-link'
-import Meta from './meta'
-import Date from './date'
-import Author from './author'
+import Layout from '../components/layout'
+import Icon from '../components/icon'
+import Spacer from '../components/spacer'
+import Container from '../components/container'
+import Header from '../components/header'
+import { H1 } from '../components/body'
+import Link from '../components/link'
+import BackLink from '../components/back-link'
+import Meta from '../components/meta'
+import Date from '../components/date'
+import Author from '../components/author'
 import socialLinks from '../constants/social-links'
 import styles from './post.module.css'
 
 type Props = {
-  children: Node,
   location: {
     pathname: string,
   },
   pageContext: {
-    node: {
+    readNext: ?{
+      title: string,
+      path: string,
+    },
+  },
+  data: {
+    site: {
+      siteMetadata: {
+        siteUrl: string,
+        name: string,
+        avatar: { id: string, aspectRatio: number },
+        biography: { long: string },
+      },
+    },
+    mdx: {
       fields: {
         date: string,
         slug: string,
@@ -37,54 +51,27 @@ type Props = {
         },
       },
       excerpt: string,
-    },
-    readNext: ?{
-      title: string,
-      path: string,
-    },
-  },
-}
-
-type QueryData = {
-  site: {
-    siteMetadata: {
-      siteUrl: string,
-      name: string,
-      avatar: { id: string, aspectRatio: number },
-      biography: { long: string },
+      code: {
+        body: string,
+      },
     },
   },
 }
 
-const Post = ({ children, location, pageContext }: Props) => {
+const Post = ({ location, pageContext, data }: Props) => {
   const { pathname } = location
+  const { readNext } = pageContext
   const {
-    node: {
+    site,
+    mdx: {
       fields: { date, slug, isDraft },
       exports: {
         meta: { title, lang, lastModified },
       },
       excerpt,
+      code: { body },
     },
-    readNext,
-  } = pageContext
-  const { site }: QueryData = useStaticQuery(graphql`
-    query PostQuery {
-      site {
-        siteMetadata {
-          siteUrl
-          name
-          avatar {
-            id
-            aspectRatio
-          }
-          biography {
-            long
-          }
-        }
-      }
-    }
-  `)
+  } = data
   const { siteUrl, name, avatar, biography } = site.siteMetadata
 
   return (
@@ -117,7 +104,7 @@ const Post = ({ children, location, pageContext }: Props) => {
         </Meta>
       </Header>
       <Container>
-        {children}
+        <MDXRenderer>{body}</MDXRenderer>
         <div className={styles.twitterShare}>
           <TwitterShare
             url={`${siteUrl}${pathname}`}
@@ -157,3 +144,39 @@ const Post = ({ children, location, pageContext }: Props) => {
 }
 
 export default Post
+
+export const query = graphql`
+  query PostQuery($id: String) {
+    site {
+      siteMetadata {
+        siteUrl
+        name
+        avatar {
+          id
+          aspectRatio
+        }
+        biography {
+          long
+        }
+      }
+    }
+    mdx(id: { eq: $id }) {
+      fields {
+        date
+        slug
+        isDraft
+      }
+      exports {
+        meta {
+          title
+          lang
+          lastModified
+        }
+      }
+      excerpt
+      code {
+        body
+      }
+    }
+  }
+`

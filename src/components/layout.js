@@ -2,7 +2,7 @@
 import React, { type Node } from 'react'
 import { graphql, useStaticQuery, withPrefix } from 'gatsby'
 import Helmet from 'react-helmet'
-import { MDXProvider } from '@mdx-js/tag'
+import { MDXProvider } from '@mdx-js/react'
 import { mapKeys } from 'lodash'
 import { camelCase } from 'change-case'
 import { SvgDefs } from './icon'

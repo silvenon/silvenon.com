@@ -51,26 +51,16 @@ exports.createPages = async ({ graphql, actions }) => {
         edges {
           node {
             id
-            parent {
-              ... on File {
-                absolutePath
-              }
-            }
             fields {
               date
               path
-              slug
-              isDraft
             }
             exports {
               meta {
                 title
-                lang
                 category
-                lastModified
               }
             }
-            excerpt
           }
         }
       }
@@ -83,6 +73,7 @@ exports.createPages = async ({ graphql, actions }) => {
   } else {
     const blogPosts = result.data.allMdx.edges
     const blogTemplate = path.resolve('./src/templates/blog.js')
+    const postTemplate = path.resolve('./src/templates/post.js')
     const categories = ['DEV', 'NON_DEV']
     const categorySlug = {
       DEV: 'dev',
@@ -123,9 +114,9 @@ exports.createPages = async ({ graphql, actions }) => {
 
       createPage({
         path: node.fields.path,
-        component: node.parent.absolutePath,
+        component: postTemplate,
         context: {
-          node,
+          id: node.id,
           readNext:
             readNext != null
               ? {
