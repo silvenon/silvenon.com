@@ -4,9 +4,8 @@ import { Tweet as ReactTweet } from 'react-twitter-widgets'
 import IntrinsicRatio from './intrinsic-ratio'
 import ResponsiveImage from './responsive-image'
 import withClassNames from './with-class-names'
+import { DPRS } from '../constants/responsive'
 import styles from './media.module.css'
-
-export const DPRS = [1, 2]
 
 export const Figure = 'figure'
 

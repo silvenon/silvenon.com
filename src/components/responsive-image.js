@@ -2,8 +2,8 @@
 import React from 'react'
 import { range } from 'lodash'
 import { MAX_WIDTH } from './container'
-import { DPRS } from './media'
 import cl from '../utils/cloudinary'
+import { DPRS } from '../constants/responsive'
 import { customProperties } from '../styles/globals.module.css'
 
 const STEP_WIDTH = 200

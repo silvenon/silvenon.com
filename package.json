@@ -39,7 +39,7 @@
     "disqus-react": "^1.0.5",
     "downshift": "^3.2.7",
     "fuzzaldrin-plus": "^0.6.0",
-    "gatsby": "2.3.22",
+    "gatsby": "2.3.24",
     "gatsby-mdx": "^0.6.2",
     "gatsby-plugin-css-customs": "^0.3.0",
     "gatsby-plugin-flow": "^1.0.4",
@@ -76,7 +76,7 @@
     "eslint-config-airbnb": "^17.0.0",
     "eslint-config-prettier": "^4.1.0",
     "eslint-plugin-flowtype": "^3.6.1",
-    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-import": "^2.17.2",
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-prettier": "^3.0.1",
     "eslint-plugin-react": "^7.12.4",
@@ -89,7 +89,7 @@
     "jest": "^24.7.1",
     "jest-config": "^24.7.1",
     "lint-staged": "^8.1.5",
-    "prettier": "^1.16.4",
+    "prettier": "^1.17.0",
     "react-testing-library": "^6.1.2"
   },
   "browserslist": [
