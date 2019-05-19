@@ -42,6 +42,7 @@
     "gatsby": "2.5.5",
     "gatsby-mdx": "^0.6.3",
     "gatsby-plugin-css-customs": "^0.3.0",
+    "gatsby-plugin-feed": "^2.2.0",
     "gatsby-plugin-flow": "^1.0.5",
     "gatsby-plugin-lodash": "^3.0.5",
     "gatsby-plugin-netlify": "^2.0.17",

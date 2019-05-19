@@ -21,6 +21,7 @@ type Props = {
     site: {
       siteMetadata: {
         siteUrl: string,
+        title: string,
         name: string,
         avatar: {
           id: string,
@@ -55,7 +56,7 @@ const Home = ({
   location: { pathname },
   data: {
     site: {
-      siteMetadata: { name, avatar, biography },
+      siteMetadata: { title, name, avatar, biography },
     },
     allMdx: { edges },
   },
@@ -68,7 +69,7 @@ const Home = ({
   >
     <Header>
       <Header.TopBar>
-        <Title>Silvenon</Title>
+        <Title>{title}</Title>
       </Header.TopBar>
     </Header>
     <Author
@@ -126,6 +127,7 @@ export const query = graphql`
     site {
       siteMetadata {
         siteUrl
+        title
         name
         avatar {
           id

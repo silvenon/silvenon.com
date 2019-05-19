@@ -5,6 +5,7 @@ const smartypants = require('./utils/remark-smartypants')
 module.exports = {
   siteMetadata: {
     siteUrl: 'https://silvenon.com',
+    title: 'Silvenon',
     name: 'Matija Marohnić',
     avatar: {
       id: 'avatar',
@@ -55,6 +56,60 @@ module.exports = {
       resolve: 'gatsby-plugin-sitemap',
       options: {
         exclude: ['/blog/category/*'],
+      },
+    },
+    {
+      resolve: 'gatsby-plugin-feed',
+      options: {
+        query: `
+          {
+            site {
+              siteMetadata {
+                title
+                siteUrl
+                site_url: siteUrl,
+              }
+            }
+          }
+        `,
+        setup: ({ query: { site } }) => ({
+          ...site.siteMetadata,
+          feed_url: `${site.siteMetadata.siteUrl}/rss.xml`,
+        }),
+        feeds: [
+          {
+            query: `
+              {
+                allMdx(
+                  sort: { fields: [fields___date], order: DESC }
+                ) {
+                  edges {
+                    node {
+                      fields {
+                        path
+                        date
+                      }
+                      exports {
+                        meta {
+                          title
+                        }
+                      }
+                      excerpt
+                    }
+                  }
+                }
+              }
+            `,
+            serialize: ({ query: { site, allMdx } }) =>
+              allMdx.edges.map(({ node }) => ({
+                title: node.exports.meta.title,
+                description: node.excerpt,
+                date: node.fields.date,
+                url: `${site.siteMetadata.siteUrl}${node.fields.path}`,
+              })),
+            output: 'rss.xml',
+          },
+        ],
       },
     },
     'gatsby-plugin-netlify',
