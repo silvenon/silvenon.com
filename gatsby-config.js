@@ -50,13 +50,13 @@ module.exports = {
         path: path.resolve(__dirname, `./src/${name}`),
       },
     })),
+    'gatsby-plugin-remove-trailing-slashes',
     {
       resolve: 'gatsby-plugin-sitemap',
       options: {
         exclude: ['/blog/category/*'],
       },
     },
-    'gatsby-plugin-remove-trailing-slashes',
     'gatsby-plugin-netlify',
   ],
 }
