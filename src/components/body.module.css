@@ -28,15 +28,15 @@
 .h3 {
   margin-bottom: 0.75rem;
   font-family: var(--base-font-family);
-  font-size: 1.15rem;
-  font-weight: bold;
+  font-size: 1.25rem;
+  font-weight: normal;
   line-height: 1.25;
   color: #000;
   &:global(:--hanging-double-quotes) {
     text-indent: -0.5em;
   }
   @media (--min-small) {
-    font-size: 1.65rem;
+    font-size: 1.75rem;
   }
 }
 
