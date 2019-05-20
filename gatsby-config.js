@@ -25,14 +25,6 @@ module.exports = {
     'gatsby-plugin-lodash',
     'gatsby-plugin-postcss',
     'gatsby-plugin-css-customs',
-    {
-      resolve: 'gatsby-plugin-web-font-loader',
-      options: {
-        google: {
-          families: ['Lora:400,400i,700:latin-ext'],
-        },
-      },
-    },
     'gatsby-plugin-react-helmet',
     {
       resolve: 'gatsby-mdx',

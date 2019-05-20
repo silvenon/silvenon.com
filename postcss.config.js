@@ -12,9 +12,5 @@ module.exports = {
         'color-mod-function': true,
       },
     }),
-    require('postcss-webfontloader')({
-      modules: true,
-      families: ['Lora'],
-    }),
   ],
 }
