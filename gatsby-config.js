@@ -74,6 +74,9 @@ module.exports = {
               {
                 allMdx(
                   sort: { fields: [fields___date], order: DESC }
+                  filter: {
+                    exports: { meta: { lang: { eq: "EN" } } }
+                  }
                 ) {
                   edges {
                     node {
