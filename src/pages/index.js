@@ -141,7 +141,9 @@ export const query = graphql`
     }
     allMdx(
       sort: { order: DESC, fields: [fields___date] }
-      filter: { exports: { meta: { lang: { eq: "EN" } } } }
+      filter: {
+        exports: { meta: { isHidden: { eq: false }, lang: { eq: "EN" } } }
+      }
       limit: 1
     ) {
       edges {

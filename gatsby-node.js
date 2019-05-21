@@ -59,6 +59,7 @@ exports.createPages = async ({ graphql, actions }) => {
               meta {
                 title
                 category
+                isHidden
               }
             }
           }
@@ -104,7 +105,9 @@ exports.createPages = async ({ graphql, actions }) => {
 
     blogPosts.forEach(({ node }) => {
       const readNextCandidates = blogPosts.filter(
-        ({ node: n }) => n.exports.meta.category === node.exports.meta.category,
+        ({ node: n }) =>
+          !n.exports.meta.isHidden &&
+          n.exports.meta.category === node.exports.meta.category,
       )
       const currentIndex = readNextCandidates.findIndex(
         ({ node: n }) => n.id === node.id,

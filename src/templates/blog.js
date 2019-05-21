@@ -126,7 +126,11 @@ export const query = graphql`
   query BlogQuery($category: String, $skip: Int!, $limit: Int!) {
     allMdx(
       sort: { fields: [fields___date], order: DESC }
-      filter: { exports: { meta: { category: { eq: $category } } } }
+      filter: {
+        exports: {
+          meta: { isHidden: { eq: false }, category: { eq: $category } }
+        }
+      }
       skip: $skip
       limit: $limit
     ) {

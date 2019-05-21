@@ -32,7 +32,7 @@ function Search({ children, ...props }: Props) {
   const [isFocused, setIsFocused] = useState(false)
   const { allMdx }: QueryData = useStaticQuery(graphql`
     query SearchQuery {
-      allMdx {
+      allMdx(filter: { exports: { meta: { isHidden: { eq: false } } } }) {
         edges {
           node {
             fields {
