@@ -248,11 +248,6 @@ With this setup you could technically commit formatted code with fixed ESLint er
 
 Btw, you might have started thinking about partially staged files and wondering if this solution just commits the entire file instead of your carefully selected hunks. Well, it turns out that the author of lint-staged [is a genius](https://github.com/okonet/lint-staged/pull/75) and managed to support applying fixes to staged files while somehow keeping them partially staged! 😵
 
-If you're blown away by all of this, you can donate to:
-
-- [Typicode](https://www.patreon.com/typicode) (the author of husky)
-- [lint-staged](https://opencollective.com/lint-staged)
-
 ## Unifying
 
 What do ESLint and Prettier have in common? They both convert files to an [AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree), perform various alterations to it, and convert it back to text. This means that our files get overwritten twice, which can be a bit slow. It would be nice if we could unify these two tools into a single process.
@@ -327,3 +322,12 @@ Btw, you probably know that Prettier supports other languages too, like CSS, Gra
 When introducing a new tool we should carefully think over what benefits it brings and how we can enforce using it. Either everyone should use it or nobody should, there is no point in partial integration. Otherwise we start seeing review comments like "pls run Prettier", which is a type of a comment that we wanted to avoid in the first place.
 
 In whichever way we integrate Prettier, it's worth noting that the sole purpose of Prettier is code formatting, which frees up tools like ESLint and stylelint to do what they do best--detect problems, discourage anti-patterns and enforce consistent code practices.
+
+---
+
+If you're blown away by all of this, consider convincing your company to donate:
+
+  - [Prettier](https://opencollective.com/prettier)
+  - [ESLint](https://opencollective.com/eslint)
+  - [Typicode](https://www.patreon.com/typicode) (the author and maintainer of husky)
+  - [lint-staged](https://opencollective.com/lint-staged)
