@@ -17,7 +17,7 @@ describe('<ResponsiveImage>', () => {
       )
       // $FlowFixMe
       const src = container.querySelector('img').getAttribute('src')
-      expect(src).toMatch(/w_200\/myId$/)
+      expect(src).toMatch(/w_200.*myId$/)
     })
   })
 
@@ -28,8 +28,8 @@ describe('<ResponsiveImage>', () => {
       )
       // $FlowFixMe
       const srcSet = container.querySelector('img').getAttribute('srcset')
-      expect(srcSet).not.toContain('w_200/myId 200w')
-      expect(srcSet).toContain('w_400/myId 400w')
+      expect(srcSet).not.toMatch(/w_200.*myId 200w/)
+      expect(srcSet).toMatch(/w_400.*myId 400w/)
     })
 
     test('when original width is less than maximum width', () => {
@@ -43,8 +43,8 @@ describe('<ResponsiveImage>', () => {
       )
       // $FlowFixMe
       const srcSet = container.querySelector('img').getAttribute('srcset')
-      expect(srcSet).toContain('w_600/myId 600w')
-      expect(srcSet).toContain('w_768/myId 768w')
+      expect(srcSet).toMatch(/w_600.*myId 600w/)
+      expect(srcSet).toMatch(/w_768.*myId 768w/)
     })
 
     test('when original width is greater than maximum width', () => {
@@ -58,8 +58,8 @@ describe('<ResponsiveImage>', () => {
       )
       // $FlowFixMe
       const srcSet = container.querySelector('img').getAttribute('srcset')
-      expect(srcSet).toContain('w_1800/myId 1800w')
-      expect(srcSet).toContain('w_1984/myId 1984w')
+      expect(srcSet).toMatch(/w_1800.*myId 1800w/)
+      expect(srcSet).toMatch(/w_1984.*myId 1984w/)
     })
 
     test('dpr-only', () => {
@@ -73,10 +73,10 @@ describe('<ResponsiveImage>', () => {
       )
       // $FlowFixMe
       const srcSet = container.querySelector('img').getAttribute('srcset')
-      expect(srcSet).toContain('w_400/myId 1x')
-      expect(srcSet).toContain('w_600/myId 1.5x')
-      expect(srcSet).toContain('w_800/myId 2x')
-      expect(srcSet).toContain('w_1200/myId 3x')
+      expect(srcSet).toMatch(/w_400.*myId 1x/)
+      expect(srcSet).toMatch(/w_600.*myId 1\.5x/)
+      expect(srcSet).toMatch(/w_800.*myId 2x/)
+      expect(srcSet).toMatch(/w_1200.*myId 3x/)
     })
   })
 
@@ -114,6 +114,6 @@ describe('<ResponsiveImage>', () => {
     )
     // $FlowFixMe
     const src = container.querySelector('img').getAttribute('src')
-    expect(src).toMatch(/w_333\/myId$/)
+    expect(src).toMatch(/w_333.*myId$/)
   })
 })
