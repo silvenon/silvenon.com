@@ -22,7 +22,6 @@ module.exports = {
   },
   plugins: [
     'gatsby-plugin-flow',
-    'gatsby-plugin-lodash',
     'gatsby-plugin-postcss',
     'gatsby-plugin-css-customs',
     'gatsby-plugin-react-helmet',

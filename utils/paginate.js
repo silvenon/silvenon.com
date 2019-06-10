@@ -1,4 +1,4 @@
-const { range } = require('lodash')
+const range = require('./range')
 
 const paginate = ({
   createPage,

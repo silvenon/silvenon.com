@@ -1,8 +1,8 @@
 // @flow
 import React from 'react'
-import { range } from 'lodash'
 import { MAX_WIDTH } from './container'
 import cl from '../utils/cloudinary'
+import range from '../utils/range'
 import { DPRS } from '../constants/responsive'
 import { customProperties } from '../styles/globals.module.css'
 

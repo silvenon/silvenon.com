@@ -3,7 +3,6 @@ import React, { type Node } from 'react'
 import { graphql, useStaticQuery, withPrefix } from 'gatsby'
 import Helmet from 'react-helmet'
 import { MDXProvider } from '@mdx-js/react'
-import { mapKeys } from 'lodash'
 import { camelCase } from 'change-case'
 import { SvgDefs } from './icon'
 import { components } from './body'
@@ -171,7 +170,13 @@ const Layout = ({
       </Helmet>
       <SvgDefs />
       <MDXProvider
-        components={mapKeys(components, (value, key) => camelCase(key))}
+        components={Object.entries(components).reduce(
+          (mappedComponents, [key, value]) => ({
+            ...mappedComponents,
+            [camelCase(key)]: value,
+          }),
+          {},
+        )}
       >
         <>{children}</>
       </MDXProvider>
