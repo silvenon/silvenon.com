@@ -1,6 +1,6 @@
 // @flow
 import React from 'react'
-import { render } from 'react-testing-library'
+import { render } from '@testing-library/react'
 import ResponsiveImage from './responsive-image'
 
 jest.mock('../styles/globals.module.css', () => ({

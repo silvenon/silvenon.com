@@ -1,33 +1,40 @@
 // @flow
-import React, { type ElementType } from 'react'
+import React, { type AbstractComponent } from 'react'
 import getDisplayName from '../utils/get-display-name'
 
-type Style = {}
+type Props = {|
+  style: ?{},
+|}
 
-type Props = {
-  style: Style,
-}
-
-const withClassNames = (initialStyle: Style) => {
-  const enhance = (WrappedComponent: ElementType) => {
-    const ComponentWithStyle = ({ style, ...props }: Props) => (
-      <WrappedComponent
-        style={{
-          ...initialStyle,
-          ...style,
-        }}
-        {...props}
-      />
-    )
+function withStyle<Config, Instance>(initialStyle: {}) {
+  return function enhance(
+    WrappedComponent: string | AbstractComponent<Config, Instance>,
+  ): AbstractComponent<{| ...Config, ...Props |}, void> {
+    function ComponentWithStyle({
+      style,
+      ...props
+    }: {|
+      ...Config,
+      ...Props,
+    |}) {
+      return (
+        <WrappedComponent
+          style={{
+            ...initialStyle,
+            ...style,
+          }}
+          {...props}
+        />
+      )
+    }
     ComponentWithStyle.defaultProps = {
-      style: {},
+      style: null,
     }
     ComponentWithStyle.displayName = `withStyle(${getDisplayName(
       WrappedComponent,
     )})`
     return ComponentWithStyle
   }
-  return enhance
 }
 
-export default withClassNames
+export default withStyle

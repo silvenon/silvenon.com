@@ -1,22 +1,32 @@
 // @flow
-import React, { type ElementType } from 'react'
+import React, { type AbstractComponent } from 'react'
 import classNames from 'classnames'
 import getDisplayName from '../utils/get-display-name'
 
 type ClassName = string | { [className: string]: boolean } | false | void | null
 
-type Props = {
+type Props = {|
   className: ?string,
-}
+|}
 
-const withClassNames = (...classes: Array<ClassName | ClassName[]>) => {
-  const enhance = (WrappedComponent: ElementType) => {
-    const ComponentWithClassNames = ({ className, ...props }: Props) => (
-      <WrappedComponent
-        className={classNames(...classes, className)}
-        {...props}
-      />
-    )
+function withClassNames(...classes: Array<ClassName | ClassName[]>) {
+  return function enhance<Config, Instance>(
+    WrappedComponent: string | AbstractComponent<Config, Instance>,
+  ): AbstractComponent<{| ...Config, ...Props |}, void> {
+    function ComponentWithClassNames({
+      className,
+      ...props
+    }: {|
+      ...Config,
+      ...Props,
+    |}) {
+      return (
+        <WrappedComponent
+          className={classNames(...classes, className)}
+          {...props}
+        />
+      )
+    }
     ComponentWithClassNames.defaultProps = {
       className: null,
     }
@@ -25,7 +35,6 @@ const withClassNames = (...classes: Array<ClassName | ClassName[]>) => {
     )})`
     return ComponentWithClassNames
   }
-  return enhance
 }
 
 export default withClassNames

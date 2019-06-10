@@ -1,14 +1,11 @@
 // @flow
-import React, { type ElementType } from 'react'
+import React, { type AbstractComponent } from 'react'
 import * as polished from 'polished'
 import withClassNames from './with-class-names'
 import styles from './button.module.css'
 
-// eslint-disable-next-line react/button-has-type
-const ButtonComponent = (props: { type: string }) => <button {...props} />
-
 type Props = {
-  as: ElementType,
+  as: string | AbstractComponent<{ style: {} }, mixed>,
   color: string,
   style: {},
 }
@@ -25,7 +22,7 @@ const Button = ({ as: Component, color, style, ...props }: Props) => (
 )
 
 Button.defaultProps = {
-  as: ButtonComponent,
+  as: 'button',
   style: {},
 }
 
