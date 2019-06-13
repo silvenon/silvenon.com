@@ -58,7 +58,7 @@
   max-width: 25rem;
   margin: 2rem auto;
   border: 0;
-  border-bottom: 1px solid color-mod(#000 a(25%));
+  border-bottom: 1px solid color-mod(#fff shade(25%));
 }
 
 .ol {
@@ -99,7 +99,7 @@
 .inlineCode {
   padding: 0.25rem 0.35rem;
   white-space: nowrap;
-  background: color-mod(#000 a(5%));
+  background: color-mod(#fff shade(5%));
   border-radius: var(--border-radius);
 }
 
@@ -110,7 +110,7 @@
   -webkit-overflow-scrolling: touch;
   margin-bottom: var(--spacing) !important;
   padding: var(--site-padding);
-  background: color-mod(#000 a(5%));
+  background: color-mod(#fff shade(5%));
 }
 
 .code {
