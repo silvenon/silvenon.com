@@ -53,7 +53,7 @@
   }
 
   &.autolink {
-    margin-right: 0.25em;
+    margin-right: 0.2em;
     svg {
       position: relative;
       top: -0.1rem;
