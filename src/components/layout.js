@@ -140,30 +140,14 @@ const Layout = ({
         ) : (
           <meta property="og:type" content="website" />
         )}
-        {metaImage != null
-          ? [
-              <meta
-                key="og:image"
-                property="og:image"
-                content={metaImage.url}
-              />,
-              <meta
-                key="og:image:width"
-                property="og:image:width"
-                content={metaImage.width}
-              />,
-              <meta
-                key="og:image:height"
-                property="og:image:height"
-                content={metaImage.height}
-              />,
-              <meta
-                key="og:image:alt"
-                property="og:image:alt"
-                content={metaImage.alt}
-              />,
-            ]
-          : null}
+        {metaImage != null ? (
+          <>
+            <meta property="og:image" content={metaImage.url} />
+            <meta property="og:image:width" content={metaImage.width} />
+            <meta property="og:image:height" content={metaImage.height} />
+            <meta property="og:image:alt" content={metaImage.alt} />
+          </>
+        ) : null}
         <meta property="og:description" content={description} />
         <meta property="og:locale" content={LOCALE[lang]} />
         <meta property="og:site_name" content={name} />
