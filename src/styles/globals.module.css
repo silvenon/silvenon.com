@@ -20,7 +20,7 @@
   --code-font-family: Inconsolata, Monaco, Consolas, "Courier New", Courier, monospace;
 
   --base-font-size: 18px;
-  --code-font-size: 16px;
+  --code-font-size: 0.9em;
   --line-height: 1.75;
 
   --site-padding: 1rem;
@@ -93,7 +93,6 @@
 @media (--min-small) {
   :root {
     --base-font-size: 20px;
-    --code-font-size: 18px;
 
     --spacing: 1.5rem;
 
