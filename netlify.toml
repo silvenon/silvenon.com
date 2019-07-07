@@ -1,7 +1,7 @@
 [context.production.environment]
   RUBY_VERSION = "2.4.3"
   NODE_VERSION = "10.16.0"
-  YARN_VERSION = "1.15.2"
+  YARN_VERSION = "1.16.0"
 
 # the official way to redirect the default Netlify subdomain to my primary domain
 
