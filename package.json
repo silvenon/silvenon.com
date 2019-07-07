@@ -59,6 +59,8 @@
     "react-helmet": "^5.2.1",
     "react-twitter-widgets": "^1.7.1",
     "recompose": "^0.30.0",
+    "rehype-autolink-headings": "^2.0.5",
+    "rehype-slug": "^2.0.3",
     "retext": "^7.0.0",
     "retext-smartypants": "^3.0.3",
     "unist-util-visit": "^1.4.1"

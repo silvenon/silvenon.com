@@ -51,6 +51,14 @@
   &:focus {
     color: #000;
   }
+
+  &.autolink {
+    margin-right: 0.25em;
+    svg {
+      position: relative;
+      top: -0.1rem;
+    }
+  }
 }
 
 .hr {

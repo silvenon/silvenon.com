@@ -1,13 +1,35 @@
 // @flow
+import React from 'react'
+import classNames from 'classnames'
+import Icon from './icon'
 import typeset from './typeset'
 import withClassNames from './with-class-names'
 import styles from './body.module.css'
+
+function CustomA(props: { ['data-autolink']: boolean, className: ?string }) {
+  /* eslint-disable jsx-a11y/anchor-has-content */
+  if (props['data-autolink']) {
+    return (
+      <a {...props} className={classNames(props.className, styles.autolink)}>
+        <Icon id="hash" size="0.6em" />
+      </a>
+    )
+  }
+  return <a {...props} />
+  /* eslint-enable jsx-a11y/anchor-has-content */
+}
+CustomA.defaultProps = {
+  // this rule doesn't seem to recognize keys with quotes
+  // eslint-disable-next-line react/default-props-match-prop-types
+  'data-autolink': false,
+  className: null,
+}
 
 export const H1 = withClassNames(styles.h1)('h1')
 export const H2 = withClassNames(styles.h2)(typeset('h2'))
 export const H3 = withClassNames(styles.h3)(typeset('h3'))
 export const P = withClassNames(styles.p)('p')
-export const A = withClassNames(styles.a)('a')
+export const A = withClassNames(styles.a)(CustomA)
 export const HR = withClassNames(styles.hr)('hr')
 export const OL = withClassNames(styles.ol)('ol')
 export const UL = withClassNames(styles.ul)('ul')
