@@ -89,7 +89,7 @@ module.exports = {
                 allMdx(
                   sort: { fields: [fields___date], order: DESC }
                   filter: {
-                    exports: { meta: { isHidden: { eq: false }, lang: { eq: "EN" } } }
+                    exports: { meta: { isHidden: { eq: false }, language: { eq: "EN" } } }
                   }
                 ) {
                   edges {

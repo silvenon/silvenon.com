@@ -142,7 +142,7 @@ export const query = graphql`
     allMdx(
       sort: { order: DESC, fields: [fields___date] }
       filter: {
-        exports: { meta: { isHidden: { eq: false }, lang: { eq: "EN" } } }
+        exports: { meta: { isHidden: { eq: false }, language: { eq: "EN" } } }
       }
       limit: 1
     ) {

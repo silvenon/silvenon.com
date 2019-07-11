@@ -17,7 +17,7 @@ type Props = {
   title: string,
   description: string,
   pathname: string,
-  lang: string,
+  language: string,
   image: ?{
     id: string,
     aspectRatio: number,
@@ -45,7 +45,7 @@ const Layout = ({
   title,
   description,
   pathname,
-  lang,
+  language,
   image,
   article,
   children,
@@ -74,7 +74,7 @@ const Layout = ({
   return (
     <>
       <Helmet>
-        <html lang={lang.toLowerCase()} />
+        <html lang={language.toLowerCase()} />
         <title>{title === name ? title : `${title} · ${name}`}</title>
         <meta name="description" content={description} />
         <link rel="icon" href={withPrefix('/favicon.ico')} />
@@ -149,7 +149,7 @@ const Layout = ({
           </>
         ) : null}
         <meta property="og:description" content={description} />
-        <meta property="og:locale" content={LOCALE[lang]} />
+        <meta property="og:locale" content={LOCALE[language]} />
         <meta property="og:site_name" content={name} />
       </Helmet>
       <SvgDefs />
@@ -171,7 +171,7 @@ const Layout = ({
 }
 
 Layout.defaultProps = {
-  lang: 'EN',
+  language: 'EN',
   image: null,
   article: null,
 }

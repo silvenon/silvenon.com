@@ -46,7 +46,7 @@ type Props = {
       exports: {
         meta: {
           title: string,
-          lang: string,
+          language: string,
           lastModified: string,
         },
       },
@@ -66,7 +66,7 @@ const Post = ({ location, pageContext, data }: Props) => {
     mdx: {
       fields: { date, slug, isDraft },
       exports: {
-        meta: { title, lang, lastModified },
+        meta: { title, language, lastModified },
       },
       excerpt,
       code: { body },
@@ -79,7 +79,7 @@ const Post = ({ location, pageContext, data }: Props) => {
       title={title}
       description={excerpt}
       pathname={pathname}
-      lang={lang}
+      language={language}
       article={{
         publishedTime: date,
         modifiedTime: lastModified !== '' ? lastModified : null,
@@ -169,7 +169,7 @@ export const query = graphql`
       exports {
         meta {
           title
-          lang
+          language
           lastModified
         }
       }
