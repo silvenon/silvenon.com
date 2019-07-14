@@ -21,6 +21,7 @@
 [[redirects]]
   from = "/intro-to-eslint"
   to = "/blog/intro-to-eslint"
+  status = 307
 
 # I wrote these for Semaphore CI
 
@@ -96,3 +97,4 @@
 [[redirects]]
   from = "/blog/posts/*"
   to = "/blog/:splat"
+  status = 307
