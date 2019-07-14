@@ -10,6 +10,7 @@
 [lints]
 
 [options]
+esproposal.nullish_coalescing=enable
 module.name_mapper.extension='css' -> 'CSSStub'
 
 [strict]

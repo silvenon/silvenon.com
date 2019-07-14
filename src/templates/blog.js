@@ -1,15 +1,17 @@
 // @flow
 import React from 'react'
 import { graphql } from 'gatsby'
+import classNames from 'classnames'
 import Layout from '../components/layout'
 import Spacer from '../components/spacer'
 import Container from '../components/container'
 import Header from '../components/header'
 import { H1 as Title } from '../components/body'
-import Filters from '../components/filters'
 import PostPreview from '../components/post-preview'
 import Pager from '../components/pager'
-import * as CATEGORY from '../constants/categories'
+import Icon from '../components/icon'
+import Link from '../components/link'
+import { type Language, LANGUAGE, LANGUAGES } from '../language'
 import styles from './blog.module.css'
 
 type Props = {
@@ -17,11 +19,11 @@ type Props = {
     pathname: string,
   },
   pageContext: {
-    category: $Keys<typeof CATEGORY>,
-    pageNumber: *,
-    numberOfPages: *,
-    previousPagePath: *,
-    nextPagePath: *,
+    language?: Language,
+    pageNumber: number,
+    numberOfPages: number,
+    previousPagePath: ?string,
+    nextPagePath: ?string,
   },
   data: {
     allMdx: {
@@ -43,10 +45,10 @@ type Props = {
   },
 }
 
-const Blog = ({
+function Blog({
   location: { pathname },
   pageContext: {
-    category,
+    language,
     pageNumber,
     numberOfPages,
     previousPagePath,
@@ -55,80 +57,112 @@ const Blog = ({
   data: {
     allMdx: { edges },
   },
-}: Props) => (
-  <Layout
-    title={category != null ? `Blog (${CATEGORY[category].name})` : 'Blog'}
-    description="Posts about frontend development, love and other topics"
-    pathname={pathname}
-  >
-    <Header>
-      <Header.TopBar>
-        <Title>Blog</Title>
-      </Header.TopBar>
-      <Filters
-        basePath="/blog"
-        currentPath={category != null ? CATEGORY[category].path : null}
-        items={['DEV', 'NON_DEV'].map(category => CATEGORY[category])}
-        closePath="/blog"
-      />
-    </Header>
-    <Container>
-      {edges.reduce((acc, edge, i) => {
-        const {
-          fields: { path, date },
-          exports: {
-            meta: { title },
-          },
-          excerpt,
-        } = edge.node
-        const post = (
-          <PostPreview
-            key={path}
-            path={path}
-            title={title}
-            dateTime={date}
-            excerpt={excerpt}
-          />
-        )
-        if (i > 0) {
-          const prevPath = edges[i - 1].node.fields.path
-          const dividerKey = `${prevPath}-${path}`
-          return acc.concat(
-            <div key={dividerKey} className={styles.divider} />,
-            post,
+}: Props) {
+  return (
+    <Layout
+      title={language != null ? `Blog (${LANGUAGE[language].name})` : 'Blog'}
+      description="Posts about frontend development, love and other topics"
+      pathname={pathname}
+    >
+      <Header>
+        <Header.TopBar>
+          <Title>Blog</Title>
+        </Header.TopBar>
+        <div className={styles.filters}>
+          <div className={styles.list}>
+            {LANGUAGES.map(language => LANGUAGE[language]).map(({ id, name }) =>
+              id === language ? (
+                <div
+                  key={id}
+                  className={classNames(styles.item, styles.isActive)}
+                >
+                  <div className={styles.name}>{name}</div>
+                  <Link to="/blog" className={styles.close}>
+                    <Icon id="cross" size={24} />
+                  </Link>
+                </div>
+              ) : (
+                <Link
+                  key={id}
+                  to={`/blog/language/${id.toLowerCase()}`}
+                  className={classNames(styles.item, styles.link)}
+                >
+                  <div className={styles.name}>{name}</div>
+                </Link>
+              ),
+            )}
+          </div>
+          <div className={styles.state}>
+            {language != null ? (
+              <>
+                Viewing posts in <strong>{LANGUAGE[language].name}</strong>
+              </>
+            ) : (
+              <>
+                Viewing <strong>all</strong> posts
+              </>
+            )}
+          </div>
+        </div>
+      </Header>
+      <Container>
+        {edges.reduce((acc, edge, i) => {
+          const {
+            fields: { path, date },
+            exports: {
+              meta: { title },
+            },
+            excerpt,
+          } = edge.node
+          const post = (
+            <PostPreview
+              key={path}
+              path={path}
+              title={title}
+              dateTime={date}
+              excerpt={excerpt}
+            />
           )
-        }
-        return acc.concat(post)
-      }, [])}
-    </Container>
-    <Spacer />
-    <Pager
-      page={pageNumber}
-      total={numberOfPages}
-      prevLabel="Newer"
-      prevPath={previousPagePath}
-      nextLabel="Older"
-      nextPath={nextPagePath}
-    />
-    <Spacer />
-  </Layout>
-)
+          if (i > 0) {
+            const prevPath = edges[i - 1].node.fields.path
+            const dividerKey = `${prevPath}-${path}`
+            return acc.concat(
+              <div key={dividerKey} className={styles.divider} />,
+              post,
+            )
+          }
+          return acc.concat(post)
+        }, [])}
+      </Container>
+      <Spacer />
+      <Pager
+        page={pageNumber}
+        total={numberOfPages}
+        prevLabel="Newer"
+        prevPath={previousPagePath}
+        nextLabel="Older"
+        nextPath={nextPagePath}
+      />
+      <Spacer />
+    </Layout>
+  )
+}
 
 Blog.defaultProps = {
   pageContext: {
-    category: null,
+    language: null,
   },
 }
 
 export default Blog
 
 export const query = graphql`
-  query BlogQuery($category: String, $skip: Int!, $limit: Int!) {
+  query BlogQuery($language: String, $skip: Int!, $limit: Int!) {
     allMdx(
       sort: { fields: [fields___date], order: DESC }
       filter: {
         exports: {
-          meta: { isHidden: { eq: false }, category: { eq: $category } }
+          meta: { isHidden: { eq: false }, language: { eq: $language } }
         }
       }
       skip: $skip

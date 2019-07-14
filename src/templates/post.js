@@ -16,6 +16,7 @@ import Meta from '../components/meta'
 import Date from '../components/date'
 import Author from '../components/author'
 import socialLinks from '../constants/social-links'
+import { type Language } from '../language'
 import styles from './post.module.css'
 
 type Props = {
@@ -46,7 +47,7 @@ type Props = {
       exports: {
         meta: {
           title: string,
-          language: string,
+          language: Language,
           lastModified: string,
         },
       },

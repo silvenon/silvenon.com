@@ -9,7 +9,7 @@ import { components } from './body'
 import GitHubCorner from './github-corner'
 import TrackingCode from './tracking-code'
 import cl from '../utils/cloudinary'
-import * as LOCALE from '../constants/locales'
+import { type Language, LANGUAGE, LOCALE } from '../language'
 import '../styles/globals.module.css'
 import '../styles/index.css'
 
@@ -17,7 +17,7 @@ type Props = {
   title: string,
   description: string,
   pathname: string,
-  language: string,
+  language: Language,
   image: ?{
     id: string,
     aspectRatio: number,
@@ -187,7 +187,7 @@ const Layout = ({
 }
 
 Layout.defaultProps = {
-  language: 'EN',
+  language: LANGUAGE.EN.id,
   image: null,
   article: null,
 }

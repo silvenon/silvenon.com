@@ -98,3 +98,14 @@
   from = "/blog/posts/*"
   to = "/blog/:splat"
   status = 307
+
+# blog categories which are not being used at the moment
+
+[[redirects]]
+  from = "/blog/category/dev"
+  to = "/blog"
+  status = 307
+[[redirects]]
+  from = "/blog/category/dev"
+  to = "/blog"
+  status = 307

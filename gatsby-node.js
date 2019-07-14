@@ -58,7 +58,7 @@ exports.createPages = async ({ graphql, actions }) => {
             exports {
               meta {
                 title
-                category
+                language
                 isHidden
               }
             }
@@ -75,11 +75,7 @@ exports.createPages = async ({ graphql, actions }) => {
     const blogPosts = result.data.allMdx.edges
     const blogTemplate = path.resolve('./src/templates/blog.js')
     const postTemplate = path.resolve('./src/templates/post.js')
-    const categories = ['DEV', 'NON_DEV']
-    const categorySlug = {
-      DEV: 'dev',
-      NON_DEV: 'non-dev',
-    }
+    const languages = ['EN', 'HR']
     const perPage = 7
 
     paginate({
@@ -90,24 +86,30 @@ exports.createPages = async ({ graphql, actions }) => {
       perPage,
     })
 
-    categories.forEach(category => {
+    languages.forEach(language => {
       paginate({
         createPage,
-        basePath: `/blog/category/${categorySlug[category]}`,
+        basePath: `/blog/language/${language.toLowerCase()}`,
         component: blogTemplate,
         items: blogPosts.filter(
-          ({ node }) => node.exports.meta.category === category,
+          ({ node }) => node.exports.meta.language === language,
         ),
         perPage,
-        context: { category },
+        context: { language },
       })
     })
 
     blogPosts.forEach(({ node }) => {
+      if (languages.indexOf(node.exports.meta.language) === -1) {
+        throw new Error(
+          `Unrecognized language "${node.exports.meta.language}" for blog post "${node.exports.meta.title}"`,
+        )
+      }
+
       const readNextCandidates = blogPosts.filter(
         ({ node: n }) =>
           !n.exports.meta.isHidden &&
-          n.exports.meta.category === node.exports.meta.category,
+          n.exports.meta.language === node.exports.meta.language,
       )
       const currentIndex = readNextCandidates.findIndex(
         ({ node: n }) => n.id === node.id,
