@@ -8,7 +8,7 @@ export const meta = {
 
 Since the new React Context API dropped in 16.3.0, the initial thought on everyone’s mind was whether this was the end of Redux. I was wondering the same, but I didn’t hear any encouraging thoughts on that subject since then, even after 16.8.0 was released with Hooks. However, I haven’t researched it either, so I didn’t know _why_ nobody in my Twitter feed was talking about it. Well, it just so happened that I was subscribed to [Kent C. Dodds](https://kentcdodds.com)’ newsletter, and I noticed a few emails on the topic of context and state management, so I started reading… and reading… and 5 blog posts later it all clicked!
 
-Most posts I've seen on this subject are bloated with details and yet still missing key performance optimizations. Our example will be minimal, we’ll create a button which fetches dad jokes from [icanhazdadjoke](https://icanhazdadjoke.com) and displays them. This kind of functionality is all we need to understand the concepts crucial to this method.
+To understand all the crucial concepts behind this, we’ll create a button which fetches dad jokes from [icanhazdadjoke](https://icanhazdadjoke.com) and displays them. This minimal example is all we need.
 
 In order to prepare, let’s start with two seemingly random tips.
 
@@ -67,7 +67,6 @@ Child: 1
 Parent: 2
 Parent: 3
 Parent: 4
-...
 ```
 
 This is an often overlooked way to improve your app's performance, so keep it in mind.
