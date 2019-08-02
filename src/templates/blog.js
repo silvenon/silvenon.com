@@ -68,7 +68,7 @@ function Blog({
         <Header.TopBar>
           <Title>Blog</Title>
         </Header.TopBar>
-        <div className={styles.filters}>
+        <div className={styles.filters} style={{ display: 'none' }}>
           <div className={styles.list}>
             {LANGUAGES.map(language => LANGUAGE[language]).map(({ id, name }) =>
               id === language ? (
