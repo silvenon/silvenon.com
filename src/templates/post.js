@@ -95,12 +95,17 @@ const Post = ({ location, pageContext, data }: Props) => {
         <H1 className={styles.title}>{title}</H1>
         <Meta className={styles.meta}>
           <div className={styles.metaRow}>
-            <Icon id="user" />
+            <Icon id="user" className={styles.icon} />
             <div>{name}</div>
           </div>
           <div className={styles.metaRow}>
-            <Icon id="calendar" />
-            <Date dateTime={date} />
+            <Icon id="calendar" className={styles.icon} />
+            <div>
+              <Date
+                dateTime={date}
+                lastModified={lastModified !== '' ? lastModified : null}
+              />
+            </div>
           </div>
         </Meta>
       </Header>

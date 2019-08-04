@@ -6,13 +6,18 @@
 .meta {
   margin: 0.5rem 1rem 1rem;
   display: inline-block;
+  text-align: left;
 }
 
 .metaRow {
   display: flex;
-  align-items: center;
-  & > * + * {
-    margin-left: 0.5rem;
+
+  .icon {
+    margin-top: 0.25rem;
+
+    & + * {
+      margin-left: 0.5rem;
+    }
   }
 }
 
