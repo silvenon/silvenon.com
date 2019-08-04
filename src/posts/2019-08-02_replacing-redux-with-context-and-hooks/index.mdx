@@ -1,12 +1,14 @@
 export const meta = {
-  title: 'A Performant Solution for Replacing Redux with React Context and Hooks',
+  title: 'A Built-in Alternative to Redux with React Context and Hooks',
   language: 'EN',
   category: 'DEV',
-  lastModified: '',
+  lastModified: '2019-08-04',
   isHidden: false,
 }
 
-Since the new React Context API dropped in 16.3.0, the initial thought on everyone’s mind was whether this was the end of Redux. I was wondering the same, but I didn’t hear any encouraging thoughts on that subject since then, even after 16.8.0 was released with Hooks. However, I haven’t researched it either, so I didn’t know _why_ nobody in my Twitter feed was talking about it. Well, it just so happened that I was subscribed to [Kent C. Dodds](https://kentcdodds.com)’ newsletter, and I noticed a few emails on the topic of context and state management, so I started reading… and reading… and 5 blog posts later it all clicked!
+Since the new React Context API dropped in 16.3.0, the initial thought on many people's minds was whether its API was good enough to reconsider using Redux. I was wondering the same, but I hadn't been following that topic further since then, even after 16.8.0 was released with Hooks. I tend to reach for popular technologies without understanding the full spectrum of problems they solve, so I got used to Redux too much.
+
+Well, it just so happened that I was subscribed to [Kent C. Dodds](https://kentcdodds.com)’ newsletter, and I noticed a few emails on the topic of context and state management, so I started reading… and reading… and 5 blog posts later it all clicked.
 
 To understand all the crucial concepts behind this, we’ll create a button which fetches dad jokes from [icanhazdadjoke](https://icanhazdadjoke.com) and displays them. This minimal example is all we need.
 
@@ -351,9 +353,9 @@ DadJoke: 4
 DadJoke: 5
 ```
 
-You now implemented your very own optimized state management solution without Redux! You can create various providers using this two-context pattern to build your app, but not only that, you can also render the _same provider component multiple times_! Whaaat! Yes, try it, render `DadJokeProvider` in multiple places and watch your state management solution scale effortlessly!
+You now implemented your very own optimized state management solution! You can create various providers using this two-context pattern to build your app, but not only that, you can also render the _same provider component multiple times_! Whaaat! Yes, try it, render `DadJokeProvider` in multiple places and watch your state management solution scale effortlessly!
 
-**Goodbye, Redux!** 👋
+Let your imagination run free and reconsider what you _really_ need Redux for.
 
 ---
 
