@@ -106,7 +106,6 @@
 
 .inlineCode {
   padding: 0.25rem 0.35rem;
-  white-space: nowrap;
   background: color-mod(#fff shade(5%));
   border-radius: var(--border-radius);
 }
