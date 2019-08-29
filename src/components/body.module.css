@@ -78,6 +78,20 @@
   margin-bottom: 1rem;
   padding-left: 2rem;
   list-style-type: disc;
+
+  > .li > .ul {
+    list-style-type: circle;
+
+    > .li > .ul {
+      list-style-type: square;
+    }
+  }
+}
+
+.ol, .ul {
+  .ol, .ul {
+    margin-bottom: 0;
+  }
 }
 
 .li {
