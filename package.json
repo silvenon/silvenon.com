@@ -35,7 +35,7 @@
     "classnames": "^2.2.6",
     "date-fns": "^1.30.1",
     "disqus-react": "^1.0.6",
-    "downshift": "^3.2.10",
+    "downshift": "^3.3.1",
     "fuzzaldrin-plus": "^0.6.0",
     "gatsby": "2.13.6",
     "gatsby-mdx": "^0.6.3",
