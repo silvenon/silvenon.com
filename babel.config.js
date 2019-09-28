@@ -3,6 +3,7 @@
 module.exports = {
   presets: ['babel-preset-gatsby', '@babel/preset-flow'],
   plugins: [
+    '@babel/plugin-proposal-optional-chaining',
     '@babel/plugin-proposal-nullish-coalescing-operator',
     'babel-plugin-date-fns',
     'babel-plugin-polished',

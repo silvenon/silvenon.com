@@ -11,6 +11,7 @@
 
 [options]
 esproposal.nullish_coalescing=enable
+esproposal.optional_chaining=enable
 module.name_mapper.extension='css' -> 'CSSStub'
 
 [strict]
