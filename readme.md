@@ -20,7 +20,7 @@ Thanks so much to the MDX team for MDX itself and to [ChristopherBiscardi] for b
 
 ## Syntax highlighting
 
-Since MDX uses rehype under the hood, it was fairly easy to implement syntax highlihgting for code blocks using [@mapbox/rehype-prism]. Then I just scrolled through available [Prism themes][prism-themes] and picked my favorite one.
+Since Gatsby's MDX plugin supports adding `gatsby-remark-*` plugins, it was easy to implement syntax highlighting for code blocks using [gatsby-remark-prismjs]. Then I just scrolled through available [Prism themes][prism-themes] and picked my favorite one.
 
 ## Responsive images
 
@@ -84,7 +84,7 @@ And, finally, [Netlify][netlify] made all of the deployment and DNS stuff a bree
 [postcss-preset-env]: https://preset-env.cssdb.org/
 [mdx]: https://mdxjs.com/
 [cloudinary]: overengineered
-[@mapbox/rehype-prism]: https://github.com/mapbox/rehype-prism/blob/master/index.js
+[gatsby-remark-prismjs]: https://www.gatsbyjs.org/packages/gatsby-remark-prismjs
 [prism-themes]: https://github.com/PrismJS/prism-themes
 [responsive-image]: blob/0e68c9c6adc93842f20f51e506c3fb242324b04c/src/posts/2018-04-23_ditching-masculinity-and-femininity.mdx#L14-L18
 [aspect-ratio-boxes]: https://css-tricks.com/aspect-ratio-boxes

@@ -124,14 +124,52 @@
   border-radius: var(--border-radius);
 }
 
-.pre {
-  composes: bleedIntoMargins from '../styles/common.module.css';
+// here we have to hardcode colors from our PrismJS theme
+// to avoid an overflow bug :/
+// https://github.com/gatsbyjs/gatsby/tree/1f9664aba128af065adca76ea8bcf3fd0c227068/packages/gatsby-remark-prismjs#optional-add-line-highlighting-styles
+:global(.gatsby-highlight) {
+  margin-bottom: var(--spacing);
+  padding: var(--site-padding);
   overflow: visible;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  margin-bottom: var(--spacing) !important;
-  padding: var(--site-padding);
-  background: color-mod(#fff shade(5%));
+  /**
+   * Add back the container background-color, border-radius, padding, margin
+   * and overflow that we removed from <pre>.
+   */
+  background: #1d1f21;
+
+  /**
+   * Remove the default PrismJS theme background-color, border-radius, margin,
+   * padding and overflow.
+   * 1. Make the element just wide enough to fit its content.
+   * 2. Always fill the visible space in .gatsby-highlight.
+   */
+  .pre {
+    float: left; // 1
+    min-width: 100%; // 2
+    margin: 0;
+    padding: 0;
+    overflow: initial;
+    background: transparent;
+  }
+
+  &:not(:global(.has-highlighted-lines)) {
+    .pre {
+      padding-right: var(--site-padding);
+    }
+  }
+}
+
+:global(.gatsby-highlight-code-line) {
+  --border-width: 0.25rem;
+  display: block;
+  margin-left: calc(var(--site-padding) * -1);
+  margin-right: calc(var(--site-padding) * -1);
+  padding-left: calc(var(--site-padding) - var(--border-width));
+  padding-right: var(--site-padding);
+  border-left: var(--border-width) solid var(--blue);
+  background: hsl(0, 0%, 25%);
 }
 
 .code {

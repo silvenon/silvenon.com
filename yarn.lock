@@ -1013,6 +1013,13 @@
   dependencies:
     regenerator-runtime "^0.13.2"
 
+"@babel/runtime@^7.6.2":
+  version "7.6.2"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.6.2.tgz#c3d6e41b304ef10dcf13777a33e7694ec4a9a6dd"
+  integrity sha512-EXxN64agfUqqIGeEjI5dL5z0Sw0ZwWo1mLTi4mQowCZ42O59b7DRpZAnTC6OqdF28wMBMFKNb/4uFGrVaigSpg==
+  dependencies:
+    regenerator-runtime "^0.13.2"
+
 "@babel/template@^7.1.0", "@babel/template@^7.4.0", "@babel/template@^7.4.4":
   version "7.4.4"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.4.4.tgz#f4b88d1225689a08f5bc3a17483545be9e4ed237"
@@ -1388,15 +1395,6 @@
     "@types/istanbul-lib-coverage" "^2.0.0"
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
-
-"@mapbox/rehype-prism@^0.3.1":
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/@mapbox/rehype-prism/-/rehype-prism-0.3.1.tgz#538e38737df0d0d1462beabf9ceae88fce4035a5"
-  integrity sha512-3LVcYjRoyn13yRyAxGdHEOA9k2litvxJU60IbaOlPWStUiNA2GspgwiDSVHzhF+nLOu8Wed6SWFFLh18U/KEQw==
-  dependencies:
-    hast-util-to-string "^1.0.0"
-    refractor "^2.3.0"
-    unist-util-visit "^1.1.3"
 
 "@mdx-js/mdx@^1.0.21":
   version "1.0.21"
@@ -6012,6 +6010,15 @@ gatsby-react-router-scroll@^2.1.1:
     scroll-behavior "^0.9.9"
     warning "^3.0.0"
 
+gatsby-remark-prismjs@^3.3.9:
+  version "3.3.16"
+  resolved "https://registry.yarnpkg.com/gatsby-remark-prismjs/-/gatsby-remark-prismjs-3.3.16.tgz#4b6b0d072f14d377de496e3c996ae45d0e053f75"
+  integrity sha512-czkXq5H8ysZe3zItf3OnEEf6j6ujMErxKsIFkIXSugpJph6tc74OkGhrELksoZJsDfdoTpNDpr3KovznXy/lqw==
+  dependencies:
+    "@babel/runtime" "^7.6.2"
+    parse-numeric-range "^0.0.2"
+    unist-util-visit "^1.4.1"
+
 gatsby-source-filesystem@^2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/gatsby-source-filesystem/-/gatsby-source-filesystem-2.1.2.tgz#b7ce69d4b819924d22f91339b419624cfb3c4f43"
@@ -10208,7 +10215,7 @@ parse-english@^4.0.0:
     unist-util-modify-children "^1.0.0"
     unist-util-visit-children "^1.0.0"
 
-parse-entities@^1.0.2, parse-entities@^1.1.0, parse-entities@^1.1.2:
+parse-entities@^1.0.2, parse-entities@^1.1.0:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/parse-entities/-/parse-entities-1.2.2.tgz#c31bf0f653b6661354f8973559cb86dd1d5edf50"
   integrity sha512-NzfpbxW/NPrzZ/yYSoQxyqUZMZXIdCfE0OIN4ESsnptHJECoUk3FZktxNuzQf4tjt5UEopnxpYJbvYuxIFDdsg==
@@ -10243,6 +10250,11 @@ parse-latin@^4.0.0:
     nlcst-to-string "^2.0.0"
     unist-util-modify-children "^1.0.0"
     unist-util-visit-children "^1.0.0"
+
+parse-numeric-range@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/parse-numeric-range/-/parse-numeric-range-0.0.2.tgz#b4f09d413c7adbcd987f6e9233c7b4b210c938e4"
+  integrity sha1-tPCdQTx6282Yf26SM8e0shDJOOQ=
 
 parse-passwd@^1.0.0:
   version "1.0.0"
@@ -11241,10 +11253,10 @@ prism-themes@^1.1.0:
   resolved "https://registry.yarnpkg.com/prism-themes/-/prism-themes-1.1.0.tgz#9f4fadf0c9c7ee415773717ea69c2aaa25aedbfd"
   integrity sha512-xBkflbKbstGGasW3P68KQzAuObLQeH//I5mn37jKVHVDrRLp4Xct/n8F/tV5h+CKIMa3nDAZ2q0bt8ItSiS72A==
 
-prismjs@~1.16.0:
-  version "1.16.0"
-  resolved "https://registry.yarnpkg.com/prismjs/-/prismjs-1.16.0.tgz#406eb2c8aacb0f5f0f1167930cb83835d10a4308"
-  integrity sha512-OA4MKxjFZHSvZcisLGe14THYsug/nF6O1f0pAJc0KN0wTyAcLqmsbE+lTGKSpyh+9pEW57+k6pg2AfYR+coyHA==
+prismjs@^1.17.1:
+  version "1.17.1"
+  resolved "https://registry.yarnpkg.com/prismjs/-/prismjs-1.17.1.tgz#e669fcbd4cdd873c35102881c33b14d0d68519be"
+  integrity sha512-PrEDJAFdUGbOP6xK/UsfkC5ghJsPJviKgnQOoxaDbBjwc8op68Quupwt1DeAFoG8GImPhiKXAvvsH7wDSLsu1Q==
   optionalDependencies:
     clipboard "^2.0.0"
 
@@ -11798,15 +11810,6 @@ redux@^4.0.0:
   dependencies:
     loose-envify "^1.4.0"
     symbol-observable "^1.2.0"
-
-refractor@^2.3.0:
-  version "2.9.0"
-  resolved "https://registry.yarnpkg.com/refractor/-/refractor-2.9.0.tgz#0a381aadb51513e4e6ec1ed410b5104dd65e2489"
-  integrity sha512-lCnCYvXpqd8hC7ksuvo516rz5q4NwzBbq0X5qjH5pxRfcQKiQxKZ8JctrSQmrR/7pcV2TRrs9TT+Whmq/wtluQ==
-  dependencies:
-    hastscript "^5.0.0"
-    parse-entities "^1.1.2"
-    prismjs "~1.16.0"
 
 regenerate-unicode-properties@^8.0.2, regenerate-unicode-properties@^8.1.0:
   version "8.1.0"
@@ -13832,7 +13835,7 @@ unist-util-visit-parents@^3.0.0:
     "@types/unist" "^2.0.3"
     unist-util-is "^4.0.0"
 
-unist-util-visit@^1.0.0, unist-util-visit@^1.1.0, unist-util-visit@^1.1.3, unist-util-visit@^1.3.0, unist-util-visit@^1.4.1:
+unist-util-visit@^1.0.0, unist-util-visit@^1.1.0, unist-util-visit@^1.3.0, unist-util-visit@^1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/unist-util-visit/-/unist-util-visit-1.4.1.tgz#4724aaa8486e6ee6e26d7ff3c8685960d560b1e3"
   integrity sha512-AvGNk7Bb//EmJZyhtRUnNMEpId/AZ5Ph/KUpTI09WHQuDZHKovQ1oEv3mfmKpWKtoMzyMC4GLBm1Zy5k12fjIw==

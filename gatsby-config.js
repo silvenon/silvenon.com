@@ -1,5 +1,4 @@
 const path = require('path')
-const prism = require('@mapbox/rehype-prism')
 const headingsSlugId = require('rehype-slug')
 const autolinkHeadings = require('rehype-autolink-headings')
 const smartypants = require('./utils/remark-smartypants')
@@ -30,9 +29,16 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-mdx',
       options: {
+        gatsbyRemarkPlugins: [
+          {
+            resolve: 'gatsby-remark-prismjs',
+            options: {
+              noInlineHighlight: true,
+            },
+          },
+        ],
         remarkPlugins: [smartypants],
         rehypePlugins: [
-          prism,
           headingsSlugId,
           [
             autolinkHeadings,

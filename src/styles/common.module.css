@@ -35,7 +35,7 @@
     0 6px 6px rgba(0, 0, 0, 0.23);
 }
 
-.bleedIntoMargins {
+.bleedIntoMargins, :global(.gatsby-highlight) {
   margin-left: calc(var(--site-padding) * -1) !important;
   margin-right: calc(var(--site-padding) * -1) !important;
   border-radius: 0 !important;
