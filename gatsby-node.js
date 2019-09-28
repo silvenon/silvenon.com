@@ -82,7 +82,7 @@ exports.createPages = async ({ graphql, actions }) => {
       createPage,
       basePath: `/blog`,
       component: blogTemplate,
-      items: blogPosts,
+      edges: blogPosts,
       perPage,
     })
 
@@ -91,7 +91,7 @@ exports.createPages = async ({ graphql, actions }) => {
         createPage,
         basePath: `/blog/language/${language.toLowerCase()}`,
         component: blogTemplate,
-        items: blogPosts.filter(
+        edges: blogPosts.filter(
           ({ node }) => node.exports.meta.language === language,
         ),
         perPage,

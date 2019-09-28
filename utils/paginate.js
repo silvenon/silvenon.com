@@ -4,11 +4,11 @@ const paginate = ({
   createPage,
   basePath,
   component,
-  items,
+  edges,
   perPage,
   context,
 }) => {
-  const pages = range(Math.ceil(items.length / perPage))
+  const pages = range(Math.ceil(edges.length / perPage))
   const getPagePath = page =>
     page === 0 ? basePath : `${basePath}/page/${page + 1}`
   pages.forEach(page => {
