@@ -7,8 +7,12 @@
     var(--s-blue),
     90%
   );
-  > *:last-child {
-    margin-bottom: 0;
+  > * {
+    margin-bottom: calc(var(--spacing) / 2) !important;
+
+    &:last-child {
+      margin-bottom: 0 !important;
+    }
   }
 }
 
