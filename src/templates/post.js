@@ -46,9 +46,7 @@ type Props = {
         },
       },
       excerpt: string,
-      code: {
-        body: string,
-      },
+      body: string,
     },
     readNextMdx: ?{
       fields: {
@@ -73,7 +71,7 @@ const Post = ({ location, data }: Props) => {
         meta: { title, language, lastModified },
       },
       excerpt,
-      code: { body },
+      body,
     },
     readNextMdx,
   } = data
@@ -186,9 +184,7 @@ export const query = graphql`
         }
       }
       excerpt
-      code {
-        body
-      }
+      body
     }
     readNextMdx: mdx(id: { eq: $readNextId }) {
       fields {
