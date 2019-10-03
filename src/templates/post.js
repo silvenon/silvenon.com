@@ -23,12 +23,6 @@ type Props = {
   location: {
     pathname: string,
   },
-  pageContext: {
-    readNext: ?{
-      title: string,
-      path: string,
-    },
-  },
   data: {
     site: {
       siteMetadata: {
@@ -56,12 +50,21 @@ type Props = {
         body: string,
       },
     },
+    readNextMdx: ?{
+      fields: {
+        path: string,
+      },
+      exports: {
+        meta: {
+          title: string,
+        },
+      },
+    },
   },
 }
 
-const Post = ({ location, pageContext, data }: Props) => {
+const Post = ({ location, data }: Props) => {
   const { pathname } = location
-  const { readNext } = pageContext
   const {
     site,
     mdx: {
@@ -72,6 +75,7 @@ const Post = ({ location, pageContext, data }: Props) => {
       excerpt,
       code: { body },
     },
+    readNextMdx,
   } = data
   const { siteUrl, name, avatar, biography } = site.siteMetadata
 
@@ -125,10 +129,12 @@ const Post = ({ location, pageContext, data }: Props) => {
         links={socialLinks}
       />
       <Container>
-        {readNext != null ? (
+        {readNextMdx != null ? (
           <p className={styles.nextPost}>
             <span>Read next → </span>
-            <Link to={readNext.path}>{readNext.title}</Link>
+            <Link to={readNextMdx.fields.path}>
+              {readNextMdx.exports.meta.title}
+            </Link>
           </p>
         ) : null}
         {isDraft ? null : (
@@ -152,7 +158,7 @@ const Post = ({ location, pageContext, data }: Props) => {
 export default Post
 
 export const query = graphql`
-  query PostQuery($id: String) {
+  query PostQuery($id: String, $readNextId: String) {
     site {
       siteMetadata {
         siteUrl
@@ -182,6 +188,16 @@ export const query = graphql`
       excerpt
       code {
         body
+      }
+    }
+    readNextMdx: mdx(id: { eq: $readNextId }) {
+      fields {
+        path
+      }
+      exports {
+        meta {
+          title
+        }
       }
     }
   }

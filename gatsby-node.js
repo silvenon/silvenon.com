@@ -145,13 +145,7 @@ exports.createPages = async ({ graphql, actions }) => {
                   path: previous.fields.path,
                 }
               : null,
-          readNext:
-            readNext != null
-              ? {
-                  title: readNext.node.exports.meta.title,
-                  path: readNext.node.fields.path,
-                }
-              : null,
+          readNextId: readNext != null ? readNext.node.id : null,
         },
       })
     })
