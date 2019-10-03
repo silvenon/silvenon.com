@@ -28,7 +28,7 @@ module.exports = {
     'gatsby-plugin-css-customs',
     'gatsby-plugin-react-helmet',
     {
-      resolve: 'gatsby-mdx',
+      resolve: 'gatsby-plugin-mdx',
       options: {
         remarkPlugins: [smartypants],
         rehypePlugins: [

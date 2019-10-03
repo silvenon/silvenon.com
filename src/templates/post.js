@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 import { graphql } from 'gatsby'
-import { MDXRenderer } from 'gatsby-mdx'
+import { MDXRenderer } from 'gatsby-plugin-mdx'
 import { Share as TwitterShare } from 'react-twitter-widgets'
 import { DiscussionEmbed } from 'disqus-react'
 import Layout from '../components/layout'
