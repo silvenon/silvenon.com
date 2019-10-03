@@ -12,18 +12,28 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
   if (node.internal.type === 'Mdx') {
     const fileNode = getNode(node.parent)
     const isDraft = fileNode.sourceInstanceName === 'drafts'
-    const [date, slug] = isDraft
+    const [date, slugBase] = isDraft
       ? [fileNode.modifiedTime, fileNode.relativeDirectory]
       : fileNode.relativeDirectory.split('_')
-    if (/^\d+-\d+-\d+/.test(slug)) {
+
+    if (slugBase == null && !slugBase) {
       throw new Error(
-        `Invalid file name format: "${fileNode.relativeDirectory}"`,
+        `Missing date in published post "${fileNode.relativeDirectory}". It should be separated from the slug with an underscore.`,
       )
     }
+
+    const slug =
+      fileNode.name === 'index' ? slugBase : `${slugBase}/${fileNode.name}`
+
     createNodeField({
       node,
       name: 'date',
       value: date,
+    })
+    createNodeField({
+      node,
+      name: 'series',
+      value: slugBase,
     })
     createNodeField({
       node,
@@ -47,7 +57,12 @@ exports.createPages = async ({ graphql, actions }) => {
   const { createPage } = actions
   const result = await graphql(`
     {
-      allMdx(sort: { fields: [fields___date], order: DESC }) {
+      allMdx(
+        sort: {
+          fields: [fields___date, exports___meta___seriesPart]
+          order: DESC
+        }
+      ) {
         edges {
           node {
             id
@@ -60,6 +75,7 @@ exports.createPages = async ({ graphql, actions }) => {
                 title
                 language
                 isHidden
+                seriesPart
               }
             }
           }
@@ -99,7 +115,7 @@ exports.createPages = async ({ graphql, actions }) => {
       })
     })
 
-    blogPosts.forEach(({ node }) => {
+    blogPosts.forEach(({ previous, node }) => {
       if (languages.indexOf(node.exports.meta.language) === -1) {
         throw new Error(
           `Unrecognized language "${node.exports.meta.language}" for blog post "${node.exports.meta.title}"`,
@@ -122,6 +138,13 @@ exports.createPages = async ({ graphql, actions }) => {
         component: postTemplate,
         context: {
           id: node.id,
+          previousSeriesPart:
+            node.exports.meta.seriesPart > 0 && previous != null
+              ? {
+                  title: previous.exports.meta.title,
+                  path: previous.fields.path,
+                }
+              : null,
           readNext:
             readNext != null
               ? {
