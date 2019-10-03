@@ -10,6 +10,7 @@ import Link from '../components/link'
 import PostPreview from '../components/post-preview'
 import Button from '../components/button'
 import Icon from '../components/icon'
+import { getSeries } from '../utils/post'
 import socialLinks from '../constants/social-links'
 import styles from './index.module.css'
 
@@ -39,6 +40,9 @@ type Props = {
           fields: {
             path: string,
             date: string,
+            isSeries: boolean,
+            seriesId: ?string,
+            seriesTitle: ?string,
           },
           exports: {
             meta: {
@@ -47,6 +51,23 @@ type Props = {
           },
           excerpt: string,
         },
+      }>,
+    },
+    seriesMdx: {
+      group: Array<{
+        fieldValue: string,
+        edges: Array<{
+          node: {
+            fields: {
+              path: string,
+            },
+            exports: {
+              meta: {
+                title: string,
+              },
+            },
+          },
+        }>,
       }>,
     },
   },
@@ -59,6 +80,7 @@ const Home = ({
       siteMetadata: { title, name, avatar, biography },
     },
     allMdx: { edges },
+    seriesMdx,
   },
 }: Props) => (
   <Layout
@@ -85,8 +107,8 @@ const Home = ({
         Latest from <Link to="/blog">my blog</Link>:
       </H2>
       <div className={styles.blog}>
-        {edges.map(
-          ({
+        {edges.map(edge => {
+          const {
             node: {
               fields: { path, date },
               exports: {
@@ -94,7 +116,8 @@ const Home = ({
               },
               excerpt,
             },
-          }) => (
+          } = edge
+          return (
             <PostPreview
               key={path}
               isSmall
@@ -102,9 +125,10 @@ const Home = ({
               title={title}
               dateTime={date}
               excerpt={excerpt}
+              series={getSeries(edge, seriesMdx)}
             />
-          ),
-        )}
+          )
+        })}
       </div>
       <H2>More about me:</H2>
       <ul className={styles.buttonList}>
@@ -151,6 +175,9 @@ export const query = graphql`
           fields {
             path
             date
+            isSeries
+            seriesId
+            seriesTitle
           }
           exports {
             meta {
@@ -158,6 +185,23 @@ export const query = graphql`
             }
           }
           excerpt
+        }
+      }
+    }
+    seriesMdx: allMdx {
+      group(field: fields___seriesId) {
+        fieldValue
+        edges {
+          node {
+            fields {
+              path
+            }
+            exports {
+              meta {
+                title
+              }
+            }
+          }
         }
       }
     }

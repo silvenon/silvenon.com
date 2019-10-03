@@ -4,13 +4,16 @@
  * See: https://www.gatsbyjs.org/docs/node-apis/
  */
 
+const yaml = require('js-yaml')
+const fs = require('fs-extra')
 const path = require('path')
 const paginate = require('./utils/paginate')
 
-exports.onCreateNode = ({ node, getNode, actions }) => {
+exports.onCreateNode = async ({ node, getNode, actions }) => {
   const { createNodeField } = actions
   if (node.internal.type === 'Mdx') {
     const fileNode = getNode(node.parent)
+    const isSeries = fileNode.name !== 'index'
     const isDraft = fileNode.sourceInstanceName === 'drafts'
     const [date, slugBase] = isDraft
       ? [fileNode.modifiedTime, fileNode.relativeDirectory]
@@ -32,11 +35,6 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
     })
     createNodeField({
       node,
-      name: 'series',
-      value: slugBase,
-    })
-    createNodeField({
-      node,
       name: 'slug',
       value: slug,
     })
@@ -45,6 +43,33 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
       name: 'path',
       value: `/blog/${slug}`,
     })
+    createNodeField({
+      node,
+      name: 'isSeries',
+      value: isSeries,
+    })
+    if (isSeries) {
+      const seriesMeta = yaml.safeLoad(
+        await fs.readFile(
+          fileNode.absolutePath.replace(fileNode.base, 'series.yml'),
+        ),
+      )
+      createNodeField({
+        node,
+        name: 'seriesId',
+        value: slugBase,
+      })
+      createNodeField({
+        node,
+        name: 'seriesPath',
+        value: `/blog/${slugBase}`,
+      })
+      createNodeField({
+        node,
+        name: 'seriesTitle',
+        value: seriesMeta.title,
+      })
+    }
     createNodeField({
       node,
       name: 'isDraft',
@@ -57,18 +82,16 @@ exports.createPages = async ({ graphql, actions }) => {
   const { createPage } = actions
   const result = await graphql(`
     {
-      allMdx(
-        sort: {
-          fields: [fields___date, exports___meta___seriesPart]
-          order: DESC
-        }
-      ) {
+      allMdx(sort: { fields: fields___date, order: DESC }) {
         edges {
           node {
             id
             fields {
               date
               path
+              isSeries
+              seriesId
+              seriesPath
             }
             exports {
               meta {
@@ -115,39 +138,53 @@ exports.createPages = async ({ graphql, actions }) => {
       })
     })
 
-    blogPosts.forEach(({ previous, node }) => {
-      if (languages.indexOf(node.exports.meta.language) === -1) {
-        throw new Error(
-          `Unrecognized language "${node.exports.meta.language}" for blog post "${node.exports.meta.title}"`,
+    await Promise.all(
+      blogPosts.map(async ({ node }) => {
+        if (languages.indexOf(node.exports.meta.language) === -1) {
+          throw new Error(
+            `Unrecognized language "${node.exports.meta.language}" for blog post "${node.exports.meta.title}"`,
+          )
+        }
+
+        const readNextCandidates = blogPosts
+          .filter(
+            ({ node: n }) =>
+              !n.exports.meta.isHidden &&
+              n.exports.meta.language === node.exports.meta.language,
+          )
+          .sort((edgeA, edgeB) => {
+            if (!edgeA.node.fields.isSeries || !edgeB.node.fields.isSeries) {
+              return 0
+            }
+            return (
+              edgeA.node.exports.meta.seriesPart -
+              edgeB.node.exports.meta.seriesPart
+            )
+          })
+        const currentIndex = readNextCandidates.findIndex(
+          ({ node: n }) => n.id === node.id,
         )
-      }
+        const readNext =
+          currentIndex !== -1 ? readNextCandidates[currentIndex + 1] : null
 
-      const readNextCandidates = blogPosts.filter(
-        ({ node: n }) =>
-          !n.exports.meta.isHidden &&
-          n.exports.meta.language === node.exports.meta.language,
-      )
-      const currentIndex = readNextCandidates.findIndex(
-        ({ node: n }) => n.id === node.id,
-      )
-      const readNext =
-        currentIndex !== -1 ? readNextCandidates[currentIndex + 1] : null
+        createPage({
+          path: node.fields.path,
+          component: postTemplate,
+          context: {
+            id: node.id,
+            seriesId: node.fields.seriesId,
+            readNextId: readNext != null ? readNext.node.id : null,
+          },
+        })
 
-      createPage({
-        path: node.fields.path,
-        component: postTemplate,
-        context: {
-          id: node.id,
-          previousSeriesPart:
-            node.exports.meta.seriesPart > 0 && previous != null
-              ? {
-                  title: previous.exports.meta.title,
-                  path: previous.fields.path,
-                }
-              : null,
-          readNextId: readNext != null ? readNext.node.id : null,
-        },
-      })
-    })
+        if (node.fields.isSeries && node.exports.meta.seriesPart === 0) {
+          actions.createRedirect({
+            fromPath: node.fields.seriesPath,
+            toPath: node.fields.path,
+            statusCode: 307,
+          })
+        }
+      }),
+    )
   }
 }

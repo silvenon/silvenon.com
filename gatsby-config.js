@@ -103,6 +103,8 @@ module.exports = {
                       fields {
                         path
                         date
+                        isSeries
+                        seriesTitle
                       }
                       exports {
                         meta {
@@ -116,12 +118,27 @@ module.exports = {
               }
             `,
             serialize: ({ query: { site, allMdx } }) =>
-              allMdx.edges.map(({ node }) => ({
-                title: node.exports.meta.title,
-                description: node.excerpt,
-                date: node.fields.date,
-                url: `${site.siteMetadata.siteUrl}${node.fields.path}`,
-              })),
+              allMdx.edges
+                .sort((edgeA, edgeB) => {
+                  if (
+                    !edgeA.node.fields.isSeries ||
+                    !edgeB.node.fields.isSeries
+                  ) {
+                    return 0
+                  }
+                  return (
+                    edgeB.node.exports.meta.seriesPart -
+                    edgeA.node.exports.meta.seriesPart
+                  )
+                })
+                .map(({ node }) => ({
+                  title: node.fields.isSeries
+                    ? `${node.fields.seriesTitle}: ${node.exports.meta.title}`
+                    : node.exports.meta.title,
+                  description: node.excerpt,
+                  date: node.fields.date,
+                  url: `${site.siteMetadata.siteUrl}${node.fields.path}`,
+                })),
             output: 'rss.xml',
           },
         ],

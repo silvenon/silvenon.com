@@ -6,6 +6,7 @@ import fuzzaldrin from 'fuzzaldrin-plus'
 import Link from './link'
 import Icon from './icon'
 import withClassNames from './with-class-names'
+import { getFullTitle } from '../utils/post'
 import styles from './search.module.css'
 
 type Props = {
@@ -19,7 +20,7 @@ type QueryData = {
   allMdx: {
     edges: Array<{
       node: {
-        fields: { path: string },
+        fields: { path: string, isSeries: boolean, seriesTitle: ?string },
         exports: {
           meta: { title: string },
         },
@@ -37,6 +38,8 @@ function Search({ children, ...props }: Props) {
           node {
             fields {
               path
+              isSeries
+              seriesTitle
             }
             exports {
               meta {
@@ -48,7 +51,7 @@ function Search({ children, ...props }: Props) {
       }
     }
   `)
-  const postTitles = allMdx.edges.map(({ node }) => node.exports.meta.title)
+  const postTitles = allMdx.edges.map(getFullTitle)
   const searchBar = (
     <Downshift
       onChange={({ path }) => navigate(path)}
@@ -66,7 +69,7 @@ function Search({ children, ...props }: Props) {
         const posts: Array<{ title: string, path: string }> = isOpen
           ? fuzzaldrin.filter(postTitles, inputValue).map(title => {
               const edge = allMdx.edges.find(
-                ({ node }) => node.exports.meta.title === title,
+                edge => getFullTitle(edge) === title,
               )
               if (edge == null) {
                 throw new Error(

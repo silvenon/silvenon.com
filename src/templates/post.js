@@ -9,7 +9,7 @@ import Icon from '../components/icon'
 import Spacer from '../components/spacer'
 import Container from '../components/container'
 import Header from '../components/header'
-import { H1 } from '../components/body'
+import { H1, P, OL, LI, HR } from '../components/body'
 import Link from '../components/link'
 import BackLink from '../components/back-link'
 import Meta from '../components/meta'
@@ -33,13 +33,17 @@ type Props = {
       },
     },
     mdx: {
+      id: string,
       fields: {
         date: string,
         slug: string,
+        isSeries: boolean,
+        seriesTitle: ?string,
         isDraft: boolean,
       },
       exports: {
         meta: {
+          seriesPart: ?number,
           title: string,
           language: Language,
           lastModified: string,
@@ -47,6 +51,22 @@ type Props = {
       },
       excerpt: string,
       body: string,
+    },
+    seriesMdx: {
+      edges: Array<{
+        node: {
+          id: string,
+          fields: {
+            path: string,
+          },
+          exports: {
+            meta: {
+              seriesPart: number,
+              title: string,
+            },
+          },
+        },
+      }>,
     },
     readNextMdx: ?{
       fields: {
@@ -66,20 +86,24 @@ const Post = ({ location, data }: Props) => {
   const {
     site,
     mdx: {
-      fields: { date, slug, isDraft },
+      id,
+      fields: { date, slug, isSeries, seriesTitle, isDraft },
       exports: {
-        meta: { title, language, lastModified },
+        meta: { seriesPart, title, language, lastModified },
       },
       excerpt,
       body,
     },
+    seriesMdx,
     readNextMdx,
   } = data
   const { siteUrl, name, avatar, biography } = site.siteMetadata
+  const fullTitle =
+    isSeries != null && seriesTitle != null ? `${seriesTitle}: ${title}` : title
 
   return (
     <Layout
-      title={title}
+      title={fullTitle}
       description={excerpt}
       pathname={pathname}
       language={language}
@@ -94,7 +118,20 @@ const Post = ({ location, data }: Props) => {
         <Header.TopBar>
           <BackLink to="/blog">All posts</BackLink>
         </Header.TopBar>
-        <H1 className={styles.title}>{title}</H1>
+        <H1 className={styles.title}>
+          {isSeries ? (
+            <>
+              <div>{seriesTitle}</div>
+              <small className={styles.subtitle}>
+                <span className={styles.seriesPart}>{`Part ${seriesPart +
+                  1}:`}</span>{' '}
+                {title}
+              </small>
+            </>
+          ) : (
+            title
+          )}
+        </H1>
         <Meta className={styles.meta}>
           <div className={styles.metaRow}>
             <Icon id="user" className={styles.icon} />
@@ -112,11 +149,36 @@ const Post = ({ location, data }: Props) => {
         </Meta>
       </Header>
       <Container>
+        {isSeries ? (
+          <div className={styles.seriesParts}>
+            <P>This post is part of the series "{seriesTitle}":</P>
+            <OL>
+              {seriesMdx.edges
+                .map(edge => ({
+                  id: edge.node.id,
+                  order: edge.node.exports.meta.seriesPart,
+                  title: edge.node.exports.meta.title,
+                  path: edge.node.fields.path,
+                }))
+                .sort((partA, partB) => partA.order - partB.order)
+                .map(part => (
+                  <LI key={part.id}>
+                    {part.id !== id ? (
+                      <Link to={part.path}>{part.title}</Link>
+                    ) : (
+                      part.title
+                    )}
+                  </LI>
+                ))}
+            </OL>
+            <HR />
+          </div>
+        ) : null}
         <MDXRenderer>{body}</MDXRenderer>
         <div className={styles.twitterShare}>
           <TwitterShare
             url={`${siteUrl}${pathname}`}
-            options={{ text: title, via: 'silvenon', size: 'large' }}
+            options={{ text: fullTitle, via: 'silvenon', size: 'large' }}
           />
         </div>
       </Container>
@@ -142,7 +204,7 @@ const Post = ({ location, data }: Props) => {
               config={{
                 url: `${siteUrl}${pathname}`,
                 identifier: slug,
-                title,
+                title: fullTitle,
               }}
             />
           </div>
@@ -156,7 +218,7 @@ const Post = ({ location, data }: Props) => {
 export default Post
 
 export const query = graphql`
-  query PostQuery($id: String, $readNextId: String) {
+  query PostQuery($id: String, $seriesId: String, $readNextId: String) {
     site {
       siteMetadata {
         siteUrl
@@ -171,13 +233,17 @@ export const query = graphql`
       }
     }
     mdx(id: { eq: $id }) {
+      id
       fields {
         date
         slug
+        isSeries
+        seriesTitle
         isDraft
       }
       exports {
         meta {
+          seriesPart
           title
           language
           lastModified
@@ -185,6 +251,22 @@ export const query = graphql`
       }
       excerpt
       body
+    }
+    seriesMdx: allMdx(filter: { fields: { seriesId: { eq: $seriesId } } }) {
+      edges {
+        node {
+          id
+          fields {
+            path
+          }
+          exports {
+            meta {
+              seriesPart
+              title
+            }
+          }
+        }
+      }
     }
     readNextMdx: mdx(id: { eq: $readNextId }) {
       fields {

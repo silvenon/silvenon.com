@@ -11,6 +11,7 @@ import PostPreview from '../components/post-preview'
 import Pager from '../components/pager'
 import Icon from '../components/icon'
 import Link from '../components/link'
+import { getSeries } from '../utils/post'
 import { type Language, LANGUAGE, LANGUAGES } from '../language'
 import styles from './blog.module.css'
 
@@ -26,20 +27,43 @@ type Props = {
     nextPagePath: ?string,
   },
   data: {
-    allMdx: {
+    pageMdx: {
       edges: Array<{
         node: {
+          id: string,
           fields: {
             path: string,
             date: string,
+            isSeries: boolean,
+            seriesId: ?string,
+            seriesTitle: ?string,
           },
           exports: {
             meta: {
+              seriesPart: ?number,
               title: string,
             },
           },
           excerpt: string,
         },
+      }>,
+    },
+    seriesMdx: {
+      group: Array<{
+        fieldValue: string,
+        edges: Array<{
+          node: {
+            fields: {
+              path: string,
+            },
+            exports: {
+              meta: {
+                seriesPart: number,
+                title: string,
+              },
+            },
+          },
+        }>,
       }>,
     },
   },
@@ -54,9 +78,7 @@ function Blog({
     previousPagePath,
     nextPagePath,
   },
-  data: {
-    allMdx: { edges },
-  },
+  data: { pageMdx, seriesMdx },
 }: Props) {
   return (
     <Layout
@@ -106,33 +128,36 @@ function Blog({
         </div>
       </Header>
       <Container>
-        {edges.reduce((acc, edge, i) => {
-          const {
-            fields: { path, date },
-            exports: {
-              meta: { title },
-            },
-            excerpt,
-          } = edge.node
-          const post = (
-            <PostPreview
-              key={path}
-              path={path}
-              title={title}
-              dateTime={date}
-              excerpt={excerpt}
-            />
+        {pageMdx.edges
+          .filter(edge =>
+            edge.node.fields.isSeries
+              ? edge.node.exports.meta.seriesPart === 0
+              : true,
           )
-          if (i > 0) {
-            const prevPath = edges[i - 1].node.fields.path
-            const dividerKey = `${prevPath}-${path}`
-            return acc.concat(
-              <div key={dividerKey} className={styles.divider} />,
-              post,
+          .reduce((acc, edge, i) => {
+            const { id, excerpt } = edge.node
+            const { path, date } = edge.node.fields
+            const { title } = edge.node.exports.meta
+            const post = (
+              <PostPreview
+                key={id}
+                path={path}
+                title={title}
+                dateTime={date}
+                excerpt={excerpt}
+                series={getSeries(edge, seriesMdx)}
+              />
             )
-          }
-          return acc.concat(post)
-        }, [])}
+            if (i > 0) {
+              const prevId = pageMdx.edges[i - 1].node.id
+              const dividerKey = `${prevId}-${id}`
+              return acc.concat(
+                <div key={dividerKey} className={styles.divider} />,
+                post,
+              )
+            }
+            return acc.concat(post)
+          }, [])}
       </Container>
       <Spacer />
       <Pager
@@ -158,7 +183,7 @@ export default Blog
 
 export const query = graphql`
   query BlogQuery($language: String, $skip: Int!, $limit: Int!) {
-    allMdx(
+    pageMdx: allMdx(
       sort: { fields: [fields___date], order: DESC }
       filter: {
         exports: {
@@ -170,16 +195,39 @@ export const query = graphql`
     ) {
       edges {
         node {
+          id
           fields {
             path
             date
+            isSeries
+            seriesId
+            seriesTitle
           }
           exports {
             meta {
+              seriesPart
               title
             }
           }
           excerpt
+        }
+      }
+    }
+    seriesMdx: allMdx {
+      group(field: fields___seriesId) {
+        fieldValue
+        edges {
+          node {
+            fields {
+              path
+            }
+            exports {
+              meta {
+                seriesPart
+                title
+              }
+            }
+          }
         }
       }
     }
