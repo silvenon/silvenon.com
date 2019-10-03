@@ -88,6 +88,15 @@
     var(--s-grey),
     var(--l-grey)
   );
+
+  --h-light-grey: 0;
+  --s-light-grey: 0%;
+  --l-light-grey: 50%;
+  --light-grey: hsl(
+    var(--h-light-grey),
+    var(--s-light-grey),
+    var(--l-light-grey)
+  );
 }
 
 @media (--min-small) {

@@ -1013,10 +1013,10 @@
   dependencies:
     regenerator-runtime "^0.13.2"
 
-"@babel/runtime@^7.6.2":
-  version "7.6.2"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.6.2.tgz#c3d6e41b304ef10dcf13777a33e7694ec4a9a6dd"
-  integrity sha512-EXxN64agfUqqIGeEjI5dL5z0Sw0ZwWo1mLTi4mQowCZ42O59b7DRpZAnTC6OqdF28wMBMFKNb/4uFGrVaigSpg==
+"@babel/runtime@^7.5.5":
+  version "7.5.5"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.5.5.tgz#74fba56d35efbeca444091c7850ccd494fd2f132"
+  integrity sha512-28QvEGyQyNkB0/m2B4FU7IEZGK2NUrcMtT6BZEFALTguLk+AUT6ofsHtPk5QyjAdUkpMJ+/Em+quwz4HOt30AQ==
   dependencies:
     regenerator-runtime "^0.13.2"
 
@@ -1144,6 +1144,18 @@
     relay-runtime "2.0.0"
     signedsource "^1.0.0"
     yargs "^9.0.0"
+
+"@gitgraph/core@1.4.2":
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/@gitgraph/core/-/core-1.4.2.tgz#2632a088c4061b1b2fa4954ba9e0365e62e95ad5"
+  integrity sha512-pe08Z1c82ty8CdP7YgS2fEZRCVvQbCGXEp5lmFH/nVPKmrYV9ACV11GUhQJLpkYuEJ88rAyzlN9weyFu7hYGMQ==
+
+"@gitgraph/react@^1.5.1":
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/@gitgraph/react/-/react-1.5.1.tgz#7d62cca2ec57141797bf6855d530498161cabedb"
+  integrity sha512-Fbxs99kBI82gVVrK9Nn/4VpZ5edtC5ocfCWeti+4aDsheCYd1IxvANd9PZPeNpV0Ntunm0b+KfPpRFae5nvHXg==
+  dependencies:
+    "@gitgraph/core" "1.4.2"
 
 "@hapi/address@2.x.x":
   version "2.0.0"
@@ -6011,11 +6023,11 @@ gatsby-react-router-scroll@^2.1.1:
     warning "^3.0.0"
 
 gatsby-remark-prismjs@^3.3.9:
-  version "3.3.16"
-  resolved "https://registry.yarnpkg.com/gatsby-remark-prismjs/-/gatsby-remark-prismjs-3.3.16.tgz#4b6b0d072f14d377de496e3c996ae45d0e053f75"
-  integrity sha512-czkXq5H8ysZe3zItf3OnEEf6j6ujMErxKsIFkIXSugpJph6tc74OkGhrELksoZJsDfdoTpNDpr3KovznXy/lqw==
+  version "3.3.9"
+  resolved "https://registry.yarnpkg.com/gatsby-remark-prismjs/-/gatsby-remark-prismjs-3.3.9.tgz#20eb5fdf1d5481672517058216e8e817fc43c986"
+  integrity sha512-23IoJjj6/opxHAW6QfLGQaO8enA+JK6fYJXwcJ3F+++AcN0EIHM3Sc3sRz9GxuSni2PW9MlWHKo5noqrlabUjA==
   dependencies:
-    "@babel/runtime" "^7.6.2"
+    "@babel/runtime" "^7.5.5"
     parse-numeric-range "^0.0.2"
     unist-util-visit "^1.4.1"
 
