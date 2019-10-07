@@ -30,4 +30,10 @@
   display: flex;
   justify-content: center;
   margin-bottom: var(--spacing);
+
+  // responsive
+  twitter-widget {
+    max-width: 500px !important;
+    width: auto !important;
+  }
 }
