@@ -1,27 +1,19 @@
 .media {
-  display: flex;
-  justify-content: center;
   margin: 0 calc(var(--site-padding) * -1);
   margin-bottom: var(--spacing);
+  overflow: hidden;
   @media (--min-large) {
-    margin-left: 0;
-    margin-right: 0;
-  }
-}
-
-.inner {
-  @media (--min-large) {
-    overflow: hidden;
+    margin-left: auto;
+    margin-right: auto;
+    &.rounded {
+      border-radius: var(--border-radius);
+    }
   }
 
   img,
   iframe {
     display: block;
   }
-}
-.innerRounded {
-  composes: inner;
-  border-radius: var(--border-radius);
 }
 
 .caption {

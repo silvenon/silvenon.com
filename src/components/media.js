@@ -1,6 +1,7 @@
 // @flow
 import React, { type Node } from 'react'
 import { Tweet as ReactTweet } from 'react-twitter-widgets'
+import classNames from 'classnames'
 import IntrinsicRatio from './intrinsic-ratio'
 import ResponsiveImage from './responsive-image'
 import withClassNames from './with-class-names'
@@ -10,36 +11,26 @@ import styles from './media.module.css'
 export const Figure = 'figure'
 
 type MediaProps = {
-  fullWidth: boolean,
   rounded: boolean,
   width: string | number,
   height: string | number,
   children: Node,
 }
-const Media = ({ fullWidth, rounded, width, height, children }: MediaProps) => (
-  <div className={styles.media}>
-    {fullWidth ? (
-      <div
-        className={rounded ? styles.innerRounded : styles.inner}
-        style={{
-          width: '100%',
-          height: parseFloat(height),
-        }}
-      >
-        {children}
-      </div>
+const Media = ({ rounded, width, height, children }: MediaProps) => (
+  <div
+    className={classNames(styles.media, {
+      [styles.rounded]: rounded,
+    })}
+  >
+    {typeof width === 'string' && width.endsWith('%') ? (
+      children
     ) : (
-      <div className={rounded ? styles.innerRounded : styles.inner}>
-        <IntrinsicRatio width={width} height={height}>
-          {children}
-        </IntrinsicRatio>
-      </div>
+      <IntrinsicRatio width={width} height={height}>
+        {children}
+      </IntrinsicRatio>
     )}
   </div>
 )
-Media.defaultProps = {
-  fullWidth: false,
-}
 
 type ImageProps = {
   rounded: boolean,
@@ -76,14 +67,9 @@ type IframeProps = {
   height: string | number,
 }
 export const Iframe = ({ rounded, ...props }: IframeProps) => (
-  <Media
-    fullWidth={typeof props.width === 'string' && props.width.includes('%')}
-    rounded={rounded}
-    width={props.width}
-    height={props.height}
-  >
+  <Media rounded={rounded} width={props.width} height={props.height}>
     {/* eslint-disable-next-line jsx-a11y/iframe-has-title */}
-    <iframe {...props} style={{ height: '100%' }} />
+    <iframe {...props} />
   </Media>
 )
 Iframe.defaultProps = {
