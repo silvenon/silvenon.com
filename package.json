@@ -60,7 +60,7 @@
     "postcss-scss": "^2.0.0",
     "prism-themes": "^1.1.0",
     "prismjs": "^1.17.1",
-    "react": "^16.8.6",
+    "react": "^16.10.2",
     "react-dom": "^16.8.6",
     "react-helmet": "^5.2.1",
     "react-twitter-widgets": "^1.7.1",
