@@ -48,3 +48,9 @@
 .disqus {
   margin-top: 2rem;
 }
+
+// responsive
+twitter-widget {
+  max-width: 500px !important;
+  width: auto !important;
+}
