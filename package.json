@@ -15,7 +15,7 @@
     "start": "gatsby develop",
     "prelint": "eslint --print-config src/pages/index.js | eslint-config-prettier-check",
     "lint": "eslint . --report-unused-disable-directives",
-    "test": "flow && yarn lint && jest",
+    "test": "jest",
     "coverage": "flow-coverage-report -i 'src/**/*.js' -x 'src/**/*.test.js' -x '__tests__/**/*.js'",
     "build": "gatsby build",
     "serve": "gatsby serve"
@@ -104,7 +104,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "flow && lint-staged",
-      "pre-push": "yarn test"
+      "pre-push": "yarn flow && yarn lint && yarn test"
     }
   },
   "lint-staged": {

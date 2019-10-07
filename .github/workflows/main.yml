@@ -1,0 +1,38 @@
+name: CI
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v1
+    - name: Set up Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x.x
+    - name: Run scripts
+      run: |
+        yarn
+        yarn flow
+        yarn lint
+        yarn test --colors
+      env:
+        CI: true
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v1
+    - name: Set up Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x.x
+    - name: Run scripts
+      run: |
+        yarn --production
+        yarn build
+      env:
+        CI: true
