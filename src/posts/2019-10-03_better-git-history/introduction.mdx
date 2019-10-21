@@ -19,14 +19,14 @@ Our work often requires us to understand unfamiliar code; perhaps we're trying t
 
   2. **Why does it look like this?** Answering this question is trickier, it usually requires exploring that code's _history_; that way we might get a good sense of how it evolved over time, and what makes it tick. However, we might not be able to do that if the changes have not been committed with the intention of being easy to understand for anyone else.
 
-We can infer a lot from commits:
+We can infer a lot just from commits alone:
 
-  - a commit's subject can give us a useful hint about what it does, but might not if it doesn't say anything useful
-    - a subject like `change README.md` is useless because we already know as much by looking at the diff
-  - a commit's body can give us a great explanation, but might not if it doesn't exist
-  - a set of changes alone can give us a sense of what their purpose is, but might not if there are too many of them, achieving multiple goals at once, or if closely related changes are split across multiple commits
+  - A commit's subject can give us a useful hint about what it does, but might not if it doesn't say anything useful.
+  - A subject like `change README.md` is useless because we already know as much by looking at the diff.
+  - A commit's body can give us a great explanation, but might not if it doesn't exist.
+  - A set of changes alone can give us a sense of what their purpose is, but might not if there are too many of them, achieving multiple goals at once, or if closely related changes are split across multiple commits. Ideally every commit should be able to stand on its own.
 
-I highly recommend reading this thread about writing commit messages:
+[Every line of code is always documented](https://mislav.net/2014/02/hidden-documentation/), but the quality of that documentation is up to us. I highly recommend reading this thread about writing commit messages:
 
 <Tweet tweetId="1175100703829909505" />
 
