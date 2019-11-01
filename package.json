@@ -45,7 +45,7 @@
     "gatsby-plugin-flow": "^1.1.0",
     "gatsby-plugin-mdx": "^1.0.30",
     "gatsby-plugin-netlify": "^2.1.15",
-    "gatsby-plugin-postcss": "^2.1.0",
+    "gatsby-plugin-postcss": "^2.1.13",
     "gatsby-plugin-react-helmet": "^3.1.10",
     "gatsby-plugin-remove-trailing-slashes": "^2.1.0",
     "gatsby-plugin-sitemap": "^2.2.1",
