@@ -9,21 +9,21 @@ type Props = {
   lastModified: ?string,
 }
 
-const Date = ({ dateTime, lastModified, ...props }: Props) => (
+const DateComp = ({ dateTime, lastModified, ...props }: Props) => (
   <div>
     <time dateTime={dateTime} {...props}>
-      {format(dateTime, 'MMMM Do, YYYY')}
+      {format(new Date(dateTime), 'MMMM do, YYYY')}
     </time>
     {lastModified ? (
       <div className={styles.lastModified}>
-        (Edited on {format(lastModified, 'MMMM Do, YYYY')})
+        (Edited on {format(new Date(lastModified), 'MMMM Do, YYYY')})
       </div>
     ) : null}
   </div>
 )
 
-Date.defaultProps = {
+DateComp.defaultProps = {
   lastModified: null,
 }
 
-export default withClassNames(styles.time)(Date)
+export default withClassNames(styles.time)(DateComp)
