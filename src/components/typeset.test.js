@@ -1,6 +1,6 @@
 // @flow
 import React from 'react'
-import { render, cleanup } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import typeset from './typeset'
 
 jest.mock('../styles/globals.module.css', () => ({
@@ -9,8 +9,6 @@ jest.mock('../styles/globals.module.css', () => ({
     ':--hanging-double-quotes': '.hanging-double-quotes',
   },
 }))
-
-afterEach(cleanup)
 
 describe('typeset() HOC', () => {
   it('renders without crashing', () => {
