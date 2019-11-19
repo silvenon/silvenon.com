@@ -16,6 +16,7 @@ rules:
     - allowRequiredDefaults: true
   react/destructuring-assignment: off
   react/jsx-filename-extension: off
+  react/jsx-props-no-spreading: off
   react/no-unescaped-entities: off
   react/prop-types: off
   react/require-default-props:
