@@ -16,7 +16,7 @@ const DateComp = ({ dateTime, lastModified, ...props }: Props) => (
     </time>
     {lastModified ? (
       <div className={styles.lastModified}>
-        (Edited on {format(new Date(lastModified), 'MMMM Do, YYYY')})
+        (Edited on {format(new Date(lastModified), 'MMMM Do, yyyy')})
       </div>
     ) : null}
   </div>
