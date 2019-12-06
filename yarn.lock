@@ -12539,10 +12539,10 @@ retext-stringify@^2.0.0:
   dependencies:
     nlcst-to-string "^2.0.0"
 
-retext@^7.0.0:
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/retext/-/retext-7.0.0.tgz#9ad410b40ccdd3e6277127f6292011fb3748f8c7"
-  integrity sha512-y5R2Re5mtsmy9GGtsluTUFGhxbN0UIUqvuBsD6mFw+pviSTAiCCOZbvr4mT97BYe/Y2yvbvZKea3GxpFnubZnw==
+retext@^7.0.1:
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/retext/-/retext-7.0.1.tgz#04b7965ab78fe6e5e3a489304545b460d41bf5aa"
+  integrity sha512-N0IaEDkvUjqyfn3/gwxVfI51IxfGzOiVXqPLWnKeCDbiQdxSg0zebzHPxXWnL7TeplAJ+RE4uqrXyYN//s9HjQ==
   dependencies:
     retext-latin "^2.0.0"
     retext-stringify "^2.0.0"
