@@ -55,7 +55,7 @@
     "minireset.css": "^0.0.6",
     "polished": "^3.4.2",
     "postcss-import": "^12.0.1",
-    "postcss-nested": "^4.1.2",
+    "postcss-nested": "^4.2.1",
     "postcss-preset-env": "^6.7.0",
     "postcss-scss": "^2.0.0",
     "prism-themes": "^1.3.0",
