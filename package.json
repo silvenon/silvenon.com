@@ -69,7 +69,7 @@
     "rehype-slug": "^2.0.3",
     "retext": "^7.0.1",
     "retext-smartypants": "^3.0.3",
-    "unist-util-visit": "^2.0.0"
+    "unist-util-visit": "^2.0.1"
   },
   "devDependencies": {
     "@testing-library/react": "^9.3.2",
