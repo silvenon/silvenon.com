@@ -847,17 +847,17 @@
   resolved "https://registry.yarnpkg.com/@csstools/convert-colors/-/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"
   integrity sha512-5a6wqoJV/xEdbRNKVo6I4hO3VjyDq//8q2f9I6PBAvMesJHFauXDorcNCsr9RzvsZnaWi5NYCcfyqP1QeFHFbw==
 
-"@gitgraph/core@1.4.2":
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/@gitgraph/core/-/core-1.4.2.tgz#2632a088c4061b1b2fa4954ba9e0365e62e95ad5"
-  integrity sha512-pe08Z1c82ty8CdP7YgS2fEZRCVvQbCGXEp5lmFH/nVPKmrYV9ACV11GUhQJLpkYuEJ88rAyzlN9weyFu7hYGMQ==
+"@gitgraph/core@1.4.3":
+  version "1.4.3"
+  resolved "https://registry.yarnpkg.com/@gitgraph/core/-/core-1.4.3.tgz#211ae31af24b6baf4119540815119b1fbeb0374c"
+  integrity sha512-/84cYRd0W1hfUOY08UhphDXgs/Cnzapvb7Vb0ZmND+4IAq9V6SpdbQHlwinNucOxTbIku6hrd2tROiYdrmD/kg==
 
-"@gitgraph/react@^1.5.1":
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/@gitgraph/react/-/react-1.5.1.tgz#7d62cca2ec57141797bf6855d530498161cabedb"
-  integrity sha512-Fbxs99kBI82gVVrK9Nn/4VpZ5edtC5ocfCWeti+4aDsheCYd1IxvANd9PZPeNpV0Ntunm0b+KfPpRFae5nvHXg==
+"@gitgraph/react@^1.5.2":
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/@gitgraph/react/-/react-1.5.2.tgz#4e3ce638a56cff28972af67c4dafa80d391d5ba8"
+  integrity sha512-INAJGsNqvWtWEdRHNi4SEs3UurFyI6Y9Onlg8l3moOse0JHk8MWuWuwmj2OnOMUdmH6igQ4ra1cwKLf2t9RGjw==
   dependencies:
-    "@gitgraph/core" "1.4.2"
+    "@gitgraph/core" "1.4.3"
 
 "@hapi/address@2.x.x":
   version "2.0.0"
