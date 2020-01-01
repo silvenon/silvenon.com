@@ -41,7 +41,7 @@
     "fuzzaldrin-plus": "^0.6.0",
     "gatsby": "2.18.7",
     "gatsby-plugin-css-customs": "^0.3.0",
-    "gatsby-plugin-feed": "^2.3.23",
+    "gatsby-plugin-feed": "^2.3.25",
     "gatsby-plugin-flow": "^1.1.17",
     "gatsby-plugin-mdx": "^1.0.30",
     "gatsby-plugin-netlify": "^2.1.30",
