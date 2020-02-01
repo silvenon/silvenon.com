@@ -3904,7 +3904,7 @@ cors@^2.8.5:
     object-assign "^4"
     vary "^1"
 
-cosmiconfig@^5.0.0, cosmiconfig@^5.2.1:
+cosmiconfig@^5.0.0:
   version "5.2.1"
   resolved "https://registry.yarnpkg.com/cosmiconfig/-/cosmiconfig-5.2.1.tgz#040f726809c591e77a17c0a3626ca45b4f168b1a"
   integrity sha512-H65gsXo1SKjf8zmrJ67eJk8aIRKV5ff2D4uKZIBZShbhGSpEmsQOPW/SKMKYhSTrqR7ufy6RP69rPogdaPh/kA==
@@ -6276,10 +6276,10 @@ gatsby-plugin-react-helmet@^3.1.21:
   dependencies:
     "@babel/runtime" "^7.7.6"
 
-gatsby-plugin-remove-trailing-slashes@^2.1.17:
-  version "2.1.17"
-  resolved "https://registry.yarnpkg.com/gatsby-plugin-remove-trailing-slashes/-/gatsby-plugin-remove-trailing-slashes-2.1.17.tgz#4d68f21d6d8b22998da9a6d78270a8265948b6ba"
-  integrity sha512-MtN4nxd1Zk6IzCbjrKp3eR1pqbUKSDP7SIyQ/Nf9PmCLrcPJzkzZqIiMevL+qVJsZdDJ5b9LBOEhs4ylz2X5CQ==
+gatsby-plugin-remove-trailing-slashes@^2.1.20:
+  version "2.1.20"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-remove-trailing-slashes/-/gatsby-plugin-remove-trailing-slashes-2.1.20.tgz#67f937705144ab7d99e27f8297f9919890ac1a1b"
+  integrity sha512-x6mQLseer+SCMooNan7u0rN29IQnJVbxiZkKSANlGPPU/cYplSdtdX6S+wMep1u+CsLCByvXLkgvdmHVMPlSOQ==
   dependencies:
     "@babel/runtime" "^7.7.6"
 
