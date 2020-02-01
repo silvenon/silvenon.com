@@ -48,7 +48,7 @@
     "gatsby-plugin-postcss": "^2.1.18",
     "gatsby-plugin-react-helmet": "^3.1.18",
     "gatsby-plugin-remove-trailing-slashes": "^2.1.17",
-    "gatsby-plugin-sitemap": "^2.2.1",
+    "gatsby-plugin-sitemap": "^2.2.26",
     "gatsby-remark-prismjs": "^3.3.28",
     "gatsby-source-filesystem": "^2.1.43",
     "js-yaml": "^3.13.1",
