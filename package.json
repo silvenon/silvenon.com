@@ -50,7 +50,7 @@
     "gatsby-plugin-remove-trailing-slashes": "^2.1.17",
     "gatsby-plugin-sitemap": "^2.2.1",
     "gatsby-remark-prismjs": "^3.3.28",
-    "gatsby-source-filesystem": "^2.1.43",
+    "gatsby-source-filesystem": "^2.1.47",
     "js-yaml": "^3.13.1",
     "minireset.css": "^0.0.6",
     "polished": "^3.4.2",
