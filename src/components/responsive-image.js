@@ -66,9 +66,7 @@ const ResponsiveImage = ({
         sizes: [
           `(min-width: ${maxDisplayWidth}px) ${
             maxDisplayWidth === containerMaxWidth
-              ? `calc(${maxDisplayWidth}px - ${
-                  customProperties['--site-padding']
-                } * 2)`
+              ? `calc(${maxDisplayWidth}px - ${customProperties['--site-padding']} * 2)`
               : `${maxDisplayWidth}px`
           }`,
           '100vw',

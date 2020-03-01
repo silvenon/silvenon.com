@@ -91,7 +91,7 @@
     "jest": "^25.1.0",
     "jest-config": "^25.1.0",
     "lint-staged": "^10.0.7",
-    "prettier": "^1.18.2"
+    "prettier": "^1.19.1"
   },
   "browserslist": [
     "defaults"
