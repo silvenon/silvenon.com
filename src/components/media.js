@@ -52,7 +52,7 @@ export const Image = ({
       width={parseFloat(originalWidth) / maxDpr}
       height={parseFloat(originalHeight) / maxDpr}
     >
-      <ResponsiveImage originalWidth={originalWidth} {...props} />
+      <ResponsiveImage {...props} originalWidth={originalWidth} />
     </Media>
   )
 }

@@ -11,7 +11,7 @@ type Props = {
 
 const DateComp = ({ dateTime, lastModified, ...props }: Props) => (
   <div>
-    <time dateTime={dateTime} {...props}>
+    <time {...props} dateTime={dateTime}>
       {format(new Date(dateTime), 'MMMM do, yyyy')}
     </time>
     {lastModified ? (

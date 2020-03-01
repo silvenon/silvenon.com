@@ -6,7 +6,7 @@ import typeset from './typeset'
 import withClassNames from './with-class-names'
 import styles from './body.module.css'
 
-function CustomA(props: { ['data-autolink']: boolean, className: ?string }) {
+function CustomA(props: { 'data-autolink': boolean, className: ?string }) {
   /* eslint-disable jsx-a11y/anchor-has-content */
   if (props['data-autolink']) {
     return (
@@ -19,8 +19,6 @@ function CustomA(props: { ['data-autolink']: boolean, className: ?string }) {
   /* eslint-enable jsx-a11y/anchor-has-content */
 }
 CustomA.defaultProps = {
-  // this rule doesn't seem to recognize keys with quotes
-  // eslint-disable-next-line react/default-props-match-prop-types
   'data-autolink': false,
   className: null,
 }

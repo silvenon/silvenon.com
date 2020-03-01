@@ -77,7 +77,7 @@ const ResponsiveImage = ({
 
   return (
     // eslint-disable-next-line jsx-a11y/alt-text
-    <img src={src} {...respProps} {...props} />
+    <img {...props} {...respProps} src={src} />
   )
 }
 
