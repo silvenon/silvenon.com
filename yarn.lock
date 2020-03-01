@@ -3899,15 +3899,16 @@ css-color-names@0.0.4, css-color-names@^0.0.4, css-color-names@~0.0.3:
   resolved "https://registry.yarnpkg.com/css-color-names/-/css-color-names-0.0.4.tgz#808adc2e79cf84738069b646cb20ec27beb629e0"
   integrity sha1-gIrcLnnPhHOAabZGyyDsJ762KeA=
 
-css-customs-loader@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/css-customs-loader/-/css-customs-loader-0.3.0.tgz#2131d5b6dc751bfa8f3ee624c512b9a80d18cd44"
-  integrity sha512-ka4YVIQzWrSqfVH1+WALmWvjba7Wte0GIGuenCsJ/LyvXG9ImIkamJi0dy2hJtic9waRQiR5VPKFWU4fP9pyzQ==
+css-customs-loader@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/css-customs-loader/-/css-customs-loader-0.4.0.tgz#e28fc56e2c5ce8ed6c1b066aa9ebe678a92a8521"
+  integrity sha512-hBEgMwFgsvYErxLPEPcaWUGskrAN/dL3uBdox+WDLq+QkBboJnHhzXtwvncV6xh6sfPkwV2FrSCJ5Emr4mwRgA==
   dependencies:
     loader-utils "^1.1.0"
     postcss "^7.0.5"
     postcss-load-config "^2.0.0"
-    raw-loader "^0.5.1"
+    raw-loader "^4.0.0"
+    require-from-string "^2.0.2"
 
 css-declaration-sorter@^4.0.1:
   version "4.0.1"
@@ -5976,12 +5977,12 @@ gatsby-page-utils@^0.0.36:
     lodash "^4.17.15"
     micromatch "^3.1.10"
 
-gatsby-plugin-css-customs@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/gatsby-plugin-css-customs/-/gatsby-plugin-css-customs-0.3.0.tgz#a07dbc8e641c1f1aef89ebd7efded56981168b09"
-  integrity sha512-hrYVVeww7wSu+iK9vqgj52yGSodMUIx+15V4OllJVN7EET0+poB2MllyaM3ZSqcXIdYtFA3geh/xNb9DmWmBLg==
+gatsby-plugin-css-customs@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-css-customs/-/gatsby-plugin-css-customs-0.4.0.tgz#1d013035a8dd7ad6250bc6fc2c4a094fe702488a"
+  integrity sha512-g0Un1FuITBWMZxXq991d3RNBqbmQ4maYbN8mRoREjX5S5BVOm0eHHHniBhwphEjHr/sfzq2/PZV/jR8cseMpFQ==
   dependencies:
-    css-customs-loader "^0.3.0"
+    css-customs-loader "^0.4.0"
     postcss-loader "^3.0.0"
     postcss-preset-env "^6.5.0"
 
@@ -11649,6 +11650,14 @@ raw-loader@^0.5.1:
   resolved "https://registry.yarnpkg.com/raw-loader/-/raw-loader-0.5.1.tgz#0c3d0beaed8a01c966d9787bf778281252a979aa"
   integrity sha1-DD0L6u2KAclm2Xh793goElKpeao=
 
+raw-loader@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/raw-loader/-/raw-loader-4.0.0.tgz#d639c40fb9d72b5c7f8abc1fb2ddb25b29d3d540"
+  integrity sha512-iINUOYvl1cGEmfoaLjnZXt4bKfT2LJnZZib5N/LLyAphC+Dd11vNP9CNVb38j+SAJpFI1uo8j9frmih53ASy7Q==
+  dependencies:
+    loader-utils "^1.2.3"
+    schema-utils "^2.5.0"
+
 rc@^1.2.7, rc@^1.2.8:
   version "1.2.8"
   resolved "https://registry.yarnpkg.com/rc/-/rc-1.2.8.tgz#cd924bf5200a075b83c188cd6b9e211b7fc0d3ed"
@@ -12249,6 +12258,11 @@ require-directory@^2.1.1:
   resolved "https://registry.yarnpkg.com/require-directory/-/require-directory-2.1.1.tgz#8c64ad5fd30dab1c976e2344ffe7f792a6a6df42"
   integrity sha1-jGStX9MNqxyXbiNE/+f3kqam30I=
 
+require-from-string@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/require-from-string/-/require-from-string-2.0.2.tgz#89a7fdd938261267318eafe14f9c32e598c36909"
+  integrity sha512-Xf0nWe6RseziFMu+Ap9biiUbmplq6S9/p+7w7YXP/JBHhrUDDUhwa+vANyubuqfZWTveU//DYVGsDG7RKL/vEw==
+
 "require-like@>= 0.1.1":
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/require-like/-/require-like-0.1.2.tgz#ad6f30c13becd797010c468afa775c0c0a6b47fa"
@@ -12570,6 +12584,14 @@ schema-utils@^1.0.0:
     ajv "^6.1.0"
     ajv-errors "^1.0.0"
     ajv-keywords "^3.1.0"
+
+schema-utils@^2.5.0:
+  version "2.6.4"
+  resolved "https://registry.yarnpkg.com/schema-utils/-/schema-utils-2.6.4.tgz#a27efbf6e4e78689d91872ee3ccfa57d7bdd0f53"
+  integrity sha512-VNjcaUxVnEeun6B2fiiUDjXXBtD4ZSH7pdbfIu1pOFwgptDPLMo/z9jr4sUfsjFVPqDCEin/F7IYlq7/E6yDbQ==
+  dependencies:
+    ajv "^6.10.2"
+    ajv-keywords "^3.4.1"
 
 scriptjs@^2.5.8:
   version "2.5.9"
