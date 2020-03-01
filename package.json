@@ -42,7 +42,7 @@
     "gatsby": "2.18.17",
     "gatsby-plugin-css-customs": "^0.4.0",
     "gatsby-plugin-feed": "^2.3.25",
-    "gatsby-plugin-flow": "^1.1.18",
+    "gatsby-plugin-flow": "^1.1.19",
     "gatsby-plugin-mdx": "^1.0.74",
     "gatsby-plugin-netlify": "^2.1.31",
     "gatsby-plugin-postcss": "^2.1.19",
