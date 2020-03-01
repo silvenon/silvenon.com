@@ -34,14 +34,14 @@ function LazyImage({ alt, src, srcSet, sizes, ...props }: Props) {
   }, [src, srcSet, sizes])
 
   return isLoaded ? (
-    <img alt={alt} src={src} srcSet={srcSet} sizes={sizes} {...props} />
+    <img {...props} alt={alt} src={src} srcSet={srcSet} sizes={sizes} />
   ) : (
     <img
+      {...props}
       alt={alt}
       data-src={src}
       data-srcset={srcSet}
       data-sizes={sizes}
-      {...props}
     />
   )
 }

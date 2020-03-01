@@ -18,7 +18,7 @@ export default function Icon({ id, size, fill, ...props }: Props) {
     }
   }, [id])
   return (
-    <svg width={size} height={size} fill={fill} {...props}>
+    <svg {...props} width={size} height={size} fill={fill}>
       <use xlinkHref={`#icon-${id}`} />
     </svg>
   )

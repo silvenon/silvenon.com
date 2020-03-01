@@ -12,12 +12,12 @@ type Props = {
 
 const Button = ({ as: Component, color, style, ...props }: Props) => (
   <Component
+    {...props}
     style={{
+      ...style,
       '--color': color,
       '--color-hover': polished.darken(0.15, color),
-      ...style,
     }}
-    {...props}
   />
 )
 

@@ -10,7 +10,7 @@ type Props = {
 
 function HotTip({ className, children, ...props }: Props) {
   return (
-    <section className={classNames(styles.container, className)} {...props}>
+    <section {...props} className={classNames(styles.container, className)}>
       <h1 className={styles.title}>Hot tip!</h1>
       {children}
     </section>

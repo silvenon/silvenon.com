@@ -7,7 +7,7 @@ import styles from './logo.module.css'
 type Props = {}
 
 const Logo = (props: Props) => (
-  <Link to="/" {...props}>
+  <Link {...props} to="/">
     <svg width={64} height={64} viewBox="0 0 64 64">
       <title>Logo</title>
       <clipPath id="topLeft">

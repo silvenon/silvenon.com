@@ -47,9 +47,9 @@ function typeset(WrappedComponent: string): ComponentType<*> {
 
     return (
       <WrappedComponent
+        {...props}
         ref={typesetEl}
         className={classNames(className, typesetClassName)}
-        {...props}
       >
         {children}
       </WrappedComponent>
