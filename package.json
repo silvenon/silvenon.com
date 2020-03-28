@@ -93,24 +93,5 @@
     "jest-config": "^25.2.4",
     "lint-staged": "^10.1.1",
     "prettier": "^1.19.1"
-  },
-  "browserslist": [
-    "defaults"
-  ],
-  "prettier": {
-    "semi": false,
-    "singleQuote": true,
-    "trailingComma": "all"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "flow && lint-staged",
-      "pre-push": "yarn install && flow && yarn lint && yarn test"
-    }
-  },
-  "lint-staged": {
-    "*.js": [
-      "eslint --fix"
-    ]
   }
 }
