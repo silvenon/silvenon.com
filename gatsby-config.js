@@ -1,7 +1,7 @@
 const path = require('path')
 const headingsSlugId = require('rehype-slug')
 const autolinkHeadings = require('rehype-autolink-headings')
-const smartypants = require('./utils/remark-smartypants')
+const smartypants = require('@silvenon/remark-smartypants')
 
 module.exports = {
   siteMetadata: {
