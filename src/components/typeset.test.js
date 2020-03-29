@@ -29,7 +29,7 @@ describe('typeset() HOC', () => {
       let container = null
       render(
         <Component
-          ref={node => {
+          ref={(node) => {
             container = node
           }}
         >

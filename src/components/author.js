@@ -48,7 +48,7 @@ const Author = ({
           sizes={`${customMedia['--author-breakpoint']} 256px, 128px`}
           srcSet={[128, 256, 512]
             .map(
-              size =>
+              (size) =>
                 `${cl.url(avatar.id, {
                   width: size,
                   crop: 'scale',
@@ -74,7 +74,7 @@ const Author = ({
             <p>{biography}</p>
           </div>
           <div className={styles.socialContainer}>
-            {Object.keys(links).map(key => {
+            {Object.keys(links).map((key) => {
               const { name, url, color, iconId } = links[key]
               return (
                 <A

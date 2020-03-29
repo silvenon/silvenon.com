@@ -107,7 +107,7 @@ const Home = ({
         Latest from <Link to="/blog">my blog</Link>:
       </H2>
       <div className={styles.blog}>
-        {edges.map(edge => {
+        {edges.map((edge) => {
           const {
             node: {
               fields: { path, date },

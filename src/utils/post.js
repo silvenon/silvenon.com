@@ -8,7 +8,7 @@ export function getFullTitle(edge) {
 export function getSeries(edge, seriesMdx) {
   const { isSeries, seriesId, seriesTitle } = edge.node.fields
   if (!isSeries || seriesId == null || seriesTitle == null) return null
-  const series = seriesMdx.group.find(group => group.fieldValue === seriesId)
+  const series = seriesMdx.group.find((group) => group.fieldValue === seriesId)
   if (series == null) return null
   const seriesEdges = [...series.edges] // duplicating because .sort() mutates
   return {
@@ -19,7 +19,7 @@ export function getSeries(edge, seriesMdx) {
           edgeA.node.exports.meta.seriesPart -
           edgeB.node.exports.meta.seriesPart,
       )
-      .map(edge => ({
+      .map((edge) => ({
         title: edge.node.exports.meta.title,
         path: edge.node.fields.path,
       })),

@@ -9,9 +9,9 @@ const paginate = ({
   context,
 }) => {
   const pages = range(Math.ceil(edges.length / perPage))
-  const getPagePath = page =>
+  const getPagePath = (page) =>
     page === 0 ? basePath : `${basePath}/page/${page + 1}`
-  pages.forEach(page => {
+  pages.forEach((page) => {
     const currentPagePath = getPagePath(page)
     const previousPagePath = page > 0 ? getPagePath(page - 1) : null
     const nextPagePath = page < pages.length - 1 ? getPagePath(page + 1) : null

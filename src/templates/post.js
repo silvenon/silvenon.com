@@ -123,8 +123,9 @@ const Post = ({ location, data }: Props) => {
             <>
               <div>{seriesTitle}</div>
               <small className={styles.subtitle}>
-                <span className={styles.seriesPart}>{`Part ${seriesPart +
-                  1}:`}</span>{' '}
+                <span className={styles.seriesPart}>{`Part ${
+                  seriesPart + 1
+                }:`}</span>{' '}
                 {title}
               </small>
             </>
@@ -154,14 +155,14 @@ const Post = ({ location, data }: Props) => {
             <P>This post is part of the series "{seriesTitle}":</P>
             <OL>
               {seriesMdx.edges
-                .map(edge => ({
+                .map((edge) => ({
                   id: edge.node.id,
                   order: edge.node.exports.meta.seriesPart,
                   title: edge.node.exports.meta.title,
                   path: edge.node.fields.path,
                 }))
                 .sort((partA, partB) => partA.order - partB.order)
-                .map(part => (
+                .map((part) => (
                   <LI key={part.id}>
                     {part.id !== id ? (
                       <Link to={part.path}>{part.title}</Link>

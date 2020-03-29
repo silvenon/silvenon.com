@@ -125,7 +125,7 @@ exports.createPages = async ({ graphql, actions }) => {
       perPage,
     })
 
-    languages.forEach(language => {
+    languages.forEach((language) => {
       paginate({
         createPage,
         basePath: `/blog/language/${language.toLowerCase()}`,

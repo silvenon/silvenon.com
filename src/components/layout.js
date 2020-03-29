@@ -129,7 +129,7 @@ const Layout = ({
               property="article:author"
               content={article.author}
             />,
-            article.tags.map(tag => (
+            article.tags.map((tag) => (
               <meta
                 key={`article:tag ${tag}`}
                 property="article:tag"

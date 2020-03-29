@@ -56,7 +56,7 @@ module.exports = {
     ...(process.env.NODE_ENV !== 'production'
       ? ['posts', 'drafts']
       : ['posts']
-    ).map(name => ({
+    ).map((name) => ({
       resolve: 'gatsby-source-filesystem',
       options: {
         name,

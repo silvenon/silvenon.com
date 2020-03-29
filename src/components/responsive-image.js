@@ -38,7 +38,7 @@ const ResponsiveImage = ({
   const respProps = onlyDpr
     ? {
         srcSet: dprs
-          .map(dpr => {
+          .map((dpr) => {
             const url = cl.url(srcId, {
               crop: 'scale',
               width: maxDisplayWidth * dpr,
@@ -50,11 +50,11 @@ const ResponsiveImage = ({
     : {
         srcSet: [
           ...range(Math.floor(maxActualWidth / STEP_WIDTH))
-            .map(i => (i + 1) * STEP_WIDTH)
+            .map((i) => (i + 1) * STEP_WIDTH)
             .slice(1),
           maxActualWidth,
         ]
-          .map(w => {
+          .map((w) => {
             const width = Math.floor(w)
             const url = cl.url(srcId, {
               crop: 'scale',

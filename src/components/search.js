@@ -55,7 +55,7 @@ function Search({ children, ...props }: Props) {
   const searchBar = (
     <Downshift
       onChange={({ path }) => navigate(path)}
-      itemToString={post => (post != null ? post.title : '')}
+      itemToString={(post) => (post != null ? post.title : '')}
     >
       {({
         getLabelProps,
@@ -67,9 +67,9 @@ function Search({ children, ...props }: Props) {
         highlightedIndex,
       }) => {
         const posts: Array<{ title: string, path: string }> = isOpen
-          ? fuzzaldrin.filter(postTitles, inputValue).map(title => {
+          ? fuzzaldrin.filter(postTitles, inputValue).map((title) => {
               const edge = allMdx.edges.find(
-                edge => getFullTitle(edge) === title,
+                (edge) => getFullTitle(edge) === title,
               )
               if (edge == null) {
                 throw new Error(
@@ -125,7 +125,7 @@ function Search({ children, ...props }: Props) {
                     dangerouslySetInnerHTML={{
                       __html: fuzzaldrin.wrap(title, inputValue),
                     }}
-                    onClick={event => {
+                    onClick={(event) => {
                       event.stopPropagation()
                     }}
                   />

@@ -92,26 +92,27 @@ function Blog({
         </Header.TopBar>
         <div className={styles.filters} style={{ display: 'none' }}>
           <div className={styles.list}>
-            {LANGUAGES.map(language => LANGUAGE[language]).map(({ id, name }) =>
-              id === language ? (
-                <div
-                  key={id}
-                  className={classNames(styles.item, styles.isActive)}
-                >
-                  <div className={styles.name}>{name}</div>
-                  <Link to="/blog" className={styles.close}>
-                    <Icon id="cross" size={24} />
+            {LANGUAGES.map((language) => LANGUAGE[language]).map(
+              ({ id, name }) =>
+                id === language ? (
+                  <div
+                    key={id}
+                    className={classNames(styles.item, styles.isActive)}
+                  >
+                    <div className={styles.name}>{name}</div>
+                    <Link to="/blog" className={styles.close}>
+                      <Icon id="cross" size={24} />
+                    </Link>
+                  </div>
+                ) : (
+                  <Link
+                    key={id}
+                    to={`/blog/language/${id.toLowerCase()}`}
+                    className={classNames(styles.item, styles.link)}
+                  >
+                    <div className={styles.name}>{name}</div>
                   </Link>
-                </div>
-              ) : (
-                <Link
-                  key={id}
-                  to={`/blog/language/${id.toLowerCase()}`}
-                  className={classNames(styles.item, styles.link)}
-                >
-                  <div className={styles.name}>{name}</div>
-                </Link>
-              ),
+                ),
             )}
           </div>
           <div className={styles.state}>
@@ -129,7 +130,7 @@ function Blog({
       </Header>
       <Container>
         {pageMdx.edges
-          .filter(edge =>
+          .filter((edge) =>
             edge.node.fields.isSeries
               ? edge.node.exports.meta.seriesPart === 0
               : true,
