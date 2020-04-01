@@ -12679,15 +12679,15 @@ regjsparser@^0.6.0:
   dependencies:
     jsesc "~0.5.0"
 
-rehype-autolink-headings@^2.0.5:
-  version "2.0.5"
-  resolved "https://registry.yarnpkg.com/rehype-autolink-headings/-/rehype-autolink-headings-2.0.5.tgz#a392f566f424706d691ca888307b61ec3192ae16"
-  integrity sha512-gxG72uj8wV2WnjlanTu5qxV5xqLkI3H1q8HSWbof7fHa12FuT+X3fGj275KwxgXESi8hJvHtZiDUwcZ9rjcHRg==
+rehype-autolink-headings@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/rehype-autolink-headings/-/rehype-autolink-headings-3.0.0.tgz#8e771395690d02570b507ba430bcaf081a0a9c14"
+  integrity sha512-Kit6caYCGvH7OSeXgEq0F4b4vXFg92owru/26ckSLCODjvbD4TogAOvYvzcvkaeIO0uDpnmCg0MsmHJtHXBvyQ==
   dependencies:
     extend "^3.0.1"
     hast-util-has-property "^1.0.0"
     hast-util-is-element "^1.0.0"
-    unist-util-visit "^1.1.0"
+    unist-util-visit "^2.0.0"
 
 rehype-slug@^2.0.3:
   version "2.0.3"
