@@ -39,7 +39,7 @@
     "downshift": "^5.0.5",
     "fs-extra": "^8.1.0",
     "fuzzaldrin-plus": "^0.6.0",
-    "gatsby": "2.18.17",
+    "gatsby": "2.20.9",
     "gatsby-plugin-css-customs": "^0.4.0",
     "gatsby-plugin-feed": "^2.4.1",
     "gatsby-plugin-flow": "^1.1.19",
