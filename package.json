@@ -30,7 +30,7 @@
     "@mdx-js/react": "^1.5.8",
     "babel-plugin-date-fns": "^2.0.0",
     "babel-plugin-polished": "^1.1.0",
-    "babel-preset-gatsby": "^0.2.29",
+    "babel-preset-gatsby": "^0.3.1",
     "bootstrap": "^4.4.1",
     "change-case": "^4.1.1",
     "classnames": "^2.2.6",
