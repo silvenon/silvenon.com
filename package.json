@@ -68,7 +68,7 @@
     "rehype-autolink-headings": "^2.0.5",
     "rehype-slug": "^2.0.3",
     "retext": "^7.0.1",
-    "retext-smartypants": "^3.0.3",
+    "retext-smartypants": "^4.0.0",
     "unist-util-visit": "^2.0.0"
   },
   "devDependencies": {
