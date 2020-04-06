@@ -20,7 +20,7 @@
 [[redirects]]
   from = "/intro-to-eslint"
   to = "/blog/intro-to-eslint"
-  status = 307
+  status = 302
 
 # I wrote these for Semaphore CI
 
@@ -96,15 +96,15 @@
 [[redirects]]
   from = "/blog/posts/*"
   to = "/blog/:splat"
-  status = 307
+  status = 302
 
 # blog categories which are not being used at the moment
 
 [[redirects]]
   from = "/blog/category/dev"
   to = "/blog"
-  status = 307
+  status = 302
 [[redirects]]
   from = "/blog/category/dev"
   to = "/blog"
-  status = 307
+  status = 302
