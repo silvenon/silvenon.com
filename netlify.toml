@@ -108,3 +108,19 @@
   from = "/blog/category/non-dev"
   to = "/blog"
   status = 302
+
+# I joined these posts into series
+
+[[redirects]]
+  from = "/blog/mocking-functions-and-modules-with-jest"
+  to = "/blog/mocking-with-jest"
+[[redirects]]
+  from = "/blog/mocking-with-jest"
+  to = "/blog/mocking-with-jest/functions"
+  status = 302
+[[redirects]]
+  from = "/blog/mocking-functions-with-jest"
+  to = "/blog/mocking-with-jest/functions"
+[[redirects]]
+  from = "/blog/mocking-modules-with-jest"
+  to = "/blog/mocking-with-jest/modules"
