@@ -105,6 +105,6 @@
   to = "/blog"
   status = 302
 [[redirects]]
-  from = "/blog/category/dev"
+  from = "/blog/category/non-dev"
   to = "/blog"
   status = 302
