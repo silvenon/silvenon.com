@@ -1,7 +1,13 @@
+const fs = require('fs')
 const path = require('path')
 const headingsSlugId = require('rehype-slug')
 const autolinkHeadings = require('rehype-autolink-headings')
 const smartypants = require('@silvenon/remark-smartypants')
+
+const sourceDir = {
+  posts: path.resolve(__dirname, 'src/posts'),
+  drafts: path.resolve(__dirname, 'src/drafts'),
+}
 
 module.exports = {
   siteMetadata: {
@@ -53,14 +59,14 @@ module.exports = {
         ],
       },
     },
-    ...(process.env.NODE_ENV !== 'production'
+    ...(process.env.NODE_ENV !== 'production' && fs.existsSync(sourceDir.drafts)
       ? ['posts', 'drafts']
       : ['posts']
     ).map((name) => ({
       resolve: 'gatsby-source-filesystem',
       options: {
         name,
-        path: path.resolve(__dirname, `./src/${name}`),
+        path: sourceDir[name],
       },
     })),
     'gatsby-plugin-remove-trailing-slashes',
