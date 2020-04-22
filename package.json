@@ -1,7 +1,11 @@
 {
   "name": "silvenon.com",
   "description": "My personal website",
-  "author": "Matija Marohnić <matija.marohnic@gmail.com> (https://silvenon.com)",
+  "author": {
+    "name": "Matija Marohnić",
+    "email": "matija.marohnic@gmail.com",
+    "url": "https://silvenon.com"
+  },
   "private": true,
   "repository": {
     "type": "git",
