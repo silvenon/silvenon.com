@@ -11,9 +11,6 @@
     "type": "git",
     "url": "git+https://github.com/silvenon/silvenon.com.git"
   },
-  "keywords": [
-    "gatsby"
-  ],
   "license": "MIT",
   "scripts": {
     "start": "gatsby develop",
