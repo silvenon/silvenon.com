@@ -886,7 +886,7 @@
     levenary "^1.1.1"
     semver "^5.5.0"
 
-"@babel/preset-flow@^7.8.3", "@babel/preset-flow@^7.9.0":
+"@babel/preset-flow@^7.9.0":
   version "7.9.0"
   resolved "https://registry.yarnpkg.com/@babel/preset-flow/-/preset-flow-7.9.0.tgz#fee847c3e090b0b2d9227c1949e4da1d1379280d"
   integrity sha512-88uSmlshIrlmPkNkEcx3UpSZ6b8n0UGBq0/0ZMZCF/uxAW0XIAUuDHBhIOAh0pvweafH4RxOwi/H3rWhtqOYPA==
@@ -6724,13 +6724,13 @@ gatsby-plugin-feed@^2.5.0:
     lodash.merge "^4.6.2"
     rss "^1.2.2"
 
-gatsby-plugin-flow@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/gatsby-plugin-flow/-/gatsby-plugin-flow-1.2.1.tgz#c72cfe3499977c170cf9c945b299eb6c87d57a32"
-  integrity sha512-zMW7Agp+jdynorH/wav17sAnZn8Ryiz54HHNr4UM8lUGji0D4/RRL2ZhDtPugtdSDGTnQZQ4FGt1bmmDKw/gug==
+gatsby-plugin-flow@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-flow/-/gatsby-plugin-flow-1.3.0.tgz#7a639fe98a1465f438c88ef53aa6aedf7f9a9999"
+  integrity sha512-P2HuurUf7W1aGxfY2qbKj7pLZqT5XZvPgIK71ipLk/GydfJK8I+rfOBJInX8JuqOg2IqQA2cKv3isWyW5HzwOQ==
   dependencies:
-    "@babel/preset-flow" "^7.8.3"
-    "@babel/runtime" "^7.8.7"
+    "@babel/preset-flow" "^7.9.0"
+    "@babel/runtime" "^7.9.2"
 
 gatsby-plugin-mdx@^1.2.4:
   version "1.2.4"
