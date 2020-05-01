@@ -27,7 +27,7 @@
     "@babel/preset-flow": "^7.9.0",
     "@gitgraph/react": "^1.5.3",
     "@mdx-js/mdx": "^1.5.7",
-    "@mdx-js/react": "^1.5.8",
+    "@mdx-js/react": "^1.6.0",
     "@silvenon/remark-smartypants": "^0.1.1",
     "babel-plugin-date-fns": "^2.0.0",
     "babel-plugin-polished": "^1.1.0",
