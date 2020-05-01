@@ -38,7 +38,7 @@
     "date-fns": "^2.11.1",
     "disqus-react": "^1.0.8",
     "downshift": "^5.2.2",
-    "fs-extra": "^8.1.0",
+    "fs-extra": "^9.0.0",
     "fuzzaldrin-plus": "^0.6.0",
     "gatsby": "2.20.24",
     "gatsby-plugin-css-customs": "^0.4.0",
