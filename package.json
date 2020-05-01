@@ -90,7 +90,7 @@
     "husky": "^4.2.5",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^25.5.3",
-    "jest-config": "^25.2.4",
+    "jest-config": "^25.5.3",
     "lint-staged": "^10.1.1",
     "prettier": "^2.0.4"
   }
