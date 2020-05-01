@@ -44,7 +44,7 @@
     "gatsby-plugin-css-customs": "^0.4.0",
     "gatsby-plugin-feed": "^2.4.1",
     "gatsby-plugin-flow": "^1.2.1",
-    "gatsby-plugin-mdx": "^1.1.4",
+    "gatsby-plugin-mdx": "^1.2.4",
     "gatsby-plugin-netlify": "^2.2.1",
     "gatsby-plugin-postcss": "^2.2.1",
     "gatsby-plugin-react-helmet": "^3.2.1",
