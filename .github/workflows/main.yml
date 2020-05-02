@@ -21,7 +21,7 @@ jobs:
     - name: Run scripts
       run: |
         yarn
-        yarn flow
+        yarn tsc
         yarn lint
         yarn test --colors
       env:

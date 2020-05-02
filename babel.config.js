@@ -1,11 +1,12 @@
-// https://www.gatsbyjs.org/docs/babel/#how-to-use-a-custom-babelrc-file
-
 module.exports = {
-  presets: ['babel-preset-gatsby', '@babel/preset-flow'],
+  presets: ['next/babel'],
   plugins: [
     '@babel/plugin-proposal-optional-chaining',
     '@babel/plugin-proposal-nullish-coalescing-operator',
     'babel-plugin-date-fns',
     'babel-plugin-polished',
+    'babel-plugin-lodash',
+    ['babel-plugin-styled-components', { ssr: true }],
+    'babel-plugin-macros',
   ],
 }

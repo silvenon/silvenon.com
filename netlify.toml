@@ -109,18 +109,41 @@
   to = "/blog"
   status = 302
 
+# I only have posts in English
+
+[[redirects]]
+  from = "/blog/language/en"
+  to = "/blog"
+[[redirects]]
+  from = "/blog/language/hr"
+  to = "/blog"
+
+# no more pagination
+
+[[redirects]]
+  from = "/blog/page/*"
+  to = "/blog"
+  status = 302
+
 # I joined these posts into series
 
 [[redirects]]
   from = "/blog/mocking-functions-and-modules-with-jest"
   to = "/blog/mocking-with-jest"
 [[redirects]]
-  from = "/blog/mocking-with-jest"
-  to = "/blog/mocking-with-jest/functions"
-  status = 302
-[[redirects]]
   from = "/blog/mocking-functions-with-jest"
   to = "/blog/mocking-with-jest/functions"
 [[redirects]]
   from = "/blog/mocking-modules-with-jest"
   to = "/blog/mocking-with-jest/modules"
+
+# redirect series root paths to first part (temporary solution)
+
+[[redirects]]
+  from = "/blog/mocking-with-jest"
+  to = "/blog/mocking-with-jest/functions"
+  status = 302
+[[redirects]]
+  from = "/blog/better-git-history"
+  to = "/blog/better-git-history/introduction"
+  status = 302
