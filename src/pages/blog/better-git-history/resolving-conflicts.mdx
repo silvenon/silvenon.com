@@ -1,0 +1,212 @@
+---
+seriesPart: 3
+title: Resolving Conflicts
+category: DEV
+published: 2019-10-03
+---
+
+import Gitgraph from '../../../components/gitgraph'
+
+In the previous part I mentioned that the reason why we were syncing `style` with `master` was because they had conflicting changes, and we all know how resolving conflicts can be uncomfortable, so I wanted to dedicated a separate series part to this. This isn't because conflicts with rebase are harder to resolve than merge, the basic concepts are the same, it's because the discomfort of resolving conflicts is closely related to how well changes have been committed. I wanted to use this opportunity to share with you what I learned so you can become more confident and be able to make a distinction whether you're struggling because of your Git skills or because of poorly committed changes.
+
+So let's see what resolving these conflicts would look like, starting from rebasing `style` onto `master`:
+
+```shell
+git rebase master
+```
+
+Now our commits will start replaying one by one on top of `master`. Once a commit causes a conflict we will see a message like this:
+
+```
+First, rewinding head to replay your work on top of it...
+Applying: Style the paragraph
+Using index info to reconstruct a base tree...
+M       index.html
+Falling back to patching base and 3-way merge...
+Auto-merging index.html
+CONFLICT (content): Merge conflict in index.html
+error: Failed to merge in the changes.
+Patch failed at 0001 Style the paragraph
+hint: Use 'git am --show-current-patch' to see the failed patch
+Resolve all conflicts manually, mark them as resolved with
+"git add/rm <conflicted_files>", then run "git rebase --continue".
+You can instead skip this commit: run "git rebase --skip".
+To abort and get back to the state before "git rebase", run "git rebase --abort".
+```
+
+The message mentions something called "failed patch". This is actually refers to the commit that failed to be replayed, which is "Style the paragraph" as indicated in the line above, so by running the suggested command we can see its diff:
+
+```shell
+git am --show-current-patch
+```
+
+```diff
+commit bc0cb6a1ae2813b4c64ce36e202910a7dce608e6
+Author: Matija Marohnić <matija.marohnic@gmail.com>
+Date:   Sat Sep 7 14:08:03 2019 +0200
+
+    Style the paragraph
+
+diff --git a/index.html b/index.html
+index a7554e9..e86dc7a 100644
+--- a/index.html
++++ b/index.html
+@@ -4,6 +4,7 @@
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta http-equiv="X-UA-Compatible" content="ie=edge">
++  <link rel="stylesheet" href="style.css">
+   <title>Towards a Better Git History</title>
+ </head>
+ <body>
+diff --git a/style.css b/style.css
+new file mode 100644
+index 0000000..ba19f3a
+--- /dev/null
++++ b/style.css
+@@ -0,0 +1,3 @@
++p {
++  font-size: 2rem;
++}
+```
+
+The conflict is in `index.html` and it looks like this:
+
+```html
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+<<<<<<< HEAD
+  <link rel="canonical" href="http://example.com">
+  <meta property="og:title" content="Towards a Better Git History">
+  <meta property="og:url" content="http://example.com">
+=======
+  <link rel="stylesheet" href="style.css">
+>>>>>>> Style the paragraph
+  <title>Towards a Better Git History</title>
+```
+
+The first section, labelled with `HEAD`, represents what is currently on `master`. The second section is "incoming" from the `style` branch, and the reason why it's being treated as incoming is because all its commits are being replayed, i.e. committed again automatically. This order would have been reversed if we had merged `master` into `style` because then changes from `master` are incoming.
+
+Ok, so how do we resolve this? On `master` we added some HTML tags in the same place where we linked the stylesheet from the `style` branch. This one is easy to resolve -- we simply keep both changes because the fact that we added these two sets of changes in the same place is just a coincidence, they are not related.
+
+Now that we resolved all the conflicts we should stage these changes, but unlike with merge we don't run `git commit`, instead we continue rebasing by running:
+
+```shell
+git rebase --continue
+```
+
+The first commit that will be applied now is our resolved "Style the paragraph" commit, but now its diff is compatible with `master`. Afterwards more commits will be replayed, which might cause another conflict, in that case we repeat the process of resolving until Git finishes rebasing.
+
+This workflow wont't cause a merge commit, instead we're replaying changes commit by commit and adjusting them as necessary if they conflict with newer changes.
+
+If during rebasing you're not sure anymore if you resolved the conflicts well, you can always abort the whole process as if you never started rebasing:
+
+```shell
+git rebase --abort
+```
+
+This command makes the whole process very safe.
+
+Now let's focus on resolving conflicts, which is usually not as easy as keeping both changes, we often have to thoughtfully combine them, Git paused precisely because it's not able to do that on its own.
+
+Let's say that on `master` we have a linked logo:
+
+```html
+<a href="/">
+  <img src="/images/logo.png" />
+</a>
+```
+
+then one person creates a branch `performance` to convert the logo to an inline SVG:
+
+```diff
+ <a href="/">
+-  <img src="/images/logo.png" />
++  <svg viewBox="0 0 50 50" version="1.1" xmlns="http://www.w3.org/2000/svg">
++    <path d="..." />
++  </svg>
+ </a>
+```
+
+but another person makes a conflicting change in a separate branch `a11y`, improving the accessibility of the logo:
+
+```diff
+ <a href="/">
+-  <img src="/images/logo.png" />
++  <img src="/images/logo.png" alt="Home" />
+ </a>
+```
+
+Now Git history looks like this:
+
+<Gitgraph>
+  {gitgraph => {
+    const master = gitgraph.branch('master')
+    master.commit('Add index page')
+    master.commit('Add logo linking to home')
+    const performance = gitgraph.branch('performance')
+    const a11y = gitgraph.branch('a11y')
+    performance.commit('Use SVG for the logo')
+    a11y.commit('Improve a11y of the logo image')
+  }}
+</Gitgraph>
+
+Merging these two branches into `master` will inevitably lead to a conflict. The order of conflict annotations depends on which branch we merge first, but that doesn't matter, so let's say that we merged `performance` first. Merging `a11y` would cause the following conflict:
+
+```html
+<a href="/">
+<<<<<<< HEAD
+  <svg viewBox="0 0 50 50" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <path d="..." />
+  </svg>
+=======
+  <img src="/images/logo.png" alt="" />
+>>>>>>> a11y
+</a>
+```
+
+Now, imagine that we worked on the `a11y` branch for quite a while and we forgot whether this `<img>` tag already had an `alt` attribute, maybe we made some other important change to it that we can't remember off the top ouf our heads? The `<svg>` element doesn't give us any clues, it's completely different code! We need to figure out what we started with so we can properly resolve this.
+
+After analyzing Git history we remembered that the only change we did to `<img>` was adding the `alt` attribute, so now we know what we started with. Now we can resolve the conflict by improving the accessibility of the SVG element:
+
+```html
+<a href="/">
+  <svg role="img" viewBox="0 0 50 50" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <title>Home</title>
+    <path d="..." />
+  </svg>
+</a>
+```
+
+Something like that, right? Wow, resolving this conflict was not trivial at all! We probably had to google SVG a11y just for this, or at least I did so I don't completely embarrass myself.
+
+It would be nice to make this process easier, though... Resolving commits is already hard enough, why did we also have to spend time remembering where we started from?
+
+Turns out that there is a shortcut! 🎉 It's called "diff3", and it's an alternative style of displaying merge conflicts. We can configure it globally like this:
+
+```shell
+git config --global merge.conflictstyle=diff3
+```
+
+Now in addition to showing us what the current and incoming changes are, Git will also show us _merged common ancestors_, i.e. our starting point, which looks like this:
+
+```html
+<a href="/">
+<<<<<<< HEAD
+  <svg viewBox="0 0 50 50" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <path d="..." />
+  </svg>
+||||||| merged common ancestors
+  <img src="/images/logo.png" />
+=======
+  <img src="/images/logo.png" alt="" />
+>>>>>>> a11y
+</a>
+```
+
+It may be hard to understand why this is useful right away, but once you get used to it, you might find yourself looking at commit diffs less and less because the most important information is right here. ☝️
+
+---
+
+Many people dismiss the advice that they should put more effort into committing code. I think that's sometimes because they don't know how to fine-tune staging or edit changes after they have already been committed, so it's easier to not take it seriously. However, once we start erasing these obstacles, that's when we can see how much we really care. 😉

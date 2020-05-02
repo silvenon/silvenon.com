@@ -1,7 +1,0 @@
-.container {
-  display: flex;
-  justify-content: center;
-  margin-bottom: var(--spacing);
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}

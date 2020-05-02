@@ -1,0 +1,124 @@
+---
+title: Custom Project-Based ESLint Rules
+category: DEV
+published: 2017-12-02
+tweet: https://twitter.com/silvenon/status/937069708817387520?s=20
+---
+
+import { Figure, Image, Caption } from '../../components/media'
+import { InlineCode } from '../../components/body'
+
+I love ESLint. I think it's a great way to impose your opinions... erm, I mean introduce new perspectives to your team. Seeing your mistakes literally underlined as you type is very powerful, and the explanation is just a hover away.
+
+<Figure>
+  <Image
+    srcId="1_zs1MOwXPd-FcxoQ5RIMvyw_t3axyl"
+    originalWidth="2000"
+    originalHeight="816"
+  />
+  <Caption>
+    An example of an ESLint warning with the explanation displayed on hover.
+  </Caption>
+</Figure>
+
+ESLint has a [bunch of rules][rules] and a huge [ecosystem of plugins][plugins], all of this combined can result into a really consistent codebase. You can choose whether breaking rules will result in an error or just a warning, and you can fine tune many rules using their options.
+
+After establishing basic conventions, you can choose how you want to enforce these rules in order to prohibit committing code with ESLint errors. This is a tricky area and there are many strategies. A popular one lately is [lint-staged], with it you can lint only the files you're committing, because you don't want every commit to run ESLint across the entire codebase.
+
+---
+
+Some time has passed and your `.eslintrc` configuration has evolved as a result of many productive team discussions around best practices. It is unique to your team and the project you're working on. Even if you started by simply extending [eslint-config-airbnb], Surely many of their rules weren't up to your taste (mandatory `.jsx` file extension for React code, seriously?!) or for some reason didn't fit your project, so you modified or turned off many of them.
+
+## Hungry for more...
+
+If you're anything like me, you always want to enforce more conventions. You know many ESLint rules by heart and you know that some of your favorite conventions unfortunately don't exist as rules. You _could_ [write your own rules][authoring rules] and propose them, but in this case the ones you want are specific to your project and don't really make sense anywhere else. You _could_ [create a plugin][authoring plugins] just for your project, but that doesn't make a lot of sense and sounds like a lot of work.
+
+So what's a poor developer (who should really be focusing that energy on actual work) to do?
+
+## Introducing `no-restricted-syntax`!
+
+[`no-restricted-syntax`][no-restricted-syntax] is a rule that I somehow never noticed before, it's very powerful and a great solution to our/my problem. It allows us to prohibit specific syntax and define a message to explain why. The screenshot at the beginning of this post is a demonstration of this rule.
+
+Getting started with this rule is very easy, especially if you know CSS. Its anatomy is very simple:
+
+  1. `selector`: an [AST selector][selector] defining the restricted syntax
+  2. `message`: an explanation why that syntax is restricted
+
+AST selectors are [similar to CSS selectors][selector-syntax], which makes constructing them way easier. In order to inspect the AST of the syntax you want to restrict, I highly recommend [AST explorer], an indispensable tool that actually makes this process pretty fun!
+
+## Example: test names
+
+Unit tests usually start like this:
+
+```js
+it("should fetch data", () => {
+  // ...
+})
+```
+
+Personally, I dislike the "should" pattern in test names. If you _always_ type it, it doesn't really mean anything, right? So let's restrict it.
+
+I pasted the code above into the AST explorer and, since we're interested in the test name, I placed the cursor inside the string. In the tree on the right we'll see something like this:
+
+<Figure>
+  <Image
+    srcId="1_dTIikih-HgPjxoohx4TFDA_yurtdg"
+    originalWidth="1248"
+    originalHeight="468"
+  />
+  <Caption>
+    A <InlineCode>CallExpression</InlineCode> containing a highlighted <InlineCode>Literal</InlineCode> as one of its arguments.
+  </Caption>
+</Figure>
+
+(In your case you're probably looking at a more verbose version of the above, that's because I've hidden location data and `type` keys to make it cleaner.)
+
+Our AST selector should target strings which are arguments of functions called `it` and start with the word `should`:
+
+```
+CallExpression[callee.name=it] > Literal[value=/^should\b/]
+```
+
+If this looks intimidating at first, I assure you that you'll get a hang of it pretty quickly. Sometimes you'll get false positives, but usually it's very easy to refine selectors to fix those cases.
+
+Let's put this in our `.eslintrc`:
+
+```json
+{
+  "rules": {
+    "no-restricted-syntax": [
+      "warn",
+      {
+        "selector": "CallExpression[callee.name=it] > Literal[value=/^should\\b/]"
+        "message": "Instead of \"should do something\" it's shorter to type \"does something\"."
+      }
+    ]
+  }
+}
+```
+
+Now if we open our test, we'll see that the test names with "should" are underlined.
+
+<Figure>
+  <Image
+    srcId="1_ixsLwEtNyFOZskm-mAZ7_Q_e3uaud"
+    originalWidth="2000"
+    originalHeight="300"
+  />
+  <Caption>
+    A test name containing the word "should" is underlined.
+  </Caption>
+</Figure>
+
+You can add as many selector/message pairs to the rule configuration as you want, so knock yourselves out! 😉
+
+[rules]: https://eslint.org/docs/rules/
+[plugins]: https://npms.io/search?q=eslint-plugin
+[lint-staged]: https://github.com/okonet/lint-staged
+[eslint-config-airbnb]: https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb
+[authoring rules]: https://eslint.org/docs/developer-guide/working-with-rules
+[authoring plugins]: https://eslint.org/docs/developer-guide/working-with-plugins
+[no-restricted-syntax]: https://eslint.org/docs/rules/no-restricted-syntax
+[selector]: https://eslint.org/docs/developer-guide/selectors
+[selector-syntax]: https://eslint.org/docs/developer-guide/selectors#what-syntax-can-selectors-have
+[AST explorer]: https://astexplorer.net/

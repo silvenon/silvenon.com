@@ -1,0 +1,368 @@
+---
+title: A Built-in Alternative to Redux with React Context and Hooks
+category: DEV
+published: 2019-08-02
+lastModified: 2019-08-04
+tweet: https://twitter.com/silvenon/status/1157204419047493633?s=20
+---
+
+Since the new React Context API dropped in 16.3.0, the initial thought on many people's minds was whether its API was good enough to reconsider using Redux. I was wondering the same, but I hadn't been following that topic further since then, even after 16.8.0 was released with Hooks. I tend to reach for popular technologies without understanding the full spectrum of problems they solve, so I got used to Redux too much.
+
+Well, it just so happened that I was subscribed to [Kent C. Dodds](https://kentcdodds.com)’ newsletter, and I noticed a few emails on the topic of context and state management, so I started reading… and reading… and 5 blog posts later it all clicked.
+
+To understand all the crucial concepts behind this, we’ll create a button which fetches dad jokes from [icanhazdadjoke](https://icanhazdadjoke.com) and displays them. This minimal example is all we need.
+
+In order to prepare, let’s start with two seemingly random tips.
+
+First, let me introduce you to my friend, `console.count`:
+
+```jsx
+console.count('Button')
+// Button: 1
+console.count('Button')
+// Button: 2
+console.count('App')
+// App: 1
+console.count('Button')
+// Button: 3
+```
+
+We’ll add a `console.count` call to each component to see how many times it rendered. Pretty cool, huh?
+
+Second, when a React component re-renders, it will **not** re-render the content passed as its children:
+
+```jsx
+function Parent({ children }) {
+  const [count, setCount] = React.useState()
+  console.count('Parent')
+  return (
+    <div>
+      <button type="button" onClick={() => {
+        setCount(count => count + 1)
+      }}>
+        Force re-render
+      </button>
+      {children}
+    </div>
+  )
+}
+
+function Child() {
+  console.count('Child')
+  return <div />
+}
+
+function App() {
+  return (
+    <Parent>
+      <Child />
+    </Parent>
+  )
+}
+```
+
+After clicking on the button a few times, you should see the following output in the console:
+
+```
+Parent: 1
+Child: 1
+Parent: 2
+Parent: 3
+Parent: 4
+```
+
+This is an often overlooked way to improve your app's performance, so keep it in mind.
+
+Ok, now we should be ready. Let’s create a skeleton for our app:
+
+```jsx
+import React from 'react'
+
+function Button() {
+  console.count('Button')
+  return (
+    <button type="button">
+      Fetch dad joke
+    </button>
+  )
+}
+
+function DadJoke() {
+  console.count('DadJoke')
+  return (
+    <p>Fetched dad joke</p>
+  )
+}
+
+function App() {
+  console.count('App')
+  return (
+    <div>
+      <Button />
+      <DadJoke />
+    </div>
+  )
+}
+
+export default App
+```
+
+`Button` needs to receive an action creator that fetches a dad joke, `DadJoke` needs to receive the state, and `App` needs to supply both using a context provider.
+
+We’ll create a custom component called `DadJokeProvider`, which will internally manage state and wrap its children in a context provider. Remember, updates to its state won't re-render the whole app because of React's children optimization that we mentioned earlier.
+
+So let’s create a file called `contexts/dad-joke.js`:
+
+```jsx
+import React from 'react'
+
+const DadJokeContext = React.createContext()
+
+export function DadJokeContextProvider({ children }) {
+  const state = { dadJoke: null }
+  const actions = {
+    fetchDadJoke: () => {},
+  }
+  return (
+    <DadJokeContext.Provider value={{ state, actions }}>
+      {children}
+    </DadJokeContext.Provider>
+  )
+}
+```
+
+Let’s also export two hooks for consuming this context’s value:
+
+```jsx
+export function useDadJokeState() {
+  return React.useContext(DadJokeContext).state
+}
+
+export function useDadJokeActions() {
+  return React.useContext(DadJokeContext).actions
+}
+```
+
+Now we can already implement this:
+
+```jsx
+import React from 'react'
+import {
+  DadJokeProvider,
+  useDadJokeState,
+  useDadJokeActions,
+} from './contexts/dad-joke'
+
+function Button() {
+  const { fetchDadJoke } = useDadJokeActions()
+  console.count('Button')
+  return (
+    <button type="button" onClick={fetchDadJoke}>
+      Fetch dad joke
+    </button>
+  )
+}
+
+function DadJoke() {
+  const { dadJoke } = useDadJokeState()
+  console.count('DadJoke')
+  return (
+    <p>{dadJoke}</p>
+  )
+}
+
+function App() {
+  console.count('App')
+  return (
+    <DadJokeProvider>
+      <Button />
+      <DadJoke />
+    </DadJokeProvider>
+  )
+}
+
+export default App
+```
+
+There! Thanks to the API we created using hooks, we will no longer have to make any changes to this file throughout the post!
+
+Let’s start adding functionality to our context file, starting with managing the state of `DadJokeProvider`. While we could simply use the `useState` hook, let’s manage our state with a reducer instead, just to add that nice overkill touch that we know and love from Redux:
+
+```jsx
+function reducer(state, action) {
+  switch (action.type) {
+    case 'SET_DAD_JOKE':
+      return {
+        ...state,
+        dadJoke: action.payload,
+      }
+    default:
+      return new Error();
+  }
+}
+```
+
+Now we can pass this reducer to the `useReducer` hook and fetch the dad joke from the API:
+
+```jsx
+export function DadJokeProvider({ children }) {
+  const [state, dispatch] = React.useReducer(reducer, { dadJoke: null })
+
+  async function fetchDadJoke() {
+    const response = await fetch('https://icanhazdadjoke.com', {
+      headers: {
+        accept: 'application/json',
+      },
+    })
+    const data = await response.json()
+    dispatch({
+      type: 'SET_DAD_JOKE',
+      payload: data.joke,
+    })
+  }
+
+  const actions = {
+    fetchDadJoke,
+  }
+
+  return (
+    <DadJokeContext.Provider value={{ state, actions }}>
+      {children}
+    </DadJokeContext.Provider>
+  )
+}
+```
+
+This should do it! Clicking the button should now fetch and display dad jokes!
+
+Let’s check the console:
+
+```
+App: 1
+Button: 1
+DadJoke: 1
+Button: 2
+DadJoke: 2
+Button: 3
+DadJoke: 3
+```
+
+Both components are rendering every time the state changes, but only one of them is actually using it. Imagine a real-life application where hundreds of components were only using actions, wouldn’t it be great if we could prevent all of them from needlessly re-rendering?
+
+Now we’re stepping into the territory of referential equality, so a quick recap:
+
+```jsx
+const obj = {}
+// a reference is equal to that same reference
+console.log(obj === obj) // true
+
+// a new object is not equal to a new object,
+// they are two different objects
+console.log({} === {}) // false
+```
+
+A component consuming a context will re-render every time that context’s value changes. Let’s examine our context provider’s value:
+
+```jsx
+<DadJokeContext.Provider value={{ state, actions }}>
+```
+
+Here we're creating a new object on each render, but this is inevitable because a new state object will be created every time we dispatch an action, so there's just no way to memoize this value.
+
+It kinda feels like the story ends there, right?
+
+If we take a look at our `fetchDadJoke` function, the only thing it uses from the outer scope is `dispatch`, right? Well, I’m going to let you in on a little secret about functions produced by `useReducer` and `useState`. For the sake of brevity, I’ll use `useState` as an example:
+
+```jsx
+let prevSetCount
+
+function Counter() {
+  const [count, setCount] = React.useState()
+  if (typeof prevSetCount !== 'undefined') {
+    console.log(setCount === prevSetCount)
+  }
+  prevSetCount = setCount
+  return (
+    <button type="button" onClick={() => {
+      setCount(count => count + 1)
+    }}>
+      Increment
+    </button>
+  )
+}
+```
+
+Hit the button a few times and take a look at the console:
+
+```
+true
+true
+true
+```
+
+You'll notice that `setCount` is the exact same function on each render! This also applies to our `dispatch` function as well.
+
+This means that our `fetchDadJoke` function doesn’t depend on anything that changes over time, and neither will any of our other actions creators, so our `actions` object only ever needs to be created once, on the first render:
+
+```jsx
+  const actions = React.useMemo(() => ({
+    fetchDadJoke,
+  }), [])
+```
+
+Now that we have a memoized actions object, can we optimize context’s value? Well, no, because no matter how much we optimize an object's values, a new one still needs to be created each time because of `state`. However, what if the `actions` object simply ditched this context for a new one? Who said we’re only allowed to have one?
+
+```jsx
+const DadJokeStateContext = React.createContext()
+const DadJokeActionsContext = React.createContext()
+```
+
+We can combine both of these in our `DadJokeProvider`:
+
+```jsx
+  return (
+    <DadJokeStateContext.Provider value={state}>
+      <DadJokeActionsContext.Provider value={actions}>
+        {children}
+      </DadJokeActionsContext.Provider>
+    </DadJokeStateContext.Provider>
+  )
+```
+
+and adjust our hooks:
+
+```jsx
+export function useDadJokeState() {
+  return React.useContext(DadJokeStateContext)
+}
+
+export function useDadJokeActions() {
+  return React.useContext(DadJokeActionsContext)
+}
+```
+
+And we are **done**! Seriously, fetch as many dad jokes as you want and see for yourself!
+
+```
+App: 1
+Button: 1
+DadJoke: 1
+DadJoke: 2
+DadJoke: 3
+DadJoke: 4
+DadJoke: 5
+```
+
+You now implemented your very own optimized state management solution! You can create various providers using this two-context pattern to build your app, but not only that, you can also render the _same provider component multiple times_! Whaaat! Yes, try it, render `DadJokeProvider` in multiple places and watch your state management solution scale effortlessly!
+
+Let your imagination run free and reconsider what you _really_ need Redux for.
+
+---
+
+Thanks to Kent C. Dodds for writing about the two-context pattern, I didn't see it anywhere else, and I believe it's a game-changer. Read the following posts from Kent's blog for more information about the concepts I talked about:
+
+- [When to useMemo and useCallback](https://kentcdodds.com/blog/usememo-and-usecallback)
+- [How to optimize your context value](https://kentcdodds.com/blog/how-to-optimize-your-context-value)
+- [How to use React Context effectively](https://kentcdodds.com/blog/how-to-use-react-context-effectively)
+- [Application State Management with React](https://kentcdodds.com/blog/application-state-management-with-react)
+- [One simple trick to optimize React re-renders](https://kentcdodds.com/blog/optimize-react-re-renders)
