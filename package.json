@@ -76,7 +76,7 @@
     "remark-stringify": "^8.0.0",
     "retext-latin": "^2.0.4",
     "retext-stringify": "^2.0.4",
-    "styled-components": "^5.0.1",
+    "styled-components": "^5.1.1",
     "to-vfile": "^6.1.0",
     "typescript": "^3.8.3",
     "unified": "^9.0.0",
