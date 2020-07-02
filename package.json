@@ -73,7 +73,7 @@
     "remark-mdx": "^1.6.6",
     "remark-parse": "^8.0.2",
     "remark-retext": "^4.0.0",
-    "remark-stringify": "^8.0.0",
+    "remark-stringify": "^8.1.0",
     "retext-latin": "^2.0.4",
     "retext-stringify": "^2.0.4",
     "styled-components": "^5.1.1",
