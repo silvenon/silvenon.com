@@ -54,7 +54,7 @@
     "fs-extra": "^9.0.1",
     "fuzzaldrin-plus": "^0.6.0",
     "gulp": "^4.0.2",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "mdx-prism": "^0.3.1",
     "minireset.css": "^0.0.6",
     "next": "^9.3.6",
