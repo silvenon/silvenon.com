@@ -13,7 +13,7 @@ In smaller projects implementing these tasks using only npm scripts (the `script
 
 Scripts start becoming hard to follow, and it's often unclear which scripts are meant to be run by people, and which only by other scripts. As a workaround we could try documenting this, but because it's not possible to do it directly in `package.json`, we have to do it elsewhere, which is prone to becoming outdated and untrustworthy.
 
-Sometimes we need functionality which cannot be performed through CLI, so we might write a Node.js script, and create a npm script for it containing a command like `node scripts/complex.js`. In case it's asynchronous, we have to remember to call `process.exit(1)` when the script is supposed to fail because rejected promises don't cause errors. Also, scripts which immediately execute are harder to test.
+Sometimes we need functionality which cannot be performed through CLI, so we might write a Node.js script, and create an npm script for it containing a command like `node scripts/complex.js`. In case it's asynchronous, we have to remember to call `process.exit(1)` when the script is supposed to fail because rejected promises don't cause errors. Also, scripts which immediately execute are harder to test.
 
 How to make managing tasks easier?
 
@@ -58,7 +58,7 @@ This is how the same problem could be solved with gulp:
 
 ```js
 const gulp = require('gulp')
-cosnt { exec } = require('child_process')
+const { exec } = require('child_process')
 // fetch-data.js needs to export an async function
 const fetchData = require('./scripts/fetch-data')
 
@@ -79,21 +79,17 @@ const build = gulp.parallel(
   optimizeImages,
   bundle,
 )
+
+module.exports = {
+  build,
+}
 ```
 
 Comprehending the `build` task is now effortless!
 
 I'm using child processes in these tasks so we can focus on composing tasks, but you could implement `compileServerCode` and `optimizeImages` just as well with streams, which gulp is better known for. Aside from child processes and streams, there are [other ways](https://gulpjs.com/docs/en/getting-started/async-completion) to define a gulp task.
 
-To expose the `build` task we need to export it:
-
-```js
-module.exports = {
-  build,
-}
-```
-
-We can also create a npm script which runs `build`:
+By exporting the `build` task we're exposing it, so we can run it with `gulp build`. We can also create an npm script for this as an additional layer of abstraction:
 
 ```json
 {
@@ -103,7 +99,7 @@ We can also create a npm script which runs `build`:
 }
 ```
 
-This is optional, but I prefer exposing all gulp tasks through npm scripts because then `package.json` is a single source of truth for all available scripts.
+This is optional, but I prefer running gulp tasks through npm scripts because then `package.json` is a single source of truth for all available scripts.
 
 When we run `build`, we can see another benefit of using gulp:
 
