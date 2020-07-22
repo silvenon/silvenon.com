@@ -17,7 +17,7 @@ const PostDate = ({ dateTime, lastModified, ...props }: Props) => (
       {format(new Date(dateTime), 'MMMM do, yyyy')}
     </Time>
     {lastModified ? (
-      <div>(Edited on {format(new Date(lastModified), 'MMMM Do, yyyy')})</div>
+      <div>(Edited on {format(new Date(lastModified), 'MMMM do, yyyy')})</div>
     ) : null}
   </div>
 )
