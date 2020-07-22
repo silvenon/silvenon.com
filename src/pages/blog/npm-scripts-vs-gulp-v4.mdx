@@ -3,6 +3,7 @@ title: Managing complex tasks with gulp v4
 category: DEV
 published: 2020-07-20
 tweet: https://twitter.com/silvenon/status/1285326527660470272
+lastModified: 2020-07-22
 ---
 
 Developing frontend projects consists of many tasks, like starting the development server, testing, bundling modules for production, end-to-end testing, type-checking, fetching translations... you name it.
@@ -48,7 +49,7 @@ Performing these tasks with npm scripts would look something like this, assuming
 }
 ```
 
-But even with just these few tasks I'm already running into problems, like having to run `fetch-data` as part of `transpile-server`. Another problem is the `run-p` command, which provides a shortcut for `npm-run-all --parallel` at the cost of being cryptic for people who don't know about `npm-run-all`.
+The benefit of this approach is that it's centralized, I can figure out the workflow from `package.json` alone, unless I need to take a look at some tool's documentation. However, even with just these few tasks I'm already running into problems, like having to run `fetch-data` as part of `transpile-server`. Another problem is the `run-p` command, which provides a shortcut for `npm-run-all --parallel` at the cost of being cryptic for people who don't know about `npm-run-all`. And this is only four scripts, imagine adding ten more.
 
 But the biggest problem I see here is that these scripts are all equally exposed even though they are mostly going to be run as part of `build`. A workaround might be to prefix the names of these scripts with `build:` (e.g. `build:optimize-images`), but what if a script is being run by multiple scripts?
 
@@ -87,9 +88,9 @@ module.exports = {
 
 Comprehending the `build` task is now effortless!
 
-I'm using child processes in these tasks so we can focus on composing tasks, but you could implement `compileServerCode` and `optimizeImages` just as well with streams, which gulp is better known for. Aside from child processes and streams, there are [other ways](https://gulpjs.com/docs/en/getting-started/async-completion) to define a gulp task.
+As you can see, a gulp task can return a promise (`fetchData`), a child process (`compileServerCode`, `optimizeImages` and `bundle`), a stream, which gulp is best known for, an event emitter, an observable, and an error-first callback. [See examples](https://gulpjs.com/docs/en/getting-started/async-completion) for each.
 
-By exporting the `build` task we're exposing it, so we can run it with `gulp build`. We can also create an npm script for this as an additional layer of abstraction:
+By exporting the `build` task we're exposing it, so we can run it with `gulp build`. We can also create an npm script for it as an additional layer of abstraction:
 
 ```json
 {
@@ -100,6 +101,8 @@ By exporting the `build` task we're exposing it, so we can run it with `gulp bui
 ```
 
 This is optional, but I prefer running gulp tasks through npm scripts because then `package.json` is a single source of truth for all available scripts.
+
+This approach is less centralized, but I think of gulp as a tool which _embraces_ decentralization, and by separating internal from exposed tasks we can provide a clearer API for our team. Implementing all tasks in `package.json` can eventually make us the only experts on them, and they can become harder to refactor because we're not sure whether someone is using the scripts we want to change.
 
 When we run `build`, we can see another benefit of using gulp:
 
