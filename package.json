@@ -29,7 +29,7 @@
     "@mdx-js/mdx": "^1.6.5",
     "@mdx-js/react": "^1.6.0",
     "@next/mdx": "^9.3.6",
-    "@silvenon/remark-smartypants": "^0.1.1",
+    "@silvenon/remark-smartypants": "^1.0.0",
     "@types/classnames": "^2.2.10",
     "@types/fontfaceobserver": "^0.0.6",
     "@types/fuzzaldrin-plus": "^0.6.0",
