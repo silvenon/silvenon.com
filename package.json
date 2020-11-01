@@ -82,7 +82,7 @@
     "unified": "^9.1.0",
     "unist-builder": "^2.0.3",
     "unist-util-filter": "^2.0.2",
-    "unist-util-find-all-before": "^2.0.5",
+    "unist-util-find-all-before": "^3.0.0",
     "unist-util-is": "^4.0.2",
     "unist-util-remove": "^2.0.0",
     "unist-util-visit": "^2.0.0",
