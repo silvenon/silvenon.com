@@ -86,7 +86,7 @@
     "unist-util-is": "^4.0.4",
     "unist-util-remove": "^2.0.0",
     "unist-util-visit": "^2.0.0",
-    "yaml": "^1.9.2"
+    "yaml": "^1.10.0"
   },
   "devDependencies": {
     "@babel/plugin-proposal-object-rest-spread": "^7.12.1",
