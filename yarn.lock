@@ -10066,10 +10066,10 @@ remark-frontmatter@^2.0.0:
   dependencies:
     fault "^1.0.1"
 
-remark-mdx-remove-imports@^1.6.1:
-  version "1.6.1"
-  resolved "https://registry.yarnpkg.com/remark-mdx-remove-imports/-/remark-mdx-remove-imports-1.6.1.tgz#83ea9a86d13f8b3fa2b2923ef0fc5e8b253f1321"
-  integrity sha512-Wb90c5m1UO3pH+sTV/0THQ8kj26ugZITbwC1Rr+5zcIxFBmjey6+7m8uKS6F3hyqpaFgCcjQEVn2DZ7cbnVYqQ==
+remark-mdx-remove-imports@^1.6.21:
+  version "1.6.21"
+  resolved "https://registry.yarnpkg.com/remark-mdx-remove-imports/-/remark-mdx-remove-imports-1.6.21.tgz#d16fd3f6ce8ccb3f82f30bc15890d7a63038d5e6"
+  integrity sha512-DhN1cNbkJgdI1vGB9fDdJMyrPW/l5R3KZfkrYEyqqEboGXIUivBKV2sQl58M7eo47HxgNdPJ0/0Iez5EZjV0UQ==
   dependencies:
     unist-util-remove "2.0.0"
 
