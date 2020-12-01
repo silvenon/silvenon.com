@@ -33,7 +33,7 @@
     "@types/classnames": "^2.2.11",
     "@types/fontfaceobserver": "^0.0.6",
     "@types/fuzzaldrin-plus": "^0.6.1",
-    "@types/lodash": "^4.14.150",
+    "@types/lodash": "^4.14.165",
     "@types/mdx-js__react": "^1.5.2",
     "@types/node": "^13.13.4",
     "@types/react": "^17.0.0",
