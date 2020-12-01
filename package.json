@@ -59,7 +59,7 @@
     "minireset.css": "^0.0.6",
     "next": "^9.3.6",
     "next-compose-plugins": "^2.2.0",
-    "next-seo": "^4.7.1",
+    "next-seo": "^4.17.0",
     "nextjs-sitemap-generator": "^1.0.0",
     "polished": "^3.5.2",
     "prism-themes": "^1.4.0",
