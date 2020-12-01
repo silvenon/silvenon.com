@@ -48,7 +48,7 @@
     "classnames": "^2.2.6",
     "codegen.macro": "^4.0.0",
     "date-fns": "^2.16.1",
-    "downshift": "^5.2.2",
+    "downshift": "^6.0.6",
     "feed": "^4.2.1",
     "fontfaceobserver": "^2.1.0",
     "fs-extra": "^9.0.1",
