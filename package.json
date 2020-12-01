@@ -47,7 +47,7 @@
     "change-case": "^4.1.1",
     "classnames": "^2.2.6",
     "codegen.macro": "^4.0.0",
-    "date-fns": "^2.14.0",
+    "date-fns": "^2.16.1",
     "downshift": "^5.2.2",
     "feed": "^4.2.1",
     "fontfaceobserver": "^2.1.0",
