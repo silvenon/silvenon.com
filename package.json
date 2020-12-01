@@ -57,7 +57,7 @@
     "lodash": "^4.17.20",
     "mdx-prism": "^0.3.1",
     "minireset.css": "^0.0.6",
-    "next": "^9.3.6",
+    "next": "^10.0.3",
     "next-compose-plugins": "^2.2.0",
     "next-seo": "^4.17.0",
     "nextjs-sitemap-generator": "^1.0.0",
