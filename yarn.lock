@@ -11932,10 +11932,10 @@ unist-util-filter@^2.0.2:
     flatmap "0.0.3"
     unist-util-is "^4.0.0"
 
-unist-util-find-all-before@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/unist-util-find-all-before/-/unist-util-find-all-before-3.0.0.tgz#d07c103970dc92005a137547dcb7db06a94eb814"
-  integrity sha512-SoVUt7puWjDqazApkhdsYBYbTMYiEgl5axHFBzp0+R155Cf6i10Wc3Hi1gT9QiQTTAA+uSM3FAK4YS6d4dBdFg==
+unist-util-find-all-before@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/unist-util-find-all-before/-/unist-util-find-all-before-3.0.1.tgz#c72018ef609168009d9e48c012c3135eb9fd3eaa"
+  integrity sha512-00YMzXOOu4z/qCHKQI6z7TeERAbIBda0E/1sZqP0cJdGd3d1OtUPvQlMhNCwz4QBFo//GcW2dHOYXPdu3jINdA==
   dependencies:
     unist-util-is "^4.0.0"
 
