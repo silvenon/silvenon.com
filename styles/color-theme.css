@@ -1,0 +1,162 @@
+@layer components {
+  /* Visual Studio Code color scheme "Noctis Obscuro" */
+  /* https://marketplace.visualstudio.com/items?itemName=liviuschera.noctis */
+  /* converted to Prism theme using https://prism.dotenv.dev/, but without ::selection styles */
+
+  code[class*="language-"],
+  pre[class*="language-"] {
+    color: #b2cacd;
+    font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+
+  @media print {
+    code[class*="language-"],
+    pre[class*="language-"] {
+      text-shadow: none;
+    }
+  }
+
+  /* Code blocks */
+  pre[class*="language-"] {
+    padding: 1em;
+    margin: 0.5em 0;
+    overflow: auto;
+  }
+
+  :not(pre) > code[class*="language-"],
+  pre[class*="language-"] {
+    color: white;
+    background: #031417;
+  }
+
+  :not(pre) > code[class*="language-"] {
+    padding: 0.1em;
+    border-radius: 0.3em;
+    white-space: normal;
+  }
+
+
+  .token.comment {
+    color: #5B858B;
+
+  }
+
+  .token.punctuation {
+    color: #DF769B;
+
+  }
+
+  .token.keyword {
+    color: #DF769B;
+
+  }
+
+  .token.attr-name {
+    color: #DF769B;
+
+  }
+
+  .token.char {
+    color: #B2CACD;
+
+  }
+
+  .token.constant {
+    color: #B2CACD;
+
+  }
+
+  .token.operator {
+    color: undefined;
+
+  }
+
+  .token.variable {
+    color: #E4B781;
+
+  }
+
+  .token.builtin {
+    color: #E4B781;
+
+  }
+
+  .token.string {
+    color: #E4B781;
+
+  }
+
+  .token.symbol {
+    color: #D67E5C;
+
+  }
+
+  .token.function {
+    color: #D5971A;
+
+  }
+
+  .token.tag {
+    color: #E66533;
+
+  }
+
+  .token.deleted {
+    color: #E66533;
+
+  }
+
+  .token.inserted {
+    color: #49E9A6;
+
+  }
+
+  .token.number {
+    color: #7060EB;
+
+  }
+
+  .token.property {
+    color: #16A3B6;
+
+  }
+
+  .token.changed {
+    color: #49D6E9;
+
+  }
+
+  .token.namespace {
+    color: #49D6E9;
+
+  }
+
+  .token.class-name {
+    color: #49ACE9;
+
+  }
+
+  .token.important,
+  .token.bold {
+    font-weight: bold;
+  }
+
+  .token.italic {
+    font-style: italic;
+  }
+}

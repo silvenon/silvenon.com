@@ -1,33 +1,17 @@
 {
   "compilerOptions": {
-    "typeRoots": [
-      "./node_modules/@types",
-      "./types"
-    ],
-    "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
     "noEmit": true,
+    // needed for instantiating GitgraphEvent to work in tests
+    // https://stackoverflow.com/questions/50203369/class-constructor-cannot-be-invoked-without-new-typescript-with-commonjs/50203532#50203532
+    "target": "ES2015",
+    "lib": ["DOM", "ESNext"],
+    "jsx": "react",
+    "strict": true,
     "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve"
+    "moduleResolution": "node",
   },
-  "exclude": [
-    "node_modules"
-  ],
   "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx"
-  ]
+    "scripts/**/*",
+  ],
 }

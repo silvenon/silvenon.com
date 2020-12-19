@@ -1,0 +1,11 @@
+<g class="text-3xl font-bold">
+  <circle cx="150" cy="150" r="150" fill="#463FD4" />
+  <text
+    dx="150"
+    dy="<%= it.variant === 'eslint' ? 160 : 100 %>"
+    text-anchor="middle"
+    fill="currentColor"
+  >
+    ESLint
+  </text>
+</g>

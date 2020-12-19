@@ -1,0 +1,28 @@
+<% const WIDTH = 300 %>
+<% const HEIGHT = 460 %>
+
+<figure class="sm:float-right sm:ml-4">
+  <svg
+    class="mx-auto text-white"
+    role="img"
+    viewbox="0 0 <%= WIDTH %> <%= HEIGHT %>"
+    width="<%= WIDTH * 0.75 %>"
+    height="<%= HEIGHT * 0.75 %>"
+  >
+    <title><%= it.title %></title>
+    <desc><%= it.description %></desc>
+    <% if (it.variant === 'overlap') { %>
+    <%~ includeFile('eslint.eta', it) %>
+    <%~ includeFile('prettier.eta', it) %>
+    <%~ includeFile('intersection.eta', it) %>
+    <% } %>
+    <% if (it.variant === 'eslint') { %>
+    <%~ includeFile('prettier.eta', it) %>
+    <%~ includeFile('eslint.eta', it) %>
+    <% } %>
+    <% if (it.variant === 'prettier') { %>
+    <%~ includeFile('eslint.eta', it) %>
+    <%~ includeFile('prettier.eta', it) %>
+    <% } %>
+  </svg>
+</figure>

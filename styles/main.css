@@ -1,0 +1,12 @@
+@import 'tailwindcss/base.css';
+@import 'tailwindcss/components.css';
+@import 'tailwindcss/utilities.css';
+
+@import './aspect-ratio.css';
+@import './base.css';
+@import './hot-tip.css';
+@import './gitgraph.css';
+@import './github-corner.css';
+@import './search.css';
+@import './spinner.css';
+@import './syntax-highlighting.css';

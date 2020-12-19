@@ -1,6 +1,6 @@
 module.exports = {
   hooks: {
-    'pre-commit': 'tsc && lint-staged',
-    'pre-push': 'yarn install && tsc && yarn lint && yarn test',
+    'pre-commit': 'lint-staged',
+    'pre-push': 'gulp generate && tsc && npm test',
   },
 }

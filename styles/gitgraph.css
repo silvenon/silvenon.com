@@ -1,0 +1,10 @@
+@layer components {
+  .gitgraph {
+    @apply overflow-x-auto font-mono;
+    -webkit-overflow-scrolling: touch;
+    /* values copied from @tailwindcss/typography */
+    font-size: 12px;
+    @screen sm { font-size: 14px; }
+    @screen lg { font-size: 16px; }
+  }
+}
