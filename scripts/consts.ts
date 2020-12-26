@@ -70,11 +70,6 @@ export const colors = {
 }
 export const posts = [
   {
-    title: 'Make your JavaScript project accessible to newcomers',
-    relativeUrl: '/blog/improving-developer-experience/',
-    slug: 'improving-developer-experience',
-  },
-  {
     title: 'Checking your static site for dead URLs',
     relativeUrl: '/blog/checking-for-dead-urls/',
     slug: 'checking-for-dead-urls',

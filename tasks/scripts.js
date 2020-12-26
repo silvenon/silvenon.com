@@ -12,11 +12,15 @@ const path = require('path')
 const eslint = new ESLint({ fix: true })
 
 async function generateConstants() {
-  const postData = collectedData.posts.map((post) => ({
-    title: post.seriesTitle ? `${post.seriesTitle}: ${post.title}` : post.title,
-    relativeUrl: post.relativeUrl,
-    slug: post.slug,
-  }))
+  const postData = collectedData.posts
+    .filter((post) => !post.draft)
+    .map((post) => ({
+      title: post.seriesTitle
+        ? `${post.seriesTitle}: ${post.title}`
+        : post.title,
+      relativeUrl: post.relativeUrl,
+      slug: post.slug,
+    }))
   const filePath = 'scripts/consts.ts'
   const results = await eslint.lintText(
     `
