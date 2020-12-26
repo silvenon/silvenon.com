@@ -16,6 +16,7 @@
   },
   "license": "MIT",
   "scripts": {
+    "postinstall": "husky install",
     "dev": "gulp dev",
     "prelint": "eslint --print-config src/pages/index.js | eslint-config-prettier-check",
     "lint": "eslint . --report-unused-disable-directives",
@@ -111,7 +112,7 @@
     "@typescript-eslint/parser": "^4.6.0",
     "dedent": "^0.7.0",
     "globby": "^11.0.1",
-    "husky": "^4.2.5",
+    "husky": "^5.0.6",
     "jest": "^26.6.3",
     "jest-matchmedia-mock": "^1.1.0",
     "lint-staged": "^10.2.7",
