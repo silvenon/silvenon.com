@@ -2,7 +2,7 @@
 
 @layer components {
   .ar {
-    &-media {
+    .ar-media {
       @apply relative h-0;
       padding-bottom: calc(var(--h) / var(--w) * 100%);
 
