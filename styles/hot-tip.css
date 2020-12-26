@@ -18,5 +18,10 @@
     pre code {
       @apply bg-transparent;
     }
+    pre {
+      @media (prefers-color-scheme: dark) {
+        box-shadow: none;
+      }
+    }
   }
 }
