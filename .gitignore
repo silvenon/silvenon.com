@@ -1,11 +1,13 @@
 # Project dependencies
 node_modules
-yarn-error.log
 
 # Build directory
 .DS_Store
 .vscode
 
-# Next.js
-.next
-out
+# secrets
+.env
+
+# Gulp
+dist
+views/playground.eta

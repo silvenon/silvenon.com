@@ -1,50 +1,74 @@
 const jestConfig = require('./jest.config')
 
 module.exports = {
-  root: true,
   reportUnusedDisableDirectives: true,
-  plugins: ['react-hooks'],
   extends: [
-    'airbnb',
+    'eslint:recommended',
+    'plugin:import/recommended',
     'plugin:prettier/recommended',
-    'prettier/react',
   ],
   rules: {
+    'no-var': 'error',
+    'prefer-const': 'error',
+    'no-warning-comments': 'warn',
     'no-undef': [
       'error',
       {
         typeof: true,
       },
     ],
-    'no-shadow': 'off',
-    'no-param-reassign': 'off',
-    'import/prefer-default-export': 'off',
-    'jsx-a11y/alt-text': [
+    'no-use-before-define': [
       'error',
       {
-        'img': ['Image', 'ResponsiveImage'],
+        functions: false,
       },
     ],
-    'react/destructuring-assignment': 'off',
-    'react/jsx-props-no-spreading': 'off',
-    'react/no-unescaped-entities': 'off',
-    'react/prop-types': 'off',
-    'react/sort-comp': 'off',
-    'react-hooks/rules-of-hooks': 'error',
-    'react-hooks/exhaustive-deps': 'warn',
-    'prettier/prettier': 'error',
   },
-
   overrides: [
     {
-      files: ['src/**/*.[jt]s?(x)'],
+      files: [
+        './*.js',
+        'tasks/**/*.js',
+        'etc/**/*.js',
+        '{tasks,views}/**/__tests__/**/*.test.[jt]s?(x)',
+        'test/**/*',
+        '**/__mocks__/**/*.js',
+      ],
+      extends: ['plugin:node/recommended'],
+      rules: {
+        'node/no-unpublished-require': 'off',
+      },
+    },
+    {
+      files: ['scripts/**/*'],
       env: {
         browser: true,
       },
     },
     {
+      files: ['*.(j|t)sx'],
+      extends: [
+        'plugin:react/recommended',
+        'plugin:react-hooks/recommended',
+        'plugin:jsx-a11y/recommended',
+        'prettier/react',
+      ],
+      settings: {
+        react: {
+          version: 'detect',
+        },
+      },
+      env: {
+        browser: true,
+      },
+      rules: {
+        'react/no-danger': 'off',
+      },
+    },
+    {
       files: ['**/*.ts?(x)'],
       extends: [
+        'plugin:@typescript-eslint/eslint-recommended',
         'plugin:@typescript-eslint/recommended',
         'prettier/@typescript-eslint',
       ],
@@ -59,6 +83,8 @@ module.exports = {
         },
       },
       rules: {
+        '@typescript-eslint/no-empty-function': 'off',
+        '@typescript-eslint/no-unused-vars': 'error',
         'import/extensions': [
           'error',
           'ignorePackages',
@@ -69,8 +95,16 @@ module.exports = {
             tsx: 'never',
           },
         ],
-        '@typescript-eslint/ban-ts-ignore': 'off',
+        'no-use-before-define': 'off',
+        '@typescript-eslint/no-use-before-define': [
+          'error',
+          {
+            functions: false,
+          },
+        ],
+        '@typescript-eslint/ban-ts-comment': 'off',
         '@typescript-eslint/explicit-function-return-type': 'off',
+        '@typescript-eslint/explicit-module-boundary-types': 'off',
         '@typescript-eslint/no-var-requires': 'off',
         '@typescript-eslint/no-empty-interface': [
           'error',
@@ -87,13 +121,8 @@ module.exports = {
       },
     },
     {
-      files: jestConfig.testMatch,
-      env: {
-        browser: true,
-        jest: true,
-      },
+      files: 'typings/**/*',
       rules: {
-        'global-require': 'off',
         'import/no-extraneous-dependencies': [
           'error',
           {
@@ -103,8 +132,16 @@ module.exports = {
       },
     },
     {
-      files: 'types/**/*',
+      files: jestConfig.projects
+        .flatMap((project) => project.testMatch)
+        .map((path) => path.replace('<rootDir>/', '')),
+      extends: ['plugin:jest/recommended'],
+      env: {
+        browser: true,
+        jest: true,
+      },
       rules: {
+        'jest/expect-expect': 'off',
         'import/no-extraneous-dependencies': [
           'error',
           {

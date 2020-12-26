@@ -1,0 +1,14 @@
+<p>Parts of this series:</p>
+<ol>
+  <% it.parts.forEach(part => { %>
+    <li>
+      <% if (part.slug === it.slug) { %>
+        <%= part.title %>
+      <% } else { %>
+        <a href="<%= part.relativeUrl %>">
+          <%= part.title %>
+        </a>
+      <% } %>
+    </li>
+  <% }) %>
+</ol>

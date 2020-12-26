@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= it.title %></title>
+  <meta name="description" content="<%= it.description %>">
+  <% if (it.canonical) { %>
+    <link rel="canonical" href="<%= it.canonical %>">
+  <% } %>
+
+  <% /* Open Graph */ %>
+  <meta property="og:site_name" content="Matija Marohnić">
+  <meta property="og:title" content="<%= it.title || it.site.title %>">
+  <meta property="og:description" content="<%= it.description %>">
+  <meta property="og:url" content="<%= it.canonical || it.url %>">
+  <% /* https://developers.facebook.com/docs/sharing/best-practices/#images */ %>
+  <meta property="og:image" content="<%= it.cloudinary.url('in-reactor-1.jpg', { version: 3, width: 1080, aspect_ratio: '1:1', crop: 'fill', gravity: 'face' }) %>">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1080">
+  <meta property="og:image:height" content="1080">
+  <% if (it.isPost) { %>
+    <meta property="og:type" content="article">
+    <meta property="article:published_time" content="<%= it.published %>">
+    <meta property="article:author" content="Matija Marohnić">
+    <% if (it.lastModified) { %>
+      <meta property="article:modified_time" content="<%= it.lastModified %>">
+    <% } %>
+  <% } %>
+
+  <% /* Twitter Card */ %>
+  <% /* https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/summary */ %>
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@silvenon">
+  <meta name="twitter:title" content="<%= it.title || it.site.title %>">
+  <meta name="twitter:description" content="<%= it.description %>">
+  <meta name="twitter:image" content="<%= it.cloudinary.url('in-reactor-1.jpg', { version: 3, width: 3024, aspect_ratio: '1:1', crop: 'fill', gravity: 'face' }) %>">
+
+  <% /* assets */ %>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="icon" href="/favicon-v2.ico" />
+  <link href="/feeds/atom.xml" rel="alternate" title="Matija's blog" type="application/atom+xml">
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+  <% if (it.usesGitgraph) { %>
+    <script inline src="/gitgraph-setup.ts"></script>
+  <% } %>
+</head>
+<body>
+  <%~ includeFile('partials/icons.eta', it) %>
+
+  <%~ it.contents %>
+
+  <% if (it.usesSearch) { %>
+    <script src="/search.js" async></script>
+  <% } %>
+  <% if (it.usesGitgraph) { %>
+    <script src="/gitgraph-init.js" async></script>
+  <% } %>
+  <% if (it.usesTwitter) { %>
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+  <% } %>
+  <% if (it.isProd) { %>
+    <script type="text/javascript">
+      var _gauges = _gauges || [];
+      (function() {
+        var t   = document.createElement('script');
+        t.type  = 'text/javascript';
+        t.async = true;
+        t.id    = 'gauges-tracker';
+        t.setAttribute('data-site-id', '574df9a6bb922a0603000412');
+        t.setAttribute('data-track-path', 'https://track.gaug.es/track.gif');
+        t.src = 'https://d2fuc4clr7gvcn.cloudfront.net/track.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(t, s);
+      })();
+    </script>
+  <% } %>
+</body>
+</html>

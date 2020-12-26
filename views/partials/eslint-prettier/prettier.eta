@@ -1,0 +1,14 @@
+<g class="text-3xl font-bold">
+  <% if (it.variant === 'prettier') { %>
+    <circle class="fill-current text-white dark:text-gray-900" cx="150" cy="310" r="170" />
+  <% } %>
+  <circle cx="150" cy="310" r="150" fill="#BF85BF" />
+  <text
+    dx="150"
+    dy="<%= it.variant === 'prettier' ? 320 : 380 %>"
+    text-anchor="middle"
+    fill="currentColor"
+  >
+    Prettier
+  </text>
+</g>

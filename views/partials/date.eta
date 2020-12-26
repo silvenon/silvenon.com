@@ -1,0 +1,15 @@
+<% if (!it.draft) { %>
+  <time class="flex items-center space-x-2 text-gray-500 dark:text-gray-400" datetime="<%= it.published %>">
+    <svg width="20" height="20" role="presentation">
+      <use href="#calendar" />
+    </svg>
+    <span><%= it.formatDate(it.published) %></span>
+  </time>
+<% } else { %>
+  <div class="flex items-center space-x-2 text-yellow-600 dark:text-yellow-300">
+    <svg width="16" height="16" role="presentation">
+      <use href="#pen" />
+    </svg>
+    <span>Draft</span>
+  </div>
+<% } %>
