@@ -37,7 +37,7 @@
     "@testing-library/user-event": "^12.5.0",
     "@types/fontfaceobserver": "^0.0.6",
     "@types/fuzzaldrin-plus": "^0.6.0",
-    "@types/jest": "^26.0.15",
+    "@types/jest": "^26.0.19",
     "@types/lodash": "^4.14.150",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
