@@ -1,0 +1,9 @@
+{
+  "github": {
+    "silent": true
+  },
+  // foo
+  "redirects": [
+    { "source": "/intro-to-eslint", "destination": "/blog/intro-to-eslint" }
+  ]
+}
