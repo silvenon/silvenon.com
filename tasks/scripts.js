@@ -69,5 +69,5 @@ module.exports = {
     ? gulp.series(generateConstants, compileScripts, revisionScripts)
     : gulp.series(generateConstants, compileScripts),
   watch: watchScripts,
-  generate: gulp.series(collectData, generateConstants),
+  generateConstants: gulp.series(collectData, generateConstants),
 }

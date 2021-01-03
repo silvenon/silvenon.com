@@ -12,6 +12,7 @@ const server = require('./tasks/server')
 const staticAssets = require('./tasks/static')
 const createFeed = require('./tasks/feed')
 const createSitemap = require('./tasks/sitemap')
+const vercel = require('./tasks/vercel')
 const { destDir } = require('./site.config')
 
 cloudinary.config({ secure: true }) // use https
@@ -56,5 +57,6 @@ const build = gulp.series(
 module.exports = {
   dev,
   build,
-  generate: gulp.parallel(scripts.generate),
+  generateConstants: scripts.generateConstants,
+  compileVercelConfig: vercel.compileConfig,
 }
