@@ -47,6 +47,7 @@
 </head>
 <body>
   <%~ includeFile('partials/icons.eta', it) %>
+  <%~ includeFile('partials/header.eta', it) %>
 
   <%~ it.contents %>
 

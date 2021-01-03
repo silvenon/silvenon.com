@@ -119,6 +119,7 @@ function getViewData(file) {
   return {
     ...siteConfig,
     ...collectedData,
+    isHome: file.path === `${process.cwd()}/views/pages/index.eta`,
     proseClassName,
     screens: theme.screens,
     colors: theme.colors,

@@ -1,13 +1,3 @@
-<header class="flex">
-  <div class="flex-1"></div>
-  <div class="px-4 py-3 flex justify-center">
-    <%~ includeFile('partials/logo.eta', it) %>
-  </div>
-  <div class="flex-1 justify-end">
-    <!-- color scheme switch -->
-  </div>
-</header>
-
 <section class="bg-purple-200 dark:bg-desatPurple-900 bg-circuit-board-light dark:bg-circuit-board-dark border-t-2 border-b-2 border-purple-300 dark:border-desatPurple-500 px-4 py-4">
   <div class="max-w-sm mx-auto text-center sm:max-w-xl sm:text-left lg:max-w-3xl xl:max-w-4xl 2xl:max-w-5xl">
     <div class="bg-white dark:bg-gray-800 p-3 ring-2 ring-purple-300 dark:ring-desatPurple-500 rounded-lg sm:flex">
