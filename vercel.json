@@ -1,9 +1,100 @@
 {
-  "github": {
-    "silent": true
-  },
-  // foo
+  "github": { "silent": true },
   "redirects": [
-    { "source": "/intro-to-eslint", "destination": "/blog/intro-to-eslint" }
+    {
+      "source": "/intro-to-eslint",
+      "destination": "/blog/intro-to-eslint",
+      "permanent": true
+    },
+    {
+      "source": "/testing-react-and-redux",
+      "destination": "https://semaphoreci.com/community/series/how-to-test-a-react-and-redux-application-with-ava"
+    },
+    {
+      "source": "/testing-react-and-redux-pt1",
+      "destination": "https://semaphoreci.com/community/tutorials/getting-started-with-create-react-app-and-ava"
+    },
+    {
+      "source": "/testing-react-and-redux-pt2",
+      "destination": "https://semaphoreci.com/community/tutorials/testing-common-redux-patterns-in-react-using-ava"
+    },
+    {
+      "source": "/testing-react-and-redux-pt3",
+      "destination": "https://semaphoreci.com/community/tutorials/testing-react-components-with-ava"
+    },
+    {
+      "source": "/blog/intro-to-eslint-81f6c9f24ce5",
+      "destination": "/blog/intro-to-eslint",
+      "permanent": true
+    },
+    {
+      "source": "/blog/downvoting-comments-on-youtube-does-nothing-a6a456d740ef",
+      "destination": "/blog/downvoting-comments-on-youtube",
+      "permanent": true
+    },
+    {
+      "source": "/blog/a-fictional-web-app-for-creating-comics-b10d660b6939",
+      "destination": "/blog/fictional-web-app-for-creating-comics",
+      "permanent": true
+    },
+    {
+      "source": "/blog/getting-rid-of-pantry-moths-cf43ef14b2ac",
+      "destination": "/blog/getting-rid-of-pantry-moths",
+      "permanent": true
+    },
+    {
+      "source": "/blog/dependencies-or-devdependencies-7715b24b6abf",
+      "destination": "/blog/dependencies-or-devdependencies",
+      "permanent": true
+    },
+    {
+      "source": "/blog/dont-split-render-into-functions-9e73fb75a05b",
+      "destination": "/blog/dont-split-render-into-functions",
+      "permanent": true
+    },
+    {
+      "source": "/blog/custom-project-based-eslint-rules-b7b4e3aaf951",
+      "destination": "/blog/custom-project-based-eslint-rules",
+      "permanent": true
+    },
+    {
+      "source": "/blog/the-nuances-of-react-transition-group-9214b2302138",
+      "destination": "/blog/the-nuances-of-react-transition-group",
+      "permanent": true
+    },
+    {
+      "source": "/blog/code-folding-and-minimaps-43b2cfdd4359",
+      "destination": "/blog/code-folding-and-minimaps",
+      "permanent": true
+    },
+    {
+      "source": "/blog/mocking-functions-and-modules-with-jest",
+      "destination": "/blog/mocking-with-jest",
+      "permanent": true
+    },
+    {
+      "source": "/blog/mocking-functions-with-jest",
+      "destination": "/blog/mocking-with-jest/functions",
+      "permanent": true
+    },
+    {
+      "source": "/blog/mocking-modules-with-jest",
+      "destination": "/blog/mocking-with-jest/modules",
+      "permanent": true
+    },
+    {
+      "source": "/blog/mocking-with-jest",
+      "destination": "/blog/mocking-with-jest/functions"
+    },
+    {
+      "source": "/blog/better-git-history",
+      "destination": "/blog/better-git-history/introduction"
+    }
+  ],
+  "rewrites": [
+    { "source": "/blog/posts/:match*", "destination": "/blog/:match*" },
+    { "source": "/blog/category/:cat", "destination": "/blog" },
+    { "source": "/blog/language/:lang", "destination": "/blog" },
+    { "source": "/blog/page/:num", "destination": "/blog" }
   ]
 }

@@ -1,4 +1,4 @@
 #!/bin/sh
 . "$(dirname $0)/_/husky.sh"
 
-npx gulp generate && npx tsc && npm test
+npx gulp generateConstants && npx tsc && npm test
