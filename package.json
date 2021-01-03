@@ -93,7 +93,7 @@
     "msw": "^0.24.4",
     "plugin-error": "^1.0.1",
     "postcss": "^8.1.1",
-    "postcss-import": "^13.0.0",
+    "postcss-import": "^14.0.0",
     "postcss-load-config": "^3.0.0",
     "postcss-nested": "^5.0.1",
     "postcss-scss": "^3.0.4",
