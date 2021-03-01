@@ -29,7 +29,7 @@ module.exports = {
       files: [
         './*.js',
         'tasks/**/*.js',
-        'etc/**/*.js',
+        'tailwind-plugins/*.js',
         '{tasks,views}/**/__tests__/**/*.test.[jt]s?(x)',
         'test/**/*',
         '**/__mocks__/**/*.js',
