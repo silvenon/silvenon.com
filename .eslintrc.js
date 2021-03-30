@@ -2,11 +2,7 @@ const jestConfig = require('./jest.config')
 
 module.exports = {
   reportUnusedDisableDirectives: true,
-  extends: [
-    'eslint:recommended',
-    'plugin:import/recommended',
-    'plugin:prettier/recommended',
-  ],
+  extends: ['eslint:recommended', 'plugin:prettier/recommended'],
   rules: {
     'no-var': 'error',
     'prefer-const': 'error',
@@ -26,23 +22,11 @@ module.exports = {
   },
   overrides: [
     {
-      files: [
-        './*.js',
-        'tasks/**/*.js',
-        'tailwind-plugins/*.js',
-        '{tasks,views}/**/__tests__/**/*.test.[jt]s?(x)',
-        'test/**/*',
-        '**/__mocks__/**/*.js',
-      ],
+      files: ['./*.js'],
       extends: ['plugin:node/recommended'],
       rules: {
         'node/no-unpublished-require': 'off',
-      },
-    },
-    {
-      files: ['scripts/**/*'],
-      env: {
-        browser: true,
+        'node/no-missing-require': 'off',
       },
     },
     {
@@ -51,7 +35,6 @@ module.exports = {
         'plugin:react/recommended',
         'plugin:react-hooks/recommended',
         'plugin:jsx-a11y/recommended',
-        'prettier/react',
       ],
       settings: {
         react: {
@@ -70,30 +53,12 @@ module.exports = {
       extends: [
         'plugin:@typescript-eslint/eslint-recommended',
         'plugin:@typescript-eslint/recommended',
-        'prettier/@typescript-eslint',
       ],
-      settings: {
-        'import/parsers': {
-          '@typescript-eslint/parser': ['.ts', '.tsx'],
-        },
-        'import/resolver': {
-          typescript: {
-            alwaysTryTypes: true,
-          },
-        },
-      },
       rules: {
         '@typescript-eslint/no-empty-function': 'off',
-        '@typescript-eslint/no-unused-vars': 'error',
-        'import/extensions': [
+        '@typescript-eslint/no-unused-vars': [
           'error',
-          'ignorePackages',
-          {
-            js: 'never',
-            jsx: 'never',
-            ts: 'never',
-            tsx: 'never',
-          },
+          { argsIgnorePattern: '^_' },
         ],
         'no-use-before-define': 'off',
         '@typescript-eslint/no-use-before-define': [
@@ -121,20 +86,7 @@ module.exports = {
       },
     },
     {
-      files: 'typings/**/*',
-      rules: {
-        'import/no-extraneous-dependencies': [
-          'error',
-          {
-            devDependencies: true,
-          },
-        ],
-      },
-    },
-    {
-      files: jestConfig.projects
-        .flatMap((project) => project.testMatch)
-        .map((path) => path.replace('<rootDir>/', '')),
+      files: jestConfig.testMatch,
       extends: ['plugin:jest/recommended'],
       env: {
         browser: true,
@@ -142,12 +94,6 @@ module.exports = {
       },
       rules: {
         'jest/expect-expect': 'off',
-        'import/no-extraneous-dependencies': [
-          'error',
-          {
-            devDependencies: true,
-          },
-        ],
       },
     },
   ],

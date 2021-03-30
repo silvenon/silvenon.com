@@ -1,42 +1,36 @@
 const colors = require('tailwindcss/colors')
-const convert = require('@csstools/convert-colors')
-const { destDir, socialLinks } = require('./site.config')
-
-const socialColors = {}
-for (const { id, color } of socialLinks) {
-  socialColors[id] = color
-}
+const typography = require('@tailwindcss/typography')
+const { hex2hsl, hsl2hex } = require('@csstools/convert-colors')
+const screens = require('./screens.json')
 
 const desatPurple = {}
 for (const [shade, hex] of Object.entries(colors.purple)) {
-  const [hue, saturation, lightness] = convert.hex2hsl(hex)
-  desatPurple[shade] = convert.hsl2hex(hue, saturation * 0.5, lightness)
+  const [hue, saturation, lightness] = hex2hsl(hex)
+  desatPurple[shade] = hsl2hex(hue, saturation * 0.5, lightness)
 }
 
 module.exports = {
-  plugins: [require('@tailwindcss/typography')],
+  purge: ['src/**/*.{ts,tsx,mdx}', 'safelist.txt'],
+  plugins: [typography],
   darkMode: 'media',
   theme: {
-    colors: {
-      current: 'currentColor',
-      transparent: 'transparent',
-      white: colors.white,
-      black: colors.black,
-      gray: colors.gray,
-      yellow: colors.amber,
-      purple: colors.purple,
-      desatPurple, // useful for dark mode
-      ...socialColors,
-    },
-    fill: (theme) => ({
-      current: 'currentColor',
-      light: theme('colors.gray.300'),
-      github: theme('colors.github'),
-    }),
+    screens,
     extend: {
-      backgroundImage: () => ({
-        'circuit-board-light': 'url("/images/circuit-board-light.svg")',
-        'circuit-board-dark': 'url("/images/circuit-board-dark.svg")',
+      colors: {
+        current: 'currentColor',
+        transparent: 'transparent',
+        white: colors.white,
+        black: colors.black,
+        gray: colors.gray,
+        yellow: colors.amber,
+        purple: colors.purple,
+        twitter: '#1da1f2',
+        desatPurple, // useful for dark mode
+      },
+      fill: (theme) => ({
+        current: theme('colors.current'),
+        white: theme('colors.white'),
+        light: theme('colors.gray.300'),
       }),
       typography: (theme) => ({
         DEFAULT: {
@@ -57,6 +51,11 @@ module.exports = {
             'a code': {
               color: false,
             },
+            blockquote: {
+              color: theme('colors.desatPurple.600'),
+              fontWeight: 'normal',
+              borderLeftColor: theme('colors.desatPurple.200'),
+            },
             pre: {
               backgroundColor: false,
             },
@@ -64,9 +63,16 @@ module.exports = {
               marginTop: 0,
               marginBottom: 0,
             },
+            figure: {
+              textAlign: 'center',
+            },
             '.ar img': {
               marginTop: 0,
               marginBottom: 0,
+            },
+            '.twitter-tweet': {
+              marginLeft: 'auto',
+              marginRight: 'auto',
             },
           },
         },
@@ -90,18 +96,19 @@ module.exports = {
             },
             h1: {
               color: theme('colors.white'),
-              fontWeight: theme('fontWeight.medium'),
+              fontWeight: theme('fontWeight.bold'),
             },
             h2: {
               color: theme('colors.gray.100'),
-              fontWeight: theme('fontWeight.medium'),
+              fontWeight: theme('fontWeight.semibold'),
             },
             h3: {
               color: theme('colors.gray.200'),
-              fontWeight: theme('fontWeight.normal'),
+              fontWeight: theme('fontWeight.medium'),
             },
             h4: {
               color: theme('colors.gray.300'),
+              fontWeight: theme('fontWeight.normal'),
             },
             h5: {
               color: theme('colors.gray.300'),
@@ -121,17 +128,4 @@ module.exports = {
       }),
     },
   },
-  variants: {
-    extend: {
-      backgroundImage: ['dark'],
-      borderWidth: ['dark'],
-      fill: ['dark'],
-      fontWeight: ['dark'],
-      padding: ['focus'],
-      ringWidth: ['dark'],
-      typography: ['dark'],
-      width: ['focus-within'],
-    },
-  },
-  purge: [`${destDir}/**/*.html`, 'scripts/**/*', 'tasks/*'],
 }

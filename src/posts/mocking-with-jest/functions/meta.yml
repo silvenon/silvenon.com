@@ -1,0 +1,4 @@
+seriesPart: 0
+title: Spying on Functions and Changing their Implementation
+description: Using Jest to record calls of particular methods and even change their implementation.
+category: DEV

@@ -1,0 +1,26 @@
+@import url('./color-theme.css');
+
+@layer components {
+  code {
+    @apply bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-0 p-1 rounded text-black dark:text-gray-100;
+  }
+
+  a code {
+    @apply font-bold text-current;
+  }
+
+  /* Prism themes apply styling only to pre[class*="language-"], but code blocks can be plain text, too */
+  pre {
+    color: white;
+    background: #031417;
+  }
+
+  /* dark mode background color is too similar to code block's, so we're adding some pizzazz to make it stand out more */
+  @media (prefers-color-scheme: dark) {
+    pre {
+      box-shadow:
+        inset 0 0 1rem theme('colors.black'),
+        0 0 0 1px theme('colors.gray.800');
+    }
+  }
+}

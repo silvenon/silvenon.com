@@ -1,0 +1,5 @@
+@layer base {
+  :root {
+    @apply bg-white text-black dark:bg-gray-900 dark:text-white;
+  }
+}

@@ -1,13 +1,15 @@
-# Project dependencies
+# project dependencies
 node_modules
 
-# Build directory
+# OS
 .DS_Store
+
+# text editors
 .vscode
+.idea
 
 # secrets
-.env
+.env.local
 
-# Gulp
+# build
 dist
-views/playground.eta

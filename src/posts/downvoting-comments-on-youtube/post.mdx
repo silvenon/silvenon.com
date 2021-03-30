@@ -1,0 +1,72 @@
+import imgCover from '1_WYXZ7_PzCcipvAqFdBA-0A_2x_i37qbg?cloudinary'
+import imgNoDownvotes from '1_vR-EoMCW4y_TwGIJn5LzMA_2x_gz1bgv?cloudinary'
+import imgAgree from '1_dm6W7hZI2ULnF4woamHXDQ_2x_mqts6x?cloudinary'
+import imgDisagree from '1_Hbw79wriYEu7Yrgaa_srGA_2x_qlbhve?cloudinary'
+import imgMenu from '1_CFUFq8pmpeE11w5KHGDJDg_2x_jsdk6y?cloudinary'
+
+<ProseImage {...imgCover} alt="grey thumbs up and red thumbs down" />
+
+While watching [one of many](https://youtu.be/ffjQaF5ejF0) heartbreaking videos about the terrifying comments that women on YouTube have to endure daily, something caught my attention that I haven't thought about as much before:
+
+  > "There's something about reading it, and seeing 20 people like it, or 200 people like it, that really eats away at your self-esteem." --Daysha Edewi
+
+I always go on downvoting sprees after hearing things like that, but I never feel like I achieved anything. There was something weird about the YouTube comment section since integrating with Google+, but I couldn't put my finger on it until now.
+
+I didn't see a single downvote, only upvotes.
+
+Initially I thought that downvotes existed behind the scenes, but that YouTube doesn't display them anymore. However, when I noticed that downvotes don't survive a page refresh, I was convinced that the feature is **broken**, accidentally or intentionally. Let me show you what I mean by trying to downvote this terrible, terrible (and made up) comment:
+
+<figure>
+  <ProseImage {...imgNoDownvotes} className="bg-white" />
+  <figcaption>
+    Downvotes don't persist after refreshing the page, but upvotes do!
+  </figcaption>
+</figure>
+
+However, YouTube still has the nerve to show the number of downvotes for _videos_!
+
+After [some][quora-downvoting] [investigating][forum-downvoting] I learned that this is because Google+ doesn't have a "-1", only "+1". So they thought that keeping a nullified downvote feature was an excellent solution for that problem? That users won't mind that their downvoting efforts are in vain? By now the YouTube team should really have a clear idea about what a terrible place their comment section is. Allegedly they thought that by merging with Google+ they will discourage hateful comments, but I'm failing to see the desired effect.
+
+Downvotes hold a great power. While an upvoted negative comment sends a pretty brutal message:
+
+<figure>
+  <ProseImage {...imgAgree} className="bg-white" />
+  <figcaption>
+    Message: "You're a stupid bitch and 205 people agreed with me within 5 seconds."
+  </figcaption>
+</figure>
+
+that same comment with downvotes displayed might send an opposite, uplifting message, because we can see how many people disagree:
+
+<figure>
+  <ProseImage {...imgDisagree} className="bg-white" />
+  <figcaption>
+    Message: "517 people don't agree with these assholes and think you're a great person. Keep it up!"
+  </figcaption>
+</figure>
+
+I realize that making downvoting work again is easier said than done, but they can at least visually rank comments somehow, like on [Stack Overflow][stack-overflow].
+
+There is also the "report spam or abuse" feature for comments, however:
+
+  1. downvoting is faster and easier,
+  2. it doesn't feel like it does much, and
+  3. it's hidden behind a menu far, far away:
+
+<figure>
+  <ProseImage {...imgMenu} className="bg-white" />
+  <figcaption>
+    <a href="https://medium.com/the-year-of-the-looking-glass/what-you-see-is-what-you-use-5a97677a8c71#.e7shjqthd">
+      What we see is what we use.
+    </a>
+  </figcaption>
+</figure>
+
+After I reported the comment as "harassment or bullying", it vanished with the feedback "comment reported". However, I don't care if that comment is visible to _me_, I want that comment hidden from _everyone_. [YouTube Help says][docs-reporting] that if "enough" people mark a comment as spam, it will become hidden, but we don't know how many is "enough" and they don't even mention harassment. YouTube, your comment section is considered to be one of the worst places on internet, get your head out of the sand!
+
+By the way, Google, we've all seen your mad AI skills when it comes to detecting spam and suggesting email replies, you're telling us that you can't use the same hocus-pocus for detecting harassment on YouTube?! Hogwash!
+
+[quora-downvoting]: https://www.quora.com/Does-downvoting-a-comment-on-YouTube-even-do-anything
+[forum-downvoting]: https://productforums.google.com/forum/#!topic/youtube/YD00Zo1AXoE
+[stack-overflow]: https://stackoverflow.com/
+[docs-reporting]: https://support.google.com/youtube/answer/2802027?hl=en

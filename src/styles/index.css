@@ -1,0 +1,13 @@
+@import url('tailwindcss/base.css');
+@import url('tailwindcss/components.css');
+@import url('tailwindcss/utilities.css');
+
+@import url('./aspect-ratio.css');
+@import url('./base.css');
+@import url('./hot-tip.css');
+@import url('./gitgraph.css');
+@import url('./github-corner.css');
+@import url('./overflow-scrolling.css');
+@import url('./search.css');
+@import url('./spinner.css');
+@import url('./syntax-highlighting.css');

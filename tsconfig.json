@@ -1,17 +1,23 @@
 {
   "compilerOptions": {
     "noEmit": true,
-    // needed for instantiating GitgraphEvent to work in tests
-    // https://stackoverflow.com/questions/50203369/class-constructor-cannot-be-invoked-without-new-typescript-with-commonjs/50203532#50203532
-    "target": "ES2015",
-    "lib": ["DOM", "ESNext"],
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "jsx": "react",
-    "strict": true,
-    "esModuleInterop": true,
+    "types": ["vite/client", "jest"],
     "isolatedModules": true,
-    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true
   },
   "include": [
-    "scripts/**/*",
-  ],
+    "./types",
+    "./src",
+    "./etc",
+    "./test",
+    "./vite.config.ts",
+  ]
 }

@@ -1,0 +1,5 @@
+title: Integrating and Enforcing Prettier & ESLint
+description: How to resolve the conflict between Prettier and ESLint and use ESLint to enforce Prettier in your codebase.
+category: DEV
+published: 2019-03-25
+tweet: https://twitter.com/silvenon/status/1110136223144787968
