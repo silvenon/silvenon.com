@@ -113,7 +113,7 @@
     "rev-hash": "^3.0.0",
     "rev-path": "^2.0.0",
     "serve": "^11.3.2",
-    "tailwindcss": "^2.0.1",
+    "tailwindcss": "^2.0.4",
     "through2": "^4.0.2",
     "toml": "^3.0.0",
     "ts-jest": "^26.4.4",
