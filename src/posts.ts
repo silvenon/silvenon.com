@@ -50,8 +50,8 @@ export interface Series {
   parts: SeriesPart[]
 }
 
-export const series: Series[] = Object.entries(seriesModules).map(
-  ([seriesImportPath, data]) => {
+export const series: Series[] = Object.entries(seriesModules)
+  .map(([seriesImportPath, data]) => {
     const parts = seriesPartsMeta
       .filter((post) =>
         seriesImportPath.includes(post.importPath.split('/')[3]),
@@ -78,17 +78,17 @@ export const series: Series[] = Object.entries(seriesModules).map(
       published: formatDateISO(data.default.published),
       parts: parts.map((part) => ({ ...part, parts })),
     }
-  },
-)
+  })
+  .filter((series) => !(import.meta.env.PROD && !series.published))
 
-export const standalonePosts: StandalonePost[] = standalonePostsMeta.map(
-  ({ importPath, meta }) => ({
+export const standalonePosts: StandalonePost[] = standalonePostsMeta
+  .map(({ importPath, meta }) => ({
     importPath,
     pathname: getPostPathname(importPath),
     ...meta,
     published: meta.published && formatDateISO(meta.published),
-  }),
-)
+  }))
+  .filter((post) => !(import.meta.env.PROD && !post.published))
 
 export const posts: Post[] = [
   ...standalonePosts,
@@ -100,7 +100,9 @@ export const posts: Post[] = [
       })),
     )
     .flat(),
-].sort(comparePublished)
+]
+  .filter((post) => !(import.meta.env.PROD && !post.published))
+  .sort(comparePublished)
 
 function getPostPathname(importPath: string): string {
   return importPath.replace('/src/posts', '/blog').replace('post.mdx', '')
