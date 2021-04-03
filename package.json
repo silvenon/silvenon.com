@@ -19,7 +19,7 @@
   "scripts": {
     "postinstall": "husky install",
     "dev": "vite",
-    "prelint": "eslint --print-config src/pages/index.js | eslint-config-prettier-check",
+    "prelint": "eslint-config-prettier gulpfile.js src/entry-client.tsx src/posts/__tests__/posts.test.ts",
     "lint": "eslint . --report-unused-disable-directives",
     "test": "jest",
     "build": "gulp build",
