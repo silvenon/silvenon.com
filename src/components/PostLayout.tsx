@@ -96,7 +96,11 @@ export default function StandalonePostLayout({
           </>
         )}
         <MDXProvider components={{ Gitgraph, ProseImage }}>
-          {StaticMDXComponent ? <StaticMDXComponent /> : dynamicMdxContent}
+          {StaticMDXComponent ? (
+            <StaticMDXComponent />
+          ) : (
+            dynamicMdxContent || <div className="h-[100vh]" />
+          )}
         </MDXProvider>
         <div className="text-right -mb-7 sm:-mb-8 md:-mb-9 lg:-mb-10 xl:-mb-11 2xl:-mb-12">
           <a className="p-2" href="#">
