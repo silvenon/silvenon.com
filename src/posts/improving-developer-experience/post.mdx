@@ -1,14 +1,14 @@
-In frontend development we talk a lot about accessibility; for people who are using screen readers, people with vestibular disorders etc., but in this post I would like to talk about a different kind of accessibility--when a new member of the team starts working on a project, how long does it take for them to get the hang of developing it?
+In frontend development we talk a lot about accessibility; for people who are using screen readers, people with vestibular disorders etc., but in this post I would like to talk about a different kind of accessibility--when a new team member starts working on a project, how long does it take for them to get the hang of developing it?
 
 The term that I find most suitable for this is _developer experience_, or DX.
 
-In my modest experience providing an onboarding process is more often a fantasy than reality. Newcomers are usually left alone to figure things out and ask questions if something is not clear, which is fine **as long as** the team has been putting continuous effort into making the project easy to use. Having to ask many questions not only slows other team members, but can also be demotivating to the newcomer and make them feel neglected or, even worse, _inadequate_.
+In my modest experience providing an onboarding process is more often a fantasy than reality. Newcomers are usually left alone to figure things out and ask questions if something is not clear, which is fine **as long as** the team has been putting continuous effort into making the project easy to use. Having to ask many questions doesn't only slow down other team members, it can also be demotivating to the newcomer and make them feel neglected or, even worse, _inadequate_.
 
 Older projects whose teams had undergone little to no changes are especially vulnerable to poor DX because everyone either figured the project out already or they were there from the beginning. The more time passes, the harder it is to see the project as a beginner, and the less motivation there is to improve DX because people got used to the problems.
 
 ## Progressive disclosure
 
-Newcomers shouldn't have to ask too many questions, just like people should be able to use apps without reading a manual. It should be self-explanatory, and information should be revealing itself gradually when people need it. In interaction design there is something called "[progressive disclosure](https://www.interaction-design.org/literature/topics/progressive-disclosure#:~:text=Progressive%20disclosure%20is%20an%20interaction,overwhelmed%20by%20what%20they%20encounter.)":
+Newcomers shouldn't have to ask too many questions, just like people should be able to use apps without reading a manual. It should be self-explanatory, and information should be revealing itself gradually when people need it. The analogy for this in interaction design is called [_progressive disclosure_](https://www.interaction-design.org/literature/topics/progressive-disclosure#:~:text=Progressive%20disclosure%20is%20an%20interaction,overwhelmed%20by%20what%20they%20encounter.):
 
 > "Progressive disclosure is an interaction design pattern that sequences information and actions across several screens (e.g., a step-by-step signup flow). The purpose is to lower the chances that users will feel overwhelmed by what they encounter."
 
@@ -22,20 +22,18 @@ A common example of readability issues in JavaScript projects is `package.json`'
 {
   "scripts": {
     "build": "yarn build:cjs && yarn build:esm",
+    "build:base": "babel src --ignore **/__tests__/**/*,**/__mocks__/**/*,**/*.stories.js",
     "build:cjs": "cross-env BABEL_ENV=cjs yarn build:base --out-dir cjs",
-    "build:esm": "cross-env BABEL_ENV=esm yarn build:base --out-dir esm",
-    "build:base": "babel src --ignore **/__tests__/**/*,**/__mocks__/**/*,**/*.stories.js"
+    "build:esm": "cross-env BABEL_ENV=esm yarn build:base --out-dir esm"
   }
 }
 ```
 
-I didn't try whether this actually works, but that's not important, the point is that just because something can be done using only CLI doesn't mean that it should.
-
 One could argue that fleshing out the logic of every script makes it easier to understand how to use the project, but I can barely read the scripts above, and once I figure it out I don't want to see the whole thing over and over again, I just want the gist of it so I can use them.
 
-Another thing is that I will never have to run `build:base`, it's just a way to keep `build:cjs` and `build:esm` DRY, and most of the time I won't even have to run those two scripts either, except when debugging, the rest of the time they will just be in the way. How about having only npm scripts which are meant to be run by humans? One way to achieve this is to move the underlying logic to a `gulpfile.js`, which offers much more space to express yourself. You can use your tools' Node.js API to write nicer code, or a plugin like `gulp-babel`, and export only tasks that you want people to run. It's especially useful for task composition, i.e. running tasks in series or parallel. Read [_Managing complex tasks with gulp v4_](/blog/npm-scripts-vs-gulp-v4) if you're interested in this approach.
+Another thing is that I will never have to run `build:base`, it's just a way to keep `build:cjs` and `build:esm` DRY, and most of the time I won't even have to run those two scripts either, except when debugging, the rest of the time they will just be in the way. How about having only npm scripts which are meant to be run by humans? One way to achieve this is to move the underlying logic to a `gulpfile.js`, which offers much more space to express yourself. You can use the Node.js API of your tools to write nicer code, or use a plugin like `gulp-babel`, and export only tasks that you want people to run. It's especially useful for task composition, i.e. running tasks in series or parallel. Read [_Managing complex tasks with gulp v4_](/blog/npm-scripts-vs-gulp-v4) if you're interested in this approach.
 
-People who want to solve task composition in npm scripts usually reach for [`npm-run-all`](https://www.npmjs.com/package/npm-run-all), but in my experience it doesn't make scripts clearer, only shorter. Besides, how are people who have never heard of `npm-run-all` supposed to figure out where `run-p` is coming from?
+Many people who want to solve task composition in npm scripts eventually reach for [`npm-run-all`](https://www.npmjs.com/package/npm-run-all), but in my experience it doesn't make scripts clearer, only shorter. Besides, how are people who have never heard of `npm-run-all` supposed to figure out where `run-p` is coming from in order to understand what it means?
 
 ## Less development documentation
 
@@ -43,7 +41,7 @@ Development documentation can help when used sparingly and as close to the code 
 
 It's also worth noting that good naming strategy and making navigating the codebase more obvious is better than descriptive documentation, and sometimes we can't really document some stuff where we want to, e.g. `package.json` cannot contain comments, and if we document npm scripts in `README.md`, it's almost bound to get outdated because as we change npm scripts we might forget to update the documentation. Out of sight, out of mind.
 
-If there are situations when you can update parts of the documentation automatically, take those opportunities to decrease maintenance. One example is documenting which browsers your frontend project supports; you can generate this entirely by mapping [`browserslist`](https://github.com/browserslist/browserslist) configuration to browser names using [`caniuse-db`]()'s `data.json`, for example:
+If there are situations when you can update parts of the documentation automatically, take those opportunities to decrease maintenance. For example, I wanted to document which browsers is supported by a frontend project I was working on, so I generated that list by mapping [`browserslist`](https://github.com/browserslist/browserslist) configuration to browser names using [`caniuse-db`]()'s `data.json`, for example:
 
 ```js
 const browserslist = require("browserslist");
@@ -55,17 +53,17 @@ const browsers = browserslist().map(b => {
 });
 ```
 
-You can insert this list into your docs using a tool like [`markdown-magic`](https://www.npmjs.com/package/markdown-magic).
+I inserted this list into the docs using [`markdown-magic`](https://www.npmjs.com/package/markdown-magic), see the project's [`markdown.config.js`](https://github.com/kiwicom/orbit/blob/2f10bf14b26a6b641aa665abafd597c24857bf7d/markdown.config.js).
 
 ## Enforce requirements and limitations
 
-Run checks automatically, don't allow people to forget to run some lint script. Today we have tools like `husky` and `lint-staged`, so there is no need to leave this up to chance. Just like it's best not to put off for tomorrow what you can do today, don't put off until CI what you can do in a git hook or a `pre*`/`post*` npm script.
+Run checks automatically, don't leave it up to people to have to remember to run them. Today we have tools like `husky` and `lint-staged`, so there is no need to leave this up to chance. Just like it's best not to put off for tomorrow what you can do today, don't put off until CI what you can do in a git hook or a `pre*`/`post*` npm script.
 
 Did someone forget to run tests before publishing the package? Add a `prepublishOnly` npm script and stop them in the future! See [other npm scripts](https://docs.npmjs.com/misc/scripts) to find exactly which ones you want, e.g. people often mistakenly use `prepare` instead of `prepublishOnly`, which runs bunch of build and test scripts every time dependencies are installed and can significantly hurt DX.
 
-If people are committing a file with a problem that ESLint can automatically fix, do it in the `pre-commit` hook by combining `husky` and `lint-staged`. That way contributors don't even have to know about the problem, especially if it was just related to formatting. If you want your commit messages to follow certain conventions, like [Conventional Commits](https://www.conventionalcommits.org/), enforce it using a tool like [`commitlint`](https://commitlint.js.org/) in the `commit-msg` hook. The error message should efficiently communicate what guidelines their commit messages should follow, and nothing less. If the tool itself doesn't provide an adequate error message, catch the error and add throw with better one! Users are not the only ones worthy of a good failure experience, your colleagues are as well, especially newcomers. A good error message can be a substitute for a piece of documentation because it explains what went wrong (and what to do about it) right on the spot. No amount of guidelines is that powerful.
+If people are committing a file with a problem that ESLint can automatically fix, do it in the `pre-commit` hook by combining `husky` and `lint-staged`. That way contributors don't even have to know about the problem, especially if it was just related to formatting. If you want your commit messages to follow certain conventions, like [Conventional Commits](https://www.conventionalcommits.org/), enforce it using a tool like [`commitlint`](https://commitlint.js.org/) in the `commit-msg` hook. The error message should efficiently communicate what guidelines their commit messages should follow, and nothing less. If the tool itself doesn't provide an adequate error message, catch the error and add throw a better one! Users are not the only ones worthy of a good failure experience, your colleagues are as well, especially newcomers. A good error message can be a substitute for a piece of documentation because it explains what went wrong (and what to do about it) right on the spot. No amount of guidelines is that powerful.
 
-If your noticed that your development environment fails on Yarn versions lower than 1.22, you can enforce that. One way to do this is by installing the desired version in the project itself:
+If your noticed that your development environment fails on Yarn versions lower than, say, 1.22, you can enforce that, too. One way to do this is by installing the desired version in the project itself:
 
 ```bash
 # alias for "yarn policies set-version" introduced in yarn 1.22
@@ -89,9 +87,9 @@ Long story short: try to enforce as many technical requirements as you can, so t
 
 ## Test your build process
 
-Adding tests for complex parts of your development environment may sound a little meta and possibly like overengineering, but it can prevent build problems in the future, which can be even harder to detect than problems in runtime functionality.
+Adding tests for complex parts of your development environment may sound a little meta and possibly like overengineering, but problems in your build process can be even harder to detect than problems in runtime functionality.
 
-Build process usually outputs files, so the first question that might arise is: how do we test that? We don't want our tests to write to the filesystem! The answer is to mock `fs` with a module like [`memfs`](https://www.npmjs.com/package/memfs), which I used a lot and highly recommend. Does your build process send network requests? I _think_ you can use [MSW](https://mswjs.io/) to mock an API, I haven't used it yet, but it seems like it can do this.
+Build process usually outputs files, so the first question that might arise is: how do we test that? We don't want our tests to write to the filesystem. The answer is to mock `fs` with a module like [`memfs`](https://www.npmjs.com/package/memfs), which I used a lot and highly recommend. Does your build process send network requests? You can might be able to use [MSW](https://mswjs.io/) to mock an API. I'm saying "might" because I haven't used it yet, but it seems like the right tool for the job.
 
 If you don't feel confident about some parts of the code, it's never silly to test them, regardless of whether they are user-facing or developer-facing. Don't let technicalities stop you.
 
@@ -107,7 +105,7 @@ If an existing Node package is popular, that usually means that it's well-docume
 I expect `yarn eslint` to run the `node_modules/.bin/eslint` executable. If you're creating a npm script that uses ESLint, make sure to call it something different. While the problem of shadowing can be avoided by running `npx eslint`, npx also doubles as a command which downloads ESLint if it's not present, which is unwanted in this case, I want the command to fail when the ESLint executable isn't present.
 -->
 
-## "DX Developer"
+## "DX Developer" or "Platform Developer"
 
 Tooling is complicated, and many people just want to get the configuration out of the way, but in my opinion this should be a continuous process handled with care by people who actually like doing it. This is why I believe there should be a separate role dedicated for this, which I call _DX Developer_, but [there various other names for this](https://twitter.com/silvenon/status/1151063178845020160), like "Web Platform". In this role I'm solely focused on making development easier, and the fact that coworkers are personally thanking me for it is proof that this type of work is helpful. I'm no longer actively participating in user-facing features, so I no longer have any idea what is my preferred way of fetching and syncing data in React because, despite working on React projects, my field of expertise has significantly shifted.
 
