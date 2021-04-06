@@ -1,3 +1,5 @@
+import { Link } from '@reach/router'
+
 In frontend development we talk a lot about accessibility; for people who are using screen readers, people with vestibular disorders etc., but in this post I would like to talk about a different kind of accessibility--when a new team member starts working on a project, how long does it take for them to get the hang of developing it?
 
 The term that I find most suitable for this is _developer experience_, or DX.
@@ -31,7 +33,7 @@ A common example of readability issues in JavaScript projects is `package.json`'
 
 One could argue that fleshing out the logic of every script makes it easier to understand how to use the project, but I can barely read the scripts above, and once I figure it out I don't want to see the whole thing over and over again, I just want the gist of it so I can use them.
 
-Another thing is that I will never have to run `build:base`, it's just a way to keep `build:cjs` and `build:esm` DRY, and most of the time I won't even have to run those two scripts either, except when debugging, the rest of the time they will just be in the way. How about having only npm scripts which are meant to be run by humans? One way to achieve this is to move the underlying logic to a `gulpfile.js`, which offers much more space to express yourself. You can use the Node.js API of your tools to write nicer code, or use a plugin like `gulp-babel`, and export only tasks that you want people to run. It's especially useful for task composition, i.e. running tasks in series or parallel. Read [_Managing complex tasks with gulp v4_](/blog/npm-scripts-vs-gulp-v4) if you're interested in this approach.
+Another thing is that I will never have to run `build:base`, it's just a way to keep `build:cjs` and `build:esm` DRY, and most of the time I won't even have to run those two scripts either, except when debugging, the rest of the time they will just be in the way. How about having only npm scripts which are meant to be run by humans? One way to achieve this is to move the underlying logic to a `gulpfile.js`, which offers much more space to express yourself. You can use the Node.js API of your tools to write nicer code, or use a plugin like `gulp-babel`, and export only tasks that you want people to run. It's especially useful for task composition, i.e. running tasks in series or parallel. Read my post about <Link to="/blog/npm-scripts-vs-gulp-v4">managing complex tasks with gulp v4</Link> if you're interested in this approach.
 
 Many people who want to solve task composition in npm scripts eventually reach for [`npm-run-all`](https://www.npmjs.com/package/npm-run-all), but in my experience it doesn't make scripts clearer, only shorter. Besides, how are people who have never heard of `npm-run-all` supposed to figure out where `run-p` is coming from in order to understand what it means?
 
