@@ -7,11 +7,10 @@ import Gitgraph from './Gitgraph'
 import ProseImage from './ProseImage'
 import PostDate from './PostDate'
 import SeriesParts from './SeriesParts'
-import queryString from 'query-string'
 import type { RouteComponentProps } from '@reach/router'
 import type { StandalonePost, SeriesPart } from '../posts'
 import clsx from 'clsx'
-import { SITE_URL, author, proseClassName } from '../consts'
+import { author, proseClassName } from '../consts'
 
 export const postModules = import.meta.glob('/src/posts/**/post.mdx')
 
@@ -33,16 +32,16 @@ export default function StandalonePostLayout({
   description,
   published,
   lastModified,
-  tweet,
   pathname,
 }: Props) {
+  const unorphanRef = React.useCallback((node) => {
+    if (node) unorphan(node)
+  }, [])
+
   const [
     dynamicMdxContent,
     setDynamicMdxContent,
   ] = React.useState<React.ReactNode>(null)
-  const unorphanRef = React.useCallback((node) => {
-    if (node) unorphan(node)
-  }, [])
   React.useEffect(() => {
     if (!StaticMDXComponent) {
       postModules[importPath]().then(({ default: DynamicMDXComponent }) => {
@@ -50,6 +49,22 @@ export default function StandalonePostLayout({
       })
     }
   }, [])
+
+  const footerRef = React.useRef<HTMLElement | null>(null)
+  React.useLayoutEffect(() => {
+    if (!dynamicMdxContent || !footerRef.current) return
+    const utterances = document.createElement('script')
+    utterances.src = 'https://utteranc.es/client.js'
+    utterances.async = true
+    utterances.crossOrigin = 'anonymous'
+    // custom attributes can only be set this way
+    utterances.setAttribute('repo', 'silvenon/silvenon.com')
+    utterances.setAttribute('issue-term', 'title')
+    utterances.setAttribute('theme', 'preferred-color-scheme')
+
+    footerRef.current.innerHTML = ''
+    footerRef.current.appendChild(utterances)
+  }, [dynamicMdxContent])
 
   const hasContent = StaticMDXComponent || dynamicMdxContent
 
@@ -113,38 +128,10 @@ export default function StandalonePostLayout({
         )}
       </main>
 
-      {hasContent && (
-        <footer className="py-4 flex flex-col items-center space-y-2">
-          <div className="flex justify-center items-center space-x-4">
-            <a
-              className="block py-2 px-4 border-2 border-twitter text-twitter font-medium rounded-md hover:bg-twitter hover:text-white lg:text-xl xl:text-2xl"
-              href={`https://twitter.com/intent/tweet?${queryString.stringify({
-                text: seriesTitle ? `${seriesTitle}: ${title}` : title,
-                url: `${SITE_URL}${pathname}`,
-                via: 'silvenon',
-              })}`}
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              Share
-            </a>
-            {tweet && (
-              <a
-                className="block py-2 px-4 border-2 border-twitter text-twitter font-medium rounded-md hover:bg-twitter hover:text-white lg:text-xl xl:text-2xl"
-                href={tweet}
-                target="_blank"
-                rel="noreferrer noopener"
-              >
-                Discuss
-              </a>
-            )}
-          </div>
-          <div className={proseClassName}>
-            on Twitter
-            <br />
-          </div>
-        </footer>
-      )}
+      <footer
+        ref={footerRef}
+        className="py-4 flex flex-col items-center space-y-2"
+      />
     </Layout>
   )
 }
