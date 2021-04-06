@@ -50,6 +50,9 @@ export default function StandalonePostLayout({
       })
     }
   }, [])
+
+  const hasContent = StaticMDXComponent || dynamicMdxContent
+
   return (
     <Layout uri={uri} title={title} description={description}>
       <Helmet>
@@ -96,50 +99,52 @@ export default function StandalonePostLayout({
           </>
         )}
         <MDXProvider components={{ Gitgraph, ProseImage }}>
-          {StaticMDXComponent ? (
-            <StaticMDXComponent />
-          ) : (
-            dynamicMdxContent || <div className="h-[100vh]" />
-          )}
+          {StaticMDXComponent ? <StaticMDXComponent /> : dynamicMdxContent}
         </MDXProvider>
-        <div className="text-right -mb-7 sm:-mb-8 md:-mb-9 lg:-mb-10 xl:-mb-11 2xl:-mb-12">
-          <a className="p-2" href="#">
-            Back to top ↑
-          </a>
-        </div>
-        <hr />
+        {hasContent && (
+          <>
+            <div className="text-right -mb-7 sm:-mb-8 md:-mb-9 lg:-mb-10 xl:-mb-11 2xl:-mb-12">
+              <a className="p-2" href="#">
+                Back to top ↑
+              </a>
+            </div>
+            <hr />
+          </>
+        )}
       </main>
 
-      <footer className="py-4 flex flex-col items-center space-y-2">
-        <div className="flex justify-center items-center space-x-4">
-          <a
-            className="block py-2 px-4 border-2 border-twitter text-twitter font-medium rounded-md hover:bg-twitter hover:text-white lg:text-xl xl:text-2xl"
-            href={`https://twitter.com/intent/tweet?${queryString.stringify({
-              text: seriesTitle ? `${seriesTitle}: ${title}` : title,
-              url: `${SITE_URL}${pathname}`,
-              via: 'silvenon',
-            })}`}
-            target="_blank"
-            rel="noreferrer noopener"
-          >
-            Share
-          </a>
-          {tweet && (
+      {hasContent && (
+        <footer className="py-4 flex flex-col items-center space-y-2">
+          <div className="flex justify-center items-center space-x-4">
             <a
               className="block py-2 px-4 border-2 border-twitter text-twitter font-medium rounded-md hover:bg-twitter hover:text-white lg:text-xl xl:text-2xl"
-              href={tweet}
+              href={`https://twitter.com/intent/tweet?${queryString.stringify({
+                text: seriesTitle ? `${seriesTitle}: ${title}` : title,
+                url: `${SITE_URL}${pathname}`,
+                via: 'silvenon',
+              })}`}
               target="_blank"
               rel="noreferrer noopener"
             >
-              Discuss
+              Share
             </a>
-          )}
-        </div>
-        <div className={proseClassName}>
-          on Twitter
-          <br />
-        </div>
-      </footer>
+            {tweet && (
+              <a
+                className="block py-2 px-4 border-2 border-twitter text-twitter font-medium rounded-md hover:bg-twitter hover:text-white lg:text-xl xl:text-2xl"
+                href={tweet}
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                Discuss
+              </a>
+            )}
+          </div>
+          <div className={proseClassName}>
+            on Twitter
+            <br />
+          </div>
+        </footer>
+      )}
     </Layout>
   )
 }
