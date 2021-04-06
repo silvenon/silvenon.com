@@ -128,10 +128,7 @@ export default function StandalonePostLayout({
         )}
       </main>
 
-      <footer
-        ref={footerRef}
-        className="py-4 flex flex-col items-center space-y-2"
-      />
+      <footer ref={footerRef} className="px-2.5" />
     </Layout>
   )
 }
