@@ -31,7 +31,9 @@ export async function generateFeed() {
   for (const post of publishedPosts) {
     const url = `${SITE_URL}${post.pathname}`
     feed.addItem({
-      title: post.title,
+      title: post.seriesTitle
+        ? `${post.seriesTitle}: ${post.title}`
+        : post.title,
       id: url,
       link: url,
       description: post.description,

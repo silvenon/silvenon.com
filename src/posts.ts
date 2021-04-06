@@ -39,7 +39,11 @@ export interface StandalonePost extends StandalonePostMeta {
 export interface SeriesPart extends SeriesPartMeta, StandalonePost {
   parts: SeriesPart[]
 }
-export type Post = StandalonePost | SeriesPart
+export interface Post extends StandalonePost {
+  seriesTitle?: string
+  seriesPart?: number
+  parts?: SeriesPart[]
+}
 
 export interface Series {
   importPath: string
@@ -92,14 +96,7 @@ export const standalonePosts: StandalonePost[] = standalonePostsMeta
 
 export const posts: Post[] = [
   ...standalonePosts,
-  ...series
-    .map((s) =>
-      s.parts.map((part) => ({
-        ...part,
-        title: `${part.seriesTitle}: ${part.title}`,
-      })),
-    )
-    .flat(),
+  ...series.map((s) => s.parts).flat(),
 ]
   .filter((post) => !(import.meta.env.PROD && !post.published))
   .sort(comparePublished)

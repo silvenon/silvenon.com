@@ -25,7 +25,12 @@ export default function Search({ onOpen, onClose }: Props) {
   } = useCombobox({
     items: results,
     itemToString(post) {
-      return post ? post.title : ''
+      if (post) {
+        return post.seriesTitle
+          ? `${post.seriesTitle}: ${post.title}`
+          : post.title
+      }
+      return ''
     },
     onInputValueChange({ inputValue }) {
       setResults(inputValue ? filter(posts, inputValue, { key: 'title' }) : [])
