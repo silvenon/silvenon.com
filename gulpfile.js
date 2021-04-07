@@ -27,19 +27,19 @@ function buildServer() {
 }
 
 async function generatePages() {
-  const entry = require('./dist/server/entry-server.js')
+  const { generatePages } = require('./dist/server/entry-server.js')
   const template = await fsx.readFile('dist/static/index.html', 'utf-8')
-  entry.generatePages(template)
+  generatePages(template)
 }
 
 function generateFeed() {
-  const entry = require('./dist/server/entry-server.js')
-  return entry.generateFeed()
+  const { generateFeed } = require('./dist/server/entry-server.js')
+  return generateFeed()
 }
 
 function compileVercelConfig() {
-  const entry = require('./dist/server/entry-server.js')
-  return entry.compileVercelConfig()
+  const { compileVercelConfig } = require('./dist/server/entry-server.js')
+  return compileVercelConfig()
 }
 
 module.exports = {
