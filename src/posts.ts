@@ -16,6 +16,16 @@ export interface SeriesPartMeta extends StandalonePostMeta {
   seriesTitle: string
   seriesPart: number
 }
+export interface PostMeta extends StandalonePostMeta {
+  seriesTitle?: string
+  seriesPart?: number
+}
+export interface SeriesMeta {
+  title: string
+  description: string
+  published?: string
+  tweet: string
+}
 
 const standalonePostsMeta: Array<{
   importPath: string
@@ -45,12 +55,8 @@ export interface Post extends StandalonePost {
   parts?: SeriesPart[]
 }
 
-export interface Series {
+export interface Series extends SeriesMeta {
   importPath: string
-  title: string
-  description: string
-  published?: string
-  tweet: string
   parts: SeriesPart[]
 }
 
