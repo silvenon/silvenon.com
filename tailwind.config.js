@@ -10,6 +10,7 @@ for (const [shade, hex] of Object.entries(colors.purple)) {
 }
 
 module.exports = {
+  mode: 'jit',
   purge: ['src/**/*.{ts,tsx,mdx}', 'safelist.txt'],
   plugins: [typography],
   darkMode: 'media',
