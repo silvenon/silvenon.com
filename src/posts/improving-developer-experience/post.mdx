@@ -95,18 +95,6 @@ Build process usually outputs files, so the first question that might arise is: 
 
 If you don't feel confident about some parts of the code, it's never silly to test them, regardless of whether they are user-facing or developer-facing. Don't let technicalities stop you.
 
-<!--
-### Beware of the [NIH syndrome](https://en.wikipedia.org/wiki/Not_invented_here)
-
-If an existing Node package is popular, that usually means that it's well-documented and well-tested, it's unnecessary to find out the hard way why those tests exist. There is no shame is deleting our own code and replacing it with an existing solution.
--->
-
-<!--
-### Don't shadow underlying executables with npm scripts
-
-I expect `yarn eslint` to run the `node_modules/.bin/eslint` executable. If you're creating a npm script that uses ESLint, make sure to call it something different. While the problem of shadowing can be avoided by running `npx eslint`, npx also doubles as a command which downloads ESLint if it's not present, which is unwanted in this case, I want the command to fail when the ESLint executable isn't present.
--->
-
 ## "DX Developer" or "Platform Developer"
 
 Tooling is complicated, and many people just want to get the configuration out of the way, but in my opinion this should be a continuous process handled with care by people who actually like doing it. This is why I believe there should be a separate role dedicated for this, which I call _DX Developer_, but [there various other names for this](https://twitter.com/silvenon/status/1151063178845020160), like "Web Platform". In this role I'm solely focused on making development easier, and the fact that coworkers are personally thanking me for it is proof that this type of work is helpful. I'm no longer actively participating in user-facing features, so I no longer have any idea what is my preferred way of fetching and syncing data in React because, despite working on React projects, my field of expertise has significantly shifted.
@@ -116,9 +104,5 @@ Some people replied to my tweet arguing that every developer should know this st
 ## Conclusion
 
 Frontend projects get really complex really fast, there's a lot of tooling required just to start. By continuously improving the developer experience we're increasing the versatility of the project as people come and go, and the likeliness that people will stay on the team. A project that speaks for itself, so to speak, is much easier to develop. If one team member has to explain why they did something a certain way, that's a red flag because that person isn't going to be around forever, the decision should make sense on its own.
-
-<!--
-The onus is also on newcomers to react when something took too long to figure out. They have a fresh perspective so they need to act fast and help improve that aspect for the next person, at least by reporting the issue. If the roadblock is significant, but the solution is simple, do it immediately, otherwise you'll forget because once you figure it out it stops seeming like a big deal. If the issue is not fixed, the next person will probably struggle with the same problem, which is unnecessary.
--->
 
 If your team struggles with working on a project, but don't have time, will or skills to improve tooling, it might be time to allocate resources for a DX developer.
