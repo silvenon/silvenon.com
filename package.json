@@ -110,7 +110,6 @@
     "unist-util-visit": "^2.0.3",
     "unorphan": "^1.2.1",
     "vite": "^2.0.4",
-    "vite-plugin-icons": "^0.4.0",
     "xdm": "^1.7.1"
   }
 }
