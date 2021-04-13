@@ -53,7 +53,7 @@ export default function PostLayout({
   const DynamicMDXComponent = mdxModule && mdxModule.default
 
   const footerRef = React.useRef<HTMLElement | null>(null)
-  React.useLayoutEffect(() => {
+  React.useEffect(() => {
     if (!DynamicMDXComponent || !footerRef.current) return
     const utterances = document.createElement('script')
     utterances.src = 'https://utteranc.es/client.js'
