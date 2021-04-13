@@ -23,6 +23,7 @@ export default function Search({ onOpen, onClose }: Props) {
     getItemProps,
     inputValue,
   } = useCombobox({
+    defaultHighlightedIndex: 0,
     items: results,
     itemToString(post) {
       if (post) {
