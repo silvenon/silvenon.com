@@ -1,0 +1,3 @@
+title: What Tailwind taught me about the separation of concerns
+description: Despite trying out numerous methods of writing CSS, I never felt that my code was resilient. Utility-first CSS helped me rethink separation of concerns.
+published: 2021-04-13
