@@ -107,8 +107,11 @@ yarn add --dev eslint-plugin-react
 }
 ```
 
-[[tip | Hot tip!]]
-| Notice that we didn't have to add eslint-plugin-react to `plugins`. This is because most ESLint plugins already _include themselves_ as part of the recommended configuration.
+<HotTip>
+
+Notice that we didn't have to add eslint-plugin-react to `plugins`. This is because most ESLint plugins already _include themselves_ as part of the recommended configuration.
+
+</HotTip>
 
 eslint-config-prettier also offers a way to check whether your ESLint configuration has any conflicting rules. This is very useful for ensuring that you didn't accidentally reintroduce a conflicting rule. For example, one of the rules disabled by eslint-config-prettier is `semi`, which we mentioned earlier. Even though we extended the shareable config, this doesn't prevent us from reintroducing conflicting rules:
 

@@ -2,6 +2,7 @@ const gulp = require('gulp')
 const del = require('del')
 const { spawn } = require('child_process')
 const fsx = require('fs-extra')
+const esbuild = require('esbuild')
 
 async function clean() {
   await del('dist')
@@ -32,14 +33,36 @@ async function generatePages() {
   generatePages(template)
 }
 
-function generateFeed() {
+async function generateFeed() {
   const { generateFeed } = require('./dist/server/entry-server.js')
-  return generateFeed()
+  await generateFeed()
 }
 
-function compileVercelConfig() {
+async function compileVercelConfig() {
   const { compileVercelConfig } = require('./dist/server/entry-server.js')
-  return compileVercelConfig()
+  await compileVercelConfig()
+}
+
+const ESM_DEPENDENCIES = ['node_modules/xdm/rollup.js']
+async function compileEsmDependencies() {
+  await Promise.all(
+    ESM_DEPENDENCIES.map(async (file) => {
+      await esbuild.build({
+        entryPoints: [file],
+        outfile: file.replace(/\.js$/, '.cjs'),
+        platform: 'node',
+        format: 'cjs',
+        bundle: true,
+      })
+      const tsDefinition = file.replace(/\.js$/, '.d.ts')
+      if (await fsx.pathExists(tsDefinition)) {
+        await fsx.copyFile(
+          tsDefinition,
+          tsDefinition.replace(/\.d.ts$/, '.cjs.d.ts'),
+        )
+      }
+    }),
+  )
 }
 
 module.exports = {
@@ -49,4 +72,5 @@ module.exports = {
     gulp.parallel(generatePages, generateFeed, compileVercelConfig),
   ),
   compileVercelConfig,
+  compileEsmDependencies,
 }

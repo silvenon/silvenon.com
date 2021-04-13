@@ -2,9 +2,12 @@ import { defineConfig } from 'vite'
 import browserslist from 'browserslist'
 import yaml from './etc/vite-plugin-yaml'
 import reactRefresh from '@vitejs/plugin-react-refresh'
-import mdx from 'vite-plugin-mdx'
-import { mdxOptions } from './etc/mdx'
 import cloudinary from './etc/vite-plugin-cloudinary'
+import xdm from 'xdm/rollup.cjs'
+
+import smartypants from '@silvenon/remark-smartypants'
+import unwrapImages from 'remark-unwrap-images'
+import prism from 'mdx-prism'
 
 // https://esbuild.github.io/api/#target
 const ESBUILD_SUPPORTED_TARGET_NAMES = ['chrome', 'edge', 'firefox', 'safari']
@@ -31,7 +34,11 @@ export default defineConfig({
     // vite-plugin-mdx needs to come before @vitejs/plugin-react-refresh
     // so that MDX files also benefits from HMR
     // @ts-ignore fuck that
-    mdx(mdxOptions),
+    xdm({
+      providerImportSource: '@mdx-js/react',
+      remarkPlugins: [smartypants, unwrapImages],
+      rehypePlugins: [prism],
+    }),
     cloudinary(),
     reactRefresh(),
   ],

@@ -5,6 +5,7 @@ import Layout from './Layout'
 import { MDXProvider } from '@mdx-js/react'
 import Gitgraph from './Gitgraph'
 import ProseImage from './ProseImage'
+import HotTip from './HotTip'
 import PostDate from './PostDate'
 import SeriesParts from './SeriesParts'
 import type { RouteComponentProps } from '@reach/router'
@@ -21,7 +22,11 @@ interface Props extends RouteComponentProps, StandalonePost {
   parts?: SeriesPart[]
 }
 
-export default function StandalonePostLayout({
+interface MDXModule {
+  default?: React.ComponentType
+}
+
+export default function PostLayout({
   uri,
   StaticMDXComponent,
   importPath,
@@ -38,21 +43,18 @@ export default function StandalonePostLayout({
     if (node) unorphan(node)
   }, [])
 
-  const [
-    dynamicMdxContent,
-    setDynamicMdxContent,
-  ] = React.useState<React.ReactNode>(null)
+  const [mdxModule, setMdxModule] = React.useState<MDXModule | void>()
+  const postModulePromise = postModules[importPath]()
   React.useEffect(() => {
-    if (!StaticMDXComponent) {
-      postModules[importPath]().then(({ default: DynamicMDXComponent }) => {
-        setDynamicMdxContent(<DynamicMDXComponent />)
-      })
-    }
+    postModulePromise.then((postModule) => {
+      setMdxModule(postModule)
+    })
   }, [])
+  const DynamicMDXComponent = mdxModule && mdxModule.default
 
   const footerRef = React.useRef<HTMLElement | null>(null)
   React.useLayoutEffect(() => {
-    if (!dynamicMdxContent || !footerRef.current) return
+    if (!DynamicMDXComponent || !footerRef.current) return
     const utterances = document.createElement('script')
     utterances.src = 'https://utteranc.es/client.js'
     utterances.async = true
@@ -64,9 +66,9 @@ export default function StandalonePostLayout({
 
     footerRef.current.innerHTML = ''
     footerRef.current.appendChild(utterances)
-  }, [dynamicMdxContent])
+  }, [DynamicMDXComponent])
 
-  const hasContent = StaticMDXComponent || dynamicMdxContent
+  const hasContent = StaticMDXComponent || DynamicMDXComponent
 
   return (
     <Layout uri={uri} title={title} description={description}>
@@ -113,8 +115,9 @@ export default function StandalonePostLayout({
             <hr />
           </>
         )}
-        <MDXProvider components={{ Gitgraph, ProseImage }}>
-          {StaticMDXComponent ? <StaticMDXComponent /> : dynamicMdxContent}
+        <MDXProvider components={{ Gitgraph, ProseImage, HotTip }}>
+          {StaticMDXComponent && <StaticMDXComponent />}
+          {DynamicMDXComponent && <DynamicMDXComponent />}
         </MDXProvider>
         {hasContent && (
           <>
