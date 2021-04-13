@@ -14,7 +14,6 @@ const ESBUILD_SUPPORTED_TARGET_NAMES = ['chrome', 'edge', 'firefox', 'safari']
 
 const isProd = process.env.NODE_ENV === 'production'
 
-// https://vitejs.dev/config/
 export default defineConfig({
   server: { open: true },
   build: {
