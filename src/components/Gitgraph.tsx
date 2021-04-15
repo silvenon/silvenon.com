@@ -17,6 +17,18 @@ const Gitgraph = ({ children }: Props) => {
     sm: `(min-width: ${screens.sm})`,
     dark: '(prefers-color-scheme: dark)',
   })
+
+  if (import.meta.env.SSR) {
+    return (
+      <div className="flex justify-center">
+        <div className="lds-ripple">
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="flex justify-center overflow-x-auto overflow-scrolling-touch font-mono text-xs sm:text-sm lg:text-base">
       {/* TODO: probably a bug in Gitgraph's TS definition

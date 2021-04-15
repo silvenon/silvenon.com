@@ -4,9 +4,10 @@
 
 @import url('./aspect-ratio.css');
 @import url('./base.css');
-@import url('./hot-tip.css');
 @import url('./gitgraph.css');
 @import url('./github-corner.css');
+@import url('./hot-tip.css');
+@import url('./loader.css');
 @import url('./overflow-scrolling.css');
 @import url('./search.css');
 @import url('./spinner.css');

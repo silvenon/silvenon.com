@@ -1,6 +1,5 @@
 import React from 'react'
 import clsx from 'clsx'
-import { Link } from '@reach/router'
 import { Icon } from '@iconify/react'
 import Layout from '../components/Layout'
 import Search from '../components/Search'
@@ -130,12 +129,12 @@ function StandalonePost({
   return (
     <article>
       <h3>
-        <Link to={pathname}>{title}</Link>
+        <a href={pathname}>{title}</a>
       </h3>
       <PostDate published={published} />
       <p>{description}</p>
       <p>
-        <Link to={pathname}>Read more →</Link>
+        <a href={pathname}>Read more →</a>
       </p>
     </article>
   )
@@ -146,7 +145,7 @@ function Series({ parts, title, published, description }: SeriesProps) {
   return (
     <article>
       <h3>
-        <Link to={pathname}>{title}</Link>
+        <a href={pathname}>{title}</a>
       </h3>
       <PostDate published={published} />
       <p>{description}</p>

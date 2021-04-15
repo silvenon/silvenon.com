@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link } from '@reach/router'
 import { proseClassName } from '../consts'
 import clsx from 'clsx'
 
@@ -13,13 +12,13 @@ export default function Header({ isHome = false }: Props) {
       <div className="flex-1">
         {!isHome && (
           <nav>
-            <Link to="/">← Home</Link>
+            <a href="/">← Home</a>
           </nav>
         )}
       </div>
 
       <div className="py-3">
-        <Link to="/">
+        <a href="/">
           <svg
             className="w-6 h-6 rounded lg:w-10 lg:h-10 lg:rounded-lg"
             role="img"
@@ -60,7 +59,7 @@ export default function Header({ isHome = false }: Props) {
               />
             </g>
           </svg>
-        </Link>
+        </a>
       </div>
 
       <div className="flex-1 flex justify-end">{/* toggle color scheme */}</div>

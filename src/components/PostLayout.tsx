@@ -17,6 +17,7 @@ export const postModules = import.meta.glob('/src/posts/**/post.mdx')
 
 interface Props extends RouteComponentProps, StandalonePost {
   StaticMDXComponent?: React.ComponentType
+  htmlContent?: string
   seriesPart?: number
   seriesTitle?: string
   parts?: SeriesPart[]
@@ -29,6 +30,7 @@ interface MDXModule {
 export default function PostLayout({
   uri,
   StaticMDXComponent,
+  htmlContent,
   importPath,
   seriesPart,
   seriesTitle,
@@ -51,6 +53,19 @@ export default function PostLayout({
     })
   }, [])
   const DynamicMDXComponent = mdxModule && mdxModule.default
+
+  let content: React.ReactNode = null
+  if (StaticMDXComponent) {
+    content = (
+      <div className="post-content">
+        <StaticMDXComponent />
+      </div>
+    )
+  } else if (DynamicMDXComponent) {
+    content = <DynamicMDXComponent />
+  } else if (htmlContent) {
+    content = <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
+  }
 
   const footerRef = React.useRef<HTMLElement | null>(null)
   React.useEffect(() => {
@@ -116,8 +131,7 @@ export default function PostLayout({
           </>
         )}
         <MDXProvider components={{ Gitgraph, ProseImage, HotTip }}>
-          {StaticMDXComponent && <StaticMDXComponent />}
-          {DynamicMDXComponent && <DynamicMDXComponent />}
+          {content}
         </MDXProvider>
         {hasContent && (
           <>

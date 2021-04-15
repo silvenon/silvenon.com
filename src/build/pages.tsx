@@ -12,17 +12,17 @@ import dedent from 'dedent'
 const postModules = import.meta.globEager('/src/posts/**/post.mdx')
 
 function render(url: string) {
-  let BlogPost: React.ComponentType | undefined
+  let PostComponent: React.ComponentType | undefined
   if (url.startsWith('/blog/')) {
     const postModulePath = path.join(
       `${url.replace('/blog/', '/src/posts/')}`,
       'post.mdx',
     )
-    BlogPost = postModules[postModulePath].default
+    PostComponent = postModules[postModulePath].default
   }
   const body = ReactDOMServer.renderToString(
     <ServerLocation url={url}>
-      <App BlogPost={BlogPost} />
+      <App PostComponent={PostComponent} />
     </ServerLocation>,
   )
   return {

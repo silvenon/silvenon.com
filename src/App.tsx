@@ -6,10 +6,11 @@ import PostLayout from './components/PostLayout'
 import { posts } from './posts'
 
 interface Props {
-  BlogPost?: React.ComponentType
+  PostComponent?: React.ComponentType
+  postHtmlContent?: string
 }
 
-export default function App({ BlogPost }: Props) {
+export default function App({ PostComponent, postHtmlContent }: Props) {
   return (
     <Router>
       <NotFound default />
@@ -18,7 +19,8 @@ export default function App({ BlogPost }: Props) {
         <PostLayout
           key={post.pathname}
           path={post.pathname}
-          StaticMDXComponent={BlogPost}
+          StaticMDXComponent={PostComponent}
+          htmlContent={postHtmlContent}
           {...post}
         />
       ))}

@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link } from '@reach/router'
 import type { SeriesPart } from '../posts'
 
 interface Props {
@@ -17,7 +16,7 @@ export default function SeriesParts({ parts, pathname }: Props) {
             {part.pathname === pathname ? (
               part.title
             ) : (
-              <Link to={part.pathname}>{part.title}</Link>
+              <a href={part.pathname}>{part.title}</a>
             )}
           </li>
         ))}
