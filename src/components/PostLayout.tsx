@@ -50,9 +50,8 @@ export default function PostLayout({
   }, [])
 
   const [mdxModule, setMdxModule] = React.useState<MDXModule | void>()
-  const postModulePromise = postModules[importPath]()
   React.useEffect(() => {
-    postModulePromise.then((postModule) => {
+    postModules[importPath]().then((postModule) => {
       setMdxModule(postModule)
     })
   }, [])
