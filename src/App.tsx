@@ -7,10 +7,9 @@ import { posts } from './posts'
 
 interface Props {
   PostComponent?: React.ComponentType
-  postHtmlContent?: string
 }
 
-export default function App({ PostComponent, postHtmlContent }: Props) {
+export default function App({ PostComponent }: Props) {
   return (
     <Router>
       <NotFound default />
@@ -20,7 +19,6 @@ export default function App({ PostComponent, postHtmlContent }: Props) {
           key={post.pathname}
           path={post.pathname}
           StaticMDXComponent={PostComponent}
-          htmlContent={postHtmlContent}
           {...post}
         />
       ))}

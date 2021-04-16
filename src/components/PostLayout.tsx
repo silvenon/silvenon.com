@@ -15,6 +15,11 @@ import { author, proseClassName } from '../consts'
 
 export const postModules = import.meta.glob('/src/posts/**/post.mdx')
 
+const CONTENT_CLASS_NAME = 'post-content'
+const htmlContent = import.meta.env.SSR
+  ? null
+  : document.querySelector(`.${CONTENT_CLASS_NAME}`)?.innerHTML
+
 interface Props extends RouteComponentProps, StandalonePost {
   StaticMDXComponent?: React.ComponentType
   htmlContent?: string
@@ -30,7 +35,6 @@ interface MDXModule {
 export default function PostLayout({
   uri,
   StaticMDXComponent,
-  htmlContent,
   importPath,
   seriesPart,
   seriesTitle,
@@ -57,7 +61,7 @@ export default function PostLayout({
   let content: React.ReactNode = null
   if (StaticMDXComponent) {
     content = (
-      <div className="post-content">
+      <div className={CONTENT_CLASS_NAME}>
         <StaticMDXComponent />
       </div>
     )
