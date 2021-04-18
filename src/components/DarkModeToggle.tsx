@@ -12,6 +12,7 @@ export default function DarkModeToggle() {
 
   React.useEffect(() => {
     setChecked(document.documentElement.classList.contains('dark'))
+    setShowReset('theme' in localStorage)
   }, [])
 
   React.useEffect(() => {
