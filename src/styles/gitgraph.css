@@ -18,9 +18,10 @@
   .gitgraph {
     @apply overflow-x-auto font-mono;
     -webkit-overflow-scrolling: touch;
-    /* values copied from @tailwindcss/typography */
-    font-size: 12px;
-    @screen sm { font-size: 14px; }
-    @screen lg { font-size: 16px; }
   }
+
+  /* values copied from @tailwindcss/typography */
+  .gitgraph { font-size: 12px; }
+  @screen sm { .gitgraph { font-size: 14px; } }
+  @screen lg { .gitgraph { font-size: 16px; } }
 }

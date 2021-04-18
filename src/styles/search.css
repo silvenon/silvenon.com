@@ -1,10 +1,11 @@
 @layer components {
+  .search { --size: theme('spacing.7'); }
+  @screen sm { .search { --size: theme('spacing.8'); } }
+  @screen lg { .search { --size: theme('spacing.10'); } }
+  @screen 2xl { .search { --size: theme('spacing.11'); } }
+
   .search {
     @apply relative z-10;
-    --size: theme('spacing.7');
-    @screen sm { --size: theme('spacing.8'); }
-    @screen lg { --size: theme('spacing.10'); }
-    @screen 2xl { --size: theme('spacing.11'); }
 
     & .search-wrapper {
       @apply absolute top-0 right-0 focus-within:w-full transition-all duration-300 2xl:top-1;
