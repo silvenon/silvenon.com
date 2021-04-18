@@ -30,12 +30,12 @@ export default function Home({ uri }: Props) {
 
   return (
     <Layout uri={uri} title={title} description={description}>
-      <section className="relative overflow-hidden bg-purple-200 dark:bg-desatPurple-900 border-t-2 border-b-2 border-purple-300 dark:border-desatPurple-500 px-4 py-4">
+      <section className="relative mt-4 mb-10 bg-purple-200 dark:bg-desatPurple-900 border-t-2 border-b-2 border-purple-300 dark:border-desatPurple-500 px-4">
         <div
           className="absolute inset-0 dark:opacity-20"
           style={{ backgroundImage: `url(${circuitBoard})` }}
         />
-        <div className="relative max-w-sm mx-auto text-center sm:max-w-xl sm:text-left lg:max-w-3xl xl:max-w-4xl 2xl:max-w-5xl">
+        <div className="relative -my-3.5 max-w-sm mx-auto text-center sm:max-w-xl sm:text-left lg:max-w-3xl xl:max-w-4xl 2xl:max-w-5xl">
           <div className="bg-white dark:bg-gray-800 p-3 ring-2 ring-purple-300 dark:ring-desatPurple-500 rounded-lg sm:flex">
             <div
               className={clsx(

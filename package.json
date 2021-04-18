@@ -31,6 +31,7 @@
     "@babel/plugin-transform-react-jsx": "^7.13.12",
     "@csstools/convert-colors": "^2.0.0",
     "@gitgraph/react": "^1.6.0",
+    "@headlessui/react": "^1.0.0",
     "@iconify-icons/bx": "^1.1.0",
     "@iconify-icons/dashicons": "^1.1.0",
     "@iconify-icons/entypo-social": "^1.1.0",

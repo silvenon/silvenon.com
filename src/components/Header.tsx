@@ -1,4 +1,5 @@
 import React from 'react'
+import DarkModeToggle from './DarkModeToggle'
 import { proseClassName } from '../consts'
 import clsx from 'clsx'
 
@@ -62,7 +63,9 @@ export default function Header({ isHome = false }: Props) {
         </a>
       </div>
 
-      <div className="flex-1 flex justify-end">{/* toggle color scheme */}</div>
+      <div className="flex-1 flex justify-end">
+        <DarkModeToggle />
+      </div>
     </header>
   )
 }

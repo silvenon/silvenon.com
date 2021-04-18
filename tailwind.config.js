@@ -13,7 +13,7 @@ module.exports = {
   mode: 'jit',
   purge: ['src/**/*.{ts,tsx,mdx}', 'safelist.txt'],
   plugins: [typography],
-  darkMode: 'media',
+  darkMode: 'class',
   theme: {
     screens,
     extend: {

@@ -9,6 +9,10 @@
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="alternate" title="Matija's blog" type="application/atom+xml" href="/feeds/atom.xml">
+  <script>
+    const isDarkMode = localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
+    document.documentElement.classList.toggle('dark', isDarkMode)
+  </script>
   <!-- head-content -->
 </head>
 <body>
