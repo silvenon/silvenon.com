@@ -43,7 +43,7 @@ async function compileVercelConfig() {
   await compileVercelConfig()
 }
 
-const ESM_DEPENDENCIES = ['node_modules/xdm/rollup.js']
+const ESM_DEPENDENCIES = [require.resolve('xdm/rollup')]
 async function compileEsmDependencies() {
   await Promise.all(
     ESM_DEPENDENCIES.map(async (file) => {
