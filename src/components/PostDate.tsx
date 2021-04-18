@@ -22,7 +22,7 @@ export default function PostDate({ published }: Props) {
   }
 
   return (
-    <div className="flex items-center space-x-2 text-yellow-600 dark:text-yellow-300">
+    <div className="flex items-center space-x-2 text-amber-600 dark:text-amber-300">
       <Icon icon={penIcon} />
       <span>Draft</span>
     </div>

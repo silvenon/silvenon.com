@@ -18,14 +18,7 @@ module.exports = {
     screens,
     extend: {
       colors: {
-        current: 'currentColor',
-        transparent: 'transparent',
-        white: colors.white,
-        black: colors.black,
-        gray: colors.gray,
-        yellow: colors.amber,
-        purple: colors.purple,
-        twitter: '#1da1f2',
+        ...colors,
         desatPurple, // useful for dark mode
       },
       fill: (theme) => ({
@@ -40,7 +33,7 @@ module.exports = {
             a: {
               color: theme('colors.purple.700'),
               '&:hover': {
-                color: theme('colors.yellow.600'),
+                color: theme('colors.amber.600'),
               },
             },
             'code::before': false,
@@ -85,7 +78,7 @@ module.exports = {
             a: {
               color: theme('colors.purple.300'),
               '&:hover': {
-                color: theme('colors.yellow.400'),
+                color: theme('colors.amber.400'),
               },
             },
             strong: {

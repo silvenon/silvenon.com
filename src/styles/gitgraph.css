@@ -2,14 +2,14 @@
   :root {
     --gitgraph-color-branch-one: theme('colors.gray.500');
     --gitgraph-color-branch-two: theme('colors.purple.700');
-    --gitgraph-color-branch-three: theme('colors.yellow.600');
+    --gitgraph-color-branch-three: theme('colors.amber.600');
   }
 
   @media (prefers-color-scheme: dark) {
     :root {
       --gitgraph-color-branch-one: theme('colors.gray.200');
       --gitgraph-color-branch-two: theme('colors.purple.400');
-      --gitgraph-color-branch-three: theme('colors.yellow.400');
+      --gitgraph-color-branch-three: theme('colors.amber.400');
     }
   }
 }
