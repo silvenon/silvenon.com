@@ -1,9 +1,9 @@
 import React from 'react'
 import { Router } from '@reach/router'
-import Home from './pages'
-import NotFound from './pages/404'
 import PostLayout from './components/PostLayout'
 import { posts } from './posts'
+
+const pages = import.meta.globEager('/src/pages/*')
 
 interface Props {
   PostComponent?: React.ComponentType
@@ -12,8 +12,20 @@ interface Props {
 export default function App({ PostComponent }: Props) {
   return (
     <Router>
-      <NotFound default />
-      <Home path="/" />
+      {Object.entries(pages).map(([importPath, { default: Component }]) =>
+        importPath.includes('404') ? (
+          <Component key={importPath} default />
+        ) : (
+          <Component
+            key={importPath}
+            path={
+              importPath.endsWith('index.tsx')
+                ? '/'
+                : importPath.replace(/src\/pages\/([a-z-]+)\.[a-z]+$/, '$1')
+            }
+          />
+        ),
+      )}
       {posts.map((post) => (
         <PostLayout
           key={post.pathname}
