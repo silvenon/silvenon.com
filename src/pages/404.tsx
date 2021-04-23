@@ -20,7 +20,7 @@ export default function NotFound({ uri }: Props) {
             className="w-14 h-14 fill-current text-amber-600"
             role="presentation"
           >
-            <use href="#exclamation-mark" />
+            <use href="/icons.svg#exclamation-mark" />
           </svg>
         </div>
         <p>
