@@ -21,7 +21,7 @@ export default function Header({ isHome = false }: Props) {
       <div className="py-3">
         <a href="/">
           <svg
-            className="w-6 h-6 rounded lg:w-10 lg:h-10 lg:rounded-lg"
+            className="w-7 h-7 rounded lg:w-10 lg:h-10 lg:rounded-lg"
             role="img"
             aria-labelledby="logo-title"
             viewBox="0 0 64 64"
