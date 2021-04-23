@@ -21,11 +21,6 @@ module.exports = {
         ...colors,
         desatPurple, // useful for dark mode
       },
-      fill: (theme) => ({
-        current: theme('colors.current'),
-        white: theme('colors.white'),
-        light: theme('colors.gray.300'),
-      }),
       typography: (theme) => ({
         DEFAULT: {
           css: {
