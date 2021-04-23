@@ -47,7 +47,7 @@ export default function Home({ uri }: Props) {
               <p>{description}</p>
             </div>
             <div className="sm:order-1 sm:w-40">
-              <div className="relative ar ar-3/2 sm:ar-4/5">
+              <div className="relative ar ar-4/2 sm:ar-4/5">
                 <ProfilePhoto className="ar-media" />
                 <div className="absolute bottom-0 right-0 mr-0.5 flex sm:left-0 sm:justify-center">
                   {socialLinks.map((network) => (

@@ -57,7 +57,7 @@ export default function ProfilePhoto({ className }: Props) {
             version,
             transformations: [
               zoom,
-              { width: 450, aspectRatio: '3:2', crop: 'fill', gravity: 'auto' },
+              { width: 450, aspectRatio: '4:2', crop: 'fill', gravity: 'auto' },
             ],
           })}
           srcSet={`
@@ -65,14 +65,14 @@ export default function ProfilePhoto({ className }: Props) {
             version,
             transformations: [
               zoom,
-              { width: 450, aspectRatio: '3:2', crop: 'fill', gravity: 'face' },
+              { width: 450, aspectRatio: '4:2', crop: 'fill', gravity: 'face' },
             ],
           })} 450w,
           ${cloudinary(id, {
             version,
             transformations: [
               zoom,
-              { width: 900, aspectRatio: '3:2', crop: 'fill', gravity: 'face' },
+              { width: 900, aspectRatio: '4:2', crop: 'fill', gravity: 'face' },
             ],
           })} 900w
         `}
