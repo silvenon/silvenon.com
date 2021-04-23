@@ -54,7 +54,7 @@ export default function PostLayout({
     postModules[importPath]().then((postModule) => {
       setMdxModule(postModule)
     })
-  }, [])
+  }, [importPath])
   const DynamicMDXComponent = mdxModule && mdxModule.default
 
   let content: React.ReactNode = null
@@ -139,6 +139,7 @@ export default function PostLayout({
         {hasContent && (
           <>
             <div className="text-right -mb-7 sm:-mb-8 md:-mb-9 lg:-mb-10 xl:-mb-11 2xl:-mb-12">
+              {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
               <a className="p-2" href="#">
                 Back to top ↑
               </a>

@@ -56,6 +56,7 @@ export default function Search({ onOpen, onClose }: Props) {
   return (
     <div className="search">
       <div className="search-wrapper">
+        {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
         <label {...getLabelProps()}>
           <Icon icon={searchIcon} />
         </label>
@@ -85,9 +86,7 @@ export default function Search({ onOpen, onClose }: Props) {
             />
           ))}
         {isOpen && results.length === 0 && (
-          <li className="text-gray-400" role="option">
-            (No results)
-          </li>
+          <li className="no-results">(No results)</li>
         )}
       </ul>
     </div>

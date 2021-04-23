@@ -56,7 +56,7 @@ export default function Home({ uri }: Props) {
                       title={network.name}
                       href={network.url}
                       target="_blank"
-                      rel="noopener noreferrer"
+                      rel="noreferrer"
                       className={clsx(
                         'block mx-1 p-2 text-black bg-white rounded-t-md bg-opacity-50  hover:bg-opacity-100 hover:bg-white transition-colors duration-200 sm:mx-1.5',
                         'dark:bg-gray-800 dark:bg-opacity-50 dark:text-white dark:hover:bg-gray-800 dark:hover:bg-opacity-100',

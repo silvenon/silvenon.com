@@ -40,6 +40,7 @@ export default function Image({
   const maxWidth = width < largestImageSize ? width / 2 : undefined
   const imgProps = { ...props, className: clsx(props.className, 'rounded-lg') }
 
+  // eslint-disable-next-line jsx-a11y/alt-text
   let el = <img {...imgProps} />
 
   if (typeof cloudinaryId !== 'undefined') {
@@ -53,6 +54,7 @@ export default function Image({
         }}
       >
         <div className="ar-media">
+          {/* eslint-disable-next-line jsx-a11y/alt-text */}
           <img
             {...imgProps}
             loading="lazy"

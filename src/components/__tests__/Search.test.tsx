@@ -28,6 +28,6 @@ describe('Search', () => {
     userEvent.type(searchBox, 'ne')
     expect(screen.getByRole('option')).toHaveTextContent('One')
     userEvent.type(searchBox, 'foo')
-    expect(screen.getByRole('option')).toHaveTextContent('No results')
+    expect(screen.getByRole('listitem')).toHaveTextContent('No results')
   })
 })

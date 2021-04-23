@@ -49,6 +49,10 @@
       @apply p-2 cursor-pointer;
     }
 
+    & .no-results {
+      @apply p-2 text-gray-400;
+    }
+
     & [aria-selected=true] {
       @apply bg-purple-200 dark:bg-desatPurple-900;
     }

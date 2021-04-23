@@ -30,7 +30,7 @@ module.exports = {
       },
     },
     {
-      files: ['*.(j|t)sx'],
+      files: ['*.{jsx,tsx}'],
       extends: [
         'plugin:react/recommended',
         'plugin:react-hooks/recommended',

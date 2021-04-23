@@ -24,10 +24,13 @@ export default function NotFound({ uri }: Props) {
           </svg>
         </div>
         <p>
-          This page no longer exists. It's likely that you got here by following
-          a link to my blog post which no longer has that URL. You should be
-          able to find the content you're looking for elsewhere on this site, or
-          maybe I even deleted that post! 😳
+          This page no longer exists. It&apos;s likely that you got here by
+          following a link to my blog post which no longer has that URL. You
+          should be able to find the content you&apos;re looking for elsewhere
+          on this site, or maybe I even deleted that post!{' '}
+          <span role="img" aria-label="embarrassed">
+            😳
+          </span>
         </p>
       </main>
     </Layout>
