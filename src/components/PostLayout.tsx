@@ -40,6 +40,7 @@ export default function PostLayout({
   seriesTitle,
   parts,
   title,
+  htmlTitle,
   description,
   published,
   lastModified,
@@ -118,12 +119,21 @@ export default function PostLayout({
           <h1 className="text-center space-y-2 lg:space-y-4">
             <div ref={unorphanRef}>{seriesTitle}</div>
             <div className="font-sans font-normal dark:font-light text-[0.8em]">
-              Part {seriesPart + 1}: {title}
+              Part {seriesPart + 1}:{' '}
+              {htmlTitle ? (
+                <span dangerouslySetInnerHTML={{ __html: htmlTitle }} />
+              ) : (
+                title
+              )}
             </div>
           </h1>
         ) : (
           <h1 ref={unorphanRef} className="text-center">
-            {title}
+            {htmlTitle ? (
+              <span dangerouslySetInnerHTML={{ __html: htmlTitle }} />
+            ) : (
+              title
+            )}
           </h1>
         )}
         <PostDate published={published} />

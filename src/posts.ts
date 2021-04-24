@@ -7,6 +7,7 @@ const seriesModules = import.meta.globEager('/src/posts/*/series.yml')
 
 export interface StandalonePostMeta {
   title: string
+  htmlTitle?: string
   description: string
   published?: string
   lastModified?: string

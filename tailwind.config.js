@@ -11,7 +11,7 @@ for (const [shade, hex] of Object.entries(colors.purple)) {
 
 module.exports = {
   mode: 'jit',
-  purge: ['src/**/*.{ts,tsx,mdx}', 'safelist.txt'],
+  purge: ['src/**/*.{ts,tsx,mdx,yml}', 'safelist.txt'],
   plugins: [typography],
   darkMode: 'class',
   theme: {
