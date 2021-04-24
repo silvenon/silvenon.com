@@ -114,7 +114,7 @@ export default function PostLayout({
         )}
       </Helmet>
 
-      <main className={clsx(proseClassName, 'mx-auto px-4')}>
+      <main className={clsx(proseClassName, 'mx-auto px-4 mt-2 lg:mt-4')}>
         {seriesTitle && typeof seriesPart === 'number' ? (
           <h1 className="text-center space-y-2 lg:space-y-4">
             <div ref={unorphanRef}>{seriesTitle}</div>
