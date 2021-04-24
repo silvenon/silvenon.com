@@ -21,9 +21,15 @@ module.exports = {
         ...colors,
         desatPurple, // useful for dark mode
       },
+      fontFamily: {
+        serif: ['Merriweather', 'serif'],
+      },
       typography: (theme) => ({
         DEFAULT: {
           css: {
+            h1: {
+              fontFamily: theme('fontFamily.serif').join(', '),
+            },
             boxSizing: 'content-box',
             a: {
               color: theme('colors.purple.700'),
@@ -87,7 +93,7 @@ module.exports = {
             },
             h1: {
               color: theme('colors.white'),
-              fontWeight: theme('fontWeight.bold'),
+              fontWeight: theme('fontWeight.normal'),
             },
             h2: {
               color: theme('colors.gray.100'),
