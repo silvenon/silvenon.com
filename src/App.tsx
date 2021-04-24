@@ -1,6 +1,6 @@
 import React from 'react'
 import { Router } from '@reach/router'
-import PostLayout from './components/PostLayout'
+import Post from './components/Post'
 import { posts } from './posts'
 
 const pages = import.meta.globEager('/src/pages/*')
@@ -27,7 +27,7 @@ export default function App({ PostComponent }: Props) {
         ),
       )}
       {posts.map((post) => (
-        <PostLayout
+        <Post
           key={post.pathname}
           path={post.pathname}
           StaticMDXComponent={PostComponent}
