@@ -46,6 +46,7 @@ module.exports = {
       },
       rules: {
         'react/no-danger': 'off',
+        'react/jsx-no-target-blank': 'error',
       },
     },
     {
