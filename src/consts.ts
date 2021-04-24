@@ -2,6 +2,8 @@ export const SITE_URL = 'https://silvenon.com'
 
 export const author = {
   name: 'Matija Marohnić',
+  bio:
+    'I love learning about JavaScript tools, exploring static site generation, and creating delightful developer experiences.',
   email: 'matija.marohnic@gmail.com',
   link: 'https://silvenon.com',
 }

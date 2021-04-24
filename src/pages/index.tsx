@@ -24,12 +24,12 @@ interface Props extends RouteComponentProps {}
 export default function Home({ uri }: Props) {
   const [searchOpen, setSearchOpen] = React.useState(false)
 
-  const title = author.name
-  const description =
-    'I love learning about JavaScript tools, exploring static site generation, and creating delightful developer experiences.'
-
   return (
-    <Layout uri={uri} title={title} description={description}>
+    <Layout
+      uri={uri}
+      title={author.name}
+      description="A blog about frontend development and tooling."
+    >
       <section className="relative mt-4 mb-10 bg-purple-200 dark:bg-desatPurple-900 border-t-2 border-b-2 border-purple-300 dark:border-desatPurple-500 px-4">
         <div
           className="absolute inset-0 dark:opacity-20"
@@ -43,8 +43,10 @@ export default function Home({ uri }: Props) {
                 'p-3 pb-4 sm:order-2 sm:flex-1 sm:self-center lg:px-5 lg:py-3',
               )}
             >
-              <h1 className="!mb-0">{title}</h1>
-              <p>{description}</p>
+              <h1 className="!mb-0">{author.name}</h1>
+              <p>
+                {author.bio} <a href="/about/">More about me →</a>
+              </p>
             </div>
             <div className="sm:order-1 sm:w-40">
               <div className="relative ar ar-4/2 sm:ar-4/5">
