@@ -77,7 +77,7 @@ export default function Home({ uri }: Props) {
           </div>
         </div>
       </section>
-      <main className="mt-6 px-4 sm:flex sm:justify-center">
+      <main className="mt-6 px-4 sm:flex sm:justify-center md:pb-4">
         <div>
           <Search
             onOpen={() => setSearchOpen(true)}
