@@ -2,4 +2,8 @@
   body {
     @apply bg-white text-black dark:bg-gray-900 dark:text-white;
   }
+
+  ::selection {
+    @apply text-black bg-amber-300;
+  }
 }
