@@ -118,7 +118,7 @@ export default function PostLayout({
         {seriesTitle && typeof seriesPart === 'number' ? (
           <h1 className="text-center space-y-2 lg:space-y-4">
             <div ref={unorphanRef}>{seriesTitle}</div>
-            <div className="font-sans font-normal dark:font-light text-[0.8em]">
+            <div className="font-normal dark:font-light text-[0.8em]">
               Part {seriesPart + 1}:{' '}
               {htmlTitle ? (
                 <span dangerouslySetInnerHTML={{ __html: htmlTitle }} />
