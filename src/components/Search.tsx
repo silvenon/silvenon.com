@@ -58,6 +58,7 @@ export default function Search({ onOpen, onClose }: Props) {
       <div className="search-wrapper">
         {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
         <label {...getLabelProps()}>
+          <span className="sr-only">Search</span>
           <Icon icon={searchIcon} />
         </label>
         <div {...getComboboxProps()}>
