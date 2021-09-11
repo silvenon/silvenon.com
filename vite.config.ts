@@ -30,7 +30,7 @@ export default defineConfig({
   },
   plugins: [
     yaml(),
-    // vite-plugin-mdx needs to come before @vitejs/plugin-react-refresh
+    // the xdm plugin needs to come before @vitejs/plugin-react-refresh
     // so that MDX files also benefits from HMR
     // @ts-ignore fuck that
     xdm({
