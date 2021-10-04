@@ -10,21 +10,27 @@ for (const [shade, hex] of Object.entries(colors.purple)) {
 }
 
 module.exports = {
-  mode: 'jit',
-  purge: ['src/**/*.{ts,tsx,mdx,yml}', 'safelist.txt'],
+  content: ['src/**/*.{ts,tsx,mdx,yml}'],
+  safelist: ['token'],
   plugins: [typography],
   darkMode: 'class',
   theme: {
     screens,
     extend: {
       colors: {
-        ...colors,
+        gray: colors.zinc,
         desatPurple, // useful for dark mode
       },
       typography: (theme) => ({
         DEFAULT: {
           css: {
             boxSizing: 'content-box',
+            '> :first-child': {
+              marginTop: 0,
+            },
+            '> :last-child': {
+              marginBottom: 0,
+            },
             a: {
               color: theme('colors.purple.700'),
               '&:hover': {
