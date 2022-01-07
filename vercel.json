@@ -1,7 +1,6 @@
 {
   "github": { "silent": true },
-  "build": {},
-  "env": { "ENABLE_FILE_SYSTEM_API": "1" },
+  "build": { "env": { "ENABLE_FILE_SYSTEM_API": "1" } },
   "redirects": [
     {
       "source": "/intro-to-eslint",

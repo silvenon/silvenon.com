@@ -6,7 +6,7 @@
 # needed for Remix
 
 [build]
-  [env]
+  [build.env]
     ENABLE_FILE_SYSTEM_API="1"
 
 # my early blog posts had a different URL structure

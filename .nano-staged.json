@@ -1,4 +1,4 @@
 {
   "*.{js,ts,tsx}": ["eslint --fix", "jest --findRelatedTests"],
-  "vercel.*": ["node scripts/vercel.mjs"]
+  "vercel.*": ["node scripts/vercel.mjs", "git add vercel.json"]
 }
