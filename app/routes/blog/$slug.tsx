@@ -22,7 +22,7 @@ export const loader: LoaderFunction = async ({
 }): Promise<LoaderData> => {
   invariant(params.slug, 'slug is required')
   const { frontmatter, code } = await bundleMDXPost<StandalonePost>(
-    `${__dirname}/../../public/posts/${params.slug}.mdx`,
+    `${__dirname}/../../app/posts/${params.slug}.mdx`,
   )
   if (process.env.NODE_ENV === 'production' && !frontmatter.published) {
     throw new Response('Not Found', { status: 404 })

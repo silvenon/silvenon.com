@@ -17,6 +17,8 @@ node_modules
 .output
 
 public/build
+public/posts
+public/themes
 api/_build
 
 app/tailwind.css
