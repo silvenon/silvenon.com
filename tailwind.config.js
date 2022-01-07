@@ -1,4 +1,5 @@
 const colors = require('tailwindcss/colors')
+const plugin = require('tailwindcss/plugin')
 const typography = require('@tailwindcss/typography')
 const { hex2hsl, hsl2hex } = require('@csstools/convert-colors')
 const screens = require('./screens.json')
@@ -9,13 +10,31 @@ for (const [shade, hex] of Object.entries(colors.purple)) {
   desatPurple[shade] = hsl2hex(hue, saturation * 0.5, lightness)
 }
 
+const light = plugin(({ addVariant }) => {
+  addVariant('light', '&:where(:not(.dark *))')
+})
+const a11y = plugin(({ addVariant }) => {
+  addVariant('a11y-expanded', [
+    '&[aria-expanded="true"]',
+    '[aria-expanded="true"] &',
+  ])
+  addVariant('a11y-selected', [
+    '&[aria-selected="true"]',
+    '[aria-selected="true"] &',
+  ])
+})
+
 module.exports = {
-  content: ['src/**/*.{ts,tsx,mdx,yml}'],
+  content: ['app/**/*.{ts,tsx,mdx,yml}'],
   safelist: ['token'],
-  plugins: [typography],
+  plugins: [typography, light, a11y],
   darkMode: 'class',
   theme: {
     screens,
+    container: (theme) => ({
+      center: true,
+      padding: theme('spacing.4'),
+    }),
     extend: {
       colors: {
         gray: colors.zinc,
@@ -24,7 +43,6 @@ module.exports = {
       typography: (theme) => ({
         DEFAULT: {
           css: {
-            boxSizing: 'content-box',
             '> :first-child': {
               marginTop: 0,
             },
@@ -33,9 +51,9 @@ module.exports = {
             },
             a: {
               color: theme('colors.purple.700'),
-              '&:hover': {
-                color: theme('colors.amber.600'),
-              },
+            },
+            'a:hover': {
+              color: theme('colors.amber.600'),
             },
             'code::before': false,
             'code::after': false,
@@ -46,6 +64,9 @@ module.exports = {
             'a code': {
               color: false,
             },
+            'a:hover code': {
+              color: 'inherit',
+            },
             blockquote: {
               color: theme('colors.desatPurple.600'),
               fontWeight: 'normal',
@@ -54,22 +75,11 @@ module.exports = {
             'blockquote p:first-of-type::before': false,
             'blockquote p:last-of-type::after': false,
             pre: {
-              backgroundColor: false,
-            },
-            'figure img': {
-              marginTop: 0,
-              marginBottom: 0,
+              backgroundColor: theme('colors.slate.100'),
+              color: '#24292eff',
             },
             figure: {
               textAlign: 'center',
-            },
-            '.ar img': {
-              marginTop: 0,
-              marginBottom: 0,
-            },
-            '.twitter-tweet': {
-              marginLeft: 'auto',
-              marginRight: 'auto',
             },
           },
         },
@@ -78,9 +88,9 @@ module.exports = {
             color: theme('colors.gray.300'),
             a: {
               color: theme('colors.purple.300'),
-              '&:hover': {
-                color: theme('colors.amber.400'),
-              },
+            },
+            'a:hover': {
+              color: theme('colors.amber.400'),
             },
             strong: {
               color: theme('colors.gray.100'),
@@ -119,6 +129,13 @@ module.exports = {
             },
             img: {
               filter: 'brightness(.8) contrast(1.2)',
+            },
+            'a:hover code': {
+              color: 'inherit',
+            },
+            pre: {
+              backgroundColor: '#031417',
+              color: '#f1f5f9',
             },
           },
         },

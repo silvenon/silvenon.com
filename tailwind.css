@@ -1,0 +1,113 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+
+  /* ProseImage component */
+
+  :root {
+    --content-padding: theme('spacing.4');
+  }
+
+  /* images */
+
+  figure img {
+    @apply !my-0;
+  }
+
+  /* syntax highlighting */
+
+  [data-theme="light"] {
+    @apply dark:hidden;
+  }
+  [data-theme="dark"] {
+    @apply light:hidden;
+  }
+
+  code:not(pre code) {
+    @apply inline-block bg-gray-100 border border-gray-200 px-2 py-1 rounded-lg text-black dark:bg-[#031417] dark:border-gray-800 dark:text-[#b2cacd] dark:shadow-[inset_0_0_0.5rem_black];
+  }
+  pre {
+    @apply dark:border dark:border-gray-800 dark:shadow-[inset_0_0_1rem_black];
+  }
+
+  /* Gitgraph component */
+
+  :root {
+    --gitgraph-color-branch-one: theme('colors.gray.500');
+    --gitgraph-color-branch-two: theme('colors.purple.700');
+    --gitgraph-color-branch-three: theme('colors.amber.600');
+  }
+  .dark {
+    --gitgraph-color-branch-one: theme('colors.gray.200');
+    --gitgraph-color-branch-two: theme('colors.purple.400');
+    --gitgraph-color-branch-three: theme('colors.amber.400');
+  }
+
+}
+
+@layer components {
+
+  /* https://css-tricks.com/aspect-ratio-boxes/ */
+
+  .aspect-ratio {
+    @apply relative h-0;
+    padding-bottom: calc(var(--height) / var(--width) * 100%);
+  }
+  .aspect-ratio :where(img, iframe) {
+    @apply !my-0 absolute top-0 left-0 w-full h-full;:w
+  }
+
+  /* HotTip component */
+
+  .hot-tip > * {
+    @apply last:mb-0;
+  }
+  .hot-tip :is(code:not(pre code), pre) {
+    @apply light:bg-purple-50 shadow-sm dark:shadow-none;
+  }
+
+  /* Search */
+
+  .search { --size: theme('spacing.7'); }
+  @media screen(sm) { .search { --size: theme('spacing.8'); } }
+  @media screen(lg) { .search { --size: theme('spacing.10'); } }
+  @media screen(2xl) { .search { --size: theme('spacing.11'); } }
+
+  /* hand waving on the About page */
+
+  .animate-hand-wave {
+    animation-name: hand-wave;
+    animation-duration: 2.5s;
+    animation-timing-function: ease;
+    transform-origin: bottom;
+  }
+  @keyframes hand-wave {
+      0% { transform: rotate(0.0deg)  }
+     10% { transform: rotate(14.0deg) } /* The following five values can be played with to make the waving more or less extreme */
+     20% { transform: rotate(-8.0deg) }
+     30% { transform: rotate(14.0deg) }
+     40% { transform: rotate(-4.0deg) }
+     50% { transform: rotate(10.0deg) }
+     60% { transform: rotate(0.0deg)  } /* Reset for the last half to pause */
+    100% { transform: rotate(0.0deg)  }
+  }
+
+}
+
+/* don't purge this rule because tweets are being loaded via a library */
+
+.twitter-tweet {
+  @apply mx-auto;
+}
+
+@layer utilities {
+
+  /* TODO: how does this compare to Tailwind's overscroll-behavior utilities? */
+
+  .overflow-scrolling-touch {
+    -webkit-overflow-scrolling: touch;
+  }
+
+}

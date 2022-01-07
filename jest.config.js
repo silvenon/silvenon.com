@@ -1,5 +1,5 @@
 const jestConfig = require('jest-config')
-const tsJestPreset = require('ts-jest/utils').createJestPreset()
+const tsJestPreset = require('ts-jest').createJestPreset()
 
 // these modules are published as ESM, and need to be transpiled to CJS
 const esModules = ['@gitgraph/js', '@iconify-icons'].join('|')

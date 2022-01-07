@@ -1,0 +1,38 @@
+---
+meta:
+  title: About me
+  description: I love learning about JavaScript tools, exploring static site generation, and creating delightful developer experiences.
+---
+
+import Prose from '~/components/Prose'
+import { getMeta } from '~/utils/seo'
+
+<h1 className="text-center">Hi there!</h1>
+
+<svg className="animate-hand-wave w-10 h-10 mx-auto -mt-4 lg:w-20 lg:h-20 lg:-mt-6">
+  <use href="/icons.svg#hand" />
+</svg>
+
+My name is Matija, I'm a frontend developer from Zagreb, Croatia (Europe 😆 🌍). My current focus is developer experience, I like learning about tools like bundlers, compilers, task managers etc.
+
+## Open source
+
+I used to do a lot of open source, starting with contributing to [Yeoman](https://yeoman.io/) generators, which is how I learned Grunt and gulp. My next big collaboration was [React Transition Group](https://reactcommunity.org/react-transition-group/), which I was using for a long time. Finally, as a frequent contributor to [MDX](https://mdxjs.com/) I was accepted into their core team, where I learned a ton about the [unified](https://unifiedjs.com/) ecosystem, and have been developing personal plugins ever since. If we want to get meta, the text you're reading right now is written in MDX, and this site is available as a [GitHub repo](https://github.com/silvenon/silvenon.com). ✨
+
+Other than learning a lot about development, I gained nice friendships and learned many valuable interpersonal skills trough open source, and I would recommend it to everyone.
+
+## Community
+
+While my main focus these days is frontend tooling, I used to code a lot of CSS. In modern develpment I noticed that CSS development unfortunately often falls by the wayside, so I'm co-organizing an [(S)CSS meetup](https://www.meetup.com/S_CSS_Zagreb/) as a way to teach and keep learning about CSS.
+
+## Getting personal
+
+I really like watching comedy, playing guitar and listening to podcasts. One unconventional thing about me is that I'm polyamorous, but I live in quite a conservative country, so I started organizing a local [poly meeting](https://www.meetup.com/poly-zagreb/), which is a wonderful experience and enabled me to meet many great poly people. 🥰
+
+export default function About({ children }) {
+  return (
+    <Prose className="container pb-10 mt-2 lg:mt-4">
+      {children}
+    </Prose>
+  )
+}

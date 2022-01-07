@@ -1,4 +1,0 @@
-title: dependencies or devDependencies
-description: The question of where to save a dependency is clear when building a library, but in application codebases it's usually just a convention.
-category: DEV
-published: 2017-08-20

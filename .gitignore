@@ -9,7 +9,17 @@ node_modules
 .idea
 
 # secrets
-.env.local
+.env
 
 # build
-dist
+.cache
+.vercel
+.output
+
+public/build
+api/_build
+
+app/tailwind.css
+
+# misc
+TODO.md

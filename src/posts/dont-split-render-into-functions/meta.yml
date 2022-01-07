@@ -1,4 +1,0 @@
-title: Don't Split render() into Functions
-description: Instead of splitting large JSX expressions in React components, learn to embrace them.
-category: DEV
-published: 2017-08-29

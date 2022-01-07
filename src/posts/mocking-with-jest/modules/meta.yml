@@ -1,4 +1,0 @@
-seriesPart: 1
-title: Taking Advantage of the Module System
-description: Using Jest to reimplement certain modules when you don't want their usual behavior during testing.
-category: DEV

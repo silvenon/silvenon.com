@@ -1,23 +1,26 @@
 {
   "compilerOptions": {
     "noEmit": true,
-    "target": "ESNext",
+    "target": "ES2019",
     "module": "ESNext",
     "moduleResolution": "Node",
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "jsx": "react",
-    "types": ["vite/client", "jest"],
+    "lib": ["DOM", "DOM.Iterable", "ES2021"],
+    "jsx": "react-jsx",
+    "types": ["jest"],
     "isolatedModules": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "strict": true,
-    "forceConsistentCasingInFileNames": true
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./app/*"]
+    },
   },
   "include": [
-    "./types",
-    "./src",
-    "./etc",
-    "./test",
-    "./vite.config.ts",
+    "remix.env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
   ]
 }
