@@ -143,7 +143,7 @@ export default function Home() {
 
 export function ErrorBoundary({ error }: { error: Error }) {
   return (
-    <Prose>
+    <Prose as="main" className="container py-4">
       <h1>Error while rendering posts</h1>
       <p>{error.message}</p>
       <pre>

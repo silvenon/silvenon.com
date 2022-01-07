@@ -20,8 +20,10 @@ export interface SeriesPart extends Omit<StandalonePost, 'published'> {
   seriesPart: number
 }
 
+const POSTS_DIR = `${__dirname}/../../public/posts`
+
 export async function getAllPosts(): Promise<Array<StandalonePost | Series>> {
-  const postOrSeriesBasenames = await fs.readdir(`${process.cwd()}/app/posts`, {
+  const postOrSeriesBasenames = await fs.readdir(POSTS_DIR, {
     withFileTypes: true,
   })
 
@@ -45,7 +47,7 @@ export async function getAllPosts(): Promise<Array<StandalonePost | Series>> {
 }
 
 export async function getPost(file: string): Promise<StandalonePost> {
-  const postPath = `${process.cwd()}/app/posts/${file}`
+  const postPath = `${POSTS_DIR}/${file}`
   try {
     await fs.open(postPath, 'r')
   } catch (err) {
@@ -64,7 +66,7 @@ export async function getPost(file: string): Promise<StandalonePost> {
 }
 
 export async function getSeries(dir: string): Promise<Series> {
-  const seriesPath = `${process.cwd()}/app/posts/${dir}`
+  const seriesPath = `${POSTS_DIR}/${dir}`
   try {
     await fs.opendir(seriesPath)
   } catch (err) {

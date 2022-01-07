@@ -28,7 +28,7 @@ export const loader: LoaderFunction = async ({
     throw new Response('Not Found', { status: 404 })
   }
   const { frontmatter, code } = await bundleMDXPost<SeriesPart>(
-    `${process.cwd()}/app/posts/${params.series}/${params.slug}.mdx`,
+    `${__dirname}/../../public/posts/${params.series}/${params.slug}.mdx`,
   )
   return {
     ...frontmatter,

@@ -28,10 +28,7 @@ export async function bundleMDXPost<FrontMatter>(file: string) {
   }
 
   const lightTheme: Theme = JSON.parse(
-    await fs.readFile(
-      `${process.cwd()}/node_modules/shiki/themes/min-light.json`,
-      'utf8',
-    ),
+    await fs.readFile(`${__dirname}/../../themes/min-light.json`, 'utf8'),
   )
   lightTheme.tokenColors.forEach(({ scope }, index) => {
     if (
@@ -44,7 +41,7 @@ export async function bundleMDXPost<FrontMatter>(file: string) {
   })
 
   const darkTheme: Theme = JSON.parse(
-    await fs.readFile(`${process.cwd()}/app/themes/noctis.json`, 'utf8'),
+    await fs.readFile(`${__dirname}/../../themes/noctis.json`, 'utf8'),
   )
 
   const prettyCode = createPrettyCodePlugin({
