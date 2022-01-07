@@ -27,8 +27,7 @@
     "prelint": "eslint-config-prettier src/root.tsx src/__tests__/posts.test.ts",
     "lint": "eslint . --report-unused-disable-directives",
     "test": "jest",
-    "build": "npm-run-all build:css build:vercel build:remix",
-    "build:vercel": "node scripts/vercel.mjs",
+    "build": "npm-run-all build:css build:remix",
     "build:css": "npm run css -- --minify",
     "build:remix": "remix build"
   },
