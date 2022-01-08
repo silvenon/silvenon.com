@@ -12,13 +12,9 @@ node_modules
 .env
 
 # build
-.cache
-.vercel
-.output
-
+/.cache
 /build
 /public/build
-/api/index.js
 /app/tailwind.css
 
 /prisma/dev.db
