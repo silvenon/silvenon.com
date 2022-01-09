@@ -83,7 +83,7 @@
 
 }
 
-/* don't purge this rule because tweets are being loaded via a library */
+/* exclude this rule from purging because tweets are being loaded using a library */
 
 .twitter-tweet {
   @apply mx-auto;
