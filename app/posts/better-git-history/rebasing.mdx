@@ -112,11 +112,11 @@ and start staging and committing changes the way we wanted.
 Sometimes we may realize that the last commit isn't really related to our pull request. We still want to get it merged eventually, but we also don't want to pollute the diff with unrelated changes for the person reviewing the pull request. In that case we can move it to another branch following these steps:
 
   1. copy that commit's SHA-1 to the clipboard
-  2. `git checkout -b <branch> master` to create and switch to a new branch called `<branch>`, diverging from `master`
-  3. `git cherry-pick <commit>` to copy the commit to `<branch>`
+  2. `git checkout -b <branch> master{:shell}` to create and switch to a new branch called `<branch>`, diverging from `master`
+  3. `git cherry-pick <commit>{:shell}` to copy the commit to `<branch>`
      - `<commit>` is the copied SHA-1
-  4. `git checkout -` to return to the previous branch
-  5. `git reset --hard HEAD^` to get rid of the last commit
+  4. `git checkout -{:shell}` to return to the previous branch
+  5. `git reset --hard HEAD^{:shell}` to get rid of the last commit
      - unlike soft reset, this will erase that commit's file changes from this branch, but we already copied them to `<branch>` so that's what we want
 
 ## Any commit
@@ -133,7 +133,7 @@ git log --pretty=oneline --abbrev-commit
 
 We used the more compact format to make it easier to find the commits we're looking for based on their subject:
 
-```
+```text
 5dae451 (HEAD -> master) Link logo to the site root
 d3942e9 Use SVG format for the logo
 e0662b2 Improve a11y of the logo image
@@ -146,7 +146,7 @@ e0662b2 Improve a11y of the logo image
 
 In order to amend a commit with some changes, we should commit those changes first. The subject can be anything because we'll discard it anyway, but let's use a special one:
 
-```
+```text
 fixup! <commit>
 ```
 
@@ -154,7 +154,7 @@ where `<commit>` is the SHA-1 of the commit we want to amend. You'll see what it
 
 For example, let's say that we want to amend commits "Improve a11y of the logo image" and "Use SVG format for the logo". We would commit our changes using their SHA-1 in the subject:
 
-```{
+```text {1,2}
 f5409b6 fixup! d3942e9
 41aac9e fixup! e0662b2
 5dae451 (HEAD -> master) Link logo to the site root
@@ -167,7 +167,7 @@ e0662b2 Improve a11y of the logo image
 
 After committing all the changes, we should copy the SHA-1 of the oldest commit to be amended, which in our case is `e0662b2` because it has been committed before `d3942e9`, and run interactive rebase onto its _parent_:
 
-```bash
+```shell
 git rebase --interactive --autosquash e0662b2^
 ```
 
