@@ -31,7 +31,7 @@ export default function Header() {
             </clipPath>
             <g clipPath="url(#topLeft)">
               <rect
-                className="fill-current text-purple-500 dark:text-desatPurple-600"
+                className="fill-current text-purple-500"
                 x="0.025"
                 y="0.025"
                 width="64"
@@ -44,7 +44,7 @@ export default function Header() {
             </g>
             <g clipPath="url(#bottomRight)">
               <rect
-                className="fill-current text-purple-900 dark:text-desatPurple-900"
+                className="fill-current text-purple-900 dark:text-purple-800"
                 x="0.025"
                 y="0.025"
                 width="64"

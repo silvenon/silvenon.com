@@ -139,7 +139,7 @@ function Search({ posts, onOpen, onClose }: Props) {
           results.map((post, index) => (
             <li
               key={post.pathname}
-              className="p-2 cursor-pointer a11y-selected:bg-purple-200 dark:a11y-selected:bg-desatPurple-900"
+              className="p-2 cursor-pointer a11y-selected:bg-purple-200 dark:a11y-selected:bg-purple-900"
               dangerouslySetInnerHTML={{
                 __html: wrap(post.title, inputValue),
               }}

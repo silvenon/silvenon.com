@@ -1,14 +1,7 @@
 const colors = require('tailwindcss/colors')
 const plugin = require('tailwindcss/plugin')
 const typography = require('@tailwindcss/typography')
-const { hex2hsl, hsl2hex } = require('@csstools/convert-colors')
 const screens = require('./screens.json')
-
-const desatPurple = {}
-for (const [shade, hex] of Object.entries(colors.purple)) {
-  const [hue, saturation, lightness] = hex2hsl(hex)
-  desatPurple[shade] = hsl2hex(hue, saturation * 0.5, lightness)
-}
 
 const light = plugin(({ addVariant }) => {
   addVariant('light', '&:where(:not(.dark *))')
@@ -38,7 +31,6 @@ module.exports = {
     extend: {
       colors: {
         gray: colors.zinc,
-        desatPurple, // useful for dark mode
       },
       typography: (theme) => ({
         DEFAULT: {
@@ -66,11 +58,6 @@ module.exports = {
             },
             'a:hover code': {
               color: 'inherit',
-            },
-            blockquote: {
-              color: theme('colors.desatPurple.600'),
-              fontWeight: 'normal',
-              borderLeftColor: theme('colors.desatPurple.200'),
             },
             'blockquote p:first-of-type::before': false,
             'blockquote p:last-of-type::after': false,

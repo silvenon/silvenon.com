@@ -29,13 +29,13 @@ export default function Home() {
   const [searchOpen, setSearchOpen] = useState(false)
   return (
     <>
-      <section className="relative mt-4 mb-10 bg-purple-200 dark:bg-desatPurple-900 border-t-2 border-b-2 border-purple-300 dark:border-desatPurple-500 px-4">
+      <section className="relative mt-4 mb-10 bg-purple-300 dark:bg-purple-800 border-t-2 border-b-2 border-purple-400 dark:border-purple-400 px-4">
         <div
-          className="absolute inset-0 dark:opacity-20"
+          className="absolute inset-0 opacity-70 dark:opacity-30"
           style={{ backgroundImage: `url(${circuitBoard})` }}
         />
         <div className="relative -my-3.5 max-w-sm mx-auto text-center sm:max-w-xl sm:text-left lg:max-w-3xl xl:max-w-4xl 2xl:max-w-5xl">
-          <div className="bg-white dark:bg-gray-800 p-3 ring-2 ring-purple-300 dark:ring-desatPurple-500 rounded-lg sm:flex">
+          <div className="bg-white dark:bg-gray-800 p-3 ring-2 ring-purple-400 rounded-lg sm:flex">
             <Prose className="p-3 pb-4 sm:order-2 sm:flex-1 sm:self-center lg:px-5 lg:py-3">
               <h1 className="!mb-0">{author.name}</h1>
               <p>
