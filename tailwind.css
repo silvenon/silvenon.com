@@ -10,12 +10,6 @@
     --content-padding: theme('spacing.4');
   }
 
-  /* images */
-
-  figure img {
-    @apply !my-0;
-  }
-
   /* in case JavaScript is disabled hide themes via CSS */
 
   [data-theme="light"] {
@@ -23,13 +17,6 @@
   }
   [data-theme="dark"] {
     @apply no-js:light:hidden;
-  }
-
-  code:not(pre code) {
-    @apply inline-block bg-gray-100 border border-gray-200 px-2 py-1 rounded-lg text-black dark:bg-[#031417] dark:border-gray-800 dark:text-[#b2cacd] dark:shadow-[inset_0_0_0.5rem_black];
-  }
-  pre {
-    @apply dark:border dark:border-gray-800 dark:shadow-[inset_0_0_1rem_black];
   }
 
   /* Gitgraph component */
@@ -65,7 +52,7 @@
     @apply last:mb-0;
   }
   .hot-tip :is(code:not(pre code), pre) {
-    @apply light:bg-purple-50 shadow-sm dark:shadow-none;
+    @apply light:bg-purple-50 shadow-sm dark:border-0 dark:shadow-none;
   }
 
   /* Search */

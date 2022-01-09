@@ -1,6 +1,7 @@
 const colors = require('tailwindcss/colors')
 const plugin = require('tailwindcss/plugin')
 const typography = require('@tailwindcss/typography')
+const typographyStyles = require('@tailwindcss/typography/src/styles')
 const screens = require('./screens.json')
 
 const js = plugin(({ addVariant }) => {
@@ -39,94 +40,137 @@ module.exports = {
       typography: (theme) => ({
         DEFAULT: {
           css: {
-            '> :first-child': {
-              marginTop: 0,
-            },
-            '> :last-child': {
-              marginBottom: 0,
-            },
-            a: {
-              color: theme('colors.purple.700'),
-            },
+            ...typographyStyles.zinc.css,
+            '--tw-prose-links': theme('colors.purple.700'),
+            '--tw-prose-links-hover': theme('colors.amber.600'),
+            '--tw-prose-inline-code-bg': theme('colors.zinc.100'),
+            '--tw-prose-inline-code-border': `1px solid ${theme(
+              'colors.zinc.200',
+            )}`,
+            '--tw-prose-inline-code-shadow': 'none',
+            '--tw-prose-pre-bg': theme('colors.zinc.100'),
+            '--tw-prose-pre-border': 0,
+            '--tw-prose-pre-code': '#24292eff',
+            '--tw-prose-pre-shadow': 'none',
+
             'a:hover': {
-              color: theme('colors.amber.600'),
+              color: 'var(--tw-prose-links-hover)',
             },
-            'code::before': false,
-            'code::after': false,
             code: {
               fontWeight: false,
               color: false,
             },
-            'a code': {
-              color: false,
+            'code::before': false,
+            'code::after': false,
+            'code:not(pre code)': {
+              display: 'inline-block',
+              padding: `${theme('padding.1')} ${theme('padding.2')}`,
+              backgroundColor: 'var(--tw-prose-inline-code-bg)',
+              color: 'var(--tw-prose-body)',
+              borderRadius: theme('borderRadius.lg'),
+              border: 'var(--tw-prose-inline-code-border)',
+              boxShadow: 'var(--tw-prose-inline-code-shadow)',
             },
-            'a:hover code': {
+            'a code': {
               color: 'inherit',
+            },
+            pre: {
+              border: 'var(--tw-prose-pre-border)',
+              boxShadow: 'var(--tw-prose-pre-shadow)',
+              paddingLeft: false,
+              paddingRight: false,
+              lineHeight: 2,
+            },
+            'pre code': {
+              // needed to prevent highlighted lines from being cut off when scrolling horizontally
+              display: 'grid',
+            },
+            'pre code .line': {
+              paddingLeft: typographyStyles.base.css[0].pre.paddingLeft,
+              paddingRight: typographyStyles.base.css[0].pre.paddingRight,
             },
             'blockquote p:first-of-type::before': false,
             'blockquote p:last-of-type::after': false,
-            pre: {
-              backgroundColor: theme('colors.slate.100'),
-              color: '#24292eff',
-            },
             figure: {
               textAlign: 'center',
             },
           },
         },
+        sm: {
+          css: {
+            pre: {
+              paddingLeft: false,
+              paddingRight: false,
+            },
+            'pre code .line': {
+              paddingLeft: typographyStyles.sm.css[0].pre.paddingLeft,
+              paddingRight: typographyStyles.sm.css[0].pre.paddingRight,
+            },
+          },
+        },
+        base: {
+          css: {
+            pre: {
+              paddingLeft: false,
+              paddingRight: false,
+            },
+            'pre code .line': {
+              paddingLeft: typographyStyles.base.css[0].pre.paddingLeft,
+              paddingRight: typographyStyles.base.css[0].pre.paddingRight,
+            },
+          },
+        },
+        lg: {
+          css: {
+            pre: {
+              paddingLeft: false,
+              paddingRight: false,
+            },
+            'pre code .line': {
+              paddingLeft: typographyStyles.lg.css[0].pre.paddingLeft,
+              paddingRight: typographyStyles.lg.css[0].pre.paddingRight,
+            },
+          },
+        },
+        xl: {
+          css: {
+            pre: {
+              paddingLeft: false,
+              paddingRight: false,
+            },
+            'pre code .line': {
+              paddingLeft: typographyStyles.xl.css[0].pre.paddingLeft,
+              paddingRight: typographyStyles.xl.css[0].pre.paddingRight,
+            },
+          },
+        },
+        '2xl': {
+          css: {
+            pre: {
+              paddingLeft: false,
+              paddingRight: false,
+            },
+            'pre code .line': {
+              paddingLeft: typographyStyles['2xl'].css[0].pre.paddingLeft,
+              paddingRight: typographyStyles['2xl'].css[0].pre.paddingRight,
+            },
+          },
+        },
         invert: {
           css: {
-            a: {
-              color: theme('colors.purple.300'),
-            },
-            'a:hover': {
-              color: theme('colors.amber.400'),
-            },
-            strong: {
-              color: theme('colors.gray.100'),
-            },
-            'ol > li::before': {
-              color: theme('colors.gray.400'),
-            },
-            hr: {
-              borderColor: theme('colors.gray.500'),
-            },
-            h1: {
-              color: theme('colors.white'),
-              fontWeight: theme('fontWeight.bold'),
-            },
-            h2: {
-              color: theme('colors.gray.100'),
-              fontWeight: theme('fontWeight.semibold'),
-            },
-            h3: {
-              color: theme('colors.gray.200'),
-              fontWeight: theme('fontWeight.medium'),
-            },
-            h4: {
-              color: theme('colors.gray.300'),
-              fontWeight: theme('fontWeight.normal'),
-            },
-            h5: {
-              color: theme('colors.gray.300'),
-            },
-            h6: {
-              color: theme('colors.gray.300'),
-            },
-            blockquote: {
-              color: theme('colors.gray.400'),
-              borderLeftColor: theme('colors.gray.600'),
-            },
-            img: {
-              filter: 'brightness(.8) contrast(1.2)',
-            },
-            'a:hover code': {
-              color: 'inherit',
-            },
-            pre: {
-              backgroundColor: '#031417',
-              color: '#f1f5f9',
-            },
+            '--tw-prose-links': theme('colors.purple.300'),
+            '--tw-prose-links-hover': theme('colors.amber.400'),
+            '--tw-prose-inline-code-bg': '#031417',
+            '--tw-prose-inline-code-border': `1px solid ${theme(
+              'colors.zinc.800',
+            )}`,
+            '--tw-prose-inline-code-shadow': `inset 0 0 0.5rem ${theme(
+              'colors.black',
+            )}`,
+            '--tw-prose-pre-bg': '#031417',
+            '--tw-prose-pre-border': `1px solid ${theme('colors.zinc.800')}`,
+            '--tw-prose-pre-code': '#f1f5f9',
+            '--tw-prose-pre-shadow': `inset 0 0 1rem ${theme('colors.black')}`,
           },
         },
       }),

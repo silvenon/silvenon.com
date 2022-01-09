@@ -43,7 +43,7 @@ export default function ProseImage({
 
   if (typeof cloudinaryId !== 'undefined') {
     el = (
-      <div className="mx-auto" style={{ maxWidth }}>
+      <div className="not-prose mx-auto" style={{ maxWidth }}>
         <div
           className="aspect-ratio"
           style={{

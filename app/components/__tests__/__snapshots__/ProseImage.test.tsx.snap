@@ -3,7 +3,7 @@
 exports[`ProseImage Cloudinary + Unsplash 1`] = `
 <figure>
   <div
-    class="mx-auto"
+    class="not-prose mx-auto"
     style="max-width: 400px;"
   >
     <div
@@ -42,7 +42,7 @@ exports[`ProseImage Cloudinary + Unsplash 1`] = `
 
 exports[`ProseImage Cloudinary 1`] = `
 <div
-  class="mx-auto"
+  class="not-prose mx-auto"
   style="max-width: 400px;"
 >
   <div
