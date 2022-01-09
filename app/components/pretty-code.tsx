@@ -1,34 +1,31 @@
 import { isValidElement } from 'react'
 import { useDarkMode } from '~/services/dark-mode'
 
-// https://github.com/atomiks/mdx-pretty-code#inline-highlighting
-export function MDXSpan(props: {
-  'data-mdx-pretty-code-fragment'?: string
-  'data-mdx-pretty-code'?: boolean
+// manages the HTML created by rehype-pretty-code because it light and dark theme
+// https://rehype-pretty-code.netlify.app/
+
+interface SpanProps extends React.ComponentProps<'span'> {
+  'data-rehype-pretty-code-fragment'?: string
+  'data-rehype-pretty-code'?: boolean
   ['data-theme']?: 'light' | 'dark'
   ['data-color']?: string
-  children?: React.ReactNode
-}) {
+}
+
+export function Span(props: SpanProps) {
   const darkMode = useDarkMode()
 
-  if (typeof props['data-mdx-pretty-code-fragment'] !== 'undefined') {
+  // converts the necessary "fragment" <span> into an actual fragment
+  if (typeof props['data-rehype-pretty-code-fragment'] !== 'undefined') {
     return <>{props.children}</>
   }
 
-  if (props['data-mdx-pretty-code'] != null) {
+  if (typeof props['data-rehype-pretty-code'] !== 'undefined') {
     const children = isValidElement(props.children)
       ? props.children.props.children
       : props.children
 
     if (darkMode === null) {
-      return (
-        <code
-          data-theme={props['data-theme']}
-          style={{ color: props['data-color'] }}
-        >
-          {children}
-        </code>
-      )
+      return <code {...props} style={{ color: props['data-color'] }} />
     }
 
     if (
@@ -44,7 +41,34 @@ export function MDXSpan(props: {
   return <span {...props} />
 }
 
-export function MDXPre(props: { children?: React.ReactNode }) {
+interface CodeProps extends React.ComponentProps<'code'> {
+  'data-theme'?: 'light' | 'dark'
+}
+
+export function Code(props: CodeProps) {
+  const darkMode = useDarkMode()
+
+  if (typeof props['data-theme'] !== 'undefined') {
+    if (darkMode === null) {
+      return <code {...props} />
+    }
+
+    if (
+      (darkMode && props['data-theme'] === 'dark') ||
+      (!darkMode && props['data-theme'] === 'light')
+    ) {
+      return <code {...props} />
+    }
+
+    return null
+  }
+
+  return <code {...props} />
+}
+
+interface PreProps extends React.ComponentProps<'pre'> {}
+
+export function Pre(props: PreProps) {
   const darkMode = useDarkMode()
 
   if (isValidElement(props.children) && props.children.props['data-theme']) {

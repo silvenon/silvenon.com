@@ -3,6 +3,10 @@ const plugin = require('tailwindcss/plugin')
 const typography = require('@tailwindcss/typography')
 const screens = require('./screens.json')
 
+const js = plugin(({ addVariant }) => {
+  addVariant('no-js', '.no-js &')
+  addVariant('js', '.js &')
+})
 const light = plugin(({ addVariant }) => {
   addVariant('light', '&:where(:not(.dark *))')
 })
@@ -20,7 +24,7 @@ const a11y = plugin(({ addVariant }) => {
 module.exports = {
   content: ['app/**/*.{ts,tsx,mdx,yml}'],
   safelist: ['token'],
-  plugins: [typography, light, a11y],
+  plugins: [typography, js, light, a11y],
   darkMode: 'class',
   theme: {
     screens,

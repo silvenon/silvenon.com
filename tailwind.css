@@ -16,13 +16,13 @@
     @apply !my-0;
   }
 
-  /* syntax highlighting */
+  /* in case JavaScript is disabled hide themes via CSS */
 
   [data-theme="light"] {
-    @apply dark:hidden;
+    @apply no-js:dark:hidden;
   }
   [data-theme="dark"] {
-    @apply light:hidden;
+    @apply no-js:light:hidden;
   }
 
   code:not(pre code) {

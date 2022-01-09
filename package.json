@@ -33,7 +33,6 @@
     "build:remix": "remix build"
   },
   "dependencies": {
-    "@atomiks/mdx-pretty-code": "^0.1.0",
     "@gitgraph/react": "^1.6.0",
     "@headlessui/react": "^1.4.2",
     "@iconify/icons-bx": "^1.1.4",
@@ -58,7 +57,7 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-twitter-widgets": "^1.10.0",
-    "rehype-raw": "^6.1.1",
+    "rehype-pretty-code": "^0.0.6",
     "remark-smartypants": "^2.0.0",
     "remark-unwrap-images": "^3.0.1",
     "remix": "^1.1.1",
@@ -76,6 +75,7 @@
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
     "@types/fuzzaldrin-plus": "^0.6.2",
+    "@types/hast": "^2.3.4",
     "@types/jest": "^27.0.3",
     "@types/react": "^17.0.24",
     "@types/react-dom": "^17.0.9",

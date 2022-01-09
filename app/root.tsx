@@ -65,8 +65,11 @@ function Document({
   children: React.ReactNode
 }) {
   // avoid mismatch between client and server side rendering on hydration
-  // because the dark class is being set in a separate script, outside of React,
+  // because the dark and js classes are being set in outside of React,
   // not sure if this is the right way to solve this problem, but it works
+  const hasJs =
+    typeof document !== 'undefined' &&
+    document.documentElement.classList.contains('js')
   const darkMode =
     typeof document !== 'undefined' &&
     document.documentElement.classList.contains('dark')
@@ -74,7 +77,11 @@ function Document({
   return (
     <html
       lang="en"
-      className={clsx('h-full scroll-smooth', darkMode && 'dark')}
+      className={clsx(
+        'h-full scroll-smooth',
+        hasJs ? 'js' : 'no-js',
+        darkMode && 'dark',
+      )}
     >
       <head>
         <meta charSet="utf-8" />
@@ -84,6 +91,13 @@ function Document({
         <link rel="manifest" href="/manifest.webmanifest" />
         <Meta />
         <Links />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              document.documentElement.classList.replace('no-js', 'js')
+            `,
+          }}
+        />
         {/* https://tailwindcss.com/docs/dark-mode#toggling-dark-mode-manually */}
         <script
           dangerouslySetInnerHTML={{
@@ -95,9 +109,10 @@ function Document({
         />
       </head>
       <body
-        className={`h-full bg-white text-black selection:bg-amber-300 selection:text-black dark:bg-gray-900 dark:text-white ${
-          className ?? ''
-        }`}
+        className={clsx(
+          'h-full bg-white text-black selection:bg-amber-300 dark:bg-gray-900 dark:text-white selection:text-black',
+          className,
+        )}
       >
         <DarkModeProvider>
           <Header />

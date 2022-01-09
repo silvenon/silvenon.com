@@ -4,7 +4,7 @@ import Gitgraph from '../components/Gitgraph'
 import ProseImage from '../components/ProseImage'
 import HotTip from '../components/HotTip'
 import { Tweet } from 'react-twitter-widgets'
-import { MDXSpan, MDXPre } from '../components/pretty-code'
+import { Span, Code, Pre } from '../components/pretty-code'
 import { useDarkMode } from '~/services/dark-mode'
 
 export function useMDXPost(code: string) {
@@ -25,9 +25,11 @@ export function useMDXPost(code: string) {
           )
         },
         // @ts-expect-error
-        span: MDXSpan,
+        span: Span,
         // @ts-expect-error
-        pre: MDXPre,
+        code: Code,
+        // @ts-expect-error
+        pre: Pre,
       }}
     />
   )
