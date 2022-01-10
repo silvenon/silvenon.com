@@ -50,7 +50,7 @@ export default function Post({
 
   return (
     <>
-      <Prose as="main" className="container py-4 lg:mt-4">
+      <Prose as="main" className="py-4 lg:mt-4">
         {isSeries ? (
           <h1 className="text-center space-y-2 lg:space-y-4">
             <div ref={unorphanRef}>{seriesTitle}</div>

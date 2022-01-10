@@ -12,7 +12,7 @@ export default function PostList() {
   const posts = useLoaderData<LoaderData>()
   const location = useLocation()
   return (
-    <Prose as="main" className="container py-4">
+    <Prose as="main" className="py-4">
       <h1>Posts</h1>
       {posts.map((post, index) => {
         if ('parts' in post) {

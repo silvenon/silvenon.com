@@ -7,7 +7,7 @@ interface Props {
 
 export default function NotFound({ title, children }: Props) {
   return (
-    <Prose as="main" className="container py-4 text-center">
+    <Prose as="main" className="py-4 text-center">
       <h1 className="mb-0">{title}</h1>
       <div className="my-6 flex justify-center sm:my-7 lg:my-8 xl:my-9 2xl:my-10">
         <svg

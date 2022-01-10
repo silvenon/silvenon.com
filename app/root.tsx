@@ -139,7 +139,7 @@ export function CatchBoundary() {
   const caught = useCatch()
   return (
     <Document>
-      <Prose as="main" className="container py-4">
+      <Prose as="main" className="py-4">
         {caught.status === 404 ? (
           <NotFound title="Page Not Found">Nothing found at this URL.</NotFound>
         ) : (
@@ -156,7 +156,7 @@ export function CatchBoundary() {
 export function ErrorBoundary({ error }: { error: Error }) {
   return (
     <Document>
-      <Prose as="main" className="container py-4">
+      <Prose as="main" className="py-4">
         <h1>Oh no!</h1>
         {!error.stack?.includes(error.message) ? (
           <p className="break-words">{error.message}</p>
