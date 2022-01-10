@@ -97,20 +97,19 @@ export default function Post(props: Props) {
           </a>
         </div>
       </main>
+
       {process.env.NODE_ENV === 'production' ? (
         <footer className="px-2.5">
-          <>
-            <hr />
-            <script
-              src="https://utteranc.es/client.js"
-              // @ts-expect-error these are custom attributes for utterances
-              repo="silvenon/silvenon.com"
-              issue-term="title"
-              theme={commentsTheme}
-              crossOrigin="anonymous"
-              async
-            />
-          </>
+          <hr />
+          <script
+            src="https://utteranc.es/client.js"
+            // @ts-expect-error these are custom attributes for utterances
+            repo="silvenon/silvenon.com"
+            issue-term="title"
+            theme={commentsTheme}
+            crossOrigin="anonymous"
+            async
+          />
         </footer>
       ) : null}
     </Prose>
