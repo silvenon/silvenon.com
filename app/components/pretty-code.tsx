@@ -4,6 +4,8 @@ import { useDarkMode } from '~/services/dark-mode'
 // manages the HTML created by rehype-pretty-code because it light and dark theme
 // https://rehype-pretty-code.netlify.app/
 
+export { Span as span, Code as code, Pre as pre }
+
 interface SpanProps extends React.ComponentProps<'span'> {
   'data-rehype-pretty-code-fragment'?: string
   'data-rehype-pretty-code'?: boolean
@@ -11,7 +13,7 @@ interface SpanProps extends React.ComponentProps<'span'> {
   ['data-color']?: string
 }
 
-export function Span(props: SpanProps) {
+function Span(props: SpanProps) {
   const darkMode = useDarkMode()
 
   // converts the necessary "fragment" <span> into an actual fragment
@@ -35,7 +37,7 @@ export function Span(props: SpanProps) {
       return <code style={{ color: props['data-color'] }}>{children}</code>
     }
 
-    return null
+    return <></>
   }
 
   return <span {...props} />
@@ -45,7 +47,7 @@ interface CodeProps extends React.ComponentProps<'code'> {
   'data-theme'?: 'light' | 'dark'
 }
 
-export function Code(props: CodeProps) {
+function Code(props: CodeProps) {
   const darkMode = useDarkMode()
 
   if (typeof props['data-theme'] !== 'undefined') {
@@ -60,7 +62,7 @@ export function Code(props: CodeProps) {
       return <code {...props} />
     }
 
-    return null
+    return <></>
   }
 
   return <code {...props} />
@@ -68,7 +70,7 @@ export function Code(props: CodeProps) {
 
 interface PreProps extends React.ComponentProps<'pre'> {}
 
-export function Pre(props: PreProps) {
+function Pre(props: PreProps) {
   const darkMode = useDarkMode()
 
   if (isValidElement(props.children) && props.children.props['data-theme']) {
@@ -79,7 +81,7 @@ export function Pre(props: PreProps) {
       return <pre {...props} data-theme={props.children.props['data-theme']} />
     }
 
-    return null
+    return <></>
   }
 
   return <pre {...props} />

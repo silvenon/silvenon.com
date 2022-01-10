@@ -1,12 +1,11 @@
 import { useLoaderData } from 'remix'
 import type { LoaderFunction, MetaFunction } from 'remix'
 import invariant from 'tiny-invariant'
-import Post from '~/components/Post'
 import type { StandalonePost } from '~/utils/posts.server'
 import { bundleMDXPost } from '~/utils/mdx.server'
-import { useMDXPost } from '~/utils/mdx'
 import { getMeta } from '~/utils/seo'
 import { author } from '~/consts'
+import Post from '~/components/Post'
 
 export interface LoaderData {
   htmlTitle?: string
@@ -44,7 +43,6 @@ export const meta: MetaFunction = ({ data }: { data?: LoaderData }) => {
 }
 
 export default function StandalonePost() {
-  const { code, ...meta } = useLoaderData<LoaderData>()
-  const post = useMDXPost(code)
-  return <Post {...meta}>{post}</Post>
+  const data = useLoaderData<LoaderData>()
+  return <Post {...data} />
 }

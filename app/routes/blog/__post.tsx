@@ -2,14 +2,18 @@ import { Outlet, useCatch } from 'remix'
 import Prose from '~/components/Prose'
 import NotFound from '~/components/NotFound'
 
-export default function Blog() {
-  return <Outlet />
+export default function PostLayout() {
+  return (
+    <div className="py-4">
+      <Outlet />
+    </div>
+  )
 }
 
 export function CatchBoundary() {
   const caught = useCatch()
   return (
-    <Prose as="main" className="container py-4 text-center">
+    <Prose as="main" className="py-4 text-center">
       {caught.status === 404 ? (
         <NotFound title="Post Not Found">
           <p>

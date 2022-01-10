@@ -1,38 +1,31 @@
-import { useLocation, Link } from 'remix'
-import { useCallback } from 'react'
+import { Link, useLocation } from 'remix'
+import { useMemo, useCallback } from 'react'
+import { getMDXComponent } from 'mdx-bundler/client'
 import unorphan from 'unorphan'
-import Prose from './Prose'
-import Icon from './Icon'
-import { formatDate } from '../utils/date'
-import { useDarkMode } from '../services/dark-mode'
-import calendarIcon from '@iconify/icons-bx/bx-calendar'
-import penIcon from '@iconify/icons-mdi/pen'
+import Prose from '~/components/Prose'
+import PostDate from '~/components/PostDate'
+import Gitgraph from '~/components/Gitgraph'
+import Tweet from '~/components/Tweet'
+import ProseImage from '~/components/ProseImage'
+import HotTip from '~/components/HotTip'
+import * as prettyCodeComponents from '~/components/pretty-code'
+import { useDarkMode } from '~/services/dark-mode'
+import type { LoaderData as StandalonePostLoaderData } from '~/routes/blog/__post/$slug'
+import type { LoaderData as SeriesPartLoaderData } from '~/routes/blog/__post/$series.$slug'
 
-interface Props {
-  seriesTitle?: string
-  seriesPart?: number
-  htmlTitle?: string
-  title: string
-  published?: string
-  parts?: Array<{
-    pathname: string
-    title: string
-  }>
-  children: React.ReactNode
-}
+type Props = StandalonePostLoaderData | SeriesPartLoaderData
 
-export default function Post({
-  seriesTitle,
-  seriesPart,
-  htmlTitle,
-  title,
-  published,
-  parts,
-  children,
-}: Props) {
+export default function Post(props: Props) {
+  const PostContent = useMemo(() => getMDXComponent(props.code), [props.code])
   const location = useLocation()
   const darkMode = useDarkMode()
-  const isSeries = seriesTitle && typeof seriesPart === 'number'
+
+  let commentsTheme = darkMode ? 'github-dark' : 'github-light'
+  if (darkMode === null) {
+    commentsTheme = 'preferred-color-scheme'
+  }
+
+  const isSeries = 'seriesTitle' in props
 
   const unorphanRef = useCallback(
     (node) => {
@@ -40,46 +33,41 @@ export default function Post({
     },
     // unorphan needs to be computed when these change
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [isSeries, darkMode],
+    [isSeries],
   )
 
-  let commentsTheme = darkMode ? 'github-dark' : 'github-light'
-  if (darkMode === null) {
-    commentsTheme = 'preferred-color-scheme'
-  }
-
   return (
-    <>
-      <Prose as="main" className="py-4 lg:mt-4">
+    <Prose className="space-y-4">
+      <main>
         {isSeries ? (
           <h1 className="text-center space-y-2 lg:space-y-4">
-            <div ref={unorphanRef}>{seriesTitle}</div>
+            <div ref={unorphanRef}>{props.seriesTitle}</div>
             <div className="font-normal dark:font-light text-[0.8em]">
-              Part {seriesPart + 1}:{' '}
-              {htmlTitle ? (
-                <span dangerouslySetInnerHTML={{ __html: htmlTitle }} />
+              Part {props.seriesPart + 1}:{' '}
+              {props.htmlTitle ? (
+                <span dangerouslySetInnerHTML={{ __html: props.htmlTitle }} />
               ) : (
-                title
+                props.title
               )}
             </div>
           </h1>
         ) : (
           <h1 ref={unorphanRef} className="text-center">
-            {htmlTitle ? (
-              <span dangerouslySetInnerHTML={{ __html: htmlTitle }} />
+            {props.htmlTitle ? (
+              <span dangerouslySetInnerHTML={{ __html: props.htmlTitle }} />
             ) : (
-              title
+              props.title
             )}
           </h1>
         )}
 
-        <PostDate published={published} />
+        <PostDate published={props.published} />
 
-        {parts ? (
+        {'parts' in props ? (
           <>
             <p>Parts of this series:</p>
             <ol>
-              {parts.map((part) => (
+              {props.parts.map((part) => (
                 <li key={part.pathname}>
                   {part.pathname === location.pathname ? (
                     part.title
@@ -93,21 +81,26 @@ export default function Post({
           </>
         ) : null}
 
-        {children}
+        <PostContent
+          components={{
+            Gitgraph,
+            ProseImage,
+            HotTip,
+            Tweet,
+            ...prettyCodeComponents,
+          }}
+        />
 
-        {children ? (
-          <div className="text-right">
-            <a className="p-2" href="#top">
-              Back to top ↑
-            </a>
-          </div>
-        ) : null}
-      </Prose>
-
+        <div className="text-right">
+          <a className="p-2" href="#top">
+            Back to top ↑
+          </a>
+        </div>
+      </main>
       {process.env.NODE_ENV === 'production' ? (
         <footer className="px-2.5">
           <>
-            {children ? <hr /> : null}
+            <hr />
             <script
               src="https://utteranc.es/client.js"
               // @ts-expect-error these are custom attributes for utterances
@@ -120,27 +113,6 @@ export default function Post({
           </>
         </footer>
       ) : null}
-    </>
-  )
-}
-
-export function PostDate({ published }: Pick<Props, 'published'>) {
-  if (published) {
-    return (
-      <time
-        className="flex items-center space-x-2 text-gray-500 dark:text-gray-400"
-        dateTime={published}
-      >
-        <Icon icon={calendarIcon} />
-        <span>{formatDate(published)}</span>
-      </time>
-    )
-  }
-
-  return (
-    <div className="flex items-center space-x-2 text-amber-600 dark:text-amber-300">
-      <Icon icon={penIcon} />
-      <span>Draft</span>
-    </div>
+    </Prose>
   )
 }

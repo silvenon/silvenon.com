@@ -1,15 +1,14 @@
 import { useLoaderData } from 'remix'
 import type { LoaderFunction, MetaFunction } from 'remix'
-import Post from '~/components/Post'
 import { bundleMDXPost } from '~/utils/mdx.server'
-import { useMDXPost } from '~/utils/mdx'
 import { getSeries, SeriesPart } from '~/utils/posts.server'
 import invariant from 'tiny-invariant'
 import type { LoaderData as StandaloneLoaderData } from './$slug'
 import { getMeta } from '~/utils/seo'
 import { author } from '~/consts'
+import Post from '~/components/Post'
 
-interface LoaderData extends StandaloneLoaderData {
+export interface LoaderData extends StandaloneLoaderData {
   seriesTitle: string
   seriesPart: number
   parts: Array<{
@@ -54,7 +53,6 @@ export const meta: MetaFunction = ({ data }: { data?: LoaderData }) => {
 }
 
 export default function SeriesPart() {
-  const { code, ...meta } = useLoaderData<LoaderData>()
-  const post = useMDXPost(code)
-  return <Post {...meta}>{post}</Post>
+  const data = useLoaderData<LoaderData>()
+  return <Post {...data} />
 }

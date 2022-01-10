@@ -1,7 +1,7 @@
 import { LoaderFunction, useLoaderData, useLocation, Link } from 'remix'
 import { Fragment } from 'react'
 import Prose from '~/components/Prose'
-import { PostDate } from '~/components/Post'
+import PostDate from '~/components/PostDate'
 import { getAllPosts, StandalonePost, Series } from '~/utils/posts.server'
 
 type LoaderData = Array<StandalonePost | Series>
