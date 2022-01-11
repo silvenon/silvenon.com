@@ -29,7 +29,7 @@
     "test": "jest",
     "build": "npm-run-all build:css build:copy build:remix",
     "build:css": "npm run css -- --minify",
-    "build:copy": "cp -r ./app/posts ./public/posts && cp -r ./app/theme ./public/theme",
+    "build:copy": "cp -r ./app/posts ./public/posts && cp -r ./app/themes ./public/themes",
     "build:remix": "remix build"
   },
   "dependencies": {
