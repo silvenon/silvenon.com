@@ -57,11 +57,11 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-twitter-widgets": "^1.10.0",
-    "rehype-pretty-code": "^0.0.6",
+    "rehype-pretty-code": "^0.1.0",
     "remark-smartypants": "^2.0.0",
     "remark-unwrap-images": "^3.0.1",
     "remix": "^1.1.1",
-    "shiki": "^0.9.15",
+    "shiki": "^0.10.0",
     "tiny-invariant": "^1.2.0",
     "unorphan": "^1.2.1"
   },
