@@ -31,7 +31,7 @@ export async function getAllPosts(): Promise<Array<StandalonePost | Series>> {
       .filter((dirent) => dirent.name !== '__tests__')
       .map(async (dirent) => {
         return dirent.isFile()
-          ? await getPost(dirent.name)
+          ? await getPost(path.basename(dirent.name, '.mdx'))
           : await getSeries(dirent.name)
       }),
   )
@@ -45,13 +45,8 @@ export async function getAllPosts(): Promise<Array<StandalonePost | Series>> {
   return posts
 }
 
-export async function getPost(file: string): Promise<StandalonePost> {
-  const postPath = `${__dirname}/../../app/posts/${file}`
-  try {
-    await fs.open(postPath, 'r')
-  } catch (err) {
-    throw new Response('Not Found', { status: 404 })
-  }
+export async function getPost(slug: string): Promise<StandalonePost> {
+  const postPath = `${__dirname}/../../app/posts/${slug}.mdx`
   const postContent = await fs.readFile(postPath, 'utf8')
   const post = matter(postContent).data as Omit<
     StandalonePost,
@@ -59,19 +54,14 @@ export async function getPost(file: string): Promise<StandalonePost> {
   > & { published: Date }
   return {
     ...post,
-    pathname: `/blog/${path.basename(file, '.mdx')}`,
+    pathname: `/blog/${slug}`,
     published: post.published ? formatDateISO(post.published) : undefined,
   }
 }
 
-export async function getSeries(dir: string): Promise<Series> {
-  const seriesPath = `${__dirname}/../../app/posts/${dir}`
-  try {
-    await fs.opendir(seriesPath)
-  } catch (err) {
-    throw new Response('Not Found', { status: 404 })
-  }
-  const seriesPathname = `/blog/${dir}`
+export async function getSeries(slug: string): Promise<Series> {
+  const seriesPath = `${__dirname}/../../app/posts/${slug}`
+  const seriesPathname = `/blog/${slug}`
   const series = JSON.parse(
     await fs.readFile(`${seriesPath}/series.json`, 'utf8'),
   ) as Omit<Series, 'pathname' | 'parts'>

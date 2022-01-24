@@ -6,6 +6,7 @@ import { bundleMDXPost } from '~/utils/mdx.server'
 import { getMeta } from '~/utils/seo'
 import { author } from '~/consts'
 import Post from '~/components/Post'
+import { instanceOfNodeError } from '~/utils/file.server'
 
 export interface LoaderData {
   htmlTitle?: string
@@ -20,13 +21,20 @@ export const loader: LoaderFunction = async ({
   params,
 }): Promise<LoaderData> => {
   invariant(params.slug, 'slug is required')
-  const { frontmatter, code } = await bundleMDXPost<StandalonePost>(
-    `${__dirname}/../../app/posts/${params.slug}.mdx`,
-  )
-  if (process.env.NODE_ENV === 'production' && !frontmatter.published) {
-    throw new Response('Not Found', { status: 404 })
+  try {
+    const { frontmatter, code } = await bundleMDXPost<StandalonePost>(
+      params.slug,
+    )
+    if (process.env.NODE_ENV === 'production' && !frontmatter.published) {
+      throw new Response('Not Found', { status: 404 })
+    }
+    return { ...frontmatter, code }
+  } catch (err) {
+    if (instanceOfNodeError(err, Error) && err.code === 'ENOENT') {
+      throw new Response('Not Found', { status: 404 })
+    }
+    throw new Response('Failed to compile blog post', { status: 500 })
   }
-  return { ...frontmatter, code }
 }
 
 export const meta: MetaFunction = ({ data }: { data?: LoaderData }) => {

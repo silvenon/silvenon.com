@@ -1,4 +1,3 @@
-import fs from 'fs/promises'
 import path from 'path'
 import { bundleMDX } from 'mdx-bundler'
 import { configureRehypePrettyCode } from './rehype-pretty-code'
@@ -6,15 +5,11 @@ import { esbuildPluginBrowserslist } from 'esbuild-plugin-browserslist'
 import browserslist from 'browserslist'
 import esbuildPluginCloudinary from './esbuild-plugin-cloudinary.server'
 
-export async function bundleMDXPost<FrontMatter>(file: string) {
+export async function bundleMDXPost<FrontMatter>(post: string) {
   const { default: remarkSmartypants } = await import('remark-smartypants')
   const { default: remarkUnwrapImages } = await import('remark-unwrap-images')
 
-  try {
-    await fs.open(file, 'r')
-  } catch {
-    throw new Response('Not Found', { status: 404 })
-  }
+  const file = `${__dirname}/../../app/posts/${post}.mdx`
 
   const configuredRehypePrettyCode = await configureRehypePrettyCode()
 
@@ -44,12 +39,7 @@ export async function bundleMDXPost<FrontMatter>(file: string) {
   })
 
   if (errors.length) {
-    throw new Response(
-      process.env.NODE_ENV === 'development'
-        ? errors.join('\n')
-        : 'Internal Server Error',
-      { status: 500 },
-    )
+    throw new Error(errors.join('\n'))
   }
 
   return { frontmatter, code }

@@ -7,6 +7,7 @@ import type { LoaderData as StandaloneLoaderData } from './$slug'
 import { getMeta } from '~/utils/seo'
 import { author } from '~/consts'
 import Post from '~/components/Post'
+import { instanceOfNodeError } from '~/utils/file.server'
 
 export interface LoaderData extends StandaloneLoaderData {
   seriesTitle: string
@@ -22,19 +23,26 @@ export const loader: LoaderFunction = async ({
 }): Promise<LoaderData> => {
   invariant(params.series, 'series parameter is required')
   invariant(params.slug, 'slug parameter is required')
-  const series = await getSeries(params.series)
-  if (process.env.NODE_ENV === 'production' && !series.published) {
-    throw new Response('Not Found', { status: 404 })
-  }
-  const { frontmatter, code } = await bundleMDXPost<SeriesPart>(
-    `${__dirname}/../../app/posts/${params.series}/${params.slug}.mdx`,
-  )
-  return {
-    ...frontmatter,
-    seriesTitle: series.title,
-    parts: series.parts,
-    published: series.published,
-    code,
+  try {
+    const series = await getSeries(params.series)
+    if (process.env.NODE_ENV === 'production' && !series.published) {
+      throw new Response('Not Found', { status: 404 })
+    }
+    const { frontmatter, code } = await bundleMDXPost<SeriesPart>(
+      `${params.series}/${params.slug}`,
+    )
+    return {
+      ...frontmatter,
+      seriesTitle: series.title,
+      parts: series.parts,
+      published: series.published,
+      code,
+    }
+  } catch (err) {
+    if (instanceOfNodeError(err, Error) && err.code === 'ENOENT') {
+      throw new Response('Not Found', { status: 404 })
+    }
+    throw new Response('Failed to compile blog post', { status: 500 })
   }
 }
 
