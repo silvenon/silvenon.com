@@ -52,7 +52,7 @@ export default function ProfilePhoto({ className }: Props) {
         />
         <img
           alt=""
-          className="block absolute w-full h-full object-cover rounded"
+          className="absolute block h-full w-full rounded object-cover"
           src={cloudinary(ID, {
             version: VERSION,
             transformations: [

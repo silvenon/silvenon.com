@@ -22,14 +22,14 @@ const Gitgraph = ({ children }: Props) => {
 
   if (!hasJs) {
     return (
-      <div className="py-4 border-y-2 border-y-slate-200 text-slate-400 text-lg text-center font-light tracking-wide md:text-xl dark:border-y-gray-600 dark:text-gray-500">
+      <div className="border-y-2 border-y-slate-200 py-4 text-center text-lg font-light tracking-wide text-slate-400 dark:border-y-gray-600 dark:text-gray-500 md:text-xl">
         JavaScript needs to be enabled for this Git illustration.
       </div>
     )
   }
 
   return (
-    <div className="flex justify-center overflow-x-auto overflow-scrolling-touch font-mono text-xs sm:text-sm lg:text-base">
+    <div className="overflow-scrolling-touch flex justify-center overflow-x-auto font-mono text-xs sm:text-sm lg:text-base">
       {/* TODO: probably a bug in Gitgraph's TS definition
       // @ts-ignore */}
       <OriginalGitgraph

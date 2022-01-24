@@ -94,22 +94,22 @@ function Search({ posts, onOpen, onClose }: Props) {
 
   return (
     <div className="search relative z-10">
-      <div className="absolute top-0 right-0 h-[var(--size)] w-[calc(var(--size)+2.75rem)] focus-within:w-full transition-all duration-300 2xl:top-1">
+      <div className="absolute top-0 right-0 h-[var(--size)] w-[calc(var(--size)+2.75rem)] transition-all duration-300 focus-within:w-full 2xl:top-1">
         {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
         <label
-          className="relative z-20 h-[var(--size)] aspect-square flex items-center justify-center cursor-pointer"
+          className="relative z-20 flex aspect-square h-[var(--size)] cursor-pointer items-center justify-center"
           {...getLabelProps()}
         >
           <span className="sr-only">Search</span>
-          <Icon icon={searchIcon} className="w-5 h-5 lg:w-7 lg:h-7" />
+          <Icon icon={searchIcon} className="h-5 w-5 lg:h-7 lg:w-7" />
         </label>
         <div
-          className="absolute z-10 top-0 right-0 w-full h-full"
+          className="absolute top-0 right-0 z-10 h-full w-full"
           {...getComboboxProps()}
         >
           <input
             type="search"
-            className="peer block w-full h-full pl-[var(--size)] bg-gray-200 dark:bg-gray-700 rounded-[calc(var(--size)/2)] outline-none focus:pr-2 a11y-expanded:!bg-transparent lg:text-lg xl:text-xl 2xl:text-2xl"
+            className="peer block h-full w-full rounded-[calc(var(--size)/2)] bg-gray-200 pl-[var(--size)] outline-none focus:pr-2 a11y-expanded:!bg-transparent dark:bg-gray-700 lg:text-lg xl:text-xl 2xl:text-2xl"
             {...getInputProps({
               ref: inputRef,
               onFocus: () => {
@@ -120,8 +120,8 @@ function Search({ posts, onOpen, onClose }: Props) {
               },
             })}
           />
-          <div className="absolute inset-y-0 right-0 flex py-[4px] pr-1.5 md:py-[6px] pointer-events-none peer-focus:hidden">
-            <kbd className="inline-flex items-center border border-gray-400 rounded-[calc(var(--size)/2)] px-2 text-xs sm:text-sm font-sans font-medium text-gray-500">
+          <div className="pointer-events-none absolute inset-y-0 right-0 flex py-[4px] pr-1.5 peer-focus:hidden md:py-[6px]">
+            <kbd className="inline-flex items-center rounded-[calc(var(--size)/2)] border border-gray-400 px-2 font-sans text-xs font-medium text-gray-500 sm:text-sm">
               ⌘K
             </kbd>
           </div>
@@ -129,9 +129,9 @@ function Search({ posts, onOpen, onClose }: Props) {
       </div>
       <ul
         className={clsx(
-          'absolute top-0 inset-x-0 lg:text-lg xl:text-xl 2xl:text-2xl',
+          'absolute inset-x-0 top-0 lg:text-lg xl:text-xl 2xl:text-2xl',
           isOpen &&
-            'pt-[var(--size)] bg-gray-100 dark:bg-gray-800 shadow-md rounded-lg overflow-hidden',
+            'overflow-hidden rounded-lg bg-gray-100 pt-[var(--size)] shadow-md dark:bg-gray-800',
         )}
         {...getMenuProps()}
       >
@@ -139,7 +139,7 @@ function Search({ posts, onOpen, onClose }: Props) {
           results.map((post, index) => (
             <li
               key={post.pathname}
-              className="p-2 cursor-pointer a11y-selected:bg-purple-200 dark:a11y-selected:bg-purple-900"
+              className="cursor-pointer p-2 a11y-selected:bg-purple-200 dark:a11y-selected:bg-purple-900"
               dangerouslySetInnerHTML={{
                 __html: wrap(post.title, inputValue),
               }}

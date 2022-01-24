@@ -17,7 +17,7 @@ export default function Header() {
       <div className="py-3">
         <Link to="/">
           <svg
-            className="w-7 h-7 rounded lg:w-10 lg:h-10 lg:rounded-lg"
+            className="h-7 w-7 rounded lg:h-10 lg:w-10 lg:rounded-lg"
             role="img"
             aria-labelledby="logo-title"
             viewBox="0 0 64 64"
@@ -59,7 +59,7 @@ export default function Header() {
         </Link>
       </div>
 
-      <div className="flex-1 flex justify-end">
+      <div className="flex flex-1 justify-end">
         <DarkModeToggle />
       </div>
     </Prose>

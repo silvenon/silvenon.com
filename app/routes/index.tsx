@@ -29,13 +29,13 @@ export default function Home() {
   const [searchOpen, setSearchOpen] = useState(false)
   return (
     <>
-      <section className="relative mt-4 mb-10 bg-purple-300 dark:bg-purple-800 border-t-2 border-b-2 border-purple-400 dark:border-purple-400 px-4">
+      <section className="relative mt-4 mb-10 border-t-2 border-b-2 border-purple-400 bg-purple-300 px-4 dark:border-purple-400 dark:bg-purple-800">
         <div
           className="absolute inset-0 opacity-70 dark:opacity-30"
           style={{ backgroundImage: `url(${circuitBoard})` }}
         />
-        <div className="relative -my-3.5 max-w-sm mx-auto text-center sm:max-w-xl sm:text-left lg:max-w-3xl xl:max-w-4xl 2xl:max-w-5xl">
-          <div className="bg-white dark:bg-gray-800 p-3 ring-2 ring-purple-400 rounded-lg sm:flex">
+        <div className="relative -my-3.5 mx-auto max-w-sm text-center sm:max-w-xl sm:text-left lg:max-w-3xl xl:max-w-4xl 2xl:max-w-5xl">
+          <div className="rounded-lg bg-white p-3 ring-2 ring-purple-400 dark:bg-gray-800 sm:flex">
             <Prose className="p-3 pb-4 sm:order-2 sm:flex-1 sm:self-center lg:px-5 lg:py-3">
               <h1 className="!mb-0">{author.name}</h1>
               <p>
@@ -54,14 +54,14 @@ export default function Home() {
                       target="_blank"
                       rel="noreferrer"
                       className={clsx(
-                        'block mx-1 p-2 text-black bg-white rounded-t-md bg-opacity-50  hover:bg-opacity-100 hover:bg-white transition-colors duration-200 sm:mx-1.5',
+                        'mx-1 block rounded-t-md bg-white bg-opacity-50 p-2 text-black  transition-colors duration-200 hover:bg-white hover:bg-opacity-100 sm:mx-1.5',
                         'dark:bg-gray-800 dark:bg-opacity-50 dark:text-white dark:hover:bg-gray-800 dark:hover:bg-opacity-100',
                       )}
                     >
                       <span className="sr-only">{network.name}</span>
                       <Icon
                         icon={network.icon}
-                        className="w-5 h-5 fill-current"
+                        className="h-5 w-5 fill-current"
                       />
                     </a>
                   ))}

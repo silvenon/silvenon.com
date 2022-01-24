@@ -40,9 +40,9 @@ export default function Post(props: Props) {
     <Prose className="space-y-4">
       <main>
         {isSeries ? (
-          <h1 className="text-center space-y-2 lg:space-y-4">
+          <h1 className="space-y-2 text-center lg:space-y-4">
             <div ref={unorphanRef}>{props.seriesTitle}</div>
-            <div className="font-normal dark:font-light text-[0.8em]">
+            <div className="text-[0.8em] font-normal dark:font-light">
               Part {props.seriesPart + 1}:{' '}
               {props.htmlTitle ? (
                 <span dangerouslySetInnerHTML={{ __html: props.htmlTitle }} />

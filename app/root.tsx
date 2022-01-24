@@ -110,7 +110,7 @@ function Document({
       </head>
       <body
         className={clsx(
-          'h-full bg-white text-black selection:bg-amber-300 dark:bg-gray-900 dark:text-white selection:text-black',
+          'h-full bg-white text-black selection:bg-amber-300 selection:text-black dark:bg-gray-900 dark:text-white',
           className,
         )}
       >

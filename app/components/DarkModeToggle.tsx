@@ -21,7 +21,7 @@ export default function DarkModeToggle() {
       {showReset && (
         <button
           type="button"
-          className="inline-flex items-center px-2.5 py-[3px] border border-transparent text-xs font-medium rounded-full text-lightBlue-700 bg-lightBlue-100 hover:bg-lightBlue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lightBlue-500 dark:focus:ring-offset-gray-900 dark:focus:ring-lightBlue-100"
+          className="text-lightBlue-700 bg-lightBlue-100 hover:bg-lightBlue-200 focus:ring-lightBlue-500 dark:focus:ring-lightBlue-100 inline-flex items-center rounded-full border border-transparent px-2.5 py-[3px] text-xs font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
           onClick={() => {
             setShowReset(false)
             localStorage.removeItem('theme')
@@ -42,23 +42,23 @@ export default function DarkModeToggle() {
             localStorage.theme = 'light'
           }
         }}
-        className="bg-gray-200 relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 dark:bg-purple-400 dark:focus:ring-offset-gray-900 dark:focus:ring-purple-400"
+        className="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-gray-200 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 dark:bg-purple-400 dark:focus:ring-purple-400 dark:focus:ring-offset-gray-900"
       >
         <span className="sr-only">Use setting</span>
-        <span className="pointer-events-none relative inline-block h-5 w-5 rounded-full bg-white shadow translate-x-0 ring-0 transition ease-in-out duration-200 dark:translate-x-5">
+        <span className="pointer-events-none relative inline-block h-5 w-5 translate-x-0 rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out dark:translate-x-5">
           <span
-            className="absolute inset-0 h-full w-full flex items-center justify-center transition-opacity ease-out duration-200 dark:opacity-0 dark:ease-out dark:duration-100"
+            className="absolute inset-0 flex h-full w-full items-center justify-center transition-opacity duration-200 ease-out dark:opacity-0 dark:duration-100 dark:ease-out"
             aria-hidden="true"
           >
-            <svg className="bg-white w-3 h-3 text-gray-400">
+            <svg className="h-3 w-3 bg-white text-gray-400">
               <use href="/icons.svg#sun" />
             </svg>
           </span>
           <span
-            className="absolute inset-0 h-full w-full flex items-center justify-center opacity-0 transition-opacity ease-out duration-100 dark:opacity-100 dark:ease-in dark:duration-200"
+            className="absolute inset-0 flex h-full w-full items-center justify-center opacity-0 transition-opacity duration-100 ease-out dark:opacity-100 dark:duration-200 dark:ease-in"
             aria-hidden="true"
           >
-            <svg className="bg-white w-3 h-3 text-purple-500">
+            <svg className="h-3 w-3 bg-white text-purple-500">
               <use href="/icons.svg#moon" />
             </svg>
           </span>

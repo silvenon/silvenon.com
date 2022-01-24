@@ -18,7 +18,7 @@ export default function Prose({
       id={id}
       className={clsx(
         className,
-        'prose mx-auto prose-sm sm:prose-base lg:prose-lg xl:prose-xl 2xl:prose-2xl dark:prose-invert',
+        'prose prose-sm mx-auto dark:prose-invert sm:prose-base lg:prose-lg xl:prose-xl 2xl:prose-2xl',
       )}
     >
       {children}
