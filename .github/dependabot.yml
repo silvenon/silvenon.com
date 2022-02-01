@@ -6,9 +6,3 @@ updates:
     schedule:
       interval: monthly
       day: saturday
-
-  - package-ecosystem: npm
-    directory: "/"
-    schedule:
-      interval: monthly
-      day: saturday
