@@ -48,7 +48,7 @@
     "date-fns": "^2.27.0",
     "downshift": "^6.1.7",
     "esbuild": "^0.14.10",
-    "esbuild-plugin-browserslist": "^0.4.0",
+    "esbuild-plugin-browserslist": "^0.4.3",
     "feed": "^4.2.2",
     "fuzzaldrin-plus": "^0.6.0",
     "gray-matter": "^4.0.3",
