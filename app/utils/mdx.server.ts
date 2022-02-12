@@ -4,12 +4,13 @@ import { configureRehypePrettyCode } from './rehype-pretty-code'
 import { esbuildPluginBrowserslist } from 'esbuild-plugin-browserslist'
 import browserslist from 'browserslist'
 import esbuildPluginCloudinary from './esbuild-plugin-cloudinary.server'
+import { ROOT_DIR } from '~/consts.server'
 
 export async function bundleMDXPost<FrontMatter>(post: string) {
   const { default: remarkSmartypants } = await import('remark-smartypants')
   const { default: remarkUnwrapImages } = await import('remark-unwrap-images')
 
-  const file = `${__dirname}/../../app/posts/${post}.mdx`
+  const file = `${ROOT_DIR}/app/posts/${post}.mdx`
 
   const configuredRehypePrettyCode = await configureRehypePrettyCode()
 

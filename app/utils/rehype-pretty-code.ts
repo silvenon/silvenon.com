@@ -1,6 +1,7 @@
 import rehypePrettyCode, { Options } from 'rehype-pretty-code'
 import fs from 'fs/promises'
 import type { Element } from 'hast'
+import { ROOT_DIR } from '~/consts.server'
 
 interface Theme extends JSON {
   tokenColors: Array<{
@@ -16,7 +17,7 @@ export async function configureRehypePrettyCode(): Promise<
 > {
   const lightTheme: Theme = JSON.parse(
     await fs.readFile(
-      `${__dirname}/../../node_modules/shiki/themes/min-light.json`,
+      `${ROOT_DIR}/node_modules/shiki/themes/min-light.json`,
       'utf8',
     ),
   )
@@ -31,7 +32,7 @@ export async function configureRehypePrettyCode(): Promise<
   })
 
   const darkTheme: Theme = JSON.parse(
-    await fs.readFile(`${__dirname}/../../app/themes/noctis.json`, 'utf8'),
+    await fs.readFile(`${ROOT_DIR}/app/themes/noctis.json`, 'utf8'),
   )
 
   return [

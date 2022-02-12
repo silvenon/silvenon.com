@@ -3,6 +3,7 @@ import path from 'path'
 import matter from 'gray-matter'
 import { parseISO, compareDesc } from 'date-fns'
 import { formatDateISO } from './date'
+import { ROOT_DIR } from '~/consts.server'
 
 export interface StandalonePost {
   title: string
@@ -21,10 +22,9 @@ export interface SeriesPart extends Omit<StandalonePost, 'published'> {
 }
 
 export async function getAllPosts(): Promise<Array<StandalonePost | Series>> {
-  const postOrSeriesBasenames = await fs.readdir(
-    `${__dirname}/../../app/posts`,
-    { withFileTypes: true },
-  )
+  const postOrSeriesBasenames = await fs.readdir(`${ROOT_DIR}/app/posts`, {
+    withFileTypes: true,
+  })
 
   const posts = await Promise.all(
     postOrSeriesBasenames
@@ -46,7 +46,7 @@ export async function getAllPosts(): Promise<Array<StandalonePost | Series>> {
 }
 
 export async function getPost(slug: string): Promise<StandalonePost> {
-  const postPath = `${__dirname}/../../app/posts/${slug}.mdx`
+  const postPath = `${ROOT_DIR}/app/posts/${slug}.mdx`
   const postContent = await fs.readFile(postPath, 'utf8')
   const post = matter(postContent).data as Omit<
     StandalonePost,
@@ -60,7 +60,7 @@ export async function getPost(slug: string): Promise<StandalonePost> {
 }
 
 export async function getSeries(slug: string): Promise<Series> {
-  const seriesPath = `${__dirname}/../../app/posts/${slug}`
+  const seriesPath = `${ROOT_DIR}/app/posts/${slug}`
   const seriesPathname = `/blog/${slug}`
   const series = JSON.parse(
     await fs.readFile(`${seriesPath}/series.json`, 'utf8'),
