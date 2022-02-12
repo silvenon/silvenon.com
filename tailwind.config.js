@@ -63,7 +63,7 @@ module.exports = {
             'code::before': false,
             'code::after': false,
             'code:not(pre code)': {
-              display: 'inline-block',
+              display: 'inline',
               padding: `${theme('padding.1')} ${theme('padding.2')}`,
               backgroundColor: 'var(--tw-prose-inline-code-bg)',
               color: 'var(--tw-prose-body)',
