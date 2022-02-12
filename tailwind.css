@@ -48,7 +48,7 @@
 
   /* HotTip component */
 
-  .hot-tip > * {
+  .hot-tip * {
     @apply last:mb-0;
   }
   .hot-tip :is(code:not(pre code), pre) {
