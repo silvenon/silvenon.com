@@ -35,13 +35,6 @@
     "defaults",
     "not IE 11"
   ],
-  "postcss": {
-    "plugins": {
-      "postcss-import": {},
-      "tailwindcss": {},
-      "autoprefixer": {}
-    }
-  },
   "prettier": {
     "semi": false,
     "singleQuote": true,
