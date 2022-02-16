@@ -1,7 +1,0 @@
-[development]
-last 1 chrome version
-
-[production]
-defaults
-not IE 11
-not IE_Mob 11

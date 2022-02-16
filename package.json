@@ -31,6 +31,36 @@
     "build:css": "npm run css -- --minify",
     "build:remix": "remix build"
   },
+  "browserslist": [
+    "defaults",
+    "not IE 11"
+  ],
+  "postcss": {
+    "plugins": {
+      "postcss-import": {},
+      "tailwindcss": {},
+      "autoprefixer": {}
+    }
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "all"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "npx nano-staged",
+    "pre-push": "npx tsc"
+  },
+  "nano-staged": {
+    "*.{js,ts,tsx}": [
+      "eslint --fix",
+      "jest --findRelatedTests"
+    ],
+    "vercel.*": [
+      "node scripts/vercel.mjs",
+      "git add vercel.json"
+    ]
+  },
   "dependencies": {
     "@gitgraph/react": "^1.6.0",
     "@headlessui/react": "^1.4.2",
