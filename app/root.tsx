@@ -120,7 +120,7 @@ function Document({
           <ScrollRestoration />
         </DarkModeProvider>
         <Scripts />
-        {process.env.NODE_ENV === 'development' && <LiveReload />}
+        <LiveReload />
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

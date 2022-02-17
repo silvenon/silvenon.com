@@ -10,7 +10,7 @@
   "private": true,
   "sideEffects": false,
   "engines": {
-    "node": "14.x"
+    "node": ">=14"
   },
   "repository": {
     "type": "git",
@@ -23,13 +23,13 @@
     "css": "tailwindcss --input ./tailwind.css --output ./app/tailwind.css",
     "dev": "npm-run-all build:css --parallel dev:*",
     "dev:css": "npm run css -- --watch",
-    "dev:remix": "node -r dotenv-safe/config node_modules/.bin/remix dev",
+    "dev:remix": "cross-env NODE_ENV=development node -r dotenv-safe/config node_modules/.bin/remix dev",
     "prelint": "eslint-config-prettier src/root.tsx src/__tests__/posts.test.ts",
     "lint": "eslint . --report-unused-disable-directives",
     "test": "jest",
     "build": "npm-run-all build:css build:remix",
     "build:css": "npm run css -- --minify",
-    "build:remix": "remix build"
+    "build:remix": "cross-env NODE_ENV=production remix build"
   },
   "browserslist": [
     "defaults",
@@ -103,6 +103,7 @@
     "@types/react-dom": "^17.0.9",
     "@typescript-eslint/eslint-plugin": "^5.10.2",
     "@typescript-eslint/parser": "^5.8.0",
+    "cross-env": "^7.0.3",
     "dotenv-safe": "^8.2.0",
     "eslint": "^8.8.0",
     "eslint-config-prettier": "^8.1.0",
