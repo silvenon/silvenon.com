@@ -147,7 +147,13 @@ export function ErrorBoundary({ error }: { error: Error }) {
       <h1>Error while rendering posts</h1>
       <p>{error.message}</p>
       <pre>
-        <code>{error.stack}</code>
+        <code>
+          {error.stack?.split('\n').map((line) => (
+            <span key={line} className="line">
+              {line}
+            </span>
+          ))}
+        </code>
       </pre>
     </Prose>
   )

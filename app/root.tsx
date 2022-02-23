@@ -162,7 +162,13 @@ export function ErrorBoundary({ error }: { error: Error }) {
           <p className="break-words">{error.message}</p>
         ) : null}
         <pre>
-          <code>{error.stack}</code>
+          <code>
+            {error.stack?.split('\n').map((line) => (
+              <span key={line} className="line">
+                {line}
+              </span>
+            ))}
+          </code>
         </pre>
       </Prose>
     </Document>
