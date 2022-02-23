@@ -29,13 +29,20 @@
       }
     },
     {
-      "files": "*.mjs",
+      "files": ["*.mjs", "./server.js"],
       "parserOptions": {
         "sourceType": "module",
         "ecmaVersion": "latest"
       },
       "env": {
         "node": true
+      }
+    },
+    {
+      "files": "./server.js",
+      "rules": {
+        "node/no-unsupported-features/es-syntax": "off",
+        "node/no-unpublished-import": "off"
       }
     },
     {
