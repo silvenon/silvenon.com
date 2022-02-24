@@ -8,6 +8,7 @@ import Gitgraph from '~/components/Gitgraph'
 import Tweet from '~/components/Tweet'
 import ProseImage from '~/components/ProseImage'
 import HotTip from '~/components/HotTip'
+import ESLintPrettierDiagram from '~/components/ESLintPrettierDiagram'
 import * as prettyCodeComponents from '~/components/pretty-code'
 import { useDarkMode } from '~/services/dark-mode'
 import type { LoaderData as StandalonePostLoaderData } from '~/routes/blog/__post/$slug'
@@ -87,6 +88,7 @@ export default function Post(props: Props) {
             ProseImage,
             HotTip,
             Tweet,
+            ESLintPrettierDiagram,
             ...prettyCodeComponents,
           }}
         />

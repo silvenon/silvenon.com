@@ -21,5 +21,8 @@ node_modules
 /api/index.js
 /app/tailwind.css
 
+/prisma/dev.db
+/prisma/dev.db-journal
+
 # misc
 TODO.md

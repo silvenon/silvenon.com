@@ -30,6 +30,9 @@
     "build:css": "tailwindcss --input ./tailwind.css --output ./app/tailwind.css",
     "build:remix": "cross-env NODE_ENV=production remix build"
   },
+  "prisma": {
+    "seed": "node --require esbuild-register prisma/seed.ts"
+  },
   "browserslist": [
     "defaults",
     "not IE 11"
@@ -48,6 +51,7 @@
       "eslint --fix",
       "jest --findRelatedTests"
     ],
+    "prisma/schema.prisma": "npx prisma format",
     "vercel.*": [
       "node scripts/vercel.mjs",
       "git add vercel.json"
@@ -60,6 +64,7 @@
     "@iconify/icons-dashicons": "^1.1.0",
     "@iconify/icons-entypo-social": "^1.1.0",
     "@iconify/icons-mdi": "^1.1.42",
+    "@prisma/client": "^3.10.0",
     "@remix-run/react": "^1.1.1",
     "@remix-run/vercel": "*",
     "browserslist": "^4.19.1",
@@ -104,6 +109,7 @@
     "@typescript-eslint/parser": "^5.8.0",
     "cross-env": "^7.0.3",
     "dotenv-safe": "^8.2.0",
+    "esbuild-register": "^3.3.2",
     "eslint": "^8.8.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-jest": "^26.1.0",
@@ -118,6 +124,7 @@
     "npm-run-all": "^4.1.5",
     "prettier": "^2.5.1",
     "prettier-plugin-tailwindcss": "^0.1.4",
+    "prisma": "^3.10.0",
     "simple-git-hooks": "^2.7.0",
     "tailwindcss": "^3.0.7",
     "toml": "^3.0.0",

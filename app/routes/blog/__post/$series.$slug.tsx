@@ -1,13 +1,14 @@
 import { useLoaderData } from 'remix'
 import type { LoaderFunction, MetaFunction } from 'remix'
 import { bundleMDXPost } from '~/utils/mdx.server'
-import { getSeries, SeriesPart } from '~/utils/posts.server'
+import type { SeriesPart } from '~/utils/posts.server'
 import invariant from 'tiny-invariant'
 import type { LoaderData as StandaloneLoaderData } from './$slug'
 import { getMeta } from '~/utils/seo'
 import { author } from '~/consts'
 import Post from '~/components/Post'
-import { instanceOfNodeError } from '~/utils/file.server'
+import { db } from '~/utils/db.server'
+import { formatDateISO } from '~/utils/date'
 
 export interface LoaderData extends StandaloneLoaderData {
   seriesTitle: string
@@ -18,30 +19,73 @@ export interface LoaderData extends StandaloneLoaderData {
   }>
 }
 
-export const loader: LoaderFunction = async ({
-  params,
-}): Promise<LoaderData> => {
+export const loader: LoaderFunction = async ({ params }) => {
   invariant(params.series, 'series parameter is required')
   invariant(params.slug, 'slug parameter is required')
+
+  const part = await db.seriesPart.findUnique({
+    where: {
+      slug_seriesSlug: {
+        slug: params.slug,
+        seriesSlug: params.series,
+      },
+    },
+    select: {
+      title: true,
+      htmlTitle: true,
+      description: true,
+      lastModified: true,
+      content: true,
+      seriesPart: true,
+      series: {
+        select: {
+          title: true,
+          published: true,
+          parts: {
+            select: {
+              slug: true,
+              title: true,
+            },
+            orderBy: {
+              seriesPart: 'asc',
+            },
+          },
+        },
+      },
+    },
+  })
+
+  if (
+    !part ||
+    (process.env.NODE_ENV === 'production' && !part.series.published)
+  ) {
+    throw new Response('Not Found', { status: 404 })
+  }
+
   try {
-    const series = await getSeries(params.series)
-    if (process.env.NODE_ENV === 'production' && !series.published) {
-      throw new Response('Not Found', { status: 404 })
-    }
-    const { frontmatter, code } = await bundleMDXPost<SeriesPart>(
-      `${params.series}/${params.slug}`,
-    )
-    return {
-      ...frontmatter,
-      seriesTitle: series.title,
-      parts: series.parts,
-      published: series.published,
+    const code = await bundleMDXPost(part.content)
+    const data: LoaderData = {
+      title: part.title,
+      htmlTitle: part.htmlTitle ?? undefined,
+      description: part.description,
+      seriesTitle: part.series.title,
+      seriesPart: part.seriesPart,
+      parts: part.series.parts.map((part) => ({
+        ...part,
+        pathname: `/blog/${params.series}/${part.slug}`,
+      })),
+      published:
+        part.series.published !== null
+          ? formatDateISO(part.series.published)
+          : undefined,
+      lastModified:
+        part.lastModified !== null
+          ? formatDateISO(part.lastModified)
+          : undefined,
       code,
     }
+    return data
   } catch (err) {
-    if (instanceOfNodeError(err, Error) && err.code === 'ENOENT') {
-      throw new Response('Not Found', { status: 404 })
-    }
     throw new Response('Failed to compile blog post', { status: 500 })
   }
 }

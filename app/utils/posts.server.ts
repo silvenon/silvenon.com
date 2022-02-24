@@ -1,107 +1,75 @@
-import fs from 'fs/promises'
-import path from 'path'
-import matter from 'gray-matter'
-import { parseISO, compareDesc } from 'date-fns'
+import { compareDesc } from 'date-fns'
 import { formatDateISO } from './date'
-import { ROOT_DIR } from '~/consts.server'
+import { db } from './db.server'
+import type { StandalonePost, Series, SeriesPart, Prisma } from '@prisma/client'
 
-export interface StandalonePost {
-  title: string
-  htmlTitle?: string
-  description: string
-  published?: string
+interface StandalonePostWithAdditionalFields
+  extends Omit<StandalonePost, 'published'> {
   pathname: string
-  tweet?: string
-  lastModified?: string
+  published?: string
 }
-export interface Series extends Omit<StandalonePost, 'lastModified'> {
-  parts: SeriesPart[]
+interface SeriesWithAdditionalFields extends Omit<Series, 'published'> {
+  pathname: string
+  published?: string
+  parts: SeriesPartWithAdditionalFields[]
 }
-export interface SeriesPart extends Omit<StandalonePost, 'published'> {
-  seriesPart: number
+interface SeriesPartWithAdditionalFields extends SeriesPart {
+  pathname: string
 }
 
-export async function getAllPosts(): Promise<Array<StandalonePost | Series>> {
-  const postOrSeriesBasenames = await fs.readdir(`${ROOT_DIR}/app/posts`, {
-    withFileTypes: true,
-  })
+export type {
+  StandalonePostWithAdditionalFields as StandalonePost,
+  SeriesWithAdditionalFields as Series,
+  SeriesPartWithAdditionalFields as SeriesPart,
+}
 
-  const posts = await Promise.all(
-    postOrSeriesBasenames
-      .filter((dirent) => dirent.name !== '__tests__')
-      .map(async (dirent) => {
-        return dirent.isFile()
-          ? await getPost(path.basename(dirent.name, '.mdx'))
-          : await getSeries(dirent.name)
-      }),
-  )
-
-  posts.sort(comparePublished)
-
-  if (process.env.NODE_ENV === 'production') {
-    return posts.filter((post) => post.published)
+export async function getAllPosts(): Promise<
+  Array<StandalonePostWithAdditionalFields | SeriesWithAdditionalFields>
+> {
+  const filters: Prisma.StandalonePostWhereInput = {
+    // filter out drafts in production
+    ...(process.env.NODE_ENV === 'production'
+      ? { published: { not: null } }
+      : null),
   }
 
-  return posts
-}
-
-export async function getPost(slug: string): Promise<StandalonePost> {
-  const postPath = `${ROOT_DIR}/app/posts/${slug}.mdx`
-  const postContent = await fs.readFile(postPath, 'utf8')
-  const post = matter(postContent).data as Omit<
-    StandalonePost,
-    'pathname' | 'published'
-  > & { published: Date }
-  return {
+  const standalonePosts = (
+    await db.standalonePost.findMany({
+      where: { ...filters },
+    })
+  ).map((post) => ({
     ...post,
-    pathname: `/blog/${slug}`,
-    published: post.published ? formatDateISO(post.published) : undefined,
-  }
-}
+    pathname: `/blog/${post.slug}`,
+  }))
 
-export async function getSeries(slug: string): Promise<Series> {
-  const seriesPath = `${ROOT_DIR}/app/posts/${slug}`
-  const seriesPathname = `/blog/${slug}`
-  const series = JSON.parse(
-    await fs.readFile(`${seriesPath}/series.json`, 'utf8'),
-  ) as Omit<Series, 'pathname' | 'parts'>
-  const partDirents = await fs.readdir(seriesPath, {
-    withFileTypes: true,
-  })
-  const seriesParts = await Promise.all(
-    partDirents
-      .filter((dirent) => dirent.name.endsWith('.mdx'))
-      .map(async (dirent) => {
-        const partPath = `${seriesPath}/${dirent.name}`
-        const postContent = await fs.readFile(partPath, 'utf8')
-        const seriesPart = matter(postContent).data as Omit<
-          SeriesPart,
-          'pathname'
-        >
-        return {
-          ...seriesPart,
-          pathname: path.join(
-            seriesPathname,
-            path.basename(dirent.name, '.mdx'),
-          ),
-        } as SeriesPart
-      }),
-  )
-  return {
+  const series = (
+    await db.series.findMany({
+      where: { ...filters },
+      include: {
+        parts: {
+          orderBy: {
+            seriesPart: 'asc',
+          },
+        },
+      },
+    })
+  ).map((series) => ({
     ...series,
-    pathname: seriesPathname,
-    parts: seriesParts.sort((a, b) => a.seriesPart - b.seriesPart),
-  } as Series
-}
+    pathname: `/blog/${series.slug}`,
+    parts: series.parts.map((part) => ({
+      ...part,
+      pathname: `/blog/${series.slug}/${part.slug}`,
+    })),
+  }))
 
-function comparePublished<Post extends { published?: string }>(
-  a: Post,
-  b: Post,
-) {
-  if (!a.published) return -1
-  if (!b.published) return 1
-  return compareDesc(
-    typeof a.published === 'string' ? parseISO(a.published) : a.published,
-    typeof b.published === 'string' ? parseISO(b.published) : b.published,
-  )
+  return [...standalonePosts, ...series]
+    .sort((postA, postB) => {
+      if (!postA.published) return -1
+      if (!postB.published) return 1
+      return compareDesc(postA.published, postB.published)
+    })
+    .map((post) => ({
+      ...post,
+      published: post.published ? formatDateISO(post.published) : undefined,
+    }))
 }

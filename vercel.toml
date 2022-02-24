@@ -3,12 +3,6 @@
 [github]
   silent = true
 
-# needed for Remix
-
-[build]
-  [build.env]
-    ENABLE_FILE_SYSTEM_API="1"
-
 # my early blog posts had a different URL structure
 
 [[redirects]]
