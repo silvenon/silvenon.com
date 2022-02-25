@@ -1,6 +1,7 @@
 const colors = require('tailwindcss/colors')
 const plugin = require('tailwindcss/plugin')
 const typography = require('@tailwindcss/typography')
+const forms = require('@tailwindcss/forms')
 const typographyStyles = require('@tailwindcss/typography/src/styles')
 const screens = require('./screens.json')
 
@@ -25,7 +26,7 @@ const a11y = plugin(({ addVariant }) => {
 module.exports = {
   content: ['app/**/*.{ts,tsx,mdx,yml}'],
   safelist: ['token'],
-  plugins: [typography, js, light, a11y],
+  plugins: [typography, forms, js, light, a11y],
   darkMode: 'class',
   theme: {
     screens,
@@ -36,6 +37,8 @@ module.exports = {
     extend: {
       colors: {
         gray: colors.zinc,
+        page: colors.white,
+        'page-dark': colors.zinc[900],
       },
       typography: (theme) => ({
         DEFAULT: {

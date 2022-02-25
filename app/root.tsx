@@ -6,8 +6,9 @@ import {
   Scripts,
   ScrollRestoration,
   useCatch,
+  useLoaderData,
 } from 'remix'
-import type { MetaFunction, LinksFunction } from 'remix'
+import type { MetaFunction, LinksFunction, LoaderFunction } from 'remix'
 import clsx from 'clsx'
 import Prose from './components/Prose'
 import Analytics from './components/Analytics'
@@ -18,6 +19,7 @@ import { DarkModeProvider } from './services/dark-mode'
 import Header from './components/Header'
 import NotFound from './components/NotFound'
 import { getMeta } from './utils/seo'
+import { isLoggedIn } from './services/admin.server'
 
 export const meta: MetaFunction = ({ location }) => {
   return {
@@ -57,11 +59,24 @@ export const links: LinksFunction = () => {
   return [{ rel: 'stylesheet', href: styles }]
 }
 
+interface LoaderData {
+  isLoggedIn: boolean
+}
+
+export const loader: LoaderFunction = async ({ request }) => {
+  const data: LoaderData = {
+    isLoggedIn: await isLoggedIn(request),
+  }
+  return data
+}
+
 function Document({
   className,
+  loggedIn = false,
   children,
 }: {
   className?: string
+  loggedIn?: boolean
   children: React.ReactNode
 }) {
   // avoid mismatch between client and server side rendering on hydration
@@ -110,12 +125,12 @@ function Document({
       </head>
       <body
         className={clsx(
-          'h-full bg-white text-black selection:bg-amber-300 selection:text-black dark:bg-gray-900 dark:text-white',
+          'h-full bg-page text-black selection:bg-amber-300 selection:text-black dark:bg-page-dark dark:text-white',
           className,
         )}
       >
         <DarkModeProvider>
-          <Header />
+          <Header loggedIn={loggedIn} />
           {children}
           <ScrollRestoration />
         </DarkModeProvider>
@@ -128,8 +143,9 @@ function Document({
 }
 
 export default function App() {
+  const data = useLoaderData<LoaderData>()
   return (
-    <Document>
+    <Document loggedIn={data.isLoggedIn}>
       <Outlet />
     </Document>
   )
@@ -139,7 +155,7 @@ export function CatchBoundary() {
   const caught = useCatch()
   return (
     <Document>
-      <Prose as="main" className="py-4">
+      <Prose as="main" className="py-4 text-center">
         {caught.status === 404 ? (
           <NotFound title="Page Not Found">Nothing found at this URL.</NotFound>
         ) : (

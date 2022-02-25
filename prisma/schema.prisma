@@ -46,3 +46,10 @@ model Series {
   tweet       String?
   parts       SeriesPart[]
 }
+
+model Admin {
+  id           String @id @default(uuid())
+  email        String @unique
+  passwordHash String
+  name         String
+}

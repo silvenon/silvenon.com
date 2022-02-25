@@ -9,9 +9,19 @@ const db = new PrismaClient()
 const ROOT_DIR = `${__dirname}/..`
 
 async function seed() {
+  await db.admin.create({
+    data: {
+      email: 'matija.marohnic@gmail.com',
+      passwordHash:
+        '$2b$10$XXxWQHJq5mEXC9RLUnVP3u4qfXmf.W4DLDl8bFW5g/vRj6UdlZWsG',
+      name: 'Matija',
+    },
+  })
+
   const postOrSeriesBasenames = await fs.readdir(`${ROOT_DIR}/app/posts`, {
     withFileTypes: true,
   })
+
   await Promise.all(
     postOrSeriesBasenames
       .filter((dirent) => dirent.name !== '__tests__')

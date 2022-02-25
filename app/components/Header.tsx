@@ -1,11 +1,16 @@
-import { Link, useLocation } from 'remix'
+import { Form, Link, useLocation } from 'remix'
+import { LogoutIcon } from '@heroicons/react/outline'
 import DarkModeToggle from './DarkModeToggle'
 import Prose from './Prose'
 
-export default function Header() {
+interface Props {
+  loggedIn: boolean
+}
+
+export default function Header({ loggedIn }: Props) {
   const location = useLocation()
   return (
-    <Prose as="header" id="top" className="flex items-center">
+    <Prose as="header" id="top" className="flex items-center px-4">
       <div className="flex-1">
         {location.pathname !== '/' && (
           <nav>
@@ -59,8 +64,25 @@ export default function Header() {
         </Link>
       </div>
 
-      <div className="flex flex-1 justify-end">
+      <div className="flex flex-1 items-center justify-end space-x-3">
         <DarkModeToggle />
+        {loggedIn && (
+          <Form
+            action={`/logout?${new URLSearchParams({
+              redirectTo: location.pathname,
+            })}`}
+            method="post"
+            className="flex items-center"
+          >
+            <button
+              type="submit"
+              className="inline-flex items-center rounded-full border border-transparent bg-purple-600 p-2 text-white shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-page dark:bg-purple-500 dark:hover:bg-purple-400 dark:focus:ring-offset-page-dark"
+            >
+              <span className="sr-only">Sign out</span>
+              <LogoutIcon className="h-5 w-5" aria-hidden="true" />
+            </button>
+          </Form>
+        )}
       </div>
     </Prose>
   )
