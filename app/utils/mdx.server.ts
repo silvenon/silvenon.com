@@ -26,7 +26,9 @@ export async function bundleMDXPost(content: string) {
     },
     esbuildOptions: (options) => {
       options.plugins = [
-        esbuildPluginBrowserslist(browserslist()),
+        esbuildPluginBrowserslist(browserslist(), {
+          printUnknownTargets: false,
+        }),
         esbuildPluginCloudinary,
         ...(options.plugins ?? []),
       ]
