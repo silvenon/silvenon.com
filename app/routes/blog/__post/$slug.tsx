@@ -1,7 +1,6 @@
 import { useLoaderData } from 'remix'
 import type { LoaderFunction, MetaFunction } from 'remix'
 import invariant from 'tiny-invariant'
-import type { StandalonePost } from '~/utils/posts.server'
 import { bundleMDXPost } from '~/utils/mdx.server'
 import { getMeta } from '~/utils/seo'
 import { author } from '~/consts'
@@ -13,8 +12,8 @@ export interface LoaderData {
   htmlTitle?: string
   title: string
   description: string
-  published?: string
-  lastModified?: string
+  published?: Date
+  lastModified?: Date
   code: string
 }
 
@@ -41,10 +40,8 @@ export const loader: LoaderFunction = async ({ params }) => {
       title: post.title,
       description: post.description,
       htmlTitle: post.htmlTitle ?? undefined,
-      published: post.published ? formatDateISO(post.published) : undefined,
-      lastModified: post.lastModified
-        ? formatDateISO(post.lastModified)
-        : undefined,
+      published: post.published ?? undefined,
+      lastModified: post.lastModified ?? undefined,
       code,
     }
     return data
@@ -61,8 +58,12 @@ export const meta: MetaFunction = ({ data }: { data?: LoaderData }) => {
       : { title: 'Post Error' }),
     'og:type': 'article',
     'article:author': author.name,
-    ...(published ? { 'article:published_time': published } : null),
-    ...(lastModified ? { 'article:modified_time': lastModified } : null),
+    ...(published
+      ? { 'article:published_time': formatDateISO(published) }
+      : null),
+    ...(lastModified
+      ? { 'article:modified_time': formatDateISO(lastModified) }
+      : null),
   }
 }
 

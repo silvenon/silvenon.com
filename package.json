@@ -57,7 +57,7 @@
   },
   "dependencies": {
     "@gitgraph/react": "^1.6.0",
-    "@headlessui/react": "^1.4.2",
+    "@headlessui/react": "^0.0.0-insiders.27dece1",
     "@heroicons/react": "^1.0.5",
     "@iconify/icons-bx": "^1.1.4",
     "@iconify/icons-dashicons": "^1.1.0",

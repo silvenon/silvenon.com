@@ -79,7 +79,7 @@ export default function Header({ loggedIn }: Props) {
               className="inline-flex items-center rounded-full border border-transparent bg-purple-600 p-2 text-white shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-page dark:bg-purple-500 dark:hover:bg-purple-400 dark:focus:ring-offset-page-dark"
             >
               <span className="sr-only">Sign out</span>
-              <LogoutIcon className="h-5 w-5" aria-hidden="true" />
+              <LogoutIcon aria-hidden="true" className="h-5 w-5" />
             </button>
           </Form>
         )}

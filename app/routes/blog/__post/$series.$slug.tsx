@@ -1,7 +1,6 @@
 import { useLoaderData } from 'remix'
 import type { LoaderFunction, MetaFunction } from 'remix'
 import { bundleMDXPost } from '~/utils/mdx.server'
-import type { SeriesPart } from '~/utils/posts.server'
 import invariant from 'tiny-invariant'
 import type { LoaderData as StandaloneLoaderData } from './$slug'
 import { getMeta } from '~/utils/seo'
@@ -10,13 +9,17 @@ import Post from '~/components/Post'
 import { db } from '~/utils/db.server'
 import { formatDateISO } from '~/utils/date'
 
-export interface LoaderData extends StandaloneLoaderData {
-  seriesTitle: string
+export interface LoaderData extends Omit<StandaloneLoaderData, 'published'> {
   seriesPart: number
-  parts: Array<{
-    pathname: string
+  series: {
+    slug: string
     title: string
-  }>
+    published?: Date
+    parts: Array<{
+      slug: string
+      title: string
+    }>
+  }
 }
 
 export const loader: LoaderFunction = async ({ params }) => {
@@ -68,20 +71,14 @@ export const loader: LoaderFunction = async ({ params }) => {
       title: part.title,
       htmlTitle: part.htmlTitle ?? undefined,
       description: part.description,
-      seriesTitle: part.series.title,
       seriesPart: part.seriesPart,
-      parts: part.series.parts.map((part) => ({
-        ...part,
-        pathname: `/blog/${params.series}/${part.slug}`,
-      })),
-      published:
-        part.series.published !== null
-          ? formatDateISO(part.series.published)
-          : undefined,
-      lastModified:
-        part.lastModified !== null
-          ? formatDateISO(part.lastModified)
-          : undefined,
+      series: {
+        slug: params.series,
+        title: part.series.title,
+        published: part.series.published ?? undefined,
+        parts: part.series.parts,
+      },
+      lastModified: part.lastModified ?? undefined,
       code,
     }
     return data
@@ -91,16 +88,19 @@ export const loader: LoaderFunction = async ({ params }) => {
 }
 
 export const meta: MetaFunction = ({ data }: { data?: LoaderData }) => {
-  const { title, seriesTitle, description, published, lastModified } =
-    data ?? {}
+  const { title, series, description, lastModified } = data ?? {}
   return {
     ...(title && description
-      ? getMeta({ title: `${seriesTitle}: ${title}`, description })
+      ? getMeta({ title: `${series?.title}: ${title}`, description })
       : { title: 'Post Error' }),
     'og:type': 'article',
     'article:author': author.name,
-    ...(published ? { 'article:published_time': published } : null),
-    ...(lastModified ? { 'article:modified_time': lastModified } : null),
+    ...(series?.published
+      ? { 'article:published_time': formatDateISO(series.published) }
+      : null),
+    ...(lastModified
+      ? { 'article:modified_time': formatDateISO(lastModified) }
+      : null),
   }
 }
 

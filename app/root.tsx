@@ -132,8 +132,9 @@ function Document({
         <DarkModeProvider>
           <Header loggedIn={loggedIn} />
           {children}
-          <ScrollRestoration />
+          <div id="search" />
         </DarkModeProvider>
+        <ScrollRestoration />
         <Scripts />
         <LiveReload />
         {process.env.NODE_ENV === 'production' && <Analytics />}

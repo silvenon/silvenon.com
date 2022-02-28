@@ -1,10 +1,10 @@
 import Icon from './Icon'
-import { formatDate } from '../utils/date'
+import { formatDate, formatDateISO } from '../utils/date'
 import calendarIcon from '@iconify/icons-bx/bx-calendar'
 import penIcon from '@iconify/icons-mdi/pen'
 
 interface Props {
-  published?: string
+  published?: Date
 }
 
 export default function PostDate({ published }: Props) {
@@ -12,7 +12,7 @@ export default function PostDate({ published }: Props) {
     return (
       <time
         className="flex items-center space-x-2 text-gray-500 dark:text-gray-400"
-        dateTime={published}
+        dateTime={formatDateISO(published)}
       >
         <Icon icon={calendarIcon} />
         <span>{formatDate(published)}</span>

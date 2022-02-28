@@ -11,10 +11,28 @@ import HotTip from '~/components/HotTip'
 import ESLintPrettierDiagram from '~/components/ESLintPrettierDiagram'
 import * as prettyCodeComponents from '~/components/pretty-code'
 import { useDarkMode } from '~/services/dark-mode'
-import type { LoaderData as StandalonePostLoaderData } from '~/routes/blog/__post/$slug'
-import type { LoaderData as SeriesPartLoaderData } from '~/routes/blog/__post/$series.$slug'
 
-type Props = StandalonePostLoaderData | SeriesPartLoaderData
+interface StandalonePost {
+  title: string
+  htmlTitle?: string
+  published?: Date
+  code: string
+}
+
+interface SeriesPart extends Omit<StandalonePost, 'published'> {
+  seriesPart: number
+  series: {
+    slug: string
+    title: string
+    published?: Date
+    parts: Array<{
+      slug: string
+      title: string
+    }>
+  }
+}
+
+type Props = StandalonePost | SeriesPart
 
 export default function Post(props: Props) {
   const PostContent = useMemo(() => getMDXComponent(props.code), [props.code])
@@ -26,7 +44,7 @@ export default function Post(props: Props) {
     commentsTheme = 'preferred-color-scheme'
   }
 
-  const isSeries = 'seriesTitle' in props
+  const isSeries = 'series' in props
 
   const unorphanRef = useCallback(
     (node) => {
@@ -42,7 +60,7 @@ export default function Post(props: Props) {
       <main>
         {isSeries ? (
           <h1 className="space-y-2 text-center lg:space-y-4">
-            <div ref={unorphanRef}>{props.seriesTitle}</div>
+            <div ref={unorphanRef}>{props.series.title}</div>
             <div className="text-[0.8em] font-normal dark:font-light">
               Part {props.seriesPart + 1}:{' '}
               {props.htmlTitle ? (
@@ -62,21 +80,28 @@ export default function Post(props: Props) {
           </h1>
         )}
 
-        <PostDate published={props.published} />
+        <PostDate
+          published={
+            (isSeries ? props.series.published : props.published) ?? undefined
+          }
+        />
 
-        {'parts' in props ? (
+        {isSeries ? (
           <>
             <p>Parts of this series:</p>
             <ol>
-              {props.parts.map((part) => (
-                <li key={part.pathname}>
-                  {part.pathname === location.pathname ? (
-                    part.title
-                  ) : (
-                    <Link to={part.pathname}>{part.title}</Link>
-                  )}
-                </li>
-              ))}
+              {props.series.parts.map((part) => {
+                const pathname = `/blog/${props.series.slug}/${part.slug}`
+                return (
+                  <li key={part.slug}>
+                    {location.pathname === pathname ? (
+                      part.title
+                    ) : (
+                      <Link to={pathname}>{part.title}</Link>
+                    )}
+                  </li>
+                )
+              })}
             </ol>
             <hr />
           </>
