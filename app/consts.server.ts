@@ -1,1 +1,1 @@
-export const ROOT_DIR = `${__dirname}/..`
+export const ROOT_DIR = `${__dirname}/../app`

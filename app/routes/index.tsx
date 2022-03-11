@@ -1,7 +1,6 @@
 import { json, useLoaderData, Link } from 'remix'
 import type { LoaderFunction, MetaFunction } from 'remix'
 import { Fragment } from 'react'
-import { compareDesc } from 'date-fns'
 import clsx from 'clsx'
 import Search from '~/components/Search'
 import PostDate from '~/components/PostDate'
@@ -9,58 +8,38 @@ import ProfilePhoto from '~/components/ProfilePhoto'
 import Icon from '~/components/Icon'
 import Prose from '~/components/Prose'
 import { getMeta } from '~/utils/seo'
-import { db } from '~/utils/db.server'
+import {
+  getAllEntries,
+  StandalonePost,
+  Series,
+  SeriesPart,
+} from '~/utils/posts.server'
 import { SITE_DESCRIPTION, author, socialLinks } from '~/consts'
 import circuitBoard from '~/images/circuit-board.svg'
 
-type ElementType<T> = T extends Array<infer U> ? U : never
-type Unpacked<T> = T extends Promise<infer U> ? U : never
-
-async function getPosts() {
-  const standalonePosts = await db.standalonePost.findMany({
-    ...(process.env.NODE_ENV === 'production'
-      ? { where: { published: { not: null } } }
-      : null),
-    select: {
-      slug: true,
-      title: true,
-      description: true,
-      published: true,
-    },
-  })
-  const series = await db.series.findMany({
-    ...(process.env.NODE_ENV === 'production'
-      ? { where: { published: { not: null } } }
-      : null),
-    select: {
-      slug: true,
-      title: true,
-      description: true,
-      published: true,
-      parts: {
-        select: {
-          slug: true,
-          title: true,
-          description: true,
-        },
-        orderBy: {
-          seriesPart: 'asc',
-        },
-      },
-    },
-  })
-  const posts: Array<
-    ElementType<typeof standalonePosts> | ElementType<typeof series>
-  > = [...standalonePosts, ...series]
-  return posts.sort((a, b) => {
-    if (!a.published) return -1
-    if (!b.published) return 1
-    return compareDesc(a.published, b.published)
-  })
-}
+type LoaderData = Array<
+  | Omit<StandalonePost, 'content'>
+  | (Omit<Series, 'parts'> & { parts: Array<Omit<SeriesPart, 'content'>> })
+>
 
 export const loader: LoaderFunction = async () => {
-  return json(await getPosts(), 200)
+  const entries = await getAllEntries()
+  // TODO: type doesn't restrict adding `content`
+  const data: LoaderData = entries.map((entry) =>
+    'parts' in entry
+      ? {
+          ...entry,
+          parts: entry.parts.map((part) => ({
+            ...part,
+            content: undefined,
+          })),
+        }
+      : {
+          ...entry,
+          content: undefined,
+        },
+  )
+  return json(data, 200)
 }
 
 export const meta: MetaFunction = () =>
@@ -70,7 +49,7 @@ export const meta: MetaFunction = () =>
   })
 
 export default function Home() {
-  const posts = useLoaderData<Unpacked<ReturnType<typeof getPosts>>>()
+  const entries = useLoaderData<LoaderData>()
   return (
     <>
       <section className="relative mt-4 mb-10 border-t-2 border-b-2 border-purple-400 bg-purple-300 px-4 dark:border-purple-400 dark:bg-purple-800">
@@ -121,12 +100,12 @@ export default function Home() {
           <h2 className="flex items-center justify-between">
             <div>Posts</div>
             <Search
-              posts={posts.map((post) => ({
-                slug: post.slug,
-                title: post.title,
-                ...('parts' in post
+              posts={entries.map((entry) => ({
+                slug: entry.slug,
+                title: entry.title,
+                ...('parts' in entry
                   ? {
-                      parts: post.parts?.map((part) => ({
+                      parts: entry.parts?.map((part) => ({
                         slug: part.slug,
                         title: part.title,
                       })),
@@ -135,9 +114,9 @@ export default function Home() {
               }))}
             />
           </h2>
-          {posts.map((post, index) => {
-            if ('parts' in post) {
-              const series = post
+          {entries.map((entry, index) => {
+            if ('parts' in entry) {
+              const series = entry
               return (
                 <Fragment key={series.slug}>
                   <article>
@@ -159,11 +138,12 @@ export default function Home() {
                       ))}
                     </ol>
                   </article>
-                  {index < posts.length - 1 ? <hr /> : null}
+                  {index < entries.length - 1 ? <hr /> : null}
                 </Fragment>
               )
             }
 
+            const post = entry
             return (
               <Fragment key={post.slug}>
                 <article>
@@ -176,7 +156,7 @@ export default function Home() {
                     <Link to={`/blog/${post.slug}`}>Read more →</Link>
                   </p>
                 </article>
-                {index < posts.length - 1 ? <hr /> : null}
+                {index < entries.length - 1 ? <hr /> : null}
               </Fragment>
             )
           })}

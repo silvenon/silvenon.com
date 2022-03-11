@@ -7,7 +7,6 @@ kill_timeout = 5
 processes = []
 
 [env]
-  DATABASE_URL = "file:/data/sqlite.db"
   PORT = "8080"
 
 [experimental]

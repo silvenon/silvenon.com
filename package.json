@@ -32,9 +32,6 @@
     "deploy": "fly deploy --remote-only",
     "start": "cross-env NODE_ENV=production remix-serve build"
   },
-  "prisma": {
-    "seed": "node --require esbuild-register prisma/seed.ts"
-  },
   "browserslist": [
     "defaults",
     "not IE 11"
@@ -52,8 +49,7 @@
     "*.{js,ts,tsx}": [
       "eslint --fix",
       "jest --findRelatedTests"
-    ],
-    "prisma/schema.prisma": "npx prisma format"
+    ]
   },
   "dependencies": {
     "@gitgraph/react": "^1.6.0",
@@ -63,7 +59,6 @@
     "@iconify/icons-dashicons": "^1.1.0",
     "@iconify/icons-entypo-social": "^1.1.0",
     "@iconify/icons-mdi": "^1.1.42",
-    "@prisma/client": "^3.10.0",
     "@remix-run/react": "^1.2.2",
     "@remix-run/serve": "^1.2.2",
     "bcrypt": "^5.0.1",
@@ -90,6 +85,7 @@
     "remix-auth-form": "^1.1.1",
     "shiki": "^0.10.0",
     "tiny-invariant": "^1.2.0",
+    "toml": "^3.0.0",
     "unorphan": "^1.2.1"
   },
   "devDependencies": {
@@ -127,7 +123,6 @@
     "npm-run-all": "^4.1.5",
     "prettier": "^2.5.1",
     "prettier-plugin-tailwindcss": "^0.1.4",
-    "prisma": "^3.10.0",
     "simple-git-hooks": "^2.7.0",
     "tailwindcss": "^3.0.7",
     "ts-jest": "^27.1.2",

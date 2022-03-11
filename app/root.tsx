@@ -6,9 +6,8 @@ import {
   Scripts,
   ScrollRestoration,
   useCatch,
-  useLoaderData,
 } from 'remix'
-import type { MetaFunction, LinksFunction, LoaderFunction } from 'remix'
+import type { MetaFunction, LinksFunction } from 'remix'
 import clsx from 'clsx'
 import Prose from './components/Prose'
 import Analytics from './components/Analytics'
@@ -19,7 +18,6 @@ import { DarkModeProvider } from './services/dark-mode'
 import Header from './components/Header'
 import NotFound from './components/NotFound'
 import { getMeta } from './utils/seo'
-import { isLoggedIn } from './services/admin.server'
 
 export const meta: MetaFunction = ({ location }) => {
   return {
@@ -59,24 +57,11 @@ export const links: LinksFunction = () => {
   return [{ rel: 'stylesheet', href: styles }]
 }
 
-interface LoaderData {
-  isLoggedIn: boolean
-}
-
-export const loader: LoaderFunction = async ({ request }) => {
-  const data: LoaderData = {
-    isLoggedIn: await isLoggedIn(request),
-  }
-  return data
-}
-
 function Document({
   className,
-  loggedIn = false,
   children,
 }: {
   className?: string
-  loggedIn?: boolean
   children: React.ReactNode
 }) {
   // avoid mismatch between client and server side rendering on hydration
@@ -130,7 +115,7 @@ function Document({
         )}
       >
         <DarkModeProvider>
-          <Header loggedIn={loggedIn} />
+          <Header />
           {children}
           <div id="search" />
         </DarkModeProvider>
@@ -144,9 +129,8 @@ function Document({
 }
 
 export default function App() {
-  const data = useLoaderData<LoaderData>()
   return (
-    <Document loggedIn={data.isLoggedIn}>
+    <Document>
       <Outlet />
     </Document>
   )

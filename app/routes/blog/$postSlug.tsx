@@ -5,7 +5,7 @@ import { bundleMDXPost } from '~/utils/mdx.server'
 import { getMeta } from '~/utils/seo'
 import { author } from '~/consts'
 import Post from '~/components/Post'
-import { db } from '~/utils/db.server'
+import { getStandalonePost } from '~/utils/posts.server'
 import { formatDateISO } from '~/utils/date'
 
 export interface LoaderData {
@@ -18,30 +18,17 @@ export interface LoaderData {
 }
 
 export const loader: LoaderFunction = async ({ params }) => {
-  invariant(params.slug, 'slug is required')
-  const post = await db.standalonePost.findUnique({
-    where: { slug: params.slug },
-    select: {
-      title: true,
-      htmlTitle: true,
-      description: true,
-      published: true,
-      lastModified: true,
-      content: true,
-    },
-  })
-  if (!post || (process.env.NODE_ENV === 'production' && !post.published)) {
-    throw new Response('Not Found', { status: 404 })
-  }
+  invariant(params.postSlug, 'slug is required')
+  const post = await getStandalonePost(params.postSlug)
+  if (!post) throw new Response('Not Found', { status: 404 })
   try {
     const code = await bundleMDXPost(post.content)
     const data: LoaderData = {
-      ...post,
       title: post.title,
       description: post.description,
-      htmlTitle: post.htmlTitle ?? undefined,
-      published: post.published ?? undefined,
-      lastModified: post.lastModified ?? undefined,
+      htmlTitle: post.htmlTitle,
+      published: post.published,
+      lastModified: post.lastModified,
       code,
     }
     return data

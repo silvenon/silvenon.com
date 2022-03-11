@@ -17,8 +17,5 @@ node_modules
 /public/build
 /app/tailwind.css
 
-/prisma/dev.db
-/prisma/dev.db-journal
-
 # misc
 TODO.md

@@ -1,55 +1,9 @@
 import { LoaderFunction } from 'remix'
 import { Feed } from 'feed'
-import { compareDesc } from 'date-fns'
 import path from 'path'
 import cloudinary from '~/utils/cloudinary'
-import { db } from '~/utils/db.server'
+import { getAllEntries } from '~/utils/posts.server'
 import { author } from '~/consts'
-
-type ElementType<T> = T extends Array<infer U> ? U : never
-
-async function getPosts() {
-  const standalonePosts = await db.standalonePost.findMany({
-    ...(process.env.NODE_ENV === 'production'
-      ? { where: { published: { not: null } } }
-      : null),
-    select: {
-      slug: true,
-      title: true,
-      description: true,
-      published: true,
-    },
-  })
-  const series = await db.series.findMany({
-    ...(process.env.NODE_ENV === 'production'
-      ? { where: { published: { not: null } } }
-      : null),
-    select: {
-      slug: true,
-      title: true,
-      description: true,
-      published: true,
-      parts: {
-        select: {
-          slug: true,
-          title: true,
-          description: true,
-        },
-        orderBy: {
-          seriesPart: 'asc',
-        },
-      },
-    },
-  })
-  const posts: Array<
-    ElementType<typeof standalonePosts> | ElementType<typeof series>
-  > = [...standalonePosts, ...series]
-  return posts.sort((a, b) => {
-    if (!a.published) return -1
-    if (!b.published) return 1
-    return compareDesc(a.published, b.published)
-  })
-}
 
 export const loader: LoaderFunction = async ({ request }) => {
   const host =
@@ -74,11 +28,11 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   // ???
 
-  const posts = await getPosts()
+  const entries = await getAllEntries()
 
-  for (const post of posts) {
-    if ('parts' in post) {
-      const series = post
+  for (const entry of entries) {
+    if ('parts' in entry) {
+      const series = entry
       if (!series.published) continue
       for (const part of series.parts) {
         const pathname = `blog/${series.slug}/${part.slug}`
@@ -92,15 +46,15 @@ export const loader: LoaderFunction = async ({ request }) => {
         })
       }
     } else {
-      if (!post.published) continue
-      const pathname = `/blog/${post.slug}`
+      if (!entry.published) continue
+      const pathname = `/blog/${entry.slug}`
       feed.addItem({
-        title: post.title,
+        title: entry.title,
         id: path.join(domain, pathname),
         link: path.join(domain, pathname),
-        description: post.description,
+        description: entry.description,
         author: [author],
-        date: post.published,
+        date: entry.published,
       })
     }
   }
