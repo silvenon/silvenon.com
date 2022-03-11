@@ -46,6 +46,10 @@
     @apply !my-0 absolute top-0 left-0 w-full h-full;:w
   }
 
+  pre code .line.highlighted {
+    @apply bg-gray-200 dark:bg-gray-800;
+  }
+
   /* HotTip component */
 
   .hot-tip * {
