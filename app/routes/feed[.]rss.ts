@@ -3,16 +3,11 @@ import { Feed } from 'feed'
 import path from 'path'
 import cloudinary from '~/utils/cloudinary'
 import { getAllEntries } from '~/utils/posts.server'
+import { getDomainUrl } from '~/utils/http'
 import { author } from '~/consts'
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const host =
-    request.headers.get('X-Forwarded-Host') ?? request.headers.get('host')
-  if (!host) {
-    throw new Error('Could not determine domain URL.')
-  }
-  const protocol = host.includes('localhost') ? 'http' : 'https'
-  const domain = `${protocol}://${host}`
+  const domain = getDomainUrl(request)
 
   const feed = new Feed({
     title: `${author.name}'s blog`,
