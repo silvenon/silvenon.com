@@ -57,4 +57,6 @@ COPY --from=build /app/build /app/build
 COPY --from=build /app/public /app/public
 COPY . .
 
+EXPOSE 3000
+
 CMD ["npm", "run", "start"]
