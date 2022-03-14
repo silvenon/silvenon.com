@@ -20,9 +20,10 @@
   "scripts": {
     "prepare": "simple-git-hooks",
     "postinstall": "remix setup node",
+    "predev": "node scripts/dotenv.js",
     "dev": "npm-run-all build:css --parallel dev:*",
     "dev:css": "npm run build:css -- --watch",
-    "dev:remix": "cross-env NODE_ENV=development node -r dotenv-safe/config node_modules/.bin/remix dev",
+    "dev:remix": "cross-env NODE_ENV=development remix dev",
     "prelint": "eslint-config-prettier src/root.tsx src/__tests__/posts.test.ts",
     "lint": "eslint . --report-unused-disable-directives",
     "test": "jest",
