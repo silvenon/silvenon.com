@@ -1,6 +1,6 @@
 import { redirect } from 'remix'
 import type { LoaderFunction } from 'remix'
-import fs from 'fs/promises'
+import fs from 'fs'
 import toml from 'toml'
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -26,7 +26,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   }
 
   const { redirects } = toml.parse(
-    await fs.readFile(`${__dirname}/../redirects.toml`, 'utf8'),
+    await fs.promises.readFile(`${__dirname}/../app/redirects.toml`, 'utf8'),
   ) as {
     redirects: Array<{
       source: string
@@ -45,7 +45,7 @@ export const loader: LoaderFunction = async ({ request }) => {
     }
   }
 
-  return null
+  throw new Response('Not Found', { status: 404 })
 }
 
 export default function Catchall() {
