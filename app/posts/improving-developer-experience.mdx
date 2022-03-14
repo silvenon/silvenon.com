@@ -48,7 +48,7 @@ Development documentation can help when used sparingly and as close to the code 
 
 It's also worth noting that good naming strategy and making navigating the codebase more obvious is better than descriptive documentation, and sometimes we can't really document some stuff where we want to, e.g. `package.json` cannot contain comments, and if we document npm scripts in `README.md`, it's almost bound to get outdated because as we change npm scripts we might forget to update the documentation. Out of sight, out of mind.
 
-If there are situations when you can update parts of the documentation automatically, take those opportunities to decrease maintenance. For example, I wanted to document which browsers is supported by a frontend project I was working on, so I generated that list by mapping [`browserslist`](https://github.com/browserslist/browserslist) configuration to browser names using [`caniuse-db`]()'s `data.json`, for example:
+If there are situations when you can update parts of the documentation automatically, take those opportunities to decrease maintenance. For example, I wanted to document which browsers is supported by a frontend project I was working on, so I generated that list by mapping [`browserslist`](https://github.com/browserslist/browserslist) configuration to browser names using [`caniuse-db`](https://www.npmjs.com/package/caniuse-db)'s `data.json`, for example:
 
 ```js
 const browserslist = require("browserslist");
