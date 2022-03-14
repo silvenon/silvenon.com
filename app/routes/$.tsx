@@ -1,5 +1,6 @@
 import { redirect } from 'remix'
 import type { LoaderFunction } from 'remix'
+// remix can't import "fs/promises" outside of *.server.ts files
 import fs from 'fs'
 import toml from 'toml'
 
