@@ -69,7 +69,6 @@
     "clsx": "^1.1.1",
     "cross-env": "^7.0.3",
     "date-fns": "^2.27.0",
-    "downshift": "^6.1.7",
     "esbuild": "^0.14.10",
     "esbuild-plugin-browserslist": "^0.4.3",
     "feed": "^4.2.2",
