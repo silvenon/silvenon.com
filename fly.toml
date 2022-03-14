@@ -13,9 +13,10 @@ processes = []
   cmd = "start_with_migrations.sh"
   entrypoint = "sh"
 
-[[mounts]]
-  destination = "/data"
-  source = "data"
+# persist Prisma database
+# [[mounts]]
+#   destination = "/data"
+#   source = "data"
 
 [[services]]
   http_checks = []
