@@ -1,7 +1,7 @@
 import rehypePrettyCode, { Options } from 'rehype-pretty-code'
 import type { Element } from 'hast'
-import minLightTheme from 'shiki/themes/min-light.json'
-import noctisTheme from '../themes/noctis.json'
+import originalLightTheme from 'shiki/themes/min-light.json'
+import originalDarkTheme from 'shiki/themes/dracula-soft.json'
 
 interface Theme extends JSON {
   tokenColors: Array<{
@@ -16,10 +16,10 @@ export async function configureRehypePrettyCode(): Promise<
   [typeof rehypePrettyCode, Partial<Options>]
 > {
   const lightTheme: Theme = {
-    ...minLightTheme,
+    ...originalLightTheme,
     // rehype-pretty-code expects a less specific type
     // @ts-expect-error
-    tokenColors: minLightTheme.tokenColors.map((tokenColor) => {
+    tokenColors: originalLightTheme.tokenColors.map((tokenColor) => {
       const { scope } = tokenColor
       if (
         (typeof scope === 'string' && scope === 'comment') ||
@@ -40,7 +40,7 @@ export async function configureRehypePrettyCode(): Promise<
 
   // rehype-pretty-code expects a less specific type
   // @ts-expect-error
-  const darkTheme: Theme = noctisTheme
+  const darkTheme: Theme = originalDarkTheme
 
   return [
     rehypePrettyCode,
