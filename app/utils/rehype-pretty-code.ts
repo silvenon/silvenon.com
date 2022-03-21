@@ -28,7 +28,7 @@ export async function configureRehypePrettyCode(): Promise<
         return {
           ...tokenColor,
           settings: {
-            // min-light's comment color is too light
+            // min-light's comment color is too bright
             ...tokenColor.settings,
             foreground: '#a3a3a3',
           },
@@ -38,7 +38,7 @@ export async function configureRehypePrettyCode(): Promise<
     }),
   }
 
-  // rehype-pretty-code expects a less specific type
+  // cast to a less specific type, required by rehype-pretty-code
   // @ts-expect-error
   const darkTheme: Theme = originalDarkTheme
 
