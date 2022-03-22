@@ -86,7 +86,8 @@
     "shiki": "^0.10.0",
     "tiny-invariant": "^1.2.0",
     "toml": "^3.0.0",
-    "unorphan": "^1.2.1"
+    "unorphan": "^1.2.1",
+    "utterances-react-component": "^1.0.0"
   },
   "devDependencies": {
     "@babel/plugin-transform-modules-commonjs": "^7.16.5",

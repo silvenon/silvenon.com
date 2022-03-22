@@ -1,6 +1,7 @@
 import { Link, useLocation } from 'remix'
 import { useMemo, useCallback } from 'react'
 import { getMDXComponent } from 'mdx-bundler/client'
+import { Utterances, Theme } from 'utterances-react-component'
 import unorphan from 'unorphan'
 import Prose from '~/components/Prose'
 import PostDate from '~/components/PostDate'
@@ -39,7 +40,7 @@ export default function Post(props: Props) {
   const location = useLocation()
   const darkMode = useDarkMode()
 
-  let commentsTheme = darkMode ? 'github-dark' : 'github-light'
+  let commentsTheme: Theme = darkMode ? 'github-dark' : 'github-light'
   if (darkMode === null) {
     commentsTheme = 'preferred-color-scheme'
   }
@@ -125,20 +126,14 @@ export default function Post(props: Props) {
         </div>
       </main>
 
-      {process.env.NODE_ENV === 'production' ? (
-        <footer className="px-2.5">
-          <hr />
-          <script
-            src="https://utteranc.es/client.js"
-            // @ts-expect-error these are custom attributes for utterances
-            repo="silvenon/silvenon.com"
-            issue-term="title"
-            theme={commentsTheme}
-            crossOrigin="anonymous"
-            async
-          />
-        </footer>
-      ) : null}
+      <footer className="px-2.5">
+        <hr className="!mb-2" />
+        <Utterances
+          repo="silvenon/silvenon.com"
+          theme={commentsTheme}
+          issueTerm="title"
+        />
+      </footer>
     </Prose>
   )
 }
