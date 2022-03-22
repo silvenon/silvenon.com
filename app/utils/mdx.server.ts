@@ -8,7 +8,7 @@ export async function bundleMDXPost(content: string) {
   const { default: remarkSmartypants } = await import('remark-smartypants')
   const { default: remarkUnwrapImages } = await import('remark-unwrap-images')
 
-  const configuredRehypePrettyCode = await configureRehypePrettyCode()
+  const configuredRehypePrettyCode = configureRehypePrettyCode()
 
   const { code, errors } = await bundleMDX({
     source: content,

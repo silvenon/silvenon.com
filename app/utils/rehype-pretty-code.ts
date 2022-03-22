@@ -12,9 +12,10 @@ interface Theme extends JSON {
   }>
 }
 
-export async function configureRehypePrettyCode(): Promise<
-  [typeof rehypePrettyCode, Partial<Options>]
-> {
+export function configureRehypePrettyCode(): [
+  typeof rehypePrettyCode,
+  Partial<Options>,
+] {
   const lightTheme: Theme = {
     ...originalLightTheme,
     // rehype-pretty-code expects a less specific type
