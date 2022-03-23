@@ -1,26 +1,29 @@
-/**
- * @jest-environment jsdom
- */
-import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+// @vitest-environment jsdom
+import {
+  render,
+  screen,
+  waitForElementToBeRemoved,
+} from '@testing-library/react'
+import user from '@testing-library/user-event'
 import Search from '../Search'
 
-jest.mock('remix', () => ({
+vi.mock('remix', () => ({
   useNavigate: () => {
     return () => {}
   },
 }))
 
 describe('Search', () => {
-  test('shows posts in a dropdown', () => {
-    const OldIntersectionObserver = window.IntersectionObserver
-    // @ts-ignore
-    window.IntersectionObserver = class IntersectionObserverMock {
-      constructor() {}
+  test('shows posts in a dropdown', async () => {
+    const OriginalIntersectionObserver = global.IntersectionObserver
+    // @ts-ignore: not sure how to fix this type error
+    global.IntersectionObserver = class IntersectionObserverMock {
       observe() {}
       unobserve() {}
       disconnect() {}
     }
+
+    user.setup()
 
     render(
       <>
@@ -34,18 +37,25 @@ describe('Search', () => {
       </>,
     )
 
-    userEvent.click(screen.getByRole('button', { name: 'Search' }))
-    const combobox = screen.getByRole('combobox')
-    userEvent.type(combobox, 'o')
+    await user.pointer({
+      keys: '[MouseLeft]',
+      target: screen.getByRole('button', { name: 'Search' }),
+    })
+    let combobox = screen.getByRole('combobox')
+    await user.keyboard('{Escape}')
+    await waitForElementToBeRemoved(combobox)
+    await user.keyboard('{Meta>}{k}{/Meta}')
+    combobox = screen.getByRole('combobox')
+    await user.type(combobox, 'o')
     const options = screen.getAllByRole('option')
     expect(options).toHaveLength(2)
     expect(options[0]).toHaveTextContent('One')
     expect(options[1]).toHaveTextContent('Two')
-    userEvent.type(combobox, 'ne')
+    await user.type(combobox, 'ne')
     expect(screen.getByRole('option')).toHaveTextContent('One')
-    userEvent.type(combobox, 'foo')
+    await user.type(combobox, 'foo')
     screen.getByText('No posts found.')
 
-    window.IntersectionObserver = OldIntersectionObserver
+    global.IntersectionObserver = OriginalIntersectionObserver
   })
 })

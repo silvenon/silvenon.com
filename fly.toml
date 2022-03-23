@@ -8,15 +8,11 @@ processes = []
 
 [env]
   PORT = "8080"
+  NODE_ENV = "production"
 
 [experimental]
-  cmd = "start_with_migrations.sh"
-  entrypoint = "sh"
-
-# persist Prisma database
-# [[mounts]]
-#   destination = "/data"
-#   source = "data"
+  allowed_public_ports = []
+  auto_rollback = true
 
 [[services]]
   http_checks = []
@@ -33,6 +29,7 @@ processes = []
   [[services.ports]]
     handlers = ["http"]
     port = 80
+    force_https = true
 
   [[services.ports]]
     handlers = ["tls", "http"]

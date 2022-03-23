@@ -5,7 +5,8 @@ node_modules
 .DS_Store
 
 # text editors
-.vscode
+.vscode/*
+!.vscode/launch.json
 .idea
 
 # secrets
@@ -16,6 +17,5 @@ node_modules
 /build
 /public/build
 /app/tailwind.css
-
-# misc
-TODO.md
+/cypress/screenshots
+/cypress/videos
