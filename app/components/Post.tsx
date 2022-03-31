@@ -104,7 +104,7 @@ export default function Post(props: Props) {
                         <Link to={pathname}>{part.title}</Link>
                         {transition.state === 'loading' &&
                           transition.location.pathname === pathname && (
-                            <Spinner className="ml-2 inline" />
+                            <Spinner className="!ml-2 inline" />
                           )}
                       </>
                     )}

@@ -133,7 +133,7 @@ export default function Home() {
                       </Link>
                       {loadingPath ===
                         `/blog/${series.slug}/${series.parts[0].slug}?root` && (
-                        <Spinner className="ml-2 inline" />
+                        <Spinner className="!ml-2 inline" />
                       )}
                     </h3>
                     <PostDate published={series.published ?? undefined} />
@@ -147,7 +147,7 @@ export default function Home() {
                           </Link>
                           {loadingPath ===
                             `/blog/${series.slug}/${part.slug}` && (
-                            <Spinner className="ml-2 inline" />
+                            <Spinner className="!ml-2 inline" />
                           )}
                         </li>
                       ))}
@@ -165,7 +165,7 @@ export default function Home() {
                   <h3>
                     <Link to={`/blog/${post.slug}`}>{post.title}</Link>
                     {loadingPath === `/blog/${post.slug}` && (
-                      <Spinner className="ml-2 inline" />
+                      <Spinner className="!ml-2 inline" />
                     )}
                   </h3>
                   <PostDate published={post.published ?? undefined} />
