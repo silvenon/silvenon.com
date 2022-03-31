@@ -1,4 +1,4 @@
-import { json, useLoaderData, Link } from 'remix'
+import { json, useLoaderData, useTransition, Link } from 'remix'
 import type { LoaderFunction, MetaFunction } from 'remix'
 import { Fragment } from 'react'
 import clsx from 'clsx'
@@ -7,6 +7,7 @@ import PostDate from '~/components/PostDate'
 import ProfilePhoto from '~/components/ProfilePhoto'
 import Icon from '~/components/Icon'
 import Prose from '~/components/Prose'
+import Spinner from '~/components/Spinner'
 import { getMeta } from '~/utils/seo'
 import {
   getAllEntries,
@@ -50,6 +51,10 @@ export const meta: MetaFunction = () =>
 
 export default function Home() {
   const entries = useLoaderData<LoaderData>()
+  const transition = useTransition()
+  const loadingPath =
+    transition.state === 'loading' &&
+    `${transition.location.pathname}${transition.location.search}`
   return (
     <>
       <section className="relative mt-4 mb-10 border-t-2 border-b-2 border-purple-400 bg-purple-300 px-4 dark:border-purple-400 dark:bg-purple-800">
@@ -121,9 +126,15 @@ export default function Home() {
                 <Fragment key={series.slug}>
                   <article>
                     <h3>
-                      <Link to={`/blog/${series.slug}/${series.parts[0].slug}`}>
+                      <Link
+                        to={`/blog/${series.slug}/${series.parts[0].slug}?root`}
+                      >
                         {series.title}
                       </Link>
+                      {loadingPath ===
+                        `/blog/${series.slug}/${series.parts[0].slug}?root` && (
+                        <Spinner className="ml-2 inline" />
+                      )}
                     </h3>
                     <PostDate published={series.published ?? undefined} />
                     <p>{series.description}</p>
@@ -134,6 +145,10 @@ export default function Home() {
                           <Link to={`/blog/${series.slug}/${part.slug}`}>
                             {part.title}
                           </Link>
+                          {loadingPath ===
+                            `/blog/${series.slug}/${part.slug}` && (
+                            <Spinner className="ml-2 inline" />
+                          )}
                         </li>
                       ))}
                     </ol>
@@ -149,6 +164,9 @@ export default function Home() {
                 <article>
                   <h3>
                     <Link to={`/blog/${post.slug}`}>{post.title}</Link>
+                    {loadingPath === `/blog/${post.slug}` && (
+                      <Spinner className="ml-2 inline" />
+                    )}
                   </h3>
                   <PostDate published={post.published ?? undefined} />
                   <p>{post.description}</p>

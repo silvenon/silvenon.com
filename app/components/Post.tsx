@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'remix'
+import { Link, useLocation, useTransition } from 'remix'
 import { useMemo, useCallback } from 'react'
 import { getMDXComponent } from 'mdx-bundler/client'
 import { Utterances, Theme } from 'utterances-react-component'
@@ -11,6 +11,7 @@ import ProseImage from '~/components/ProseImage'
 import HotTip from '~/components/HotTip'
 import ESLintPrettierDiagram from '~/components/ESLintPrettierDiagram'
 import * as prettyCodeComponents from '~/components/pretty-code'
+import Spinner from '~/components/Spinner'
 import { useDarkMode } from '~/services/dark-mode'
 
 interface StandalonePost {
@@ -38,6 +39,7 @@ type Props = StandalonePost | SeriesPart
 export default function Post(props: Props) {
   const PostContent = useMemo(() => getMDXComponent(props.code), [props.code])
   const location = useLocation()
+  const transition = useTransition()
   const darkMode = useDarkMode()
 
   let commentsTheme: Theme = darkMode ? 'github-dark' : 'github-light'
@@ -98,7 +100,13 @@ export default function Post(props: Props) {
                     {location.pathname === pathname ? (
                       part.title
                     ) : (
-                      <Link to={pathname}>{part.title}</Link>
+                      <>
+                        <Link to={pathname}>{part.title}</Link>
+                        {transition.state === 'loading' &&
+                          transition.location.pathname === pathname && (
+                            <Spinner className="ml-2 inline" />
+                          )}
+                      </>
                     )}
                   </li>
                 )
