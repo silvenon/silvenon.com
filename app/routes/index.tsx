@@ -1,20 +1,46 @@
-import { json, useLoaderData, useLocation, Link } from 'remix'
+import { json, useLoaderData, useTransition, Link } from 'remix'
 import type { LoaderFunction, MetaFunction } from 'remix'
-import { Fragment, useState } from 'react'
+import { Fragment } from 'react'
 import clsx from 'clsx'
 import Search from '~/components/Search'
 import PostDate from '~/components/PostDate'
 import ProfilePhoto from '~/components/ProfilePhoto'
 import Icon from '~/components/Icon'
 import Prose from '~/components/Prose'
-import { getAllPosts, StandalonePost, Series } from '~/utils/posts.server'
+import Spinner from '~/components/Spinner'
 import { getMeta } from '~/utils/seo'
+import {
+  getAllEntries,
+  StandalonePost,
+  Series,
+  SeriesPart,
+} from '~/utils/posts.server'
 import { SITE_DESCRIPTION, author, socialLinks } from '~/consts'
 import circuitBoard from '~/images/circuit-board.svg'
 
+type LoaderData = Array<
+  | Omit<StandalonePost, 'content'>
+  | (Omit<Series, 'parts'> & { parts: Array<Omit<SeriesPart, 'content'>> })
+>
+
 export const loader: LoaderFunction = async () => {
-  const posts = await getAllPosts()
-  return json(posts, 200)
+  const entries = await getAllEntries()
+  // TODO: type doesn't restrict adding `content`
+  const data: LoaderData = entries.map((entry) =>
+    'parts' in entry
+      ? {
+          ...entry,
+          parts: entry.parts.map((part) => ({
+            ...part,
+            content: undefined,
+          })),
+        }
+      : {
+          ...entry,
+          content: undefined,
+        },
+  )
+  return json(data, 200)
 }
 
 export const meta: MetaFunction = () =>
@@ -24,9 +50,11 @@ export const meta: MetaFunction = () =>
   })
 
 export default function Home() {
-  const posts = useLoaderData<Array<StandalonePost | Series>>()
-  const location = useLocation()
-  const [searchOpen, setSearchOpen] = useState(false)
+  const entries = useLoaderData<LoaderData>()
+  const transition = useTransition()
+  const loadingPath =
+    transition.state === 'loading' &&
+    `${transition.location.pathname}${transition.location.search}`
   return (
     <>
       <section className="relative mt-4 mb-10 border-t-2 border-b-2 border-purple-400 bg-purple-300 px-4 dark:border-purple-400 dark:bg-purple-800">
@@ -60,6 +88,7 @@ export default function Home() {
                     >
                       <span className="sr-only">{network.name}</span>
                       <Icon
+                        aria-hidden="true"
                         icon={network.icon}
                         className="h-5 w-5 fill-current"
                       />
@@ -72,70 +101,84 @@ export default function Home() {
         </div>
       </section>
       <main className="mt-6 px-4 sm:flex sm:justify-center md:pb-4">
-        <div>
-          <Search
-            posts={posts}
-            onOpen={() => setSearchOpen(true)}
-            onClose={() => setSearchOpen(false)}
-          />
-          <Prose>
-            <h2
-              className={clsx(
-                'transition-opacity duration-200',
-                searchOpen && 'opacity-0',
-              )}
-            >
-              Posts
-            </h2>
-            {posts.map((post, index) => {
-              if ('parts' in post) {
-                const series = post
-                return (
-                  <Fragment key={series.title}>
-                    <article>
-                      <h3>
-                        <Link to={series.parts[0].pathname}>
-                          {series.title}
-                        </Link>
-                      </h3>
-                      <PostDate published={series.published} />
-                      <p>{series.description}</p>
-                      <p>Parts of this series:</p>
-                      <ol>
-                        {series.parts.map((part) => (
-                          <li key={part.pathname}>
-                            {part.pathname === location.pathname ? (
-                              part.title
-                            ) : (
-                              <Link to={part.pathname}>{part.title}</Link>
-                            )}
-                          </li>
-                        ))}
-                      </ol>
-                    </article>
-                    {index < posts.length - 1 ? <hr /> : null}
-                  </Fragment>
-                )
-              }
-
+        <Prose>
+          <h2 className="flex items-center justify-between">
+            <div>Posts</div>
+            <Search
+              posts={entries.map((entry) => ({
+                slug: entry.slug,
+                title: entry.title,
+                ...('parts' in entry
+                  ? {
+                      parts: entry.parts?.map((part) => ({
+                        slug: part.slug,
+                        title: part.title,
+                      })),
+                    }
+                  : null),
+              }))}
+            />
+          </h2>
+          {entries.map((entry, index) => {
+            if ('parts' in entry) {
+              const series = entry
               return (
-                <Fragment key={post.title}>
+                <Fragment key={series.slug}>
                   <article>
                     <h3>
-                      <Link to={post.pathname}>{post.title}</Link>
+                      <Link
+                        to={`/blog/${series.slug}/${series.parts[0].slug}?root`}
+                      >
+                        {series.title}
+                      </Link>
+                      {loadingPath ===
+                        `/blog/${series.slug}/${series.parts[0].slug}?root` && (
+                        <Spinner className="ml-2 inline" />
+                      )}
                     </h3>
-                    <PostDate published={post.published} />
-                    <p>{post.description}</p>
-                    <p>
-                      <Link to={post.pathname}>Read more →</Link>
-                    </p>
+                    <PostDate published={series.published ?? undefined} />
+                    <p>{series.description}</p>
+                    <p>Parts of this series:</p>
+                    <ol>
+                      {series.parts.map((part) => (
+                        <li key={part.slug}>
+                          <Link to={`/blog/${series.slug}/${part.slug}`}>
+                            {part.title}
+                          </Link>
+                          {loadingPath ===
+                            `/blog/${series.slug}/${part.slug}` && (
+                            <Spinner className="ml-2 inline" />
+                          )}
+                        </li>
+                      ))}
+                    </ol>
                   </article>
-                  {index < posts.length - 1 ? <hr /> : null}
+                  {index < entries.length - 1 ? <hr /> : null}
                 </Fragment>
               )
-            })}
-          </Prose>
-        </div>
+            }
+
+            const post = entry
+            return (
+              <Fragment key={post.slug}>
+                <article>
+                  <h3>
+                    <Link to={`/blog/${post.slug}`}>{post.title}</Link>
+                    {loadingPath === `/blog/${post.slug}` && (
+                      <Spinner className="ml-2 inline" />
+                    )}
+                  </h3>
+                  <PostDate published={post.published ?? undefined} />
+                  <p>{post.description}</p>
+                  <p>
+                    <Link to={`/blog/${post.slug}`}>Read more →</Link>
+                  </p>
+                </article>
+                {index < entries.length - 1 ? <hr /> : null}
+              </Fragment>
+            )
+          })}
+        </Prose>
       </main>
     </>
   )

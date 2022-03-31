@@ -1,35 +1,61 @@
-/**
- * @jest-environment jsdom
- */
-import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+// @vitest-environment jsdom
+import {
+  render,
+  screen,
+  waitForElementToBeRemoved,
+} from '@testing-library/react'
+import user from '@testing-library/user-event'
 import Search from '../Search'
 
-jest.mock('remix', () => ({
+vi.mock('remix', () => ({
   useNavigate: () => {
     return () => {}
   },
 }))
 
 describe('Search', () => {
-  test('shows posts in a dropdown', () => {
+  test('shows posts in a dropdown', async () => {
+    const OriginalIntersectionObserver = global.IntersectionObserver
+    // @ts-ignore: not sure how to fix this type error
+    global.IntersectionObserver = class IntersectionObserverMock {
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+    }
+
+    user.setup()
+
     render(
-      <Search
-        posts={[
-          { title: 'One', pathname: '/blog/one' },
-          { title: 'Two', pathname: '/blog/two' },
-        ]}
-      />,
+      <>
+        <Search
+          posts={[
+            { slug: 'one', title: 'One' },
+            { slug: 'two', title: 'Two' },
+          ]}
+        />
+        <div id="search" />
+      </>,
     )
-    const searchBox = screen.getByRole('searchbox')
-    userEvent.type(searchBox, 'o')
+
+    await user.pointer({
+      keys: '[MouseLeft]',
+      target: screen.getByRole('button', { name: 'Search' }),
+    })
+    let combobox = screen.getByRole('combobox')
+    await user.keyboard('{Escape}')
+    await waitForElementToBeRemoved(combobox)
+    await user.keyboard('{Meta>}{k}{/Meta}')
+    combobox = screen.getByRole('combobox')
+    await user.type(combobox, 'o')
     const options = screen.getAllByRole('option')
     expect(options).toHaveLength(2)
     expect(options[0]).toHaveTextContent('One')
     expect(options[1]).toHaveTextContent('Two')
-    userEvent.type(searchBox, 'ne')
+    await user.type(combobox, 'ne')
     expect(screen.getByRole('option')).toHaveTextContent('One')
-    userEvent.type(searchBox, 'foo')
-    expect(screen.getByRole('listitem')).toHaveTextContent('No results')
+    await user.type(combobox, 'foo')
+    screen.getByText('No posts found.')
+
+    global.IntersectionObserver = OriginalIntersectionObserver
   })
 })

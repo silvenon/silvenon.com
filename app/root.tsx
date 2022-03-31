@@ -110,15 +110,16 @@ function Document({
       </head>
       <body
         className={clsx(
-          'h-full bg-white text-black selection:bg-amber-300 selection:text-black dark:bg-gray-900 dark:text-white',
+          'h-full bg-page text-black selection:bg-amber-300 selection:text-black dark:bg-page-dark dark:text-white',
           className,
         )}
       >
         <DarkModeProvider>
           <Header />
           {children}
-          <ScrollRestoration />
+          <div id="search" />
         </DarkModeProvider>
+        <ScrollRestoration />
         <Scripts />
         <LiveReload />
         {process.env.NODE_ENV === 'production' && <Analytics />}
@@ -139,7 +140,7 @@ export function CatchBoundary() {
   const caught = useCatch()
   return (
     <Document>
-      <Prose as="main" className="py-4">
+      <Prose as="main" className="py-4 text-center">
         {caught.status === 404 ? (
           <NotFound title="Page Not Found">Nothing found at this URL.</NotFound>
         ) : (

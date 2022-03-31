@@ -1,155 +1,193 @@
 import { useNavigate } from 'remix'
-import { useState, useEffect, useRef } from 'react'
-import { useCombobox } from 'downshift'
+import { useState, useEffect, useRef, useMemo, Fragment } from 'react'
+import { createPortal } from 'react-dom'
+import { Combobox, Dialog, Transition } from '@headlessui/react'
 import { filter, wrap } from 'fuzzaldrin-plus'
-import Icon from './Icon'
-import searchIcon from '@iconify/icons-dashicons/search'
+import { SearchIcon } from '@heroicons/react/solid'
 import clsx from 'clsx'
 
 interface Post {
+  slug: string
   title: string
-  pathname: string
 }
-interface Series {
-  seriesTitle: string
-  title: string
-  pathname: string
+interface Series extends Post {
   parts: Post[]
 }
 
-interface Props {
-  posts: Array<Post | Series>
-  onOpen?(): void
-  onClose?(): void
+export type Posts = Array<Post | Series>
+
+export default function Search({ posts }: { posts: Posts }) {
+  const [open, setOpen] = useState(false)
+  const node =
+    typeof document !== 'undefined' ? document.querySelector('#search') : null
+  return (
+    <>
+      <SearchButton onOpen={() => setOpen(true)} />
+      {node
+        ? createPortal(
+            <SearchDialog
+              posts={posts}
+              open={open}
+              onOpen={() => setOpen(true)}
+              onClose={() => setOpen(false)}
+            />,
+            node,
+          )
+        : null}
+    </>
+  )
 }
 
-export default function SearchContainer(props: Props) {
+function SearchButton({ onOpen }: { onOpen: () => void }) {
   const [hasJs, setHasJs] = useState(false)
   useEffect(() => {
     setHasJs(true)
   }, [])
-  return hasJs ? <Search {...props} /> : null
+  if (!hasJs) return null
+  return (
+    <button
+      type="button"
+      className="inline-flex items-center rounded-full border border-transparent bg-gray-100 p-2 text-gray-700 shadow-sm hover:bg-gray-200 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-page dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-purple-400 dark:focus:ring-offset-page-dark"
+      onClick={() => onOpen()}
+    >
+      <span className="sr-only">Search</span>
+      <SearchIcon aria-hidden="true" className="h-6 w-6" />
+    </button>
+  )
 }
 
-function Search({ posts, onOpen, onClose }: Props) {
-  const navigate = useNavigate()
+type ElementType<T> = T extends Array<infer U> ? U : never
+
+function SearchDialog({
+  posts,
+  open,
+  onOpen,
+  onClose,
+}: {
+  posts: Posts
+  open: boolean
+  onOpen: () => void
+  onClose: () => void
+}) {
+  const [query, setQuery] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
-  const allResults = posts.flatMap<Post>((post) => {
-    if ('parts' in post) {
-      const series = post
-      return series.parts.map((part) => ({
-        ...part,
-        title: `${series.title}: ${part.title}`,
-      }))
-    }
-    return [post]
-  })
-  const [results, setResults] = useState(allResults)
-  const {
-    isOpen,
-    getLabelProps,
-    getComboboxProps,
-    getInputProps,
-    getMenuProps,
-    getItemProps,
-    inputValue,
-  } = useCombobox({
-    id: 'downshift',
-    defaultHighlightedIndex: 0,
-    items: results,
-    itemToString(post) {
-      return post ? post.title : ''
-    },
-    onInputValueChange({ inputValue }) {
-      setResults(
-        inputValue ? filter(allResults, inputValue, { key: 'title' }) : [],
-      )
-    },
-    onSelectedItemChange({ selectedItem }) {
-      if (selectedItem) {
-        navigate(selectedItem.pathname)
+
+  const allPosts = useMemo(() => {
+    return posts.flatMap<Post & { pathname: string }>((post) => {
+      if ('parts' in post) {
+        const series = post
+        return series.parts.map((part) => ({
+          ...part,
+          title: `${series.title}: ${part.title}`,
+          pathname: `/blog/${series.slug}/${part.slug}`,
+        }))
       }
-    },
-    stateReducer(state, actionAndChanges) {
-      const { type, changes } = actionAndChanges
-      switch (type) {
-        case useCombobox.stateChangeTypes.InputKeyDownEnter:
-        case useCombobox.stateChangeTypes.ItemClick:
-          return { ...changes, inputValue: '' }
-        default:
-          return changes
+      return {
+        ...post,
+        pathname: `/blog/${post.slug}`,
       }
-    },
-  })
+    })
+  }, [posts])
+
+  const filteredPosts = useMemo(() => {
+    if (query === '') return []
+    return filter(allPosts, query, { key: 'title' })
+  }, [query, allPosts])
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.metaKey && event.code === 'KeyK') {
-        inputRef.current?.focus()
+        onOpen()
       }
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [])
+  }, [onOpen])
+
+  useEffect(() => {
+    if (open) inputRef.current?.focus()
+  }, [open])
 
   return (
-    <div className="search relative z-10">
-      <div className="absolute top-0 right-0 h-[var(--size)] w-[calc(var(--size)+2.75rem)] transition-all duration-300 focus-within:w-full 2xl:top-1">
-        {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-        <label
-          className="relative z-20 flex aspect-square h-[var(--size)] cursor-pointer items-center justify-center"
-          {...getLabelProps()}
-        >
-          <span className="sr-only">Search</span>
-          <Icon icon={searchIcon} className="h-5 w-5 lg:h-7 lg:w-7" />
-        </label>
-        <div
-          className="absolute top-0 right-0 z-10 h-full w-full"
-          {...getComboboxProps()}
-        >
-          <input
-            type="search"
-            className="peer block h-full w-full rounded-[calc(var(--size)/2)] bg-gray-200 pl-[var(--size)] outline-none focus:pr-2 a11y-expanded:!bg-transparent dark:bg-gray-700 lg:text-lg xl:text-xl 2xl:text-2xl"
-            {...getInputProps({
-              ref: inputRef,
-              onFocus: () => {
-                if (onOpen) onOpen()
-              },
-              onBlur: () => {
-                if (onClose) onClose()
-              },
-            })}
-          />
-          <div className="pointer-events-none absolute inset-y-0 right-0 flex py-[4px] pr-1.5 peer-focus:hidden md:py-[6px]">
-            <kbd className="inline-flex items-center rounded-[calc(var(--size)/2)] border border-gray-400 px-2 font-sans text-xs font-medium text-gray-500 sm:text-sm">
-              ⌘K
-            </kbd>
-          </div>
-        </div>
-      </div>
-      <ul
-        className={clsx(
-          'absolute inset-x-0 top-0 lg:text-lg xl:text-xl 2xl:text-2xl',
-          isOpen &&
-            'overflow-hidden rounded-lg bg-gray-100 pt-[var(--size)] shadow-md dark:bg-gray-800',
-        )}
-        {...getMenuProps()}
+    <Transition.Root show={open} as={Fragment} afterLeave={() => setQuery('')}>
+      <Dialog
+        as="div"
+        className="fixed inset-0 z-10 overflow-y-auto p-4 sm:p-6 md:p-20"
+        onClose={(value) => (value ? onOpen() : onClose())}
       >
-        {isOpen &&
-          results.map((post, index) => (
-            <li
-              key={post.pathname}
-              className="cursor-pointer p-2 a11y-selected:bg-purple-200 dark:a11y-selected:bg-purple-900"
-              dangerouslySetInnerHTML={{
-                __html: wrap(post.title, inputValue),
-              }}
-              {...getItemProps({ item: post, index })}
-            />
-          ))}
-        {isOpen && results.length === 0 && (
-          <li className="p-2 text-gray-400">(No results)</li>
-        )}
-      </ul>
-    </div>
+        <Transition.Child
+          as={Fragment}
+          enter="ease-out duration-300"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="ease-in duration-200"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <Dialog.Overlay className="fixed inset-0 bg-gray-500 bg-opacity-25 transition-opacity" />
+        </Transition.Child>
+
+        <Transition.Child
+          as={Fragment}
+          enter="ease-out duration-300"
+          enterFrom="opacity-0 scale-95"
+          enterTo="opacity-100 scale-100"
+          leave="ease-in duration-200"
+          leaveFrom="opacity-100 scale-100"
+          leaveTo="opacity-0 scale-95"
+        >
+          <Combobox
+            as="div"
+            className="mx-auto max-w-xl transform divide-y divide-gray-100 overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black ring-opacity-5 transition-all"
+            value={null}
+            onChange={(post: ElementType<typeof filteredPosts>) => {
+              onClose()
+              navigate(post.pathname)
+            }}
+          >
+            <div className="relative">
+              <SearchIcon
+                className="pointer-events-none absolute top-3.5 left-4 h-5 w-5 text-gray-400"
+                aria-hidden="true"
+              />
+              <Combobox.Input
+                className="h-12 w-full border-0 bg-transparent pl-11 pr-4 text-gray-800 placeholder-gray-400 focus:ring-0 sm:text-sm"
+                placeholder="Search posts..."
+                onChange={(event) => setQuery(event.target.value)}
+              />
+            </div>
+
+            {filteredPosts.length > 0 && (
+              <Combobox.Options
+                // static
+                className="max-h-72 scroll-py-2 overflow-y-auto py-2 text-sm text-gray-800"
+              >
+                {filteredPosts.map((post) => (
+                  <Combobox.Option
+                    key={post.pathname}
+                    value={post}
+                    className={({ active }) =>
+                      clsx(
+                        'cursor-default select-none px-4 py-2',
+                        active && 'bg-purple-600 text-white',
+                      )
+                    }
+                    dangerouslySetInnerHTML={{
+                      __html: wrap(post.title, query),
+                    }}
+                  />
+                ))}
+              </Combobox.Options>
+            )}
+
+            {query !== '' && filteredPosts.length === 0 && (
+              <p className="p-4 text-sm text-gray-500">No posts found.</p>
+            )}
+          </Combobox>
+        </Transition.Child>
+      </Dialog>
+    </Transition.Root>
   )
 }

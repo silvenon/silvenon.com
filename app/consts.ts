@@ -19,7 +19,7 @@ export const proseFontSize = {
   sm: 16,
   lg: 18,
   xl: 20,
-  ['2xl']: 24,
+  '2xl': 24,
 }
 
 export const socialLinks = [

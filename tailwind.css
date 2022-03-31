@@ -46,6 +46,10 @@
     @apply !my-0 absolute top-0 left-0 w-full h-full;:w
   }
 
+  pre code .line.highlighted {
+    @apply bg-gray-200 dark:bg-gray-800;
+  }
+
   /* HotTip component */
 
   .hot-tip * {
@@ -54,13 +58,6 @@
   .hot-tip :is(code:not(pre code), pre) {
     @apply light:bg-purple-50 shadow-sm dark:border-0 dark:shadow-none;
   }
-
-  /* Search */
-
-  .search { --size: theme('spacing.7'); }
-  @media screen(sm) { .search { --size: theme('spacing.8'); } }
-  @media screen(lg) { .search { --size: theme('spacing.10'); } }
-  @media screen(2xl) { .search { --size: theme('spacing.11'); } }
 
   /* hand waving on the About page */
 

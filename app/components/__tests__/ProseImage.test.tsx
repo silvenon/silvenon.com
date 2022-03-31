@@ -1,6 +1,4 @@
-/**
- * @jest-environment jsdom
- */
+// @vitest-environment jsdom
 import { render } from '@testing-library/react'
 import ProseImage from '../ProseImage'
 

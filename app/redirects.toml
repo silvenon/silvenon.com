@@ -1,8 +1,3 @@
-# this file is being compiled to vercel.json
-
-[github]
-  silent = true
-
 # my early blog posts had a different URL structure
 
 [[redirects]]
@@ -63,30 +58,6 @@
   source = "/blog/code-folding-and-minimaps-43b2cfdd4359"
   destination = "/blog/code-folding-and-minimaps"
   permanent = true
-
-# redirect posts before simplifying paths
-
-[[rewrites]]
-  source = "/blog/posts/:match*"
-  destination = "/blog/:match*"
-
-# blog categories which are not being used at the moment
-
-[[rewrites]]
-  source = "/blog/category/:cat"
-  destination = "/blog"
-
-# I only have posts in English
-
-[[rewrites]]
-  source = "/blog/language/:lang"
-  destination = "/blog"
-
-# no more pagination
-
-[[rewrites]]
-  source = "/blog/page/:num"
-  destination = "/blog"
 
 # I joined these posts into series
 

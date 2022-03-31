@@ -4,7 +4,7 @@ import NotFound from '~/components/NotFound'
 
 export default function PostLayout() {
   return (
-    <div className="py-4">
+    <div className="px-4">
       <Outlet />
     </div>
   )

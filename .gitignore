@@ -5,24 +5,17 @@ node_modules
 .DS_Store
 
 # text editors
-.vscode
+.vscode/*
+!.vscode/launch.json
 .idea
 
 # secrets
 .env
 
 # build
-.cache
-.vercel
-.output
-
+/.cache
 /build
 /public/build
-/api/index.js
 /app/tailwind.css
-
-/prisma/dev.db
-/prisma/dev.db-journal
-
-# misc
-TODO.md
+/cypress/screenshots
+/cypress/videos

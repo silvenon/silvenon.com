@@ -1,5 +1,3 @@
-import Prose from './Prose'
-
 interface Props {
   title: string
   children: React.ReactNode
@@ -7,7 +5,7 @@ interface Props {
 
 export default function NotFound({ title, children }: Props) {
   return (
-    <Prose as="main" className="py-4 text-center">
+    <>
       <h1 className="mb-0">{title}</h1>
       <div className="my-6 flex justify-center sm:my-7 lg:my-8 xl:my-9 2xl:my-10">
         <svg
@@ -18,6 +16,6 @@ export default function NotFound({ title, children }: Props) {
         </svg>
       </div>
       {children}
-    </Prose>
+    </>
   )
 }

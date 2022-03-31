@@ -5,7 +5,7 @@ import Prose from './Prose'
 export default function Header() {
   const location = useLocation()
   return (
-    <Prose as="header" id="top" className="flex items-center">
+    <Prose as="header" id="top" className="flex items-center px-4">
       <div className="flex-1">
         {location.pathname !== '/' && (
           <nav>
@@ -59,7 +59,7 @@ export default function Header() {
         </Link>
       </div>
 
-      <div className="flex flex-1 justify-end">
+      <div className="flex flex-1 items-center justify-end">
         <DarkModeToggle />
       </div>
     </Prose>

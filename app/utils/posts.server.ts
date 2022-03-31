@@ -1,75 +1,124 @@
-import { compareDesc } from 'date-fns'
-import { formatDateISO } from './date'
-import { db } from './db.server'
-import type { StandalonePost, Series, SeriesPart, Prisma } from '@prisma/client'
+import matter from 'gray-matter'
+import fs from 'fs/promises'
+import path from 'path'
+import { parseISO, compareDesc } from 'date-fns'
+import { ROOT_DIR } from '../consts.server'
 
-interface StandalonePostWithAdditionalFields
-  extends Omit<StandalonePost, 'published'> {
-  pathname: string
-  published?: string
-}
-interface SeriesWithAdditionalFields extends Omit<Series, 'published'> {
-  pathname: string
-  published?: string
-  parts: SeriesPartWithAdditionalFields[]
-}
-interface SeriesPartWithAdditionalFields extends SeriesPart {
-  pathname: string
-}
-
-export type {
-  StandalonePostWithAdditionalFields as StandalonePost,
-  SeriesWithAdditionalFields as Series,
-  SeriesPartWithAdditionalFields as SeriesPart,
+export interface StandalonePost {
+  slug: string
+  title: string
+  htmlTitle?: string
+  description: string
+  category?: string
+  published?: Date
+  lastModified?: Date
+  tweet?: string
+  content: string
 }
 
-export async function getAllPosts(): Promise<
-  Array<StandalonePostWithAdditionalFields | SeriesWithAdditionalFields>
-> {
-  const filters: Prisma.StandalonePostWhereInput = {
-    // filter out drafts in production
-    ...(process.env.NODE_ENV === 'production'
-      ? { published: { not: null } }
-      : null),
+export interface Series {
+  slug: string
+  title: string
+  htmlTitle?: string
+  description: string
+  published?: Date
+  tweet: string
+  parts: SeriesPart[]
+}
+
+export interface SeriesPart extends Omit<StandalonePost, 'published'> {
+  seriesPart: number
+}
+
+export async function getAllEntries() {
+  const entries: Array<StandalonePost | Series> = []
+  const dirents = await fs.readdir(`${ROOT_DIR}/posts`, {
+    withFileTypes: true,
+  })
+
+  for (const dirent of dirents) {
+    if (dirent.name === '__tests__') continue
+    if (dirent.isFile()) {
+      if (!dirent.name.endsWith('.mdx')) continue
+      const postSlug = path.basename(dirent.name, '.mdx')
+      const post = await getStandalonePost(postSlug)
+      if (post !== null) entries.push(post)
+    } else {
+      const seriesSlug = dirent.name
+      const series = await getSeries(seriesSlug)
+      if (series) entries.push(series)
+    }
   }
 
-  const standalonePosts = (
-    await db.standalonePost.findMany({
-      where: { ...filters },
-    })
-  ).map((post) => ({
-    ...post,
-    pathname: `/blog/${post.slug}`,
-  }))
+  entries.sort((a, b) => {
+    if (!a.published) return -1
+    if (!b.published) return 1
+    return compareDesc(a.published, b.published)
+  })
 
-  const series = (
-    await db.series.findMany({
-      where: { ...filters },
-      include: {
-        parts: {
-          orderBy: {
-            seriesPart: 'asc',
-          },
-        },
-      },
+  if (process.env.NODE_ENV === 'development') {
+    return entries
+  }
+
+  return entries.filter((entry) => entry.published)
+}
+
+export async function getStandalonePost(slug: string) {
+  let content
+  try {
+    content = await fs.readFile(`${ROOT_DIR}/posts/${slug}.mdx`, 'utf8')
+  } catch {
+    return null
+  }
+  const file = matter(content)
+  const frontmatter = file.data as Omit<StandalonePost, 'slug' | 'content'>
+  if (!frontmatter.published && process.env.NODE_ENV === 'production') {
+    return null
+  }
+  return { ...frontmatter, slug, content: file.content }
+}
+
+export async function getSeries(seriesSlug: string) {
+  let series
+  try {
+    series = JSON.parse(
+      await fs.readFile(`${ROOT_DIR}/posts/${seriesSlug}/series.json`, 'utf8'),
+    ) as Omit<Series, 'slug' | 'published' | 'parts'> & { published?: string }
+  } catch {
+    return null
+  }
+
+  if (!series.published && process.env.NODE_ENV === 'production') {
+    return null
+  }
+
+  const parts: SeriesPart[] = []
+
+  const partDirents = await fs.readdir(`${ROOT_DIR}/posts/${seriesSlug}`, {
+    withFileTypes: true,
+  })
+
+  for (const partDirent of partDirents) {
+    if (!partDirent.name.endsWith('.mdx')) continue
+    const content = await fs.readFile(
+      `${ROOT_DIR}/posts/${seriesSlug}/${partDirent.name}`,
+      'utf8',
+    )
+    const file = matter(content)
+    const frontmatter = file.data as Omit<SeriesPart, 'slug' | 'content'>
+    parts.push({
+      ...frontmatter,
+      slug: path.basename(partDirent.name, '.mdx'),
+      content: file.content,
     })
-  ).map((series) => ({
+  }
+
+  parts.sort((a, b) => a.seriesPart - b.seriesPart)
+
+  return {
     ...series,
-    pathname: `/blog/${series.slug}`,
-    parts: series.parts.map((part) => ({
-      ...part,
-      pathname: `/blog/${series.slug}/${part.slug}`,
-    })),
-  }))
-
-  return [...standalonePosts, ...series]
-    .sort((postA, postB) => {
-      if (!postA.published) return -1
-      if (!postB.published) return 1
-      return compareDesc(postA.published, postB.published)
-    })
-    .map((post) => ({
-      ...post,
-      published: post.published ? formatDateISO(post.published) : undefined,
-    }))
+    published: series.published ? parseISO(series.published) : undefined,
+    slug: seriesSlug,
+    parts,
+  }
 }
