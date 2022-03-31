@@ -17,5 +17,6 @@ node_modules
 /build
 /public/build
 /app/tailwind.css
+/coverage
 /cypress/screenshots
 /cypress/videos
