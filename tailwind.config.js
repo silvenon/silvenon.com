@@ -10,7 +10,7 @@ const js = plugin(({ addVariant }) => {
   addVariant('js', '.js &')
 })
 const light = plugin(({ addVariant }) => {
-  addVariant('light', '&:where(:not(.dark *))')
+  addVariant('light', ':not(.dark) &')
 })
 const a11y = plugin(({ addVariant }) => {
   addVariant('a11y-expanded', [
@@ -73,6 +73,9 @@ module.exports = {
               borderRadius: theme('borderRadius.lg'),
               border: 'var(--tw-prose-inline-code-border)',
               boxShadow: 'var(--tw-prose-inline-code-shadow)',
+              '&[data-theme="dark"]': {
+                display: 'none',
+              },
             },
             'a code': {
               color: 'inherit',
@@ -174,6 +177,15 @@ module.exports = {
             '--tw-prose-pre-border': `1px solid ${theme('colors.zinc.800')}`,
             '--tw-prose-pre-code': '#f1f5f9',
             '--tw-prose-pre-shadow': `inset 0 0 1rem ${theme('colors.black')}`,
+
+            'code:not(pre code)': {
+              '&[data-theme="light"]': {
+                display: 'none',
+              },
+              '&[data-theme="dark"]': {
+                display: 'inline',
+              },
+            },
           },
         },
       }),

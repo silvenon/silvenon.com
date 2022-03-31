@@ -10,15 +10,6 @@
     --content-padding: theme('spacing.4');
   }
 
-  /* in case JavaScript is disabled hide themes via CSS */
-
-  [data-theme="light"] {
-    @apply no-js:dark:hidden;
-  }
-  [data-theme="dark"] {
-    @apply no-js:light:hidden;
-  }
-
   /* Gitgraph component */
 
   :root {
