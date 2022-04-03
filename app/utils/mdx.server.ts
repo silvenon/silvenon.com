@@ -12,7 +12,7 @@ export async function bundleMDXPost(content: string) {
 
   const { code, errors } = await bundleMDX({
     source: content,
-    xdmOptions: (options) => {
+    mdxOptions: (options) => {
       options.remarkPlugins = [
         ...(options.remarkPlugins ?? []),
         remarkSmartypants,

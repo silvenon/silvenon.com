@@ -56,7 +56,7 @@
   ],
   "simple-git-hooks": {
     "pre-commit": "npx nano-staged",
-    "pre-push": "npm run typecheck"
+    "pre-push": "npm run validate"
   },
   "nano-staged": {
     "*.{js,ts,tsx}": [
@@ -81,7 +81,7 @@
     "esbuild-plugin-browserslist": "^0.4.3",
     "feed": "^4.2.2",
     "fuzzaldrin-plus": "^0.6.0",
-    "mdx-bundler": "^8.0.1",
+    "mdx-bundler": "^9.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-twitter-widgets": "^1.10.0",
@@ -101,7 +101,7 @@
     "@iconify/react": "^3.1.3",
     "@remix-run/dev": "^1.2.2",
     "@remix-run/eslint-config": "^1.3.2",
-    "@tailwindcss/forms": "^0.4.0",
+    "@tailwindcss/forms": "^0.5.0",
     "@tailwindcss/typography": "^0.5.0",
     "@testing-library/cypress": "^8.0.2",
     "@testing-library/jest-dom": "^5.16.3",
@@ -141,6 +141,6 @@
     "typescript": "^4.5.4",
     "vite": "^2.8.6",
     "vite-tsconfig-paths": "^3.4.1",
-    "vitest": "^0.7.7"
+    "vitest": "^0.8.2"
   }
 }
