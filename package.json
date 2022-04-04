@@ -19,7 +19,6 @@
   "license": "MIT",
   "scripts": {
     "prepare": "simple-git-hooks",
-    "postinstall": "remix setup node",
     "dotenv": "node node_modules/dotenv-safe/config.js",
     "generate:css": "tailwindcss --input ./tailwind.css --output ./app/tailwind.css",
     "dev": "npm-run-all dotenv --parallel dev:*",
@@ -69,6 +68,7 @@
     "@headlessui/react": "0.0.0-insiders.27dece1",
     "@heroicons/react": "^1.0.5",
     "@iconify/icons-entypo-social": "^1.1.0",
+    "@remix-run/node": "^1.3.4",
     "@remix-run/react": "^1.2.2",
     "@remix-run/serve": "^1.2.2",
     "browserslist": "^4.19.1",
@@ -88,7 +88,6 @@
     "rehype-pretty-code": "^0.2.2",
     "remark-smartypants": "^2.0.0",
     "remark-unwrap-images": "^3.0.1",
-    "remix": "^1.2.2",
     "remix-auth": "^3.2.1",
     "remix-auth-form": "^1.1.1",
     "shiki": "^0.10.0",

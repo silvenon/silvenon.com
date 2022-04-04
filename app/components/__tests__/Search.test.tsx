@@ -7,7 +7,7 @@ import {
 import user from '@testing-library/user-event'
 import Search from '../Search'
 
-vi.mock('remix', () => ({
+vi.mock('@remix-run/react', () => ({
   useNavigate: () => {
     return () => {}
   },

@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'remix'
+import { Link, useLocation } from '@remix-run/react'
 import DarkModeToggle from './DarkModeToggle'
 import Prose from './Prose'
 

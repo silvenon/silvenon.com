@@ -1,4 +1,4 @@
-import { Link, useLocation, useTransition } from 'remix'
+import { Link, useLocation, useTransition } from '@remix-run/react'
 import { useMemo, useCallback } from 'react'
 import { getMDXComponent } from 'mdx-bundler/client'
 import { Utterances, Theme } from 'utterances-react-component'

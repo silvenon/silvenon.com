@@ -1,5 +1,6 @@
-import { json, useLoaderData, useTransition, Link } from 'remix'
-import type { LoaderFunction, MetaFunction } from 'remix'
+import { useLoaderData, useTransition, Link } from '@remix-run/react'
+import { json } from '@remix-run/node'
+import type { LoaderFunction, MetaFunction } from '@remix-run/node'
 import { Fragment } from 'react'
 import clsx from 'clsx'
 import Search from '~/components/Search'

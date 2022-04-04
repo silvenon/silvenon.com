@@ -6,8 +6,12 @@ import {
   Scripts,
   ScrollRestoration,
   useCatch,
-} from 'remix'
-import type { LoaderFunction, MetaFunction, LinksFunction } from 'remix'
+} from '@remix-run/react'
+import type {
+  LoaderFunction,
+  MetaFunction,
+  LinksFunction,
+} from '@remix-run/node'
 import clsx from 'clsx'
 import Prose from './components/Prose'
 import Analytics from './components/Analytics'

@@ -1,4 +1,4 @@
-import { LoaderFunction } from 'remix'
+import { LoaderFunction } from '@remix-run/node'
 import { Feed } from 'feed'
 import path from 'path'
 import cloudinary from '~/utils/cloudinary'

@@ -1,5 +1,5 @@
-import { useLoaderData } from 'remix'
-import type { LoaderFunction, MetaFunction } from 'remix'
+import { useLoaderData } from '@remix-run/react'
+import type { LoaderFunction, MetaFunction } from '@remix-run/node'
 import { bundleMDXPost } from '~/utils/mdx.server'
 import invariant from 'tiny-invariant'
 import type { LoaderData as StandaloneLoaderData } from './$postSlug'

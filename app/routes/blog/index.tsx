@@ -1,4 +1,4 @@
-import { LoaderFunction } from 'remix'
+import { LoaderFunction } from '@remix-run/node'
 
 export const loader: LoaderFunction = () => {
   throw new Response('Not Found', { status: 404 })

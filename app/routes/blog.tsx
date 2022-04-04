@@ -1,4 +1,4 @@
-import { Outlet, useCatch } from 'remix'
+import { Outlet, useCatch } from '@remix-run/react'
 import Prose from '~/components/Prose'
 import NotFound from '~/components/NotFound'
 

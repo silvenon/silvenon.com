@@ -1,4 +1,4 @@
-import { useNavigate } from 'remix'
+import { useNavigate } from '@remix-run/react'
 import { useState, useEffect, useRef, useMemo, Fragment } from 'react'
 import { createPortal } from 'react-dom'
 import { Combobox, Dialog, Transition } from '@headlessui/react'
