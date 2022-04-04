@@ -7,7 +7,7 @@ import {
   ScrollRestoration,
   useCatch,
 } from 'remix'
-import type { MetaFunction, LinksFunction } from 'remix'
+import type { LoaderFunction, MetaFunction, LinksFunction } from 'remix'
 import clsx from 'clsx'
 import Prose from './components/Prose'
 import Analytics from './components/Analytics'
@@ -17,7 +17,13 @@ import styles from './tailwind.css'
 import { DarkModeProvider } from './services/dark-mode'
 import Header from './components/Header'
 import NotFound from './components/NotFound'
+import { removeTrailingSlash } from './utils/http'
 import { getMeta } from './utils/seo'
+
+export const loader: LoaderFunction = ({ request }) => {
+  removeTrailingSlash(request)
+  return null
+}
 
 export const meta: MetaFunction = ({ location }) => {
   return {
