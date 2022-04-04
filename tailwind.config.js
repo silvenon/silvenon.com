@@ -3,7 +3,7 @@ const plugin = require('tailwindcss/plugin')
 const typography = require('@tailwindcss/typography')
 const forms = require('@tailwindcss/forms')
 const typographyStyles = require('@tailwindcss/typography/src/styles')
-const screens = require('./screens.json')
+const screens = require('./app/screens.json')
 
 const js = plugin(({ addVariant }) => {
   addVariant('no-js', '.no-js &')

@@ -20,3 +20,4 @@ node_modules
 /coverage
 /cypress/screenshots
 /cypress/videos
+tsconfig.tsbuildinfo

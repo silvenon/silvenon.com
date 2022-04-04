@@ -12,7 +12,7 @@ export const author = {
   link: 'https://silvenon.com',
 }
 
-export { default as screens } from '../screens.json'
+export { default as screens } from './screens.json'
 
 export const proseFontSize = {
   DEFAULT: 14,
