@@ -15,6 +15,7 @@ import Spinner from '~/components/Spinner'
 import { useDarkMode } from '~/services/dark-mode'
 
 interface StandalonePost {
+  slug: string
   title: string
   htmlTitle?: string
   published?: Date
@@ -137,6 +138,9 @@ export default function Post(props: Props) {
       <footer className="px-2.5">
         <hr className="!mb-2" />
         <Utterances
+          key={
+            isSeries ? `${props.series.slug}-${props.seriesPart}` : props.slug
+          }
           repo="silvenon/silvenon.com"
           theme={commentsTheme}
           issueTerm="title"

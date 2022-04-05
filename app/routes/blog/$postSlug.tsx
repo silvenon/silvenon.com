@@ -9,6 +9,7 @@ import { getStandalonePost } from '~/utils/posts.server'
 import { formatDateISO } from '~/utils/date'
 
 export interface LoaderData {
+  slug: string
   htmlTitle?: string
   title: string
   description: string
@@ -24,6 +25,7 @@ export const loader: LoaderFunction = async ({ params }) => {
   try {
     const code = await bundleMDXPost(post.content)
     const data: LoaderData = {
+      slug: post.slug,
       title: post.title,
       description: post.description,
       htmlTitle: post.htmlTitle,
