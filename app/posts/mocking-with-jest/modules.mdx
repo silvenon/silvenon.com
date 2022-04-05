@@ -115,7 +115,7 @@ jest.mock('./monty-python', () => {
 
 Jest will throw an error and explaning why this won't work:
 
-```
+```txt
 babel-plugin-jest-hoist: The module factory of `jest.mock()` is not allowed to reference any out-of-scope variables.
 Invalid variable access: meaningOfLife
 Whitelisted objects: Array, ArrayBuffer, Boolean, (...)
@@ -173,7 +173,7 @@ Lastly, passing the implementation to `jest.mock` is actually _optional_, I lied
 
 Jest calls these "manual mocks". Personally, I use them rarely, but they're handy when you want to mock a certain module in multiple test files. You can create them by using the following file structure:
 
-```
+```txt
 monty-python.js
 __mocks__
 └── monty-python.js

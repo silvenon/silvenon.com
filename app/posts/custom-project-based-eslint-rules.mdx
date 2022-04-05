@@ -69,7 +69,7 @@ I pasted the code above into the AST explorer and, since we're interested in the
 
 Our AST selector should target strings which are arguments of functions called `it` and start with the word `should`:
 
-```
+```txt
 CallExpression[callee.name=it] > Literal[value=/^should\b/]
 ```
 
