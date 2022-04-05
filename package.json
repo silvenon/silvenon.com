@@ -31,7 +31,7 @@
     "start": "remix-serve build",
     "start:mocks": "binode --require ./mocks -- @remix-run/serve:remix-serve build",
     "prelint": "eslint-config-prettier src/root.tsx src/__tests__/posts.test.ts",
-    "lint": "eslint . --report-unused-disable-directives --cache --cache-location ./node_modules/.cache/eslint",
+    "lint": "eslint . --ext js,jsx,ts,tsx --report-unused-disable-directives --cache --cache-location ./node_modules/.cache/eslint",
     "test": "vitest",
     "test:e2e:dev": "start-server-and-test dev 3000 'cypress open'",
     "pretest:e2e:run": "npm run build",
