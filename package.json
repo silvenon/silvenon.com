@@ -23,7 +23,7 @@
     "generate:css": "tailwindcss --input ./tailwind.css --output ./app/tailwind.css",
     "dev": "npm-run-all dotenv --parallel dev:*",
     "dev:css": "npm run generate:css -- --watch",
-    "dev:remix": "binode --require ./mocks -- @remix-run/dev:remix dev",
+    "dev:remix": "cross-env NODE_ENV=development binode --require ./mocks -- @remix-run/dev:remix dev",
     "build": "npm-run-all build:css build:remix",
     "build:css": "npm run generate:css -- --minify",
     "build:remix": "remix build",
