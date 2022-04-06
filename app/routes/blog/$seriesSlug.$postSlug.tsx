@@ -9,7 +9,8 @@ import Post from '~/components/Post'
 import { getSeries } from '~/utils/posts.server'
 import { formatDateISO } from '~/utils/date'
 
-export interface LoaderData extends Omit<StandaloneLoaderData, 'published'> {
+export interface LoaderData
+  extends Omit<StandaloneLoaderData, 'slug' | 'published'> {
   seriesPart: number
   series: {
     slug: string

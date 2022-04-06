@@ -22,7 +22,7 @@ interface StandalonePost {
   code: string
 }
 
-interface SeriesPart extends Omit<StandalonePost, 'published'> {
+interface SeriesPart extends Omit<StandalonePost, 'slug' | 'published'> {
   seriesPart: number
   series: {
     slug: string
