@@ -15,8 +15,8 @@ exports[`ProseImage > Cloudinary + Unsplash 1`] = `
         class="rounded-lg"
         loading="lazy"
         sizes="(min-width: 640px) 620px, (min-width: 1024px) 700px, (min-width: 1280px) 780px, (min-width: 1536px) 920px, calc(100vw - (var(--content-padding) * 2))"
-        src="https://res.cloudinary.com/silvenon/image/upload/c_limit,w_1024/1_zs1MOwXPd-FcxoQ5RIMvyw_t3axyl"
-        srcset="https://res.cloudinary.com/silvenon/image/upload/c_limit,w_640/1_zs1MOwXPd-FcxoQ5RIMvyw_t3axyl 640w, https://res.cloudinary.com/silvenon/image/upload/c_limit,w_768/1_zs1MOwXPd-FcxoQ5RIMvyw_t3axyl 768w, https://res.cloudinary.com/silvenon/image/upload/c_limit,w_800/1_zs1MOwXPd-FcxoQ5RIMvyw_t3axyl 800w"
+        src="https://res.cloudinary.com/silvenon/image/upload/c_limit,w_1024,f_auto,q_auto/1_zs1MOwXPd-FcxoQ5RIMvyw_t3axyl"
+        srcset="https://res.cloudinary.com/silvenon/image/upload/c_limit,w_640,f_auto,q_auto/1_zs1MOwXPd-FcxoQ5RIMvyw_t3axyl 640w, https://res.cloudinary.com/silvenon/image/upload/c_limit,w_768,f_auto,q_auto/1_zs1MOwXPd-FcxoQ5RIMvyw_t3axyl 768w, https://res.cloudinary.com/silvenon/image/upload/c_limit,w_800,f_auto,q_auto/1_zs1MOwXPd-FcxoQ5RIMvyw_t3axyl 800w"
       />
     </div>
   </div>
@@ -54,8 +54,8 @@ exports[`ProseImage > Cloudinary 1`] = `
       class="rounded-lg"
       loading="lazy"
       sizes="(min-width: 640px) 620px, (min-width: 1024px) 700px, (min-width: 1280px) 780px, (min-width: 1536px) 920px, calc(100vw - (var(--content-padding) * 2))"
-      src="https://res.cloudinary.com/silvenon/image/upload/c_limit,w_1024/1_zs1MOwXPd-FcxoQ5RIMvyw_t3axyl"
-      srcset="https://res.cloudinary.com/silvenon/image/upload/c_limit,w_640/1_zs1MOwXPd-FcxoQ5RIMvyw_t3axyl 640w, https://res.cloudinary.com/silvenon/image/upload/c_limit,w_768/1_zs1MOwXPd-FcxoQ5RIMvyw_t3axyl 768w, https://res.cloudinary.com/silvenon/image/upload/c_limit,w_800/1_zs1MOwXPd-FcxoQ5RIMvyw_t3axyl 800w"
+      src="https://res.cloudinary.com/silvenon/image/upload/c_limit,w_1024,f_auto,q_auto/1_zs1MOwXPd-FcxoQ5RIMvyw_t3axyl"
+      srcset="https://res.cloudinary.com/silvenon/image/upload/c_limit,w_640,f_auto,q_auto/1_zs1MOwXPd-FcxoQ5RIMvyw_t3axyl 640w, https://res.cloudinary.com/silvenon/image/upload/c_limit,w_768,f_auto,q_auto/1_zs1MOwXPd-FcxoQ5RIMvyw_t3axyl 768w, https://res.cloudinary.com/silvenon/image/upload/c_limit,w_800,f_auto,q_auto/1_zs1MOwXPd-FcxoQ5RIMvyw_t3axyl 800w"
     />
   </div>
 </div>

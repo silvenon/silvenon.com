@@ -15,7 +15,7 @@ export const loader: LoaderFunction = async ({ request }) => {
     id: domain,
     link: domain,
     language: 'en-US',
-    image: cloudinary('in-reactor-1.jpg', { version: 3 }),
+    image: cloudinary('in-reactor-1.jpg', { version: 3, quality: 'auto' }),
     favicon: `${domain}/favicon.ico`,
     author,
     copyright: '',

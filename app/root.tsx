@@ -39,12 +39,13 @@ export const meta: MetaFunction = ({ location }) => {
     'og:site_name': author.name,
     'og:url': new URL(location.pathname, SITE_URL).href,
     // https://developers.facebook.com/docs/sharing/best-practices/#images
-    'og:image': cloudinary('in-reactor-1.jpg', {
+    'og:image:url': cloudinary('in-reactor-1.jpg', {
       version: 3,
       width: 1080,
       aspectRatio: '1:1',
       crop: 'fill',
       gravity: 'face',
+      quality: 'auto',
     }),
     'og:image:type': 'image/jpeg',
     'og:image:width': '1080',
@@ -59,6 +60,8 @@ export const meta: MetaFunction = ({ location }) => {
       aspectRatio: '1:1',
       crop: 'fill',
       gravity: 'face',
+      format: 'webp',
+      quality: 'auto',
     }),
   }
 }

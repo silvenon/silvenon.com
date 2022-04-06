@@ -1,5 +1,5 @@
 import CSS from 'csstype'
-import cl from '../utils/cloudinary'
+import cloudinary from '../utils/cloudinary'
 import { screens } from '../consts'
 import clsx from 'clsx'
 
@@ -15,7 +15,12 @@ const imageSizes = [640, 768, 1024, 1536, 2048]
 const largestImageSize = Math.max(...imageSizes)
 
 export function getImageUrl(id: string, size: number) {
-  return cl(id, { crop: 'limit', width: size })
+  return cloudinary(id, {
+    crop: 'limit',
+    width: size,
+    format: 'auto',
+    quality: 'auto',
+  })
 }
 
 interface Props extends React.ImgHTMLAttributes<HTMLImageElement> {

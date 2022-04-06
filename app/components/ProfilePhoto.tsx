@@ -32,6 +32,8 @@ export default function ProfilePhoto({ className }: Props) {
                 aspectRatio: '4:5',
                 crop: 'fill',
                 gravity: 'custom',
+                format: 'auto',
+                quality: 'auto',
               },
             ],
           })} ${SM_WIDTH_PX}w,
@@ -44,6 +46,8 @@ export default function ProfilePhoto({ className }: Props) {
                 aspectRatio: '4:5',
                 crop: 'fill',
                 gravity: 'custom',
+                format: 'auto',
+                quality: 'auto',
               },
             ],
           })} ${SM_WIDTH_PX * 2}w
@@ -57,7 +61,14 @@ export default function ProfilePhoto({ className }: Props) {
             version: VERSION,
             transformations: [
               zoom,
-              { width: 450, aspectRatio: '4:2', crop: 'fill', gravity: 'auto' },
+              {
+                width: 450,
+                aspectRatio: '4:2',
+                crop: 'fill',
+                gravity: 'auto',
+                format: 'auto',
+                quality: 'auto',
+              },
             ],
           })}
           srcSet={`
@@ -65,14 +76,28 @@ export default function ProfilePhoto({ className }: Props) {
             version: VERSION,
             transformations: [
               zoom,
-              { width: 450, aspectRatio: '4:2', crop: 'fill', gravity: 'face' },
+              {
+                width: 450,
+                aspectRatio: '4:2',
+                crop: 'fill',
+                gravity: 'face',
+                format: 'auto',
+                quality: 'auto',
+              },
             ],
           })} 450w,
           ${cloudinary(ID, {
             version: VERSION,
             transformations: [
               zoom,
-              { width: 900, aspectRatio: '4:2', crop: 'fill', gravity: 'face' },
+              {
+                width: 900,
+                aspectRatio: '4:2',
+                crop: 'fill',
+                gravity: 'face',
+                format: 'auto',
+                quality: 'auto',
+              },
             ],
           })} 900w
         `}
