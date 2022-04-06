@@ -31,6 +31,9 @@ export const loader: LoaderFunction = ({ request }) => {
 
 export const meta: MetaFunction = ({ location }) => {
   return {
+    ...(process.env.FLY_APP === 'silvenon-staging'
+      ? { robots: 'noindex' }
+      : null),
     ...getMeta({
       title: author.name,
       description: SITE_DESCRIPTION,
