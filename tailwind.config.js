@@ -10,7 +10,7 @@ const js = plugin(({ addVariant }) => {
   addVariant('js', '.js &')
 })
 const light = plugin(({ addVariant }) => {
-  addVariant('light', 'html:not(.dark) &')
+  addVariant('light', '&:not(html:not(.dark) &)')
 })
 const a11y = plugin(({ addVariant }) => {
   addVariant('a11y-expanded', [
