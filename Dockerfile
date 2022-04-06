@@ -1,6 +1,9 @@
 # base node image
 FROM node:16-bullseye-slim as base
 
+# set for base and all layer that inherit from it
+ENV NODE_ENV=production
+
 # Install all node_modules, including dev dependencies
 FROM base as deps
 
@@ -23,8 +26,6 @@ RUN npm prune --production
 # Build the app
 FROM base as build
 
-ENV NODE_ENV=production
-
 RUN mkdir /app
 WORKDIR /app
 
@@ -36,7 +37,6 @@ RUN npm run build
 # Finally, build the production image with minimal footprint
 FROM base
 
-ENV NODE_ENV=production
 
 RUN mkdir /app
 WORKDIR /app
