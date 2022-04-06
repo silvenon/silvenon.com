@@ -7,6 +7,7 @@ import {
   ScrollRestoration,
   useCatch,
 } from '@remix-run/react'
+import { json } from '@remix-run/node'
 import type {
   LoaderFunction,
   MetaFunction,
@@ -26,14 +27,12 @@ import { getMeta } from './utils/seo'
 
 export const loader: LoaderFunction = ({ request }) => {
   removeTrailingSlash(request)
-  return null
+  return json({ appName: process.env.FLY_APP }, 200)
 }
 
-export const meta: MetaFunction = ({ location }) => {
+export const meta: MetaFunction = ({ location, data }) => {
   return {
-    ...(process.env.FLY_APP === 'silvenon-staging'
-      ? { robots: 'noindex' }
-      : null),
+    ...(data?.appName === 'silvenon-staging' ? { robots: 'noindex' } : null),
     ...getMeta({
       title: author.name,
       description: SITE_DESCRIPTION,
