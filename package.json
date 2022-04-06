@@ -37,7 +37,8 @@
     "pretest:e2e:run": "npm run build",
     "test:e2e:run": "cross-env PORT=8811 start-server-and-test start:mocks 8811 'cypress run'",
     "typecheck": "tsc --build",
-    "validate": "npm-run-all --parallel 'test -- --run' lint typecheck test:e2e:run"
+    "validate": "npm-run-all --parallel 'test -- --run' lint typecheck test:e2e:run",
+    "validate:pre-push": "npm-run-all --parallel 'test -- --run' lint typecheck"
   },
   "browserslist": [
     "defaults",
@@ -55,7 +56,7 @@
   ],
   "simple-git-hooks": {
     "pre-commit": "npx nano-staged",
-    "pre-push": "npm run validate"
+    "pre-push": "npm run validate:pre-push"
   },
   "nano-staged": {
     "*.{js,ts,tsx}": [
