@@ -5,8 +5,9 @@ import browserslist from 'browserslist'
 import esbuildPluginCloudinary from './esbuild-plugin-cloudinary.server'
 import clsx from 'clsx'
 import type { Root } from 'hast'
+import type TPQueue from 'p-queue'
 
-export async function bundleMDXPost(content: string) {
+async function bundleMDXPost(content: string) {
   // the official recommendation for importing ESM-only packages is to use serverDependenciesToBundle
   // howeever, that causes these plugins not tu have effect in development for some reason
   // https://remix.run/docs/en/v1/pages/gotchas#importing-esm-packages
@@ -90,3 +91,22 @@ function hideDuplicateCodeBlocks() {
     })
   }
 }
+
+let _queue: TPQueue | null = null
+async function getQueue() {
+  const { default: PQueue } = await import('p-queue')
+  if (_queue) return _queue
+
+  _queue = new PQueue({ concurrency: 1 })
+  return _queue
+}
+
+// We have to use a queue because we can't run more than one of these at a time
+// or we'll hit an out of memory error because esbuild uses a lot of memory
+async function queuedBundleMDXPost(...args: Parameters<typeof bundleMDXPost>) {
+  const queue = await getQueue()
+  const result = await queue.add(() => bundleMDXPost(...args))
+  return result
+}
+
+export { queuedBundleMDXPost as bundleMDXPost }
