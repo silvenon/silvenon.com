@@ -21,8 +21,6 @@ export const loader: LoaderFunction = async ({ request }) => {
     copyright: '',
   })
 
-  // ???
-
   const entries = await getAllEntries()
 
   for (const entry of entries) {
