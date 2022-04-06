@@ -43,8 +43,13 @@
 
   /* HotTip component */
 
-  .hot-tip * {
+  .hot-tip > * {
     @apply last:mb-0;
+  }
+  /* remove the bottom margin from last code blocks in light mode */
+  /* because they are 2nd to last, the last one is hidden for dark mode */
+  .hot-tip pre:nth-last-child(2) {
+    @apply mb-0;
   }
   .hot-tip :is(code:not(pre code), pre) {
     @apply light:bg-purple-50 shadow-sm dark:border-0 dark:shadow-none;

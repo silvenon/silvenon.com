@@ -1,7 +1,19 @@
 import { isValidElement } from 'react'
 import clsx from 'clsx'
 
-export { Pre as pre }
+export { Div as div, Pre as pre }
+
+interface DivProps extends React.ComponentProps<'div'> {
+  'data-rehype-pretty-code-fragment'?: ''
+}
+
+function Div(props: DivProps) {
+  // turn this div into an actual fragment by not rendering it
+  if (typeof props['data-rehype-pretty-code-fragment'] !== 'undefined') {
+    return props.children
+  }
+  return <div {...props} />
+}
 
 interface PreProps extends React.ComponentProps<'pre'> {}
 
