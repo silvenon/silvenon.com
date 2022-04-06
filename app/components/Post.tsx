@@ -10,7 +10,6 @@ import Tweet from '~/components/Tweet'
 import ProseImage from '~/components/ProseImage'
 import HotTip from '~/components/HotTip'
 import ESLintPrettierDiagram from '~/components/ESLintPrettierDiagram'
-import * as prettyCodeComponents from '~/components/pretty-code'
 import Spinner from '~/components/Spinner'
 import { useDarkMode } from '~/services/dark-mode'
 
@@ -124,7 +123,6 @@ export default function Post(props: Props) {
             HotTip,
             Tweet,
             ESLintPrettierDiagram,
-            ...prettyCodeComponents,
           }}
         />
 
