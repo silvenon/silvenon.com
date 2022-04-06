@@ -1,5 +1,5 @@
 import type { Plugin } from 'esbuild'
-import cloudinary from './cloudinary.server'
+import { getImageDimensions } from './cloudinary.server'
 
 const esbuildPluginCloudinary: Plugin = {
   name: 'cloudinary',
@@ -12,8 +12,7 @@ const esbuildPluginCloudinary: Plugin = {
     })
     build.onLoad({ filter: /.*/, namespace: 'cloudinary-ns' }, async (args) => {
       const cloudinaryId = args.path
-      const response = await cloudinary.api.resources_by_ids(cloudinaryId)
-      const { width, height } = response.resources[0]
+      const { width, height } = await getImageDimensions(cloudinaryId)
       return {
         contents: JSON.stringify({
           cloudinaryId,
