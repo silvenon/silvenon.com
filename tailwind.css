@@ -52,7 +52,7 @@
     @apply mb-0;
   }
   .hot-tip :is(code:not(pre code), pre) {
-    @apply light:bg-purple-50 shadow-sm dark:border-0 dark:shadow-none;
+    @apply light:bg-purple-50 shadow-sm border-0 dark:shadow-none;
   }
 
   /* hand waving on the About page */
