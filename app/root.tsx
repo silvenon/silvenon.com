@@ -27,11 +27,10 @@ import { getMeta } from './utils/seo'
 
 export const loader: LoaderFunction = ({ request }) => {
   removeTrailingSlash(request)
-  return json({ appName: process.env.FLY_APP_NAME }, 200)
+  return json({ appName: process.env.FLY_APP }, 200)
 }
 
 export const meta: MetaFunction = ({ location, data }) => {
-  console.log(data)
   return {
     ...(data?.appName === 'silvenon-staging' ? { robots: 'noindex' } : null),
     ...getMeta({
