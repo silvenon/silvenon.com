@@ -1,7 +1,6 @@
 describe('smoke test', () => {
-  it('search', () => {
+  it('site title', () => {
     cy.visit('/')
-    cy.findByRole('button', { name: 'Search' }).click()
-    cy.findByRole('combobox')
+    cy.findByRole('heading', { name: 'Matija Marohnić' })
   })
 })

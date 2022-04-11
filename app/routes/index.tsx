@@ -1,14 +1,12 @@
-import { useLoaderData, useTransition, Link } from '@remix-run/react'
+import { useLoaderData, Link } from '@remix-run/react'
 import { json } from '@remix-run/node'
 import type { LoaderFunction, MetaFunction } from '@remix-run/node'
 import { Fragment } from 'react'
 import clsx from 'clsx'
-import Search from '~/components/Search'
 import PostDate from '~/components/PostDate'
 import ProfilePhoto from '~/components/ProfilePhoto'
 import Icon from '~/components/Icon'
 import Prose from '~/components/Prose'
-import Spinner from '~/components/Spinner'
 import { getMeta } from '~/utils/seo'
 import {
   getAllEntries,
@@ -52,10 +50,6 @@ export const meta: MetaFunction = () =>
 
 export default function Home() {
   const entries = useLoaderData<LoaderData>()
-  const transition = useTransition()
-  const loadingPath =
-    transition.state === 'loading' &&
-    `${transition.location.pathname}${transition.location.search}`
   return (
     <>
       <section className="relative mt-4 mb-10 border-t-2 border-b-2 border-purple-400 bg-purple-300 px-4 dark:border-purple-400 dark:bg-purple-800">
@@ -103,23 +97,7 @@ export default function Home() {
       </section>
       <main className="mt-6 px-4 sm:flex sm:justify-center md:pb-4">
         <Prose>
-          <h2 className="flex items-center justify-between">
-            <div>Posts</div>
-            <Search
-              posts={entries.map((entry) => ({
-                slug: entry.slug,
-                title: entry.title,
-                ...('parts' in entry
-                  ? {
-                      parts: entry.parts?.map((part) => ({
-                        slug: part.slug,
-                        title: part.title,
-                      })),
-                    }
-                  : null),
-              }))}
-            />
-          </h2>
+          <h2>Posts</h2>
           {entries.map((entry, index) => {
             if ('parts' in entry) {
               const series = entry
@@ -132,10 +110,6 @@ export default function Home() {
                       >
                         {series.title}
                       </Link>
-                      {loadingPath ===
-                        `/blog/${series.slug}/${series.parts[0].slug}?root` && (
-                        <Spinner className="!ml-2 inline" />
-                      )}
                     </h3>
                     <PostDate published={series.published ?? undefined} />
                     <p>{series.description}</p>
@@ -146,10 +120,6 @@ export default function Home() {
                           <Link to={`/blog/${series.slug}/${part.slug}`}>
                             {part.title}
                           </Link>
-                          {loadingPath ===
-                            `/blog/${series.slug}/${part.slug}` && (
-                            <Spinner className="!ml-2 inline" />
-                          )}
                         </li>
                       ))}
                     </ol>
@@ -165,9 +135,6 @@ export default function Home() {
                 <article>
                   <h3>
                     <Link to={`/blog/${post.slug}`}>{post.title}</Link>
-                    {loadingPath === `/blog/${post.slug}` && (
-                      <Spinner className="!ml-2 inline" />
-                    )}
                   </h3>
                   <PostDate published={post.published ?? undefined} />
                   <p>{post.description}</p>

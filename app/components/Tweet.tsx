@@ -1,7 +1,12 @@
-import { Tweet } from 'react-twitter-widgets'
-import { useDarkMode } from '~/services/dark-mode'
+interface Props {
+  children: React.ReactNode
+}
 
-export default function ThemedTweet({ tweetId }: { tweetId: string }) {
-  const darkMode = useDarkMode()
-  return <Tweet tweetId={tweetId} options={darkMode ? { theme: 'dark' } : {}} />
+export default function Tweet({ children }: Props) {
+  return (
+    <>
+      <blockquote className="twitter-tweet">{children}</blockquote>
+      <script async src="https://platform.twitter.com/widgets.js" />
+    </>
+  )
 }

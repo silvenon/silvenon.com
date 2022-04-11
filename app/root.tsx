@@ -3,7 +3,6 @@ import {
   LiveReload,
   Meta,
   Outlet,
-  Scripts,
   ScrollRestoration,
   useCatch,
 } from '@remix-run/react'
@@ -19,7 +18,6 @@ import Analytics from './components/Analytics'
 import cloudinary from './utils/cloudinary'
 import { SITE_URL, SITE_DESCRIPTION, author } from './consts'
 import styles from './tailwind.css'
-import { DarkModeProvider } from './services/dark-mode'
 import Header from './components/Header'
 import NotFound from './components/NotFound'
 import { removeTrailingSlash } from './utils/http'
@@ -27,7 +25,7 @@ import { getMeta } from './utils/seo'
 
 export const loader: LoaderFunction = ({ request }) => {
   removeTrailingSlash(request)
-  return json({ appName: process.env.FLY_APP }, 200)
+  return json({ appName: process.env.FLY_APP_NAME }, 200)
 }
 
 export const meta: MetaFunction = ({ location, data }) => {
@@ -52,6 +50,7 @@ export const meta: MetaFunction = ({ location, data }) => {
     'og:image:type': 'image/jpeg',
     'og:image:width': '1080',
     'og:image:height': '1080',
+    'twitter:widgets:theme': 'light',
     // Twitter Card
     // https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/summary
     'twitter:card': 'summary',
@@ -69,7 +68,10 @@ export const meta: MetaFunction = ({ location, data }) => {
 }
 
 export const links: LinksFunction = () => {
-  return [{ rel: 'stylesheet', href: styles }]
+  return [
+    { rel: 'stylesheet', href: styles },
+    { rel: 'me', href: 'https://twitter.com/silvenon' },
+  ]
 }
 
 function Document({
@@ -79,25 +81,8 @@ function Document({
   className?: string
   children: React.ReactNode
 }) {
-  // avoid mismatch between client and server side rendering on hydration
-  // because the dark and js classes are being set in outside of React,
-  // not sure if this is the right way to solve this problem, but it works
-  const hasJs =
-    typeof document !== 'undefined' &&
-    document.documentElement.classList.contains('js')
-  const darkMode =
-    typeof document !== 'undefined' &&
-    document.documentElement.classList.contains('dark')
-
   return (
-    <html
-      lang="en"
-      className={clsx(
-        'h-full scroll-smooth',
-        hasJs ? 'js' : 'no-js',
-        darkMode && 'dark',
-      )}
-    >
+    <html lang="en" className="h-full scroll-smooth">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -113,12 +98,15 @@ function Document({
             `,
           }}
         />
+        <script async src="https://platform.twitter.com/widgets.js"></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/@gitgraph/js"></script>
         {/* https://tailwindcss.com/docs/dark-mode#toggling-dark-mode-manually */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
               const isDarkMode = localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
               document.documentElement.classList.toggle('dark', isDarkMode)
+              document.querySelector('meta[name="twitter:widgets:theme"]').setAttribute('content', isDarkMode ? 'dark' : 'light')
             `,
           }}
         />
@@ -129,13 +117,9 @@ function Document({
           className,
         )}
       >
-        <DarkModeProvider>
-          <Header />
-          {children}
-          <div id="search" />
-        </DarkModeProvider>
+        <Header />
+        {children}
         <ScrollRestoration />
-        <Scripts />
         <LiveReload />
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
