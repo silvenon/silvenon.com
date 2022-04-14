@@ -42,70 +42,72 @@ export default function Post(props: Props) {
   return (
     <Prose className="space-y-4">
       <main>
-        {isSeries ? (
-          <h1 className="space-y-2 text-center lg:space-y-4">
-            <div>{props.series.title}</div>
-            <div className="text-[0.8em] font-normal dark:font-light">
-              Part {props.seriesPart + 1}:{' '}
+        <article>
+          {isSeries ? (
+            <h1 className="space-y-2 text-center lg:space-y-4">
+              <div>{props.series.title}</div>
+              <div className="text-[0.8em] font-normal dark:font-light">
+                Part {props.seriesPart + 1}:{' '}
+                {props.htmlTitle ? (
+                  <span dangerouslySetInnerHTML={{ __html: props.htmlTitle }} />
+                ) : (
+                  props.title
+                )}
+              </div>
+            </h1>
+          ) : (
+            <h1 className="text-center">
               {props.htmlTitle ? (
                 <span dangerouslySetInnerHTML={{ __html: props.htmlTitle }} />
               ) : (
                 props.title
               )}
-            </div>
-          </h1>
-        ) : (
-          <h1 className="text-center">
-            {props.htmlTitle ? (
-              <span dangerouslySetInnerHTML={{ __html: props.htmlTitle }} />
-            ) : (
-              props.title
-            )}
-          </h1>
-        )}
+            </h1>
+          )}
 
-        <PostDate
-          published={
-            (isSeries ? props.series.published : props.published) ?? undefined
-          }
-        />
+          <PostDate
+            published={
+              (isSeries ? props.series.published : props.published) ?? undefined
+            }
+          />
 
-        {isSeries ? (
-          <>
-            <p>Parts of this series:</p>
-            <ol>
-              {props.series.parts.map((part) => {
-                const pathname = `/blog/${props.series.slug}/${part.slug}`
-                return (
-                  <li key={part.slug}>
-                    {location.pathname === pathname ? (
-                      part.title
-                    ) : (
-                      <Link to={pathname}>{part.title}</Link>
-                    )}
-                  </li>
-                )
-              })}
-            </ol>
-            <hr />
-          </>
-        ) : null}
+          {isSeries ? (
+            <>
+              <p>Parts of this series:</p>
+              <ol>
+                {props.series.parts.map((part) => {
+                  const pathname = `/blog/${props.series.slug}/${part.slug}`
+                  return (
+                    <li key={part.slug}>
+                      {location.pathname === pathname ? (
+                        part.title
+                      ) : (
+                        <Link to={pathname}>{part.title}</Link>
+                      )}
+                    </li>
+                  )
+                })}
+              </ol>
+              <hr />
+            </>
+          ) : null}
 
-        <PostContent
-          components={{
-            Gitgraph,
-            ProseImage,
-            HotTip,
-            Tweet,
-            ESLintPrettierDiagram,
-          }}
-        />
+          <PostContent
+            components={{
+              Gitgraph,
+              ProseImage,
+              HotTip,
+              Tweet,
+              ESLintPrettierDiagram,
+            }}
+          />
 
-        <div className="text-right">
-          <a className="p-2" href="#top">
-            Back to top ↑
-          </a>
-        </div>
+          <div className="text-right">
+            <a className="p-2" href="#top">
+              Back to top ↑
+            </a>
+          </div>
+        </article>
       </main>
 
       <footer className="px-2.5">
