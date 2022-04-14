@@ -60,7 +60,7 @@ export default function Home() {
   const entries = useLoaderData<LoaderData>()
   return (
     <>
-      <section className="relative mt-4 mb-10 border-t-2 border-b-2 border-purple-400 bg-purple-300 px-4 dark:border-purple-400 dark:bg-purple-800">
+      <section className="relative -mx-4 mt-4 mb-10 border-t-2 border-b-2 border-purple-400 bg-purple-300 px-4 dark:border-purple-400 dark:bg-purple-800">
         <div
           className="absolute inset-0 opacity-70 dark:opacity-30"
           style={{ backgroundImage: `url(${circuitBoard})` }}
@@ -103,7 +103,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <main className="mt-6 px-4 sm:flex sm:justify-center md:pb-4">
+      <main className="mt-6 sm:flex sm:justify-center md:pb-4">
         <Prose>
           <h2>Posts</h2>
           {entries.map((entry, index) => {

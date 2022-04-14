@@ -2,7 +2,6 @@ import { useLoaderData } from '@remix-run/react'
 import type { LoaderFunction, MetaFunction } from '@remix-run/node'
 import { bundleMDXPost } from '~/utils/mdx.server'
 import invariant from 'tiny-invariant'
-import type { LoaderData as StandaloneLoaderData } from './$postSlug'
 import { getMeta } from '~/utils/seo'
 import { author } from '~/consts'
 import Post from '~/components/Post'
@@ -10,7 +9,7 @@ import { getSeries } from '~/utils/posts.server'
 import { formatDateISO } from '~/utils/date'
 
 export interface LoaderData
-  extends Omit<StandaloneLoaderData, 'slug' | 'published'> {
+  extends Omit<import('./blog.$postSlug').LoaderData, 'slug' | 'published'> {
   seriesPart: number
   series: {
     slug: string
@@ -75,3 +74,5 @@ export default function SeriesPart() {
   const data = useLoaderData<LoaderData>()
   return <Post {...data} />
 }
+
+export { CatchBoundary } from './blog.$postSlug'
