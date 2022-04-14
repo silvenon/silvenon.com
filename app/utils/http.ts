@@ -14,8 +14,9 @@ export function getDomainUrl(request: Request) {
 export function removeTrailingSlash(request: Request) {
   const url = new URL(request.url)
   if (url.pathname !== '/' && url.pathname.endsWith('/')) {
-    throw redirect(request.url.slice(0, -1), {
-      status: 308,
-    })
+    throw redirect(
+      new URL(url.pathname.slice(0, -1), url.origin).href + url.search,
+      { status: 308 },
+    )
   }
 }
