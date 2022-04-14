@@ -1,4 +1,5 @@
 import { useLoaderData, useCatch } from '@remix-run/react'
+import { redirect } from '@remix-run/node'
 import type { LoaderFunction, MetaFunction } from '@remix-run/node'
 import invariant from 'tiny-invariant'
 import { bundleMDXPost } from '~/utils/mdx.server'
@@ -7,7 +8,7 @@ import { author } from '~/consts'
 import Post from '~/components/Post'
 import Prose from '~/components/Prose'
 import NotFound from '~/components/NotFound'
-import { getStandalonePost } from '~/utils/posts.server'
+import { getSeries, getStandalonePost } from '~/utils/posts.server'
 import { formatDateISO } from '~/utils/date'
 
 export interface LoaderData {
@@ -22,6 +23,10 @@ export interface LoaderData {
 
 export const loader: LoaderFunction = async ({ params }) => {
   invariant(params.postSlug, 'slug is required')
+  const series = await getSeries(params.postSlug)
+  if (series !== null) {
+    return redirect(`/blog/${series.slug}/${series.parts[0].slug}`, 302)
+  }
   const post = await getStandalonePost(params.postSlug)
   if (!post) throw new Response('Not Found', { status: 404 })
   try {

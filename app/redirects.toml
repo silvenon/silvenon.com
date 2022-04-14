@@ -73,12 +73,3 @@
   source = "/blog/mocking-modules-with-jest"
   destination = "/blog/mocking-with-jest/modules"
   permanent = true
-
-# redirect series root paths to first part (temporary solution)
-
-[[redirects]]
-  source = "/blog/mocking-with-jest"
-  destination = "/blog/mocking-with-jest/functions"
-[[redirects]]
-  source = "/blog/better-git-history"
-  destination = "/blog/better-git-history/introduction"
