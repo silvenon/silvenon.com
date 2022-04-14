@@ -39,6 +39,8 @@ export const headers: HeadersFunction = () => {
 export const meta: MetaFunction = ({ location, data }) => {
   return {
     ...(data?.appName === 'silvenon-staging' ? { robots: 'noindex' } : null),
+    charset: 'utf-8',
+    viewport: 'width=device-width,initial-scale=1',
     ...getMeta({
       title: author.name,
       description: SITE_DESCRIPTION,
@@ -78,6 +80,9 @@ export const meta: MetaFunction = ({ location, data }) => {
 export const links: LinksFunction = () => {
   return [
     { rel: 'stylesheet', href: styles },
+    { rel: 'icon', href: '/favicon.ico' },
+    { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
+    { rel: 'manifest', href: '/manifest.webmanifest' },
     { rel: 'me', href: 'https://twitter.com/silvenon' },
   ]
 }
@@ -92,11 +97,6 @@ function Document({
   return (
     <html lang="en" className="h-full scroll-smooth">
       <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        <link rel="manifest" href="/manifest.webmanifest" />
         <Meta />
         <Links />
         <script
