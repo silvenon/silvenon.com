@@ -106,8 +106,6 @@ function Document({
             `,
           }}
         />
-        <script async src="https://platform.twitter.com/widgets.js"></script>
-        <script defer src="https://cdn.jsdelivr.net/npm/@gitgraph/js"></script>
         {/* https://tailwindcss.com/docs/dark-mode#toggling-dark-mode-manually */}
         <script
           dangerouslySetInnerHTML={{
