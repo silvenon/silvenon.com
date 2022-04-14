@@ -100,9 +100,7 @@ jobs:
         uses: cypress-io/github-action@v3
         with:
           start: npm start
-          wait-on: "http://localhost:8811"
-        env:
-          PORT: "8811"
+          wait-on: "http://localhost:3000"
 
   build:
     name: 🐳 Build
