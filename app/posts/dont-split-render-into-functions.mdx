@@ -11,14 +11,15 @@ Unlike many other frameworks, React is very liberal in terms of where to place y
 
 However, this also forces us to make a lot more decisions.
 
-<ProseImage
-  alt="a birds eye view of a person lying in a large rectangular grass area surrounded by other rectangular grass areas"
-  {...imgCover}
-  unsplash={{
-    name: 'Martin Reisch',
-    username: 'safesolvent',
-  }}
-/>
+<figure>
+  <ProseImage
+    alt="a birds eye view of a person lying in a large rectangular grass area surrounded by other rectangular grass areas"
+    {...imgCover}
+  />
+  <figcaption>
+    Photo by <a href="https://unsplash.com/@safesolvent?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Martin Reisch</a> on <a href="https://unsplash.com/@safesolvent?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+  </figcaption>
+</figure>
 
 Don't worry, I won't talk about structuring an entire web application, that would be an insanely broad subject. Instead I'll focus only on the `render()` method of React components.
 

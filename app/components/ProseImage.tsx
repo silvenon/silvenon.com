@@ -26,80 +26,47 @@ export function getImageUrl(id: string, size: number) {
 interface Props extends React.ImgHTMLAttributes<HTMLImageElement> {
   width: number
   height: number
-  cloudinaryId?: string
-  unsplash?: {
-    name: string
-    username: string
-  }
+  cloudinaryId: string
 }
 
 export default function ProseImage({
   width,
   height,
   cloudinaryId,
-  unsplash,
   ...props
 }: Props) {
   const maxWidth = width < largestImageSize ? width / 2 : undefined
   const imgProps = { ...props, className: clsx(props.className, 'rounded-lg') }
 
-  // eslint-disable-next-line jsx-a11y/alt-text
-  let el = <img {...imgProps} />
-
-  if (typeof cloudinaryId !== 'undefined') {
-    el = (
-      <div className="not-prose mx-auto" style={{ maxWidth }}>
-        <div
-          className="aspect-ratio"
-          style={{
-            '--width': width,
-            '--height': height,
-          }}
-        >
-          {/* eslint-disable-next-line jsx-a11y/alt-text */}
-          <img
-            {...imgProps}
-            loading="lazy"
-            src={getImageUrl(cloudinaryId, 1024)}
-            srcSet={imageSizes
-              .filter((size) => size < width)
-              .concat(width)
-              .map((size) => `${getImageUrl(cloudinaryId, size)} ${size}w`)
-              .join(', ')}
-            sizes={[
-              ...proseSizes.map(
-                (size) =>
-                  `(min-width: ${screens[size]}) ${proseMaxWidth[size]}`,
-              ),
-              `calc(100vw - (var(--content-padding) * 2))`,
-            ].join(', ')}
-          />
-        </div>
+  return (
+    <div className="not-prose mx-auto" style={{ maxWidth }}>
+      <div
+        className="aspect-ratio"
+        style={{
+          '--width': width,
+          '--height': height,
+        }}
+      >
+        {/* eslint-disable-next-line jsx-a11y/alt-text */}
+        <img
+          {...imgProps}
+          loading="lazy"
+          src={getImageUrl(cloudinaryId, 1024)}
+          srcSet={imageSizes
+            .filter((size) => size < width)
+            .concat(width)
+            .map((size) => `${getImageUrl(cloudinaryId, size)} ${size}w`)
+            .join(', ')}
+          sizes={[
+            ...proseSizes.map(
+              (size) => `(min-width: ${screens[size]}) ${proseMaxWidth[size]}`,
+            ),
+            `calc(100vw - (var(--content-padding) * 2))`,
+          ].join(', ')}
+        />
       </div>
-    )
-  }
-
-  if (typeof unsplash !== 'undefined') {
-    el = (
-      <figure>
-        {el}
-        <figcaption>
-          Photo by{' '}
-          <a
-            href={`https://unsplash.com/@${unsplash.username}?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText`}
-          >
-            {unsplash.username}
-          </a>{' '}
-          on{' '}
-          <a href="https://unsplash.com/?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">
-            Unsplash
-          </a>
-        </figcaption>
-      </figure>
-    )
-  }
-
-  return el
+    </div>
+  )
 }
 
 declare module 'react' {
