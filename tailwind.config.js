@@ -24,7 +24,7 @@ const a11y = plugin(({ addVariant }) => {
 })
 
 module.exports = {
-  content: ['app/**/*.{ts,tsx,mdx}'],
+  content: ['app/**/*.{ts,tsx,mdx}', 'scripts/**/*.ts'],
   safelist: ['token'],
   plugins: [typography, forms, js, light, a11y],
   darkMode: 'class',

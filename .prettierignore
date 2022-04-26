@@ -2,6 +2,7 @@ node_modules
 
 /build
 /public/build
+/app/posts
 .env
 
 /app/styles/tailwind.css

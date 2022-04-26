@@ -13,7 +13,7 @@ export interface StandalonePost {
   published?: Date
   lastModified?: Date
   tweet?: string
-  content: string
+  output: string
 }
 
 export interface Series {
@@ -32,7 +32,7 @@ export interface SeriesPart extends Omit<StandalonePost, 'published'> {
 
 export async function getAllEntries() {
   const entries: Array<StandalonePost | Series> = []
-  const dirents = await fs.readdir(`${ROOT_DIR}/posts`, {
+  const dirents = await fs.readdir(`${ROOT_DIR}/../posts`, {
     withFileTypes: true,
   })
 
@@ -43,10 +43,12 @@ export async function getAllEntries() {
       const postSlug = path.basename(dirent.name, '.mdx')
       const post = await getStandalonePost(postSlug)
       if (post !== null) entries.push(post)
+      else throw new Error(`Could not find post "${postSlug}"`)
     } else {
       const seriesSlug = dirent.name
       const series = await getSeries(seriesSlug)
-      if (series) entries.push(series)
+      if (series !== null) entries.push(series)
+      else throw new Error(`Could not find series "${seriesSlug}"`)
     }
   }
 
@@ -63,26 +65,32 @@ export async function getAllEntries() {
   return entries.filter((entry) => entry.published)
 }
 
-export async function getStandalonePost(slug: string) {
-  let content
+export async function getStandalonePost(
+  slug: string,
+): Promise<StandalonePost | null> {
+  let source, output
   try {
-    content = await fs.readFile(`${ROOT_DIR}/posts/${slug}.mdx`, 'utf8')
+    source = await fs.readFile(`${ROOT_DIR}/../posts/${slug}.mdx`, 'utf8')
+    output = await fs.readFile(`${ROOT_DIR}/posts/${slug}.js`, 'utf8')
   } catch {
     return null
   }
-  const file = matter(content)
-  const frontmatter = file.data as Omit<StandalonePost, 'slug' | 'content'>
+  const file = matter(source)
+  const frontmatter = file.data as Omit<StandalonePost, 'slug' | 'output'>
   if (!frontmatter.published && process.env.NODE_ENV === 'production') {
     return null
   }
-  return { ...frontmatter, slug, content: file.content }
+  return { ...frontmatter, slug, output }
 }
 
-export async function getSeries(seriesSlug: string) {
+export async function getSeries(seriesSlug: string): Promise<Series | null> {
   let series
   try {
     series = JSON.parse(
-      await fs.readFile(`${ROOT_DIR}/posts/${seriesSlug}/series.json`, 'utf8'),
+      await fs.readFile(
+        `${ROOT_DIR}/../posts/${seriesSlug}/series.json`,
+        'utf8',
+      ),
     ) as Omit<Series, 'slug' | 'published' | 'parts'> & { published?: string }
   } catch {
     return null
@@ -94,22 +102,27 @@ export async function getSeries(seriesSlug: string) {
 
   const parts: SeriesPart[] = []
 
-  const partDirents = await fs.readdir(`${ROOT_DIR}/posts/${seriesSlug}`, {
+  const partDirents = await fs.readdir(`${ROOT_DIR}/../posts/${seriesSlug}`, {
     withFileTypes: true,
   })
 
   for (const partDirent of partDirents) {
     if (!partDirent.name.endsWith('.mdx')) continue
-    const content = await fs.readFile(
-      `${ROOT_DIR}/posts/${seriesSlug}/${partDirent.name}`,
+    const slug = path.basename(partDirent.name, '.mdx')
+    const source = await fs.readFile(
+      `${ROOT_DIR}/../posts/${seriesSlug}/${slug}.mdx`,
       'utf8',
     )
-    const file = matter(content)
-    const frontmatter = file.data as Omit<SeriesPart, 'slug' | 'content'>
+    const output = await fs.readFile(
+      `${ROOT_DIR}/posts/${seriesSlug}/${slug}.js`,
+      'utf8',
+    )
+    const file = matter(source)
+    const frontmatter = file.data as Omit<SeriesPart, 'slug' | 'output'>
     parts.push({
       ...frontmatter,
       slug: path.basename(partDirent.name, '.mdx'),
-      content: file.content,
+      output,
     })
   }
 

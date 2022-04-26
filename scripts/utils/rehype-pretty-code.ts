@@ -2,6 +2,8 @@ import rehypePrettyCode, { Options } from 'rehype-pretty-code'
 import type { Element } from 'hast'
 import originalLightTheme from 'shiki/themes/min-light.json'
 import originalDarkTheme from 'shiki/themes/dracula-soft.json'
+import clsx from 'clsx'
+import type { Root } from 'hast'
 
 interface Theme extends JSON {
   tokenColors: Array<{
@@ -12,7 +14,15 @@ interface Theme extends JSON {
   }>
 }
 
-export function configureRehypePrettyCode(): [
+const rehypePrettyCodePlugins = [
+  configureRehypePrettyCode(),
+  rehypeRemoveFragmentDivs,
+  rehypeHideDuplicateCodeBlocks,
+]
+
+export default rehypePrettyCodePlugins
+
+function configureRehypePrettyCode(): [
   typeof rehypePrettyCode,
   Partial<Options>,
 ] {
@@ -76,5 +86,46 @@ function addClassName(node: Element, className: string) {
     } else {
       node.properties.className = [className]
     }
+  }
+}
+
+// turn "fragment" divs created by rehype-pretty-code into actual fragments by removing them
+function rehypeRemoveFragmentDivs() {
+  return async function transform(tree: Root) {
+    const { visit } = await import('unist-util-visit')
+    visit(
+      tree,
+      { type: 'element', tagName: 'div' },
+      function visitor(node, index, parent) {
+        if (
+          typeof node.properties?.['data-rehype-pretty-code-fragment'] ===
+          'undefined'
+        ) {
+          return
+        }
+        if (typeof parent?.children === 'undefined') return
+        if (typeof index !== 'number') return
+        parent?.children.splice(index, 1, ...node.children)
+      },
+    )
+  }
+}
+
+// rehype-pretty-code is configured to generate duplicate code blocks, once for each theme
+// so we need to show the dark theme if dark mode is on, and light theme if it's off
+function rehypeHideDuplicateCodeBlocks() {
+  return async function transform(tree: Root) {
+    const { visit } = await import('unist-util-visit')
+    visit(tree, { type: 'element', tagName: 'pre' }, function visitor(node) {
+      if (node.children[0].type !== 'element') return
+      const theme = node.children[0].properties?.['data-theme']
+      if (typeof theme === 'undefined') return
+      Object.assign(node.properties, {
+        className: clsx(
+          node.properties?.className,
+          theme === 'light' ? 'dark:hidden' : 'hidden dark:block',
+        ),
+      })
+    })
   }
 }

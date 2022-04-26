@@ -3,5 +3,6 @@ node_modules
 .DS_Store
 .env
 /.cache
-/public/build
 /build
+/public/build
+/app/posts

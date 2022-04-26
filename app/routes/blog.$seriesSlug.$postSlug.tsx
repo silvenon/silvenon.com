@@ -1,6 +1,5 @@
 import { useLoaderData } from '@remix-run/react'
 import type { LoaderFunction, MetaFunction } from '@remix-run/node'
-import { bundleMDXPost } from '~/utils/mdx.server'
 import invariant from 'tiny-invariant'
 import { getMeta } from '~/utils/seo'
 import { author } from '~/consts'
@@ -32,7 +31,6 @@ export const loader: LoaderFunction = async ({ params }) => {
   if (!part) throw new Response('Not Found', { status: 404 })
 
   try {
-    const code = await bundleMDXPost(part.content)
     const data: LoaderData = {
       title: part.title,
       htmlTitle: part.htmlTitle,
@@ -45,7 +43,7 @@ export const loader: LoaderFunction = async ({ params }) => {
         parts: series.parts,
       },
       lastModified: part.lastModified,
-      code,
+      code: part.output,
     }
     return data
   } catch (err) {
