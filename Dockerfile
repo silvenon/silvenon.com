@@ -29,7 +29,12 @@ WORKDIR /app
 COPY --from=deps /app/node_modules /app/node_modules
 
 COPY . .
-RUN npm run build
+# retrieve CLOUDINARY_URL from secrets
+# https://andrei-calazans.com/posts/2021-06-23/passing-secrets-github-actions-docker
+RUN \
+  --mount=type=secret,id=CLOUDINARY_URL \
+  export CLOUDINARY_URL=$(cat /run/secrets/CLOUDINARY_URL) && \
+  npm run build
 
 # Finally, build the production image with minimal footprint
 FROM base
