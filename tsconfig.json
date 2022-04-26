@@ -15,5 +15,6 @@
   "references": [
     { "path": "./app" },
     { "path": "./cypress" },
+    { "path": "./scripts" },
   ],
 }

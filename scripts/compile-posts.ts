@@ -74,7 +74,11 @@ async function buildPosts() {
                       console.error(`Recompiling posts/${post} failed:`, error)
                       return
                     }
-                    await outputFile(result[0].text)
+                    if (!result?.outputFiles) {
+                      console.error(`Missing outputFiles for posts/${post}`)
+                      return
+                    }
+                    await writeResult(result.outputFiles[0].text)
                     console.log(`Recompiled posts/${post}`)
                   },
                 }
@@ -83,9 +87,9 @@ async function buildPosts() {
         },
       })
 
-      await outputFile(code)
+      await writeResult(code)
 
-      async function outputFile(content: string) {
+      async function writeResult(content: string) {
         const outputPath = path.join(OUTPUT_DIR, post).replace(/\.mdx$/, '.js')
         await fs.mkdir(path.dirname(outputPath), { recursive: true })
         await fs.writeFile(outputPath, content)
