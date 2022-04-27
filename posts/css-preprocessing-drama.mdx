@@ -1,0 +1,104 @@
+---
+title: CSS preprocessing drama
+description: Lately there has been a lot of talk on Twitter about Sass, PostCSS, cssnext etc. How do all of these tools work together?
+category: DEV
+published: 2015-07-22
+---
+
+Lately there has been some talking on the Twitters about Sass, PostCSS, cssnext etc., even Chris Coyer wrote a [CSS-Tricks post](https://css-tricks.com/the-trouble-with-preprocessing-based-on-future-specs/) about it. People use PostCSS for [all sorts][postcss-plugins] of stuff, but I'll focus mainly on Chris' post. I think this is a non-issue, but there's nothing wrong with a little bit of #hotdrama :wink:
+
+## Terminology
+
+There seems to be confusion around the terminology, so let's get that out of the way first. The post expresses concern about the term *postprocessor*, used to describe PostCSS. In my [previous post](http://twin.github.io/css-pre-vs-post-processing/) I used that term because I wanted to express the key difference between Sass and PostCSS.
+
+  * [Sass] is a CSS extension language with its own [spec][sass-spec], which we preprocess into regular CSS. It provides solutions for some of CSS shortcomings and makes authoring CSS much easier. Sass is **not** what CSS will look like in the future, it's an abstraction.
+
+  * [PostCSS] processes more-or-less valid CSS, that's why there was a tendency to call it a postprocessor. It doesn't do anything by itself, the [plugins][postcss-plugins] do, which is important because it means that pinning anything on PostCSS doesn't make sense, it's just a (very fast) CSS processor.
+
+  * [cssnext] is a collection of PostCSS plugins which grants the ability to use some of the future CSS syntax today. Sort of what [Babel] is doing for JavaScript. (cssnext and Babel are also be called *transpilers*.)
+
+## When to use Sass?
+
+It's best to use Sass for flow control (`@if`, `@for`, `@each`), math, lists, maps, colors etc. If you defined a bunch of colors for your brand, generating button classes based on those colors is a perfect job for Sass. If you need to make some badass color calculations, e.g. [scaling the lightness], Sass is great for that.
+
+Because it's an established language, syntax highlighting and dedicated linters will support you all the way.
+
+## When to Use PostCSS?
+
+Even though you can do **anything** with PostCSS, even [re-implement Sass][precss], I think it's best to use it sparingly—mostly for vendor prefixing, fallbacks, hacks, linting and analysis.
+
+There are some plugins I would **not** recommend using, especially the ones which:
+
+  * **fix** your mistakes, instead use a PostCSS linter (like [stylelint]), which point them out to you
+  * invent new unfamiliar features (like [rucksack]), because it can make your code less accessible and break syntax highlighting
+  * can't guarantee that your CSS will work as intended (like [mqpacker])
+
+[Autoprefixer] is a great example where using a PostCSS plugin is a much better idea than using Sass:
+
+```scss
+/* Autoprefixer */
+.foo {
+  display: flex;
+}
+
+/* Sass mixin */
+.foo {
+  @include display(flex);
+}
+```
+
+As you can see, using a mixin still forces us to remember that there should be some hot vendor prefixing action going on here, so Autoprefixer is clearly better for this use case.
+
+### But PostCSS Can't Do Icon Sprites!
+
+[Not true][sprites]. And neither can Sass. The Ruby part of [Compass] is the one composing the icons. And even if there isn't a PostCSS plugin, there are other ways to do it, e.g. [sprity].
+
+## cssnext
+
+It's important to state that cssnext is just a collection of PostCSS plugins, PostCSS never said that it's only about future syntax polyfills.
+
+cssnext is a pretty cool and a very well-executed idea. Even though most of the CSS features I crave for can't be polyfilled, like the [`:has()`] selector, I can still enjoy other future features, like [filters].
+
+I see the problem that the post on CSS-Tricks outlines—e.g. if you modify a CSS variable with JavaScript later on, styles using it won't update, but how often are you doing that? Even if you are, I'm pretty sure you're aware of that drawback or that you'll notice it in your cross-browser testing.
+
+The post also expressed concern about the situation where the spec changes, but the users of cssnext are aware of this risk and cssnext does a very good job of handling this, so I don't see what the problem is.
+
+[This comment][cssnext-comment] from the author of cssnext is a good read.
+
+### What About the Cutover?
+
+I don't think that a total cutover will ever happen with these tools, nor that it should. There will always be bleeding-edge features and vendor prefixes. The cutover is in the browser support specified in the configuration.
+
+## Babel
+
+Babel is a really successful transpiler, because most of the future JavaScript features can be polyfilled. It has an amazing community and a strong [ecosystem of plugins][babel-gh], which in itself suggests that it's obviously working. It's actually wise to use it, to get familiar with the new features, staying ahead of the curve. I've been using it a ton recently, especially for React, and I can back it up 100%. So I would say that this is really a conversation about cssnext, there's no point in dragging Babel into this.
+
+[This comment][babel-comment] explains it nicely.
+
+## Will PostCSS replace Sass?
+
+Nope. The question is a bit weird considering the fact that you can implement Sass as a PostCSS plugin, but it will still be Sass if it passes the spec. They do have an overlap, but they have different intentions and use cases. I do, however, think that stuff like Autoprefixer, Web Components, CSS4 etc. will strip Sass down to its essential features.
+
+Sass was designed to help us with some of the shortcomings of CSS, now that those shortcomings are gradually being met either by new features or new tools, we won't be using Sass as much anymore, which makes sense. Or maybe new features will land in Sass that we really need and we'll be using it even more. Who knows?
+
+[sass]: http://sass-lang.com/
+[sass-spec]: https://github.com/sass/sass-spec
+[sass-docs]: http://sass-lang.com/documentation/file.SASS_REFERENCE.html
+[scaling the lightness]: https://github.com/silvenon/generator-wbp/blob/7d33d6c472d09744bad0b6b06292c53f670d40e3/generators/app/templates/styles/_functions.scss#L14-L20
+[compass]: http://compass-style.org/
+[sprity]: https://www.npmjs.com/package/sprity
+[postcss]: https://github.com/postcss/postcss
+[postcss-plugins]: https://github.com/postcss/postcss#plugins
+[precss]: https://github.com/jonathantneal/precss
+[stylelint]: https://github.com/stylelint/stylelint
+[rucksack]: https://github.com/simplaio/rucksack
+[mqpacker]: https://github.com/hail2u/node-css-mqpacker#known-issues
+[sprites]: https://github.com/2createStudio/postcss-sprites
+[autoprefixer]: https://github.com/postcss/autoprefixer
+[cssnext]: http://cssnext.io/
+[`:has()`]: https://drafts.csswg.org/selectors-4/#relational
+[filters]: https://github.com/iamvdo/pleeease-filters#example
+[cssnext-comment]: https://css-tricks.com/the-trouble-with-preprocessing-based-on-future-specs/#comment-1595997
+[babel]: https://babeljs.io/
+[babel-gh]: https://github.com/babel
+[babel-comment]: https://css-tricks.com/the-trouble-with-preprocessing-based-on-future-specs/#comment-1595970

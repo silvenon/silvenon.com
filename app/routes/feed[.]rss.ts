@@ -24,7 +24,30 @@ export const loader: LoaderFunction = async ({ request }) => {
   const entries = await getAllEntries()
 
   for (const entry of entries) {
-    if ('parts' in entry) {
+    if ('source' in entry) {
+      if ('parts' in entry) {
+        const externalSeries = entry
+        for (const part of externalSeries.parts) {
+          feed.addItem({
+            title: `${externalSeries.title}: ${part.title}`,
+            id: part.url,
+            link: part.url,
+            description: part.description,
+            author: [author],
+            date: part.published,
+          })
+        }
+      } else {
+        feed.addItem({
+          title: entry.title,
+          id: entry.url,
+          link: entry.url,
+          description: entry.description,
+          author: [author],
+          date: entry.published,
+        })
+      }
+    } else if ('parts' in entry) {
       const series = entry
       if (!series.published) continue
       for (const part of series.parts) {

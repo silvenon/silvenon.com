@@ -6,6 +6,7 @@ import type {
   MetaFunction,
 } from '@remix-run/node'
 import { Fragment } from 'react'
+import { ExternalLinkIcon } from '@heroicons/react/outline'
 import clsx from 'clsx'
 import PostDate from '~/components/PostDate'
 import ProfilePhoto from '~/components/ProfilePhoto'
@@ -17,6 +18,8 @@ import {
   StandalonePost,
   Series,
   SeriesPart,
+  ExternalStandalonePost,
+  ExternalSeries,
 } from '~/utils/posts.server'
 import { SITE_DESCRIPTION, author, socialLinks } from '~/consts'
 import circuitBoard from '~/images/circuit-board.svg'
@@ -24,25 +27,29 @@ import circuitBoard from '~/images/circuit-board.svg'
 type LoaderData = Array<
   | Omit<StandalonePost, 'content'>
   | (Omit<Series, 'parts'> & { parts: Array<Omit<SeriesPart, 'content'>> })
+  | ExternalStandalonePost
+  | ExternalSeries
 >
 
 export const loader: LoaderFunction = async () => {
   const entries = await getAllEntries()
   // TODO: type doesn't restrict adding `content`
-  const data: LoaderData = entries.map((entry) =>
-    'parts' in entry
-      ? {
-          ...entry,
-          parts: entry.parts.map((part) => ({
-            ...part,
-            content: undefined,
-          })),
-        }
-      : {
-          ...entry,
+  const data: LoaderData = entries.map((entry) => {
+    if ('source' in entry) return entry
+    if ('parts' in entry) {
+      return {
+        ...entry,
+        parts: entry.parts.map((part) => ({
+          ...part,
           content: undefined,
-        },
-  )
+        })),
+      }
+    }
+    return {
+      ...entry,
+      content: undefined,
+    }
+  })
   return json(data, 200)
 }
 
@@ -107,6 +114,73 @@ export default function Home() {
         <Prose>
           <h2>Posts</h2>
           {entries.map((entry, index) => {
+            const rule = index < entries.length - 1 ? <hr /> : null
+
+            if ('source' in entry) {
+              if ('parts' in entry) {
+                const externalSeries = entry
+                return (
+                  <Fragment key={externalSeries.title}>
+                    <article>
+                      <h3>{externalSeries.title}</h3>
+                      <PostDate published={externalSeries.parts[0].published} />
+                      <p>{externalSeries.description}</p>
+                      <p>Parts of this series:</p>
+                      <ol>
+                        {externalSeries.parts.map((part) => (
+                          <li key={part.title} className="space-x-2">
+                            <span className="text-white">{part.title}</span>
+                            <span>·</span>
+                            <a
+                              href={part.url}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="inline-flex items-center space-x-2"
+                            >
+                              <span>Read on {externalSeries.source}</span>
+                              <ExternalLinkIcon className="h-6 w-6" />
+                            </a>
+                          </li>
+                        ))}
+                      </ol>
+                    </article>
+                    {rule}
+                  </Fragment>
+                )
+              }
+
+              const externalPost = entry
+              return (
+                <Fragment key={externalPost.title}>
+                  <article>
+                    <h3>
+                      <a
+                        href={externalPost.url}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {externalPost.title}
+                      </a>
+                    </h3>
+                    <PostDate published={externalPost.published} />
+                    <p>{externalPost.description}</p>
+                    <p>
+                      <a
+                        href={externalPost.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center space-x-2"
+                      >
+                        <span>Read on {externalPost.source}</span>
+                        <ExternalLinkIcon className="h-6 w-6" />
+                      </a>
+                    </p>
+                  </article>
+                  {rule}
+                </Fragment>
+              )
+            }
+
             if ('parts' in entry) {
               const series = entry
               return (
@@ -132,7 +206,7 @@ export default function Home() {
                       ))}
                     </ol>
                   </article>
-                  {index < entries.length - 1 ? <hr /> : null}
+                  {rule}
                 </Fragment>
               )
             }
@@ -150,7 +224,7 @@ export default function Home() {
                     <Link to={`/blog/${post.slug}`}>Read more →</Link>
                   </p>
                 </article>
-                {index < entries.length - 1 ? <hr /> : null}
+                {rule}
               </Fragment>
             )
           })}
