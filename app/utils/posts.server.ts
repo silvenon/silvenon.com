@@ -114,7 +114,7 @@ export const externalPosts: Array<ExternalStandalonePost | ExternalSeries> = [
 export async function getAllEntries() {
   const entries: Array<
     StandalonePost | Series | ExternalStandalonePost | ExternalSeries
-  > = externalPosts
+  > = [...externalPosts]
 
   const dirents = await fs.readdir(`${ROOT_DIR}/../posts`, {
     withFileTypes: true,
