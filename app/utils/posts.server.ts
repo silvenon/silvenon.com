@@ -87,10 +87,7 @@ export async function getSeries(seriesSlug: string): Promise<Series | null> {
   let series
   try {
     series = JSON.parse(
-      await fs.readFile(
-        `${ROOT_DIR}/../posts/${seriesSlug}/series.json`,
-        'utf8',
-      ),
+      await fs.readFile(`${ROOT_DIR}/posts/${seriesSlug}/series.json`, 'utf8'),
     ) as Omit<Series, 'slug' | 'published' | 'parts'> & { published?: string }
   } catch {
     return null
