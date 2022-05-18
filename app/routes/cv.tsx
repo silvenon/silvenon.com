@@ -3,7 +3,7 @@ import { useLoaderData } from '@remix-run/react'
 import type { LoaderFunction, MetaFunction } from '@remix-run/node'
 import Prose from '~/components/Prose'
 import cloudinary, { ImageTransform } from '~/utils/cloudinary'
-import fs from '~/utils/fs.server'
+import fs from 'fs'
 import yaml from 'js-yaml'
 import { formatDate } from '~/utils/date'
 import { ROOT_DIR } from '~/consts.server'
@@ -29,7 +29,7 @@ interface LoaderData {
 export const loader: LoaderFunction = async () => {
   const { micromark } = await import('micromark')
   const cv = yaml.load(
-    String(await fs.readFile(`${ROOT_DIR}/cv.yaml`, 'utf8')),
+    String(await fs.promises.readFile(`${ROOT_DIR}/cv.yaml`, 'utf8')),
   ) as LoaderData
   return json(
     {
