@@ -1,6 +1,7 @@
 import { json } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import type { LoaderFunction, MetaFunction } from '@remix-run/node'
+import { micromark } from 'micromark'
 import Prose from '~/components/Prose'
 import cloudinary from '~/utils/cloudinary'
 import type { ImageTransform } from '~/utils/cloudinary'
@@ -28,7 +29,6 @@ interface LoaderData {
 }
 
 export const loader: LoaderFunction = async () => {
-  const { micromark } = await import('micromark')
   const cv = yaml.load(
     String(await fs.promises.readFile(`${ROOT_DIR}/cv.yaml`, 'utf8')),
   ) as LoaderData
