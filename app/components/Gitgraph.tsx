@@ -1,10 +1,20 @@
+import { TemplateName } from '@gitgraph/core'
 import type { GitgraphUserApi } from '@gitgraph/core'
+import type { createGitgraph, templateExtend } from '@gitgraph/js'
 import { v4 as uuid } from 'uuid'
-import dedent from 'dedent'
 import { screens } from '../consts'
 
 type Props = {
-  children: GitgraphUserApi<React.ReactElement<SVGElement>>
+  children: (gitgraph: GitgraphUserApi<SVGElement>) => void
+}
+
+declare global {
+  interface Window {
+    GitgraphJS: {
+      createGitgraph: typeof createGitgraph
+      templateExtend: typeof templateExtend
+    }
+  }
 }
 
 const Gitgraph = ({ children }: Props) => {
@@ -23,14 +33,25 @@ const Gitgraph = ({ children }: Props) => {
       <script defer src="https://cdn.jsdelivr.net/npm/@gitgraph/js" />
       <script
         dangerouslySetInnerHTML={{
-          __html: dedent`
-            ;(() => {
+          __html: `
+            ;(${function initialize({
+              containerId,
+              breakpoint,
+              baseTemplate,
+              createGraph,
+            }: {
+              containerId: string
+              breakpoint: string
+              baseTemplate: TemplateName
+              createGraph(gitgraph: GitgraphUserApi<SVGElement>): void
+            }) {
               document.addEventListener('DOMContentLoaded', () => {
-                const container = document.getElementById(${JSON.stringify(id)})
+                const container = document.getElementById(containerId)
+                if (container === null) return
                 container.innerHTML = ''
-                const mql = window.matchMedia('(min-width: ${screens.sm})')
-                const gitgraph = GitgraphJS.createGitgraph(container, {
-                  template: GitgraphJS.templateExtend('metro', {
+                const mql = window.matchMedia(`(min-width: ${breakpoint})`)
+                const gitgraph = window.GitgraphJS.createGitgraph(container, {
+                  template: window.GitgraphJS.templateExtend(baseTemplate, {
                     colors: [
                       'var(--gitgraph-color-branch-one)',
                       'var(--gitgraph-color-branch-two)',
@@ -69,13 +90,14 @@ const Gitgraph = ({ children }: Props) => {
                   }),
                 })
 
-                const createGraph = Function(${JSON.stringify(
-                  `return ${String(children)}`,
-                )})()
-
                 createGraph(gitgraph)
               })
-            })()
+            }})({
+              containerId: ${JSON.stringify(id)},
+              breakpoint: ${JSON.stringify(screens.sm)},
+              baseTemplate: ${JSON.stringify(TemplateName.Metro)},
+              createGraph: ${children},
+            })
           `,
         }}
       />

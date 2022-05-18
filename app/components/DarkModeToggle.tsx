@@ -1,5 +1,4 @@
 import { SunIcon, MoonIcon } from '@heroicons/react/outline'
-import dedent from 'dedent'
 
 export default function DarkModeToggle() {
   return (
@@ -36,38 +35,50 @@ export default function DarkModeToggle() {
       </div>
       <script
         dangerouslySetInnerHTML={{
-          __html: dedent`
-            ;(() => {
-              const switchEl = document.querySelector('.dark-mode-toggle')
-              const resetEl = document.querySelector('.dark-mode-reset')
-              const labelEl = document.querySelector('.dark-mode-label')
-              const mql = window.matchMedia('(prefers-color-scheme: dark)')
+          __html: `;(${function initialize() {
+            const switchEl = document.querySelector('.dark-mode-toggle')
+            const resetEl = document.querySelector('.dark-mode-reset')
+            const labelEl = document.querySelector('.dark-mode-label')
+            const mql = window.matchMedia('(prefers-color-scheme: dark)')
 
+            if (switchEl === null || resetEl === null || labelEl === null) {
+              return
+            }
+
+            updateSwitch()
+            mql.addEventListener('change', updateSwitch)
+
+            switchEl.addEventListener('click', () => {
+              const isDarkMode =
+                switchEl.getAttribute('aria-checked') === 'true'
+              localStorage.theme = isDarkMode ? 'light' : 'dark'
               updateSwitch()
-              mql.addEventListener('change', updateSwitch)
+            })
 
-              switchEl.addEventListener('click', () => {
-                const isDarkMode = switchEl.getAttribute('aria-checked') === 'true'
-                localStorage.theme = isDarkMode ? 'light' : 'dark'
-                updateSwitch()
-              })
+            resetEl.addEventListener('click', () => {
+              localStorage.removeItem('theme')
+              updateSwitch()
+            })
 
-              resetEl.addEventListener('click', () => {
-                localStorage.removeItem('theme')
-                updateSwitch()
-              })
-
-              function updateSwitch() {
-                const isDarkMode = localStorage.theme === 'dark' || (!('theme' in localStorage) && mql.matches)
-                const hasReset = 'theme' in localStorage
-                document.documentElement.classList.toggle('dark', isDarkMode)
-                resetEl.classList.toggle('inline-flex', hasReset)
-                resetEl.classList.toggle('hidden', !hasReset)
-                switchEl.setAttribute('aria-checked', String(isDarkMode))
-                labelEl.textContent = isDarkMode ? 'Disable dark mode' : 'Enable dark mode'
+            function updateSwitch() {
+              if (switchEl === null || resetEl === null || labelEl === null) {
+                return
               }
-            })()
-          `,
+
+              const isDarkMode =
+                localStorage.theme === 'dark' ||
+                (!('theme' in localStorage) && mql.matches)
+              const hasReset = 'theme' in localStorage
+
+              document.documentElement.classList.toggle('dark', isDarkMode)
+              resetEl.classList.toggle('inline-flex', hasReset)
+              resetEl.classList.toggle('hidden', !hasReset)
+              switchEl.setAttribute('aria-checked', String(isDarkMode))
+              labelEl.textContent = isDarkMode
+                ? 'Disable dark mode'
+                : 'Enable dark mode'
+            }
+          }})()`,
         }}
       />
     </>
