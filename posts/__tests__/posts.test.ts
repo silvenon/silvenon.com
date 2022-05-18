@@ -32,7 +32,7 @@ describe('validate posts', () => {
     // Google truncates descriptions after 160
     expect(frontmatter.description.length).toBeLessThanOrEqual(160)
     try {
-      await fs.promises.open(`${path.dirname(filePath)}/series.json`, 'r')
+      await fs.promises.access(`${path.dirname(filePath)}/series.json`)
       expect(frontmatter).toHaveProperty('seriesPart')
     } catch (err) {
       // series.json doesn't exist, so post is not a series, do nothing
