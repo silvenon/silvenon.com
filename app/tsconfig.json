@@ -3,12 +3,7 @@
   "compilerOptions": {
     "composite": true,
     "noEmit": true,
-    "isolatedModules": true,
     "types": ["vitest/globals", "@testing-library/jest-dom"],
-    "jsx": "react-jsx",
-    "paths": {
-      "~/*": ["./app/*"],
-    },
   },
   "include": [
     "../remix.env.d.ts",
@@ -16,4 +11,7 @@
     "./screens.json",
     "**/*",
   ],
+  "exclude": [
+    "./posts/**/*"
+  ]
 }
