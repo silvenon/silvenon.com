@@ -18,7 +18,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "prepare": "simple-git-hooks",
+    "setup": "npm install && simple-git-hooks && npm run dotenv",
     "dotenv": "node node_modules/dotenv-safe/config.js",
     "generate:css": "tailwindcss --input ./tailwind.css --output ./app/tailwind.css",
     "generate:posts": "node -r esbuild-register scripts/compile-posts.ts",
