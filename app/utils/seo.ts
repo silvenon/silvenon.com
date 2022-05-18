@@ -1,4 +1,4 @@
-import { HtmlMetaDescriptor } from '@remix-run/react'
+import type { HtmlMetaDescriptor } from '@remix-run/react'
 
 interface Options {
   title: string

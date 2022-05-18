@@ -1,4 +1,5 @@
 declare module 'remark-unwrap-images' {
-  const remarkUnwrapImages: import('unified').Plugin
+  import type { Plugin } from 'unified'
+  const remarkUnwrapImages: Plugin
   export default remarkUnwrapImages
 }

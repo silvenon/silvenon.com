@@ -1,4 +1,5 @@
-import cloudinary, { ImageTransform } from '../utils/cloudinary'
+import cloudinary from '~/utils/cloudinary'
+import type { ImageTransform } from '~/utils/cloudinary'
 import { screens } from '../consts'
 
 const ID = 'in-reactor-1.jpg'

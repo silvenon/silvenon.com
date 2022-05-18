@@ -6,9 +6,10 @@ import { author } from '~/consts'
 import Post from '~/components/Post'
 import { getSeries } from '~/utils/posts.server'
 import { formatDateISO } from '~/utils/date'
+import type { LoaderData as StandalonePostLoaderData } from './blog.$postSlug'
 
 export interface LoaderData
-  extends Omit<import('./blog.$postSlug').LoaderData, 'slug' | 'published'> {
+  extends Omit<StandalonePostLoaderData, 'slug' | 'published'> {
   seriesPart: number
   series: {
     slug: string

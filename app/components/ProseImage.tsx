@@ -1,4 +1,4 @@
-import CSS from 'csstype'
+import type CSS from 'csstype'
 import cloudinary from '../utils/cloudinary'
 import { screens } from '../consts'
 import clsx from 'clsx'

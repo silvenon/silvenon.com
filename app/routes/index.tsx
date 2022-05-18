@@ -13,8 +13,8 @@ import ProfilePhoto from '~/components/ProfilePhoto'
 import Icon from '~/components/Icon'
 import Prose from '~/components/Prose'
 import { getMeta } from '~/utils/seo'
-import {
-  getAllEntries,
+import { getAllEntries } from '~/utils/posts.server'
+import type {
   StandalonePost,
   Series,
   SeriesPart,

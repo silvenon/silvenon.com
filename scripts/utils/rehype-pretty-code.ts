@@ -1,4 +1,5 @@
-import rehypePrettyCode, { Options } from 'rehype-pretty-code'
+import rehypePrettyCode from 'rehype-pretty-code'
+import type { Options } from 'rehype-pretty-code'
 import type { Element } from 'hast'
 import originalLightTheme from 'shiki/themes/min-light.json'
 import originalDarkTheme from 'shiki/themes/dracula-soft.json'
