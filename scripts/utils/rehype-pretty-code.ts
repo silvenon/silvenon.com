@@ -117,8 +117,7 @@ function rehypeHideDuplicateCodeBlocks() {
   return async function transform(tree: Root) {
     const { visit } = await import('unist-util-visit')
     visit(tree, { type: 'element', tagName: 'pre' }, function visitor(node) {
-      if (node.children[0].type !== 'element') return
-      const theme = node.children[0].properties?.['data-theme']
+      const theme = node.properties?.['data-theme']
       if (typeof theme === 'undefined') return
       Object.assign(node.properties, {
         className: clsx(
