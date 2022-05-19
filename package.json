@@ -99,8 +99,6 @@
     "@testing-library/jest-dom": "^5.16.3",
     "@testing-library/react": "^13.2.0",
     "@testing-library/user-event": "^14.0.0",
-    "@types/bcrypt": "^5.0.0",
-    "@types/dedent": "^0.7.0",
     "@types/dotenv-safe": "^8.1.2",
     "@types/eslint": "^8.4.1",
     "@types/hast": "^2.3.4",
