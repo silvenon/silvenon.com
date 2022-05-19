@@ -34,25 +34,25 @@
     padding-bottom: calc(var(--height) / var(--width) * 100%);
   }
   .aspect-ratio :where(img, iframe) {
-    @apply !my-0 absolute top-0 left-0 w-full h-full;:w
-  }
-
-  pre code .line.highlighted {
-    @apply bg-gray-200 dark:bg-gray-800;
+    @apply !my-0 absolute top-0 left-0 w-full h-full;
   }
 
   /* HotTip component */
 
-  .hot-tip > * {
-    @apply last:mb-0;
+  /* remove the bottom margin both from the last child and the last code block in light mode */
+  /* which is 2nd to last because the last one is the hidden dark mode block */
+  .hot-tip > *:where(*:last-child, pre:nth-last-child(2)) {
+    @apply !mb-0;
   }
-  /* remove the bottom margin from last code blocks in light mode */
-  /* because they are 2nd to last, the last one is hidden for dark mode */
-  .hot-tip pre:nth-last-child(2) {
-    @apply mb-0;
+  .hot-tip pre {
+    @apply mx-0;
   }
-  .hot-tip :is(code:not(pre code), pre) {
-    @apply light:bg-purple-50 shadow-sm border-0 dark:shadow-none;
+
+  .prose pre code .line {
+    @apply block;
+  }
+  .prose code .highlighted {
+    @apply bg-code-highlight dark:bg-code-highlight-dark
   }
 
   /* hand waving on the About page */

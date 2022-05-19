@@ -1,9 +1,8 @@
 import rehypePrettyCode from 'rehype-pretty-code'
 import type { Options } from 'rehype-pretty-code'
 import type { Element } from 'hast'
-import originalLightTheme from 'shiki/themes/min-light.json'
-import originalDarkTheme from 'shiki/themes/dracula-soft.json'
 import clsx from 'clsx'
+import theme from './code-theme'
 import type { Root } from 'hast'
 
 interface Theme extends JSON {
@@ -27,40 +26,17 @@ function configureRehypePrettyCode(): [
   typeof rehypePrettyCode,
   Partial<Options>,
 ] {
-  const lightTheme: Theme = {
-    ...originalLightTheme,
-    // rehype-pretty-code expects a less specific type
-    // @ts-expect-error
-    tokenColors: originalLightTheme.tokenColors.map((tokenColor) => {
-      const { scope } = tokenColor
-      if (
-        (typeof scope === 'string' && scope === 'comment') ||
-        (Array.isArray(scope) && scope.includes('comment'))
-      ) {
-        return {
-          ...tokenColor,
-          settings: {
-            // min-light's comment color is too bright
-            ...tokenColor.settings,
-            foreground: '#a3a3a3',
-          },
-        }
-      }
-      return tokenColor
-    }),
-  }
-
   // cast to a less specific type, required by rehype-pretty-code
   // @ts-expect-error
-  const darkTheme: Theme = originalDarkTheme
+  const prettyCodeTheme: {
+    light: Theme
+    dark: Theme
+  } = theme
 
   return [
     rehypePrettyCode,
     {
-      theme: {
-        light: lightTheme,
-        dark: darkTheme,
-      },
+      theme: prettyCodeTheme,
       onVisitLine(node: Element) {
         // Prevent lines from collapsing in `display: grid` mode
         // allowing empty lines to be copy/pasted
@@ -72,7 +48,7 @@ function configureRehypePrettyCode(): [
         addClassName(node, 'highlighted')
       },
       onVisitHighlightedWord(node: Element) {
-        addClassName(node, 'word')
+        addClassName(node, 'highlighted')
       },
     },
   ]
@@ -94,21 +70,17 @@ function addClassName(node: Element, className: string) {
 function rehypeRemoveFragmentDivs() {
   return async function transform(tree: Root) {
     const { visit } = await import('unist-util-visit')
-    visit(
-      tree,
-      { type: 'element', tagName: 'div' },
-      function visitor(node, index, parent) {
-        if (
-          typeof node.properties?.['data-rehype-pretty-code-fragment'] ===
-          'undefined'
-        ) {
-          return
-        }
-        if (typeof parent?.children === 'undefined') return
-        if (typeof index !== 'number') return
-        parent?.children.splice(index, 1, ...node.children)
-      },
-    )
+    visit(tree, 'element', function visitor(node, index, parent) {
+      if (
+        typeof node.properties?.['data-rehype-pretty-code-fragment'] ===
+        'undefined'
+      ) {
+        return
+      }
+      if (typeof parent?.children === 'undefined') return
+      if (typeof index !== 'number') return
+      parent?.children.splice(index, 1, ...node.children)
+    })
   }
 }
 
@@ -117,13 +89,24 @@ function rehypeRemoveFragmentDivs() {
 function rehypeHideDuplicateCodeBlocks() {
   return async function transform(tree: Root) {
     const { visit } = await import('unist-util-visit')
-    visit(tree, { type: 'element', tagName: 'pre' }, function visitor(node) {
+    visit(tree, 'element', function visitor(node, index, parent) {
+      if (node.tagName !== 'pre' && node.tagName !== 'code') return
+      if (
+        node.tagName === 'code' &&
+        parent !== null &&
+        parent.type === 'element' &&
+        parent.tagName === 'pre'
+      ) {
+        return
+      }
       const theme = node.properties?.['data-theme']
       if (typeof theme === 'undefined') return
       Object.assign(node.properties, {
         className: clsx(
           node.properties?.className,
-          theme === 'light' ? 'dark:hidden' : 'hidden dark:block',
+          theme === 'light'
+            ? 'dark:hidden'
+            : ['hidden', node.tagName === 'pre' ? 'dark:block' : 'dark:inline'],
         ),
       })
     })
