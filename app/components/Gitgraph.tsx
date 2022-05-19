@@ -25,6 +25,7 @@ const Gitgraph = ({ children }: Props) => {
       <div
         id={id}
         className="overflow-scrolling-touch flex justify-center overflow-x-auto font-mono text-xs sm:text-sm lg:text-base"
+        data-testid="gitgraph"
       >
         <div className="border-y-2 border-y-slate-200 py-4 text-center text-lg font-light tracking-wide text-slate-400 dark:border-y-gray-600 dark:text-gray-500 md:text-xl">
           JavaScript needs to be enabled for this Git illustration.
