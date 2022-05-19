@@ -27,9 +27,11 @@ const Gitgraph = ({ children }: Props) => {
         className="overflow-scrolling-touch flex justify-center overflow-x-auto font-mono text-xs sm:text-sm lg:text-base"
         data-testid="gitgraph"
       >
-        <div className="border-y-2 border-y-slate-200 py-4 text-center text-lg font-light tracking-wide text-slate-400 dark:border-y-gray-600 dark:text-gray-500 md:text-xl">
-          JavaScript needs to be enabled for this Git illustration.
-        </div>
+        <noscript>
+          <div className="border-y-2 border-y-slate-200 py-4 text-center font-sans text-lg font-light tracking-wide text-slate-400 dark:border-y-gray-600 dark:text-gray-500 md:text-xl">
+            JavaScript needs to be enabled for this Git illustration.
+          </div>
+        </noscript>
       </div>
       <script defer src="https://cdn.jsdelivr.net/npm/@gitgraph/js" />
       <script
