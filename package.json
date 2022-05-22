@@ -37,7 +37,7 @@
     "test": "vitest",
     "test:e2e:dev": "start-server-and-test dev 3000 'cypress open'",
     "test:e2e:run": "npm run build && cross-env PORT=8811 start-server-and-test start 8811 'cypress run'",
-    "typecheck": "tsc --build",
+    "typecheck": "tsc --build && tsc --build cypress",
     "validate": "npm-run-all --parallel 'test -- --run' lint typecheck test:e2e:run",
     "validate:pre-push": "npm-run-all --parallel 'test -- --run' lint typecheck"
   },

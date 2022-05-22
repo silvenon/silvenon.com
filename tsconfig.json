@@ -5,6 +5,8 @@
     "module": "ES2020",
     "moduleResolution": "node",
     "lib": ["DOM", "DOM.Iterable", "ES2019"],
+    "types": ["vitest/globals"],
+    "typeRoots": ["./types", "./node_modules/@types"],
     "jsx": "react-jsx",
     "isolatedModules": true,
     "esModuleInterop": true,
@@ -18,10 +20,6 @@
       "~/*": ["./app/*"],
     },
   },
-  "include": [],
-  "references": [
-    { "path": "./app" },
-    { "path": "./cypress" },
-    { "path": "./scripts" },
-  ],
+  "exclude": ["./cypress", "./app/posts"],
+  "include": ["**/*.ts", "**/*.tsx"],
 }
