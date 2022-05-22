@@ -25,10 +25,11 @@ module.exports = class MontyPython {
   getSillyWalk(numberOfSteps) {
     const steps = []
     for (let i = 0; i < numberOfSteps; i++) {
-      if (steps[steps.length - 1] !== 'left') {
-        steps.push('left')
-      } else {
+      const previousStep = steps[i - 1]
+      if (previousStep === 'left') {
         steps.push('right')
+      } else {
+        steps.push('left')
       }
     }
     // shuffle
