@@ -8,6 +8,7 @@ import type {
 import { Fragment } from 'react'
 import { ExternalLinkIcon } from '@heroicons/react/outline'
 import clsx from 'clsx'
+import type { Except, SetOptional } from 'type-fest'
 import PostDate from '~/components/PostDate'
 import ProfilePhoto from '~/components/ProfilePhoto'
 import Icon from '~/components/Icon'
@@ -25,31 +26,37 @@ import { SITE_DESCRIPTION, author, socialLinks } from '~/consts'
 import circuitBoard from '~/images/circuit-board.svg'
 
 type LoaderData = Array<
-  | Omit<StandalonePost, 'content'>
-  | (Omit<Series, 'parts'> & { parts: Array<Omit<SeriesPart, 'content'>> })
+  | Except<StandalonePost, 'output'>
+  | (Omit<Series, 'parts'> & {
+      parts: Array<Except<SeriesPart, 'output'>>
+    })
   | ExternalStandalonePost
   | ExternalSeries
 >
 
 export const loader: LoaderFunction = async () => {
   const entries = await getAllEntries()
-  // TODO: type doesn't restrict adding `content`
   const data: LoaderData = entries.map((entry) => {
     if ('source' in entry) return entry
     if ('parts' in entry) {
       return {
         ...entry,
-        parts: entry.parts.map((part) => ({
-          ...part,
-          content: undefined,
-        })),
+        parts: entry.parts.map((part) => {
+          const partWithoutOutput: SetOptional<SeriesPart, 'output'> = {
+            ...part,
+          }
+          delete partWithoutOutput.output
+          return partWithoutOutput
+        }),
       }
     }
-    return {
+    const postWithoutOutput: SetOptional<StandalonePost, 'output'> = {
       ...entry,
-      content: undefined,
     }
+    delete postWithoutOutput.output
+    return postWithoutOutput
   })
+
   return json(data, 200)
 }
 
