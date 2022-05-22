@@ -185,11 +185,10 @@ __mocks__
 └── monty-python.js
 ```
 
-You place a `__mocks__` folder right next to the module you're mocking, containing a file with the same name. If you're mocking a module in `node_modules` or a built-in module like `fs` or `path`, then add a `__mocks__` folder next to `node_modules`.
-
-Now when you call `jest.mock('./monty-python')` without providing an implementation, Jest will use the manual mock, `__mocks__/monty-python.js`, as the implementation:
+It works by placing a `__mocks__` folder right next to the module you're mocking, containing a file with the same name, and its content will be used as the mocked implementation:
 
 ```js
+// __mocks__/monty-python.js
 module.exports = class MontyPython {
   getTheMeaningOfLife() {
     return 42
@@ -197,7 +196,20 @@ module.exports = class MontyPython {
 }
 ```
 
-Manul mocks for `node_modules` will be used **automatically**, even without calling `jest.mock` (this doesn't apply to built-in modules). Jest documentation presents this behavior as a feature, but I see it as a relic from their former behavior when they were automocking all modules by default.
+Now when you call `jest.mock('./monty-python')` without providing an inline implementation Jest will use the manual mock:
+
+```js
+const MockedMontyPython = require('./monty-python')
+
+// no implementation specified, using the manual mock
+jest.mock('./monty-python')
+
+// ...
+```
+
+You can always override the manual mock as needed by passing in an inline implementation.
+
+To add a manual mock for an npm package or a built-in module like `fs` or `path` you need to add the `__mocks__` folder next to `node_modules`, most often in the root of your project. Manul mocks for npm packages will be used **automatically**, even without calling `jest.mock` (this doesn't apply to built-in modules). Jest documentation presents this behavior as a feature, but I see it as a relic from their former behavior when they were automocking all modules by default.
 
 You can always opt-out from manual mocks in lots of different ways, depending on what you need:
 
