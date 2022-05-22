@@ -69,6 +69,8 @@ jobs:
 
       - name: 📝 Compile posts
         run: npm run build:posts
+        env:
+          CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
 
       - name: ⚡ Run vitest
         run: npm run test -- --coverage
