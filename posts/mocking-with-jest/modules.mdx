@@ -163,7 +163,12 @@ Alternatively you can use `jest.dontMock`, followed by a  regular `require` call
 it('gets the real meaning of life', () => {
   jest.dontMock('./monty-python')
   const RealMontyPython = require('./monty-python')
-  // ...
+  // the rest is the same as with jest.requireActual()
+  const montyPython = new RealMontyPython()
+  const mathRandomSpy = jest.spyOn(Math, 'random')
+  mathRandomSpy.mockImplementation(() => '¯\_(ツ)_/¯')
+  expect(montyPython.getTheMeaningOfLife()).toBe('¯\_(ツ)_/¯')
+  mathRandomSpy.mockRestore()
   jest.resetModules()
 })
 ```
