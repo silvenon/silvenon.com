@@ -88,9 +88,9 @@ describe('MontyPython', () => {
 })
 ```
 
-But what if meaning of life isn't 42? Life is never that simple, things often don't happen for a reason, they're just random, and it's on us to try to make the best of it. ❤️
+But what if the meaning of life isn't 42? Life is never that simple, things often don't happen for a reason, they're just random, and it's up to us to try to make the best of it. ❤️
 
-Now that we had this life-changing epiphany, let's create a new method which returns a more honest answer, i.e. `Math.random()`:
+Now that we had this life-changing epiphany, let's make our implementation a bit more realistic, i.e. `Math.random()`:
 
 ```js
 module.exports = class MontyPython {
@@ -126,7 +126,7 @@ Here `Math.random` does its thing, we're not changing its functionality, we're o
 
 Keep in mind that testing is about _purpose_, we'll usually want to test overall functionality, not details like whether built-ins like `Math.random` were called. To do this we'll probably want to change `Math.random`'s behavior in order to be able to test a larger piece of functionality. This is where the `mockImplementation` method comes in.
 
-Let's say that the head of the [Ministry of Silly Walks](https://youtu.be/KCrQu0VTUBs) wanted to add a method for plotting their walking pattern as an array of steps using left and right legs:
+Let's say that the head of the [Ministry of Silly Walks](https://youtu.be/eCLp7zodUiI) wanted to add a method for plotting their walking pattern as an array of steps using left and right legs:
 
 ```js
 module.exports = class MontyPython {
@@ -145,8 +145,7 @@ module.exports = class MontyPython {
 }
 ```
 
-
-We would like to test this walk using Jest snapshots, but since it's random our tests will fail. We can't test whether the generated walk is in fact silly, we can only test whether it's technically a walk, meaning that it consists of a series of steps for each leg. To do this we'll alter the behavior of `Math.random` using the `mockImplementation` method to always return `0.5` in order to prevent shuffling the array (if the `sort` method returns `0`, order is preserved):
+We would like to test several steps of this walk, but as they are random this isn't really possible, is it? We can't tell our test which steps we're expecting, so we can't test whether the walk is silly, we can only test whether it's indeed a walk by defining it as a series of regular steps, with one leg after another. To do this we have to alter the behavior of `Math.random` to always return `0.5` using the [`mockImplementation`](https://jestjs.io/docs/mock-function-api#mockfnmockimplementationfn) method, preserving the order of steps (as long as `sort`'s function returns `0`, the order stays as-is). Finally, to avoid having to type out the expected array of steps, we'll use [Jest's snapshots](https://jestjs.io/docs/snapshot-testing) to test this:
 
 ```js
 const MontyPython = require('./monty-python')
