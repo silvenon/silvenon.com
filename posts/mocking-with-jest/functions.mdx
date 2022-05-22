@@ -57,7 +57,18 @@ test('mock function has been called with the meaning of life', () => {
 })
 ```
 
-But this test is silly, we already know that the function will be called with `42` because _we_ called it within the test itself. Mock functions are mostly useful for passing to the source code that we're testing, then we expect that code to call it in a certain way. For example:
+But this test is silly, we already know that the function will be called with `42` because _we_ called it within the test itself. We usually want to pass mock functions to the implementation code that we're testing, then we expect that code to call them in a certain way. For example, let's say that we want to test the following code:
+
+```js
+// monty-python.js
+module.exports = class MontyPython {
+  callFnWithTheMeaningOfLife(fn) {
+    fn(42)
+  }
+}
+```
+
+To test whether `callFnWithTheMeaningOfLife` indeed calls the given function `fn` with the meaning of life, we can pass a mock function:
 
 ```js
 const MontyPython = require('./monty-python')
