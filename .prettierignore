@@ -6,3 +6,7 @@ node_modules
 .env
 
 /app/styles/tailwind.css
+
+# Prettier doesn't yet play nice with MDX v2, for example it can't keep JSX
+# in a single line if it exceeds print width, which results in a nested <p>
+*.mdx
