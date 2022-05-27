@@ -71,6 +71,9 @@
 .twitter-tweet {
   @apply mx-auto;
 }
+.twitter-tweet iframe {
+  @apply max-w-full;
+}
 
 @layer utilities {
 
