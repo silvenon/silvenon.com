@@ -26,7 +26,7 @@ const a11y = plugin(({ addVariant }) => {
 })
 
 module.exports = {
-  content: ['app/**/*.{ts,tsx,mdx}', 'scripts/**/*.ts'],
+  content: ['app/**/*.{ts,tsx,mdx}', 'posts/**/*.mdx', 'scripts/**/*.ts'],
   safelist: ['token'],
   corePlugins: {
     aspectRatio: false,
