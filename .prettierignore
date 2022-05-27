@@ -13,3 +13,6 @@ node_modules
 
 # I like custom formatting better
 *.css
+
+# tsconfig.json supports trailing commas, but Prettier doesn't know that
+tsconfig.json
