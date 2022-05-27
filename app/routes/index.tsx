@@ -136,7 +136,9 @@ export default function Home() {
                       <ol>
                         {externalSeries.parts.map((part) => (
                           <li key={part.title} className="space-x-2">
-                            <span className="text-white">{part.title}</span>
+                            <span className="dark:text-white">
+                              {part.title}
+                            </span>
                             <span>·</span>
                             <a
                               href={part.url}
