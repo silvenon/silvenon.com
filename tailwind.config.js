@@ -2,6 +2,7 @@ const colors = require('tailwindcss/colors')
 const plugin = require('tailwindcss/plugin')
 const typography = require('@tailwindcss/typography')
 const forms = require('@tailwindcss/forms')
+const aspectRatio = require('@tailwindcss/aspect-ratio')
 const typographyStyles = require('@tailwindcss/typography/src/styles')
 const screens = require('./app/screens.json')
 const codeTheme = require('./scripts/utils/code-theme')
@@ -27,7 +28,10 @@ const a11y = plugin(({ addVariant }) => {
 module.exports = {
   content: ['app/**/*.{ts,tsx,mdx}', 'scripts/**/*.ts'],
   safelist: ['token'],
-  plugins: [typography, forms, js, light, a11y],
+  corePlugins: {
+    aspectRatio: false,
+  },
+  plugins: [typography, forms, aspectRatio, js, light, a11y],
   darkMode: 'class',
   theme: {
     screens,

@@ -36,12 +36,11 @@ export default function ProseImage({
   ...props
 }: Props) {
   const maxWidth = width < largestImageSize ? width / 2 : undefined
-  const imgProps = { ...props, className: clsx(props.className, 'rounded-lg') }
 
   return (
     <div className="not-prose mx-auto" style={{ maxWidth }}>
       <div
-        className="aspect-ratio"
+        className="aspect-w-[var(--width)] aspect-h-[var(--height)]"
         style={{
           '--width': width,
           '--height': height,
@@ -49,7 +48,8 @@ export default function ProseImage({
       >
         {/* eslint-disable-next-line jsx-a11y/alt-text */}
         <img
-          {...imgProps}
+          {...props}
+          className={clsx(props.className, 'rounded-lg')}
           loading="lazy"
           src={getImageUrl(cloudinaryId, 1024)}
           srcSet={imageSizes

@@ -6,7 +6,7 @@ exports[`ProseImage > has correct output 1`] = `
   style="max-width: 400px;"
 >
   <div
-    class="aspect-ratio"
+    class="aspect-w-[var(--width)] aspect-h-[var(--height)]"
     style="--width: 800; --height: 600;"
   >
     <img

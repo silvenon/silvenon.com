@@ -27,16 +27,6 @@
 
 @layer components {
 
-  /* https://css-tricks.com/aspect-ratio-boxes/ */
-
-  .aspect-ratio {
-    @apply relative h-0;
-    padding-bottom: calc(var(--height) / var(--width) * 100%);
-  }
-  .aspect-ratio :where(img, iframe) {
-    @apply !my-0 absolute top-0 left-0 w-full h-full;
-  }
-
   /* HotTip component */
 
   /* remove the bottom margin both from the last child and the last code block in light mode */
