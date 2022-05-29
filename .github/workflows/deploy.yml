@@ -152,6 +152,7 @@ jobs:
           context: .
           push: true
           tags: registry.fly.io/${{ steps.app_name.outputs.value }}:${{ github.ref_name }}-${{ github.sha }}
+          # CLOUDINARY_URL is needed for building posts
           secrets: |
             "CLOUDINARY_URL=${{ secrets.CLOUDINARY_URL }}"
           build-args: |
