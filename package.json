@@ -26,7 +26,7 @@
     "dev:css": "npm run generate:css -- --watch",
     "dev:posts": "cross-env NODE_ENV=development npm run generate:posts",
     "dev:remix": "remix dev",
-    "build": "run-s -l build:css && run-p -l build:posts build:remix",
+    "build": "run-s build:css && run-p build:posts build:remix",
     "build:css": "npm run generate:css -- --minify",
     "build:posts": "cross-env NODE_ENV=production npm run generate:posts",
     "build:remix": "remix build",
@@ -38,8 +38,8 @@
     "test:e2e:dev": "start-server-and-test dev 3000 'cypress open'",
     "test:e2e:run": "npm run build && cross-env PORT=8811 start-server-and-test start 8811 'cypress run'",
     "typecheck": "tsc --build && tsc --build cypress",
-    "validate": "run-p -l 'test -- --run' lint typecheck test:e2e:run",
-    "validate:pre-push": "run-p -l 'test -- --run' lint typecheck"
+    "validate": "run-p 'test -- --run' lint typecheck test:e2e:run",
+    "validate:pre-push": "run-p 'test -- --run' lint typecheck"
   },
   "browserslist": [
     "defaults",
