@@ -13,6 +13,7 @@ import type {
   MetaFunction,
   LinksFunction,
 } from '@remix-run/node'
+import { MetronomeLinks } from '@metronome-sh/react'
 import clsx from 'clsx'
 import Prose from './components/Prose'
 import Analytics from './components/Analytics'
@@ -99,6 +100,7 @@ function Document({
       <head>
         <Meta />
         <Links />
+        <MetronomeLinks />
         <script
           dangerouslySetInnerHTML={{
             __html: `

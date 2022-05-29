@@ -18,7 +18,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "setup": "npm install && simple-git-hooks && npm run dotenv",
+    "setup": "npm install && metronome patch @remix-run/serve && simple-git-hooks && npm run dotenv",
     "dotenv": "node node_modules/dotenv-safe/config.js",
     "generate:css": "tailwindcss --input ./tailwind.css --output ./app/tailwind.css",
     "generate:posts": "node -r esbuild-register scripts/compile-posts.ts",
@@ -70,6 +70,8 @@
     "@gitgraph/core": "^1.5.0",
     "@heroicons/react": "^1.0.5",
     "@iconify/icons-entypo-social": "^1.1.0",
+    "@metronome-sh/express": "^5.4.2",
+    "@metronome-sh/react": "^5.4.2",
     "@remix-run/node": "^1.3.4",
     "@remix-run/react": "^1.2.2",
     "@remix-run/serve": "^1.2.2",
