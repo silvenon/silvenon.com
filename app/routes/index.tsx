@@ -89,7 +89,7 @@ export default function Home() {
             </Prose>
             <div className="sm:order-1 sm:w-40">
               <div className="relative">
-                <ProfilePhoto className="aspect-[4/2] sm:aspect-[4/5]" />
+                <ProfilePhoto className="aspect-w-4 aspect-h-2 sm:aspect-h-5" />
                 <div className="absolute bottom-0 right-0 mr-0.5 flex sm:left-0 sm:justify-center">
                   {socialLinks.map((network) => (
                     <a
