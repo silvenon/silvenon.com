@@ -18,5 +18,7 @@ node_modules
 *.yml
 *.yaml
 
+README.md
+
 # tsconfig.json supports trailing commas, but Prettier doesn't know that
 tsconfig.json
