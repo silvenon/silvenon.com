@@ -20,6 +20,6 @@
       "~/*": ["./app/*"],
     },
   },
-  "exclude": ["node_modules", "./cypress", "./app/posts"],
+  "exclude": ["node_modules", "./integration", "./app/posts"],
   "include": ["**/*.ts", "**/*.tsx"],
 }

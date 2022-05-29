@@ -19,6 +19,7 @@ node_modules
 /app/tailwind.css
 /app/posts
 /coverage
-/cypress/screenshots
-/cypress/videos
 tsconfig.tsbuildinfo
+/test-results/
+/playwright-report/
+/playwright/.cache/
