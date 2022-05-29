@@ -14,5 +14,9 @@ node_modules
 # I like custom formatting better
 *.css
 
+# I don't want to change YAMLs now
+*.yml
+*.yaml
+
 # tsconfig.json supports trailing commas, but Prettier doesn't know that
 tsconfig.json
