@@ -99,7 +99,8 @@ function rehypeHideDuplicateCodeBlocks() {
       ) {
         return
       }
-      const theme = node.properties?.['data-theme']
+      if (!node.properties) return
+      const theme = node.properties['data-theme']
       if (typeof theme === 'undefined') return
       Object.assign(node.properties, {
         className: clsx(
