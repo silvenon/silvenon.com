@@ -93,10 +93,20 @@ jobs:
         with:
           node-version: 16
 
+      # https://playwrightsolutions.com/playwright-github-action-to-cache-the/
+      - name: Cache Playwright binaries
+        uses: actions/cache@v2
+        id: playwright-cache
+        with:
+          path: |
+            ~/.cache/ms-playwright
+          key: cache-playwright-linux-1.19.2
+
       - name: 📥 Download deps
         uses: bahmutov/npm-install@v1
 
       - name: Install Playwright Browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: npx playwright install --with-deps
 
       - name: ⚙️ Build
