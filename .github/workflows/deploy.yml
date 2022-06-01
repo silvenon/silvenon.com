@@ -78,7 +78,7 @@ jobs:
           CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
 
   playwright:
-    name: ⚫️ Playwright
+    name: 🎭 Playwright
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
