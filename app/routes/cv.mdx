@@ -1,0 +1,117 @@
+---
+meta:
+  title: Curriculum Vitae by Matija Marohnić
+---
+
+import Prose from '~/components/Prose'
+import cloudinary from '~/utils/cloudinary'
+import { screens } from '~/consts'
+
+export function getImageUrl(transform) {
+  return cloudinary('in-roermond', {
+    crop: 'fill',
+    gravity: 'face',
+    format: 'auto',
+    quality: 'auto',
+    ...transform,
+  })
+}
+
+<Prose as="main" className="mt-2 pb-10 lg:mt-4">
+  <h1 className="sm:flex sm:items-center">
+    <div className="sm:flex-1">
+      <span>Matija Marohnić</span><br />
+      <small className="font-normal">Senior frontend developer</small>
+    </div>
+    <div className="w-[256px] mt-4 sm:mt-0">
+      <div className="aspect-w-3 aspect-h-2">
+        <img
+          className="!my-0 rounded-2xl"
+          srcSet={`
+            ${getImageUrl({ aspectRatio: '3:2', width: 256, dpr: 2 })} 2x
+          `}
+          src={getImageUrl({ aspectRatio: '3:2', width: 256 })}
+          alt="photo of me"
+        />
+      </div>
+    </div>
+  </h1>
+
+  I'm generally [very interested in frontend tools](https://twitter.com/silvenon/status/1151063178845020160), i.e. _developer experience_, which is sometimes referred to as "frontend platform". Many people hate this part of frontend because tools today are quite a handful, and while it does require a lot of effort, taking that time can really improve developer experience and speed, and therefore user experience as well.
+
+  ## Skills & Technologies
+
+  <div className="cv-skills sm:columns-2">
+    - **essentials**: HTML, CSS, JavaScript
+    - **styling**: CSS Modules, Sass, Styled Components, Linaria, Tailwind CSS...
+    - **bundlers and build tools**: Grunt, Gulp, `zx`, Webpack, Rollup, esbuild, Parcel, Vite
+    - **static site generators and frameworks**: see my blog when I wrote it in [Jekyll](https://github.com/silvenon/silvenon.com/tree/jekyll), [Next.js](https://github.com/silvenon/silvenon.com/tree/next), [Gatsby](https://github.com/silvenon/silvenon.com/tree/gatsby), [gulp](https://github.com/silvenon/silvenon.com/tree/gulp), [Next.js (again)](https://github.com/silvenon/silvenon.com/tree/next-again), and [Vite](https://github.com/silvenon/silvenon.com/tree/vite) (I also gave Eleventy a shot)
+    - **fullstack**: lately I'm all about Remix, performance, edge computing, databases, caching...
+    - **testing**: Jest, Vitest, Cypress, Playwright, Testing Library, Mock Service Worker
+    - **type checking**: Flow, TypeScript
+    - **linting**: ESLint, Stylelint, remark-lint...
+    - **handling monorepos**: Lerna, generating changelogs with Conventional Commits
+    - **cross-browser support**: browserslist, Modernizr, Autoprefixer, babel-preset-env, esbuild-plugin-browserslist
+    - **optimizing images**: WebP, `srcset`/`sizes`, `<picture>`, responsive images with Cloudinary
+    - **abstract sytax trees (ASTs)**: [unified](https://unifiedjs.com) plugins, Babel plugins, ESLint plugins, codemods with jscodeshift
+    - **templating languages**: Haml, Pug, Handlebars, Nunjucks, EJS etc.
+    - **HTML email**: Mailchimp, MJML
+    - **version control**: loving Git more than the average person, see my [series of posts on Git history](https://silvenon.com/blog/better-git-history)
+    - **public speaking**: on meetups ([here are some of my slides](https://speakerdeck.com/silvenon)) and in a Toastmasters club
+    - **maintaining open source software**: Yeoman generators, React Transition Group, MDX
+    - **writing**: blogging, documenting, Docusaurus, Storybook (later hopefully Vitebook)
+    - **mentoring**: my friends and officially at [Mentoring Byte](https://www.mentoringbyte.com)
+  </div>
+
+  ## Professional experience
+
+  ### Reactor Studio <small>(2018—2022)</small>
+
+    - React, TypeScript, Jest, Cypress, Gatsby, Next.js, Lerna, Styled Components, Storybook
+    - working on booking tickets, where I wrote a lot of end-to-end tests
+    - frontend platform, improving experience for many developers in the team
+    - developer lead the design system [Orbit](https://orbit.kiwi)
+
+  ### GIS Cloud <small>(2017—2018)</small>
+
+    - developer co-lead of a React app
+    - type checking with Flow
+    - mentoring junior developers
+
+  ### Citrusbyte <small>(2016-2017)</small>
+
+    - worked with a remote team
+    - Phoenix project (an MVC framework in Elixir)
+    - I enhanced the stack with modern frontend practices
+    - learned a lot about end-to-end testing
+
+  ### Unity.hr <small>(2013—2016)</small>
+
+    - worked with skilled designers
+    - learned a lot about slicing and animation on the web
+    - as this was the advent of Node.js I continuously explored all the latest tools
+    - started specializing in static site generation
+
+  ### Sentia <small>(2012—2013)</small>
+
+    - dating app in Rails
+    - eventually started moving away from Ruby
+
+  ## Open source experience
+
+  Open source is where I learned most of what I know about programming, teamwork and communication. It's a crucial part of my professional education, so it's important to me that my clients support open source either by donating or, even better, allocating time for employees and contractors to contribute.
+
+  The following are my most significant contributions:
+
+  ### Yeoman
+
+  Yeoman generators are tools for scaffolding new projects. They were excellent examples of using Grunt, Gulp and other build tools, so as I was learning these tools I was heavily contributing to a few generators, so I was eventually added to the core develpoment team.
+
+  ### React Transition Group
+
+  React Transition Group is a popular library providing a crucial hack mostly when animating elements in and out of the DOM. It took me a while to understand it so I started contributing to the documentation and was made collaborator, where I continued turning every issue into a documentation pull request.
+
+  ### MDX
+
+  When I started contributing to MDX it was in its early stages, it was an honor to help make it what it is today as a core developer. This project is where I learned a ton about abstract syntax trees, and continued exploring the [unified](https://unifiedjs.com) ecosystem.
+</Prose>

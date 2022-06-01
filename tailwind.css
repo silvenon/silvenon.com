@@ -70,6 +70,10 @@
   .twitter-tweet iframe {
     @apply max-w-full;
   }
+
+  .cv-skills li {
+    @apply break-inside-avoid-column;
+  }
 }
 
 
