@@ -110,7 +110,7 @@ jobs:
       - name: 🎭 Playwright run
         run: npm run test:e2e:ci
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         if: always()
         with:
           name: playwright-report
