@@ -109,6 +109,8 @@ jobs:
 
       - name: 🎭 Playwright run
         run: npm run test:e2e:ci
+        env:
+          CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
 
       - uses: actions/upload-artifact@v3
         if: always()
