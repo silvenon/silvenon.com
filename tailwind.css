@@ -64,16 +64,14 @@
     100% { transform: rotate(0.0deg)  }
   }
 
+  .twitter-tweet {
+    @apply mx-auto;
+  }
+  .twitter-tweet iframe {
+    @apply max-w-full;
+  }
 }
 
-/* exclude this rule from purging because tweets are being loaded using a library */
-
-.twitter-tweet {
-  @apply mx-auto;
-}
-.twitter-tweet iframe {
-  @apply max-w-full;
-}
 
 @layer utilities {
 

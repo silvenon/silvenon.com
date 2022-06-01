@@ -27,7 +27,10 @@ const a11y = plugin(({ addVariant }) => {
 
 module.exports = {
   content: ['app/**/*.{ts,tsx,mdx}', 'posts/**/*.mdx', 'scripts/**/*.ts'],
-  safelist: ['token'],
+  safelist: [
+    'token', // syntax highlighting
+    'twitter-tweet', // tweets are being loaded using a library
+  ],
   corePlugins: {
     aspectRatio: false,
   },
