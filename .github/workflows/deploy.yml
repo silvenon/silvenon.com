@@ -115,7 +115,7 @@ jobs:
           CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
 
       - name: 🎭 Playwright run
-        run: npm run test:e2e:ci
+        run: npm run test:e2e
         env:
           CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
 

@@ -35,8 +35,7 @@
     "prelint": "eslint-config-prettier src/root.tsx src/__tests__/posts.test.ts",
     "lint": "eslint . --ext js,jsx,ts,tsx --report-unused-disable-directives --cache --cache-location ./node_modules/.cache/eslint",
     "test": "vitest",
-    "test:e2e": "playwright test",
-    "test:e2e:ci": "cross-env PORT=8811 start-server-and-test start 8811 test:e2e",
+    "test:e2e": "start-server-and-test start 3000 'playwright test'",
     "typecheck": "tsc --build && tsc --build integration",
     "validate": "run-p 'test -- --run' lint typecheck test:e2e"
   },
