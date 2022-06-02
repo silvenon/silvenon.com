@@ -13,7 +13,6 @@ node_modules
 .env
 
 # build
-/.cache
 /build
 /public/build
 /app/tailwind.css
