@@ -74,6 +74,9 @@
   .cv-skills li {
     @apply break-inside-avoid-column;
   }
+  .cv-experience > * {
+    @apply break-inside-avoid-page;
+  }
 }
 
 
