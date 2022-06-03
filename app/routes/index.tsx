@@ -139,7 +139,10 @@ export default function Home() {
                               className="inline-flex items-center space-x-2"
                             >
                               <span>Read on {externalSeries.source}</span>
-                              <ExternalLinkIcon className="h-6 w-6" />
+                              <ExternalLinkIcon
+                                aria-hidden="true"
+                                className="h-6 w-6"
+                              />
                             </a>
                           </li>
                         ))}
@@ -173,7 +176,10 @@ export default function Home() {
                         className="inline-flex items-center space-x-2"
                       >
                         <span>Read on {externalPost.source}</span>
-                        <ExternalLinkIcon className="h-6 w-6" />
+                        <ExternalLinkIcon
+                          aria-hidden="true"
+                          className="h-6 w-6"
+                        />
                       </a>
                     </p>
                   </article>
