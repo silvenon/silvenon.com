@@ -13,6 +13,11 @@ export default function handleRequest(
   )
 
   responseHeaders.set('Content-Type', 'text/html')
+  // if they connect once with HTTPS, then they'll connect with HTTPS for the next hundred years
+  responseHeaders.set(
+    'Strict-Transport-Security',
+    `max-age=${60 * 60 * 24 * 365 * 100}`,
+  )
 
   return new Response('<!DOCTYPE html>' + markup, {
     status: responseStatusCode,

@@ -37,6 +37,12 @@ module.exports = {
       },
     },
     {
+      files: './integration/**/*.spec.ts',
+      rules: {
+        'jest/valid-expect': 'off',
+      },
+    },
+    {
       files: ['*.ts', '*.tsx'],
       extends: 'plugin:@typescript-eslint/eslint-recommended',
       rules: {

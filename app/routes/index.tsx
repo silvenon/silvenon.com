@@ -1,10 +1,6 @@
 import { useLoaderData, Link } from '@remix-run/react'
 import { json } from '@remix-run/node'
-import type {
-  LoaderFunction,
-  HeadersFunction,
-  MetaFunction,
-} from '@remix-run/node'
+import type { LoaderFunction, MetaFunction } from '@remix-run/node'
 import { Fragment } from 'react'
 import { ExternalLinkIcon } from '@heroicons/react/outline'
 import clsx from 'clsx'
@@ -58,10 +54,6 @@ export const loader: LoaderFunction = async () => {
   })
 
   return json(data, 200)
-}
-
-export const headers: HeadersFunction = ({ parentHeaders }) => {
-  return parentHeaders
 }
 
 export const meta: MetaFunction = () =>

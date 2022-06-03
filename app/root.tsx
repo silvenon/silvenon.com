@@ -9,7 +9,6 @@ import {
 import { json } from '@remix-run/node'
 import type {
   LoaderFunction,
-  HeadersFunction,
   MetaFunction,
   LinksFunction,
 } from '@remix-run/node'
@@ -28,13 +27,6 @@ import { getMeta } from './utils/seo'
 export const loader: LoaderFunction = ({ request }) => {
   removeTrailingSlash(request)
   return json({ appName: process.env.FLY_APP_NAME }, 200)
-}
-
-export const headers: HeadersFunction = () => {
-  return {
-    // if they connect once with HTTPS, then they'll connect with HTTPS for the next hundred years
-    'Strict-Transport-Security': `max-age=${60 * 60 * 24 * 365 * 100}`,
-  }
 }
 
 export const meta: MetaFunction = ({ location, data }) => {
