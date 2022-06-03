@@ -15,6 +15,7 @@ interface StandalonePost {
   title: string
   htmlTitle?: string
   published?: Date
+  lastModified?: Date
   code: string
 }
 
@@ -69,6 +70,7 @@ export default function Post(props: Props) {
             published={
               (isSeries ? props.series.published : props.published) ?? undefined
             }
+            lastModified={props.lastModified}
           />
 
           {isSeries ? (
