@@ -1,13 +1,9 @@
-import { bundleMDX } from 'mdx-bundler'
-import rehypePrettyCodePlugins from './utils/rehype-pretty-code'
-import { esbuildPluginBrowserslist } from 'esbuild-plugin-browserslist'
-import browserslist from 'browserslist'
-import esbuildPluginCloudinary from './utils/esbuild-plugin-cloudinary'
 import fs from 'fs/promises'
 import { createWriteStream } from 'fs'
 import path from 'path'
 import chokidar from 'chokidar'
 import cacache from 'cacache'
+import { compileMDXFile } from './utils/mdx'
 
 const SOURCE_DIR = path.join(process.cwd(), 'posts')
 const OUTPUT_DIR = path.join(process.cwd(), 'app/posts')
@@ -15,18 +11,19 @@ const CACHE_DIR = path.join(process.cwd(), 'node_modules/.cache/posts')
 
 async function compilePosts() {
   // if any of these files change we need to clear the cache
-  const scripts = [
+  const criticalFiles = [
     'compile-posts.ts',
-    'utils/rehype-pretty-code.ts',
-    'utils/esbuild-plugin-cloudinary.ts',
     'utils/cloudinary.ts',
     'utils/code-theme.js',
+    'utils/esbuild-plugin-cloudinary.ts',
+    'utils/mdx.ts',
+    'utils/rehype-pretty-code.ts',
   ]
 
   if (
     (
       await Promise.all(
-        scripts.map(async (file) =>
+        criticalFiles.map(async (file) =>
           cacache.get.info(
             path.join(CACHE_DIR, 'scripts', file),
             path.join(
@@ -112,39 +109,7 @@ async function compile(file: string) {
       }
     })
   } catch (err) {
-    const [{ default: remarkSmartypants }, { default: remarkUnwrapImages }] =
-      await Promise.all([
-        import('remark-smartypants'),
-        import('remark-unwrap-images'),
-      ])
-
-    const { code } = await bundleMDX({
-      file: path.join(SOURCE_DIR, file),
-      cwd: path.dirname(path.join(SOURCE_DIR, file)),
-      mdxOptions: (options) => {
-        options.remarkPlugins = [
-          ...(options.remarkPlugins || []),
-          remarkSmartypants,
-          remarkUnwrapImages,
-        ]
-        options.rehypePlugins = [
-          ...(options.rehypePlugins || []),
-          ...rehypePrettyCodePlugins,
-        ]
-        return options
-      },
-      esbuildOptions: (options) => {
-        options.plugins = [
-          esbuildPluginBrowserslist(browserslist(), {
-            printUnknownTargets: false,
-          }),
-          esbuildPluginCloudinary,
-          ...(options.plugins ?? []),
-        ]
-        return options
-      },
-    })
-
+    const code = await compileMDXFile(path.join(SOURCE_DIR, file))
     await fs.writeFile(outputPath, code)
     await cacache.put(cachePath, cacheKey, code)
   }
