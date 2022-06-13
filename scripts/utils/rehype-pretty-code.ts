@@ -38,6 +38,7 @@ function configureRehypePrettyCode(): [
     {
       theme: prettyCodeTheme,
       onVisitLine(node: Element) {
+        addClassName(node, '[pre_&]:block') // should be block only inside <pre>
         // Prevent lines from collapsing in `display: grid` mode
         // allowing empty lines to be copy/pasted
         if (node.children.length === 0) {
@@ -45,10 +46,10 @@ function configureRehypePrettyCode(): [
         }
       },
       onVisitHighlightedLine(node: Element) {
-        addClassName(node, 'highlighted')
+        addClassName(node, 'bg-code-highlight dark:bg-code-highlight-dark')
       },
       onVisitHighlightedWord(node: Element) {
-        addClassName(node, 'highlighted')
+        addClassName(node, 'bg-code-highlight dark:bg-code-highlight-dark')
       },
     },
   ]

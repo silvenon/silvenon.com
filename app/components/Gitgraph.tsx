@@ -24,7 +24,7 @@ const Gitgraph = ({ children }: Props) => {
     <>
       <div
         id={id}
-        className="overflow-scrolling-touch flex justify-center overflow-x-auto font-mono text-xs sm:text-sm lg:text-base"
+        className="flex justify-center overflow-x-auto font-mono text-xs [-webkit-overflow-scrolling:touch] sm:text-sm lg:text-base"
         data-testid="gitgraph"
       >
         <noscript>

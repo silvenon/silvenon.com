@@ -25,6 +25,7 @@ const a11y = plugin(({ addVariant }) => {
   ])
 })
 
+/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['app/**/*.{ts,tsx,mdx}', 'posts/**/*.mdx', 'scripts/**/*.ts'],
   safelist: [

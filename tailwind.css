@@ -4,13 +4,9 @@
 
 @layer base {
 
-  /* ProseImage component */
-
   :root {
     --content-padding: theme('spacing.4');
   }
-
-  /* Gitgraph component */
 
   :root {
     --gitgraph-color-branch-one: theme('colors.gray.500');
@@ -27,32 +23,13 @@
 
 @layer components {
 
-  /* HotTip component */
-
-  /* remove the bottom margin both from the last child and the last code block in light mode */
-  /* which is 2nd to last because the last one is the hidden dark mode block */
-  .hot-tip > *:where(*:last-child, pre:nth-last-child(2)) {
-    @apply !mb-0;
-  }
-  .hot-tip pre {
-    @apply mx-0;
-  }
-
-  .prose pre code .line {
-    @apply block;
-  }
-  .prose code .highlighted {
-    @apply bg-code-highlight dark:bg-code-highlight-dark
-  }
-
-  /* hand waving on the About page */
-
   .animate-hand-wave {
     animation-name: hand-wave;
     animation-duration: 2.5s;
     animation-timing-function: ease;
     transform-origin: bottom;
   }
+
   @keyframes hand-wave {
       0% { transform: rotate(0.0deg)  }
      10% { transform: rotate(14.0deg) } /* The following five values can be played with to make the waving more or less extreme */
@@ -62,30 +39,6 @@
      50% { transform: rotate(10.0deg) }
      60% { transform: rotate(0.0deg)  } /* Reset for the last half to pause */
     100% { transform: rotate(0.0deg)  }
-  }
-
-  .twitter-tweet {
-    @apply mx-auto;
-  }
-  .twitter-tweet iframe {
-    @apply max-w-full;
-  }
-
-  .cv-skills li {
-    @apply break-inside-avoid-column;
-  }
-  .cv-experience > * {
-    @apply break-inside-avoid-page;
-  }
-}
-
-
-@layer utilities {
-
-  /* TODO: how does this compare to Tailwind's overscroll-behavior utilities? */
-
-  .overflow-scrolling-touch {
-    -webkit-overflow-scrolling: touch;
   }
 
 }
