@@ -23,21 +23,17 @@ test.describe('routes', () => {
   })
 
   test('blog post', async ({ page }) => {
+    const pageTitle = page.locator('role=heading[level=1]')
     await page.goto('/blog/intro-to-eslint')
-    await expect(
-      page.locator('role=heading[name=/Intro to ESLint/]'),
-    ).toBeVisible()
+    await expect(pageTitle).toHaveText(/Intro to ESLint/)
   })
 
   test('not found', async ({ page }) => {
+    const pageTitle = page.locator('role=heading[level=1]')
     await page.goto('/blog')
-    await expect(
-      page.locator('role=heading[name="Page Not Found"]'),
-    ).toBeVisible()
+    await expect(pageTitle).toHaveText('Page Not Found')
     await page.goto('/blog/non-existent-post')
-    await expect(
-      page.locator('role=heading[name="Post Not Found"]'),
-    ).toBeVisible()
+    await expect(pageTitle).toHaveText('Post Not Found')
   })
 
   test('redirects', async ({ page }) => {
