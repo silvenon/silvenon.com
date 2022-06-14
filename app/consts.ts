@@ -2,7 +2,6 @@ import githubIcon from '@iconify/icons-entypo-social/github'
 import twitterIcon from '@iconify/icons-entypo-social/twitter'
 import linkedInIcon from '@iconify/icons-entypo-social/linkedin'
 
-export const SITE_URL = 'https://silvenon.com'
 export const SITE_DESCRIPTION = `A blog about frontend development and tooling.`
 
 export const author = {

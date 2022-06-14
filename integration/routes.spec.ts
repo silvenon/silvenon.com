@@ -50,4 +50,23 @@ test.describe('routes', () => {
     await page.goto('/blog/better-git-history')
     await expect(page).toHaveURL('/blog/better-git-history/introduction')
   })
+
+  test('canonical URL', async ({ page }) => {
+    const canonical = page.locator('link[rel=canonical]')
+    const ogUrl = page.locator('meta[property="og:url"]')
+
+    await page.goto('/')
+    await expect(canonical).toHaveAttribute('href', 'http://localhost:3000/')
+    await expect(ogUrl).toHaveAttribute('content', 'http://localhost:3000/')
+
+    await page.goto('/blog/intro-to-eslint/')
+    await expect(canonical).toHaveAttribute(
+      'href',
+      'http://localhost:3000/blog/intro-to-eslint',
+    )
+    await expect(ogUrl).toHaveAttribute(
+      'content',
+      'http://localhost:3000/blog/intro-to-eslint',
+    )
+  })
 })

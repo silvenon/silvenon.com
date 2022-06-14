@@ -4,9 +4,10 @@ import {
   Meta,
   Outlet,
   ScrollRestoration,
+  useLoaderData,
   useCatch,
 } from '@remix-run/react'
-import { json } from '@remix-run/node'
+import { redirect, json } from '@remix-run/node'
 import type {
   LoaderFunction,
   MetaFunction,
@@ -17,25 +18,37 @@ import clsx from 'clsx'
 import Prose from './components/Prose'
 import Analytics from './components/Analytics'
 import cloudinary from './utils/cloudinary'
-import { SITE_URL, author } from './consts'
+import { getCanonicalUrl } from './utils/http'
+import { author } from './consts'
 import styles from './tailwind.css'
 import Header from './components/Header'
 import NotFound from './components/NotFound'
 import { removeTrailingSlash } from './utils/http'
 
-export const loader: LoaderFunction = ({ request }) => {
-  removeTrailingSlash(request)
-  return json({ appName: process.env.FLY_APP_NAME }, 200)
+interface LoaderData {
+  appName?: string
+  canonicalUrl: string
 }
 
-export const meta: MetaFunction = ({ location, data }) => {
+export const loader: LoaderFunction = ({ request }) => {
+  if (request.url !== removeTrailingSlash(request.url)) {
+    throw redirect(removeTrailingSlash(request.url), { status: 308 })
+  }
+  const data: LoaderData = {
+    appName: process.env.FLY_APP_NAME,
+    canonicalUrl: getCanonicalUrl(request),
+  }
+  return json(data, 200)
+}
+
+export const meta: MetaFunction = ({ data }) => {
   return {
     ...(data?.appName === 'silvenon-staging' ? { robots: 'noindex' } : null),
     charset: 'utf-8',
     viewport: 'width=device-width,initial-scale=1',
     // Open Graph
     'og:site_name': author.name,
-    'og:url': new URL(location.pathname, SITE_URL).href,
+    ...(data?.canonicalUrl ? { 'og:url': data.canonicalUrl } : null),
     // https://developers.facebook.com/docs/sharing/best-practices/#images
     'og:image:url': cloudinary('in-reactor-1.jpg', {
       version: 3,
@@ -84,6 +97,7 @@ function Document({
   className?: string
   children: React.ReactNode
 }) {
+  const { canonicalUrl } = useLoaderData<LoaderData>()
   return (
     <html lang="en" className="h-full">
       <head>
@@ -95,6 +109,7 @@ function Document({
             <meta property="twitter:title" content={title} />
           </>
         ) : null}
+        <link rel="canonical" href={canonicalUrl} />
         <Links />
         <MetronomeLinks />
         <script
