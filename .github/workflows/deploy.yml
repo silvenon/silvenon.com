@@ -5,6 +5,9 @@ on:
       - main
       - dev
   pull_request: {}
+permissions:
+  actions: write
+  contents: read
 
 jobs:
   lint:
@@ -24,6 +27,8 @@ jobs:
 
       - name: 📥 Download deps
         uses: bahmutov/npm-install@v1
+        with:
+          useLockFile: false
 
       - name: 🔬 Lint
         run: npm run lint
@@ -45,6 +50,8 @@ jobs:
 
       - name: 📥 Download deps
         uses: bahmutov/npm-install@v1
+        with:
+          useLockFile: false
 
       - name: 🔎 Type check
         run: npm run typecheck --if-present
@@ -66,6 +73,8 @@ jobs:
 
       - name: 📥 Download deps
         uses: bahmutov/npm-install@v1
+        with:
+          useLockFile: false
 
       - name: 📝 Compile posts
         run: npm run build:posts
@@ -104,6 +113,8 @@ jobs:
 
       - name: 📥 Download deps
         uses: bahmutov/npm-install@v1
+        with:
+          useLockFile: false
 
       - name: Install Playwright Browsers
         if: steps.playwright-cache.outputs.cache-hit != 'true'
@@ -186,6 +197,7 @@ jobs:
         run: |
           rm -rf /tmp/.buildx-cache
           mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+
   deploy:
     name: 🚀 Deploy
     runs-on: ubuntu-latest
