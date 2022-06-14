@@ -17,12 +17,11 @@ import clsx from 'clsx'
 import Prose from './components/Prose'
 import Analytics from './components/Analytics'
 import cloudinary from './utils/cloudinary'
-import { SITE_URL, SITE_DESCRIPTION, author } from './consts'
+import { SITE_URL, author } from './consts'
 import styles from './tailwind.css'
 import Header from './components/Header'
 import NotFound from './components/NotFound'
 import { removeTrailingSlash } from './utils/http'
-import { getMeta } from './utils/seo'
 
 export const loader: LoaderFunction = ({ request }) => {
   removeTrailingSlash(request)
@@ -34,10 +33,6 @@ export const meta: MetaFunction = ({ location, data }) => {
     ...(data?.appName === 'silvenon-staging' ? { robots: 'noindex' } : null),
     charset: 'utf-8',
     viewport: 'width=device-width,initial-scale=1',
-    ...getMeta({
-      title: author.name,
-      description: SITE_DESCRIPTION,
-    }),
     // Open Graph
     'og:site_name': author.name,
     'og:url': new URL(location.pathname, SITE_URL).href,
@@ -81,9 +76,11 @@ export const links: LinksFunction = () => {
 }
 
 function Document({
+  title,
   className,
   children,
 }: {
+  title?: string
   className?: string
   children: React.ReactNode
 }) {
@@ -91,6 +88,13 @@ function Document({
     <html lang="en" className="h-full">
       <head>
         <Meta />
+        {title ? (
+          <>
+            <title>{title}</title>
+            <meta property="og:title" content={title} />
+            <meta property="twitter:title" content={title} />
+          </>
+        ) : null}
         <Links />
         <MetronomeLinks />
         <script
@@ -138,7 +142,7 @@ export default function App() {
 export function CatchBoundary() {
   const caught = useCatch()
   return (
-    <Document>
+    <Document title={caught.status === 404 ? 'Page Not Found' : undefined}>
       <Prose as="main" className="py-4 text-center">
         {caught.status === 404 ? (
           <NotFound title="Page Not Found">Nothing found at this URL.</NotFound>
@@ -155,7 +159,7 @@ export function CatchBoundary() {
 
 export function ErrorBoundary({ error }: { error: Error }) {
   return (
-    <Document>
+    <Document title="Error">
       <Prose as="main" className="py-4">
         <h1>Oh no!</h1>
         {!error.stack?.includes(error.message) ? (
