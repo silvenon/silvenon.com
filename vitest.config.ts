@@ -9,6 +9,6 @@ export default defineConfig({
   test: {
     globals: true,
     setupFiles: ['./test/setup-test-env.ts'],
-    exclude: ['**/node_modules/**', './integration/**'],
+    include: ['./app/**/*.test.{ts,tsx}', './posts/**/*.test.{ts,tsx}'],
   },
 })
