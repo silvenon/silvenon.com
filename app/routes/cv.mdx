@@ -19,6 +19,20 @@ export function getImageUrl(transform) {
   })
 }
 
+export function Experience({ role, company, duration: [start, end], children }) {
+  return (
+    <div>
+      <h3>
+        <span>{role}</span>{' '}
+        <span className="font-light dark:font-thin">at</span>{' '}
+        <span>{company}</span>{' '}
+        <span className="whitespace-nowrap font-light dark:font-thin">({start}—{end})</span>
+      </h3>
+      {children}
+    </div>
+  )
+}
+
 <Prose as="main" className="mt-2 pb-6 md:pb-10 lg:mt-4">
   <h1 className="flex flex-col items-center text-center sm:flex-row sm:text-left">
     <div className="sm:flex-1">
@@ -68,47 +82,42 @@ export function getImageUrl(transform) {
   ## Professional experience
 
   <div className="[&>*]:break-inside-avoid-page">
-    <div>
-      ### Reactor Studio <small>(2018—2022)</small>
-
+    <Experience role="Senior JavaScript Developer" company="Reactor Studio" duration={[2018, 2022]}>
       - React, TypeScript, Jest, Cypress, Gatsby, Next.js, Lerna, Styled Components, Storybook
       - working on booking tickets, where I wrote a lot of end-to-end tests
       - frontend platform, improving experience for many developers in the team
-      - developer lead the design system [Orbit](https://orbit.kiwi)
-    </div>
+      - development lead of a React design system
+    </Experience>
 
-    <div>
-      ### GIS Cloud <small>(2017—2018)</small>
+    <Experience role="React Developer" company="GIS Cloud" duration={[2017, 2018]}>
+      - developer co-lead of a React app
+      - type checking with Flow
+      - mentoring junior developers
+    </Experience>
 
-        - developer co-lead of a React app
-        - type checking with Flow
-        - mentoring junior developers
-    </div>
+    <Experience role="Frontend Developer" company="Citrusbyte" duration={[2016, 2017]}>
+      - worked with a remote team
+      - Phoenix project (an MVC framework in Elixir)
+      - I enhanced the stack with modern frontend practices
+      - learned a lot about end-to-end testing
+    </Experience>
 
-    <div>
-      ### Citrusbyte <small>(2016-2017)</small>
+    <Experience role="Frontend Developer" company="Profico" duration={[2013, 2016]}>
+      - worked with skilled designers
+      - learned a lot about slicing and animation on the web
+      - as this was the advent of Node.js I continuously explored all the latest tools
+      - started specializing in static site generation
+    </Experience>
 
-        - worked with a remote team
-        - Phoenix project (an MVC framework in Elixir)
-        - I enhanced the stack with modern frontend practices
-        - learned a lot about end-to-end testing
-    </div>
+    <Experience role="Frontend Developer" company="Sentia" duration={[2012, 2013]}>
+      - dating app in Rails
+      - eventually started moving away from Ruby
+    </Experience>
 
-    <div>
-      ### Unity.hr <small>(2013—2016)</small>
-
-        - worked with skilled designers
-        - learned a lot about slicing and animation on the web
-        - as this was the advent of Node.js I continuously explored all the latest tools
-        - started specializing in static site generation
-    </div>
-
-    <div>
-      ### Sentia <small>(2012—2013)</small>
-
-        - dating app in Rails
-        - eventually started moving away from Ruby
-    </div>
+    <Experience role="Web Content Manager" company="bonbon" duration={[2012, 2014]}>
+      - content management via CMS
+      - design work
+    </Experience>
 
     <div>
       ## Open source experience
