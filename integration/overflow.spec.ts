@@ -5,12 +5,11 @@ test.describe('overflow', () => {
     await page.goto('/blog/checking-for-dead-urls')
     await page.setViewportSize(devices['iPhone SE'].viewport)
 
-    const docHandle = await page.evaluateHandle(() => document.documentElement)
-    const scrollWidth = await page.evaluate((doc) => doc.scrollWidth, docHandle)
-    const clientWidth = await page.evaluate((doc) => doc.clientWidth, docHandle)
+    const document = page.locator('role=document')
+
+    const scrollWidth = await document.evaluate((doc) => doc.scrollWidth)
+    const clientWidth = await document.evaluate((doc) => doc.clientWidth)
 
     expect(scrollWidth).toBe(clientWidth)
-
-    await docHandle.dispose()
   })
 })
