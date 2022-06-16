@@ -39,7 +39,7 @@ async function compilePosts() {
   )
 
   if (criticalMeta.some(({ hasChanged }) => hasChanged)) {
-    console.log('Some of the critical files changed, clearing cache!')
+    console.log('Some of the critical files have changed, clearing cache!')
     noCache = true
   }
 
