@@ -130,16 +130,14 @@ According to the code above we need to extract these values from the pure HTML n
 it('content does not overflow', () => {
   cy.viewport('iphone-8')
   cy.visit('/blog/e2e-testing-with-cypress-vs-playwright')
-  cy.get('html').then(($doc) => {
+  cy.get('html').should(($doc) => {
     const [doc] = $doc.get()
-    cy.wrap(doc.scrollWidth).should('equal', doc.clientWidth)
+    expect(doc.scrollWidth).to.eq(doc.clientWidth)
   })
 })
 ```
 
-I find it unfortunate that I have to deal with jQuery in 2022. at all, it's safe to say that the DOM API has been implemented across browsers by now, but there we go. I'm also not crazy about the fact that the `then()` method suggests that I can `await`, but it's not coming from a promise.
-
-However, grumpiness aside, we've achieved our goal with very little code, yay!
+Despite feeling grumpy from having to deal with jQuery in 2022 😆 I'd say that we've achieved our goal with very little code, yay!
 
 ### In Playwright
 
