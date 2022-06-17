@@ -30,7 +30,7 @@ test.describe('routes', () => {
 
   test('not found', async ({ page }) => {
     const pageTitle = page.locator('role=heading[level=1]')
-    await page.goto('/blog')
+    await page.goto('/non-existent-page')
     await expect(pageTitle).toHaveText('Page Not Found')
     await page.goto('/blog/non-existent-post')
     await expect(pageTitle).toHaveText('Post Not Found')

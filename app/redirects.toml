@@ -1,3 +1,9 @@
+# my blog and my homepage are currently the same thing
+
+[[redirects]]
+  source = "/blog"
+  destination = "/"
+
 # my early blog posts had a different URL structure
 
 [[redirects]]
