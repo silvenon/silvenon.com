@@ -1,0 +1,175 @@
+---
+title: "Cypress vs. Playwright: end-to-end testing showdown"
+description: Like Cypress, Playwright is also a framework for end-to-end testing. Find out what are some of the differences and write your first Playwright test!
+category: DEV
+published: 2022-06-17
+---
+
+End-to-end testing is incredibly helpful when building and maintaining any stable application or website. As humans we often check only parts of the project that we consider to be worth checking to the extent we feel like at that moment, and only in our favorite browser. Extensive manual testing would take ages, ain't nobody got time for that! However, _bugs_ do have time.
+
+I'm not talking only about JavaScript, which we usually focus on, a **CSS bug** can also really screw things up and make parts of your product frustrating or impossible to use. For example, it took me a while to notice that on smaller viewports my blog posts were overflowing! In theory this means that people would have to constantly scroll horizontally back-and-forth while reading, but in practice they would simply leave. No error tracking service would be able to warn me about that. (Maybe some kind of analytics would have been able to give me a hint, though.)
+
+At the end of this post I'll show you how I solved this problem forever, now let's move on to end-to-end testing tools.
+
+## My experience with Cypress
+
+I remember joining a team with almost zero onboarding and having to make changes on a _crucial_ part of the app. Because I was new and the code was messy I was rarely sure that my changes were doing what I intended, so I started writing Cypress tests primarily for my own sanity, in order to gain some sense of security. This has helped a huge deal — I was able to confidently deliver my changes, and people reviewing them would be able to confidently merge them. It's generally amazing that you can write one thing and be able to execute it in multiple browsers!
+
+However, I only liked that overall feeling of security, I didn't particularly like **writing** or **running** them.
+
+### Speed
+
+Running my tests was slow, even headlessly, which was very frustrating because it felt like every iteration was taking forever. Running the measely 5 tests I had on my blog was taking **45 seconds**. This ultimately resulted in me writing _less of them_, I was testing only what I decided was crucial, not nearly as much as I wanted to.
+
+### Dashboard
+
+I've just noticed that Cypress v10 doubled down on their dashboard by completely revamping it. However, I only want to run my tests, nothing else, if I want to see my configuration I can see it in my text editor and use the documentation as reference, and if I want to create a new test file I can create it in my text editor. Enhancing the dashboard is just pulling me further away from my editor, which is the opposite of what I think writing end-to-end tests should look like.
+
+### Documentation
+
+Speed wasn't the only factor, another problem was that it was often taking me a long time to figure out how to write my tests, I don't find Cypress' documentation to be organized that well at the moment. For example, it took me a long time to figure out how to use `shoud()`, as arguably the most important part of Cypress I expected to be able to learn about it in one place, but the documentation kept throwing me in different directions as I tried to dig deeper. I'm still wondering whether there's something more I can learn about it.
+
+It doesn't happen rarely that I find myself searching for answers outside the documentation.
+
+### Syntax
+
+Finally, Cypress' syntax just isn't my cup of tea, primarily the jQuery-like chaining syntax and Chai assertions, I keep spending time planning how to chain and getting it wrong. For example, in this example I took from the docs the fact that `have.css` changes the subject is really confusing to me:
+
+```js
+cy.get('nav') // yields <nav>
+  .should('be.visible') // yields <nav>
+  .should('have.css', 'font-family') // yields 'sans-serif'
+  .and('match', /serif/) // yields 'sans-serif'
+```
+
+Also, commands are being run as if they're synchronous, but they are not, which caused me to make some wrong assumptions while testing.
+
+### Alternatives?
+
+I'm usually somewhat obsessed with frontend tools because frontend development is hard, so I'm always on a lookout for how to make it easier. But because Cypress is the de facto standard I thought that it's just the way it is with end-to-end testing because browsers and apps cannot run faster than they do, right? So I didn't put much more thought into it. I actually started to internalize the problem and felt like a bad developer for not writing more tests instead of realizing that the tool is making the job harder for me. If a job is hard, who wouldn't try to do less of it?
+
+## Discovering Playwright
+
+Eventually I noticed [Playwright](https://playwright.dev) and decided to give it a go, and let me tell you...
+
+### Speed
+
+Running my tests now takes like **3 seconds** now, and I even have a few more of them! More tests at a much lesser cost? Sign me up!
+
+This means that when it comes to end-to-end testing speed is simply no longer an object. Playwright caused me to want to test every square inch of my blog, it was _that_ fun, I'm even excited by writing tests that _fail_! If a tool results in you actively looking for stuff to test, that's a huge win.
+
+### Support for Safari
+
+Unlike Cypress, Playwright can also run Safari! This is huge because as we all know Safari's feature support is a bit uncomfortable. This helped me catch a CSS bug that I would otherwise probably never catch. Great user experience should be for everyone! ❤️
+
+### Locators
+
+Locators in Playwright are very powerful, they feature a wide range of ways of selecting elements, like CSS selectors, WAI-ARIA roles, text content... even _layout_ selectors, which allow you to select elements based on their location on the screen! For example `button:near(.promo-card){:css}` will select, you guessed it, a button near an element with the class `promo-card`. 🤯
+
+Creating locators is synchronous because they are being executed only when you actually do something with them, for example the following code will select the switch three times:
+
+```js
+const mySwitch = page.locator('role=switch')
+
+await expect(mySwitch).toHaveText('Enable')
+await mySwitch.click()
+await expect(mySwitch).toHaveText('Disable')
+```
+
+One of the benefits of this is that you don't have to call `page.locator()` multiple times. In Cypress one way of doing this would be with aliases:
+
+```js
+// findByRole() is coming from @testing-library/cypress
+cy.findByRole('switch').as('@switch')
+
+cy.get('@switch').should('have.text', 'Enable')
+cy.get('@switch').click()
+cy.get('@switch').should('have.text', 'Disable')
+```
+
+You cannot simply store the switch in a variable because that will only save the one that says "Enable", so the second assertion would fail.
+
+In my opinion locators strike a better balance between the framework and JavaScript itself — using variables is what you would naturally think of if you wanted to store a value for later.
+
+### Asynchronous syntax
+
+As you might have noticed from the example above, Playwright has an asyncronous syntax. You need to `await` pretty much everything except creating locators. Even though this can seem repetitive and error-prone at first, I find the asynchronous syntax to be more developer-friendly, as it doesn't hide where it waits. Also, it enables running stuff in parallel when you need to (although in my modest experience those cases seem pretty rare so far).
+
+### Headless by default
+
+When running tests you'll notice that Playwright runs headlessly by default, which made me realize that I don't need to see tests running in the browser remotely as often as I thought I did, huh! And if a test fails Playwright will open a nice test report in the browser describing the problems.
+
+### Debug mode
+
+When I do need to see what's going on in the browser I can run my tests in debug mode, which will open up a browser. But unlike Cypress' fancy dashboard, Playwright opens two windows: the main one where we can see our application just like we would normally without any additional UI, and another smaller one featuring a console-like application where we can see the test output.
+
+### VS Code extension
+
+As the cherry on top, Playwright also features a VS Code extension, which enables you to run desired tests in isolation by simply clicking on them! The line of code that's currently being executed will be highlighted, so that if something takes a while you'll immediately know where's the holdup. Upon failure you'll get the most delightful experience where the failing line literally expands with the error report right below it! From there you'll also be able to open a full HTML report in your browser. And if the reason for failure isn't obvious to you and you want to see the test action, the extension allows you to do so by running the test in debug mode. In that case the execution will automatically halt upon failure so you can see in the browser what's going on, and if you want to halt at an earlier point you can simply set a breakpoing in VS Code!
+
+Using this extension is infinitely more convenient for development than the CLI. 🤯 I'm honestly barely containing my excitement just from writing about this. 😄
+
+## How to test our overflow bug
+
+It's time to go back to my content overflow bug from the beginning. How do I prevent it from happening again? More specifically, how do I abort deploying if it happens again? I need to write a test for it.
+
+I played around with ways to detect horizontal overflow, and eventually landed on a pretty straightforward solution. The pure JavaScript version of it would be:
+
+```js
+const doc = document.documentElement
+if (doc.scrollWidth !== doc.clientWidth) {
+  throw new Error('The content is overflowing!')
+}
+```
+
+### In Cypress
+
+According to the code above we need to extract these values from the pure HTML node, and one way we can access it is from its jQuery wrapper inside `then()`. As for the viewport, let's set it to iPhone 8 because both Cypress and Playwright have it. So here's the test I came up with:
+
+```js
+it('content does not overflow', () => {
+  cy.viewport('iphone-8')
+  cy.visit('/blog/e2e-testing-with-cypress-vs-playwright')
+  cy.get('html').then(($doc) => {
+    const [doc] = $doc.get()
+    cy.wrap(doc.scrollWidth).should('equal', doc.clientWidth)
+  })
+})
+```
+
+I find it unfortunate that I have to deal with jQuery in 2022. at all, it's safe to say that the DOM API has been implemented across browsers by now, but there we go. I'm also not crazy about the fact that the `then()` method suggests that I can `await`, but it's not coming from a promise.
+
+However, grumpiness aside, we've achieved our goal with very little code, yay!
+
+### In Playwright
+
+In order to obtain these properties from locators in Playwright we need to use [`locator.evaluate`](https://playwright.dev/docs/api/class-locator#locator-evaluate), which allows us to access the HTML node. We could write our test like this:
+
+```js
+import { test, expect, devices } from '@playwright/test'
+
+test('content does not overflow', async ({ page }) => {
+  await page.setViewportSize(devices['iPhone 8'].viewport)
+  await page.goto('/blog/e2e-testing-with-cypress-vs-playwright')
+
+  const [scrollWidth, clientWidth] = await page
+    .locator('html')
+    .evaluate((doc) => [doc.scrollWidth, doc.clientWidth])
+
+  expect(scrollWidth).toBe(clientWidth)
+})
+```
+
+You'll notice that the test is more explicit, for example there are no globals, we're importing everything and `await`ing every async operation. As for the assertion, Playwright is extending Jest's `expect`, so overall it feels a bit more like a unit test.
+
+It's more code, but I like it better, weird. 🤔 What do you think?
+
+Regardless of the framework, this overflow bug will never surprise us again! At least not on that particular blog post. 😜
+
+## Conclusion
+
+Up until this point I didn't feel like I was doing a great job when it comes to testing, which made me feel irresponsible. We can think of all sorts of excuses why we don't do things that we "should", but regardless of who's fault it is those tests remain unwritten, which is the only thing that matters. However, with Playwright my motivation has taken a huge turn, which proves that tools can make a big difference!
+
+If you want to try it out, I recommend reading the guides in [Playwright's documentation](https://playwright.dev/docs/library), you can find them in the sidebar under "Guides". Following links will often throw you in the API section, which contains only references and isn't ideal when you're just starting out, so guides are very helpful in truly understanding how these pieces work together.
+
+Good luck and have fun!
