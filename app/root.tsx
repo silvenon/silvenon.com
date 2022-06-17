@@ -97,7 +97,7 @@ function Document({
   className?: string
   children: React.ReactNode
 }) {
-  const { canonicalUrl } = useLoaderData<LoaderData>()
+  const data = useLoaderData<LoaderData>()
   return (
     <html lang="en" className="h-full">
       <head>
@@ -109,7 +109,9 @@ function Document({
             <meta property="twitter:title" content={title} />
           </>
         ) : null}
-        <link rel="canonical" href={canonicalUrl} />
+        {data?.canonicalUrl ? (
+          <link rel="canonical" href={data.canonicalUrl} />
+        ) : null}
         <Links />
         <MetronomeLinks />
         <script
