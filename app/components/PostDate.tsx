@@ -10,6 +10,7 @@ export default function PostDate({ published, lastModified }: Props) {
   if (published) {
     return (
       <>
+        <span className="sr-only">Published on </span>
         <time
           className="flex items-center space-x-2 text-gray-500 dark:text-gray-400"
           dateTime={formatDateISO(published)}
