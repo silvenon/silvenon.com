@@ -24,35 +24,35 @@ export default function ProfilePhoto({ className }: Props) {
         <source
           media={`(min-width: ${screens.sm})`}
           srcSet={`
-          ${cloudinary(ID, {
-            version: VERSION,
-            transformations: [
-              zoom,
-              {
-                width: SM_WIDTH_PX,
-                aspectRatio: '4:5',
-                crop: 'fill',
-                gravity: 'custom',
-                format: 'auto',
-                quality: 'auto',
-              },
-            ],
-          })} ${SM_WIDTH_PX}w,
-          ${cloudinary(ID, {
-            version: VERSION,
-            transformations: [
-              zoom,
-              {
-                width: SM_WIDTH_PX * 2,
-                aspectRatio: '4:5',
-                crop: 'fill',
-                gravity: 'custom',
-                format: 'auto',
-                quality: 'auto',
-              },
-            ],
-          })} ${SM_WIDTH_PX * 2}w
-        `}
+            ${cloudinary(ID, {
+              version: VERSION,
+              transformations: [
+                zoom,
+                {
+                  width: SM_WIDTH_PX,
+                  aspectRatio: '4:5',
+                  crop: 'fill',
+                  gravity: 'custom',
+                  format: 'auto',
+                  quality: 'auto',
+                },
+              ],
+            })} ${SM_WIDTH_PX}w,
+            ${cloudinary(ID, {
+              version: VERSION,
+              transformations: [
+                zoom,
+                {
+                  width: SM_WIDTH_PX * 2,
+                  aspectRatio: '4:5',
+                  crop: 'fill',
+                  gravity: 'custom',
+                  format: 'auto',
+                  quality: 'auto',
+                },
+              ],
+            })} ${SM_WIDTH_PX * 2}w
+          `}
           sizes={`${SM_WIDTH_PX}px`}
         />
         <img
@@ -73,35 +73,35 @@ export default function ProfilePhoto({ className }: Props) {
             ],
           })}
           srcSet={`
-          ${cloudinary(ID, {
-            version: VERSION,
-            transformations: [
-              zoom,
-              {
-                width: 450,
-                aspectRatio: '4:2',
-                crop: 'fill',
-                gravity: 'face',
-                format: 'auto',
-                quality: 'auto',
-              },
-            ],
-          })} 450w,
-          ${cloudinary(ID, {
-            version: VERSION,
-            transformations: [
-              zoom,
-              {
-                width: 900,
-                aspectRatio: '4:2',
-                crop: 'fill',
-                gravity: 'face',
-                format: 'auto',
-                quality: 'auto',
-              },
-            ],
-          })} 900w
-        `}
+            ${cloudinary(ID, {
+              version: VERSION,
+              transformations: [
+                zoom,
+                {
+                  width: 450,
+                  aspectRatio: '4:2',
+                  crop: 'fill',
+                  gravity: 'face',
+                  format: 'auto',
+                  quality: 'auto',
+                },
+              ],
+            })} 450w,
+            ${cloudinary(ID, {
+              version: VERSION,
+              transformations: [
+                zoom,
+                {
+                  width: 900,
+                  aspectRatio: '4:2',
+                  crop: 'fill',
+                  gravity: 'face',
+                  format: 'auto',
+                  quality: 'auto',
+                },
+              ],
+            })} 900w
+          `}
           sizes="100vw"
         />
       </picture>
