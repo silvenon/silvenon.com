@@ -1,17 +1,11 @@
+import clsx from 'clsx'
 import cloudinary from '~/utils/cloudinary'
-import type { ImageTransform } from '~/utils/cloudinary'
 import { screens } from '../consts'
 
-const ID = 'in-reactor-1.jpg'
-const VERSION = 3
+const ID = 'in-roermond.jpg'
+const VERSION = 1
 // approxiamte px value of w-40
 const SM_WIDTH_PX = 160
-// simulate zoom because I don't know any alternative
-const zoom: ImageTransform = {
-  aspectRatio: '1:1',
-  crop: 'fill',
-  gravity: 'custom',
-}
 
 interface Props {
   className?: string
@@ -19,7 +13,12 @@ interface Props {
 
 export default function ProfilePhoto({ className }: Props) {
   return (
-    <div className={className}>
+    <div
+      className={clsx(
+        'aspect-w-2 aspect-h-1 sm:aspect-w-4 sm:aspect-h-5',
+        className,
+      )}
+    >
       <picture>
         <source
           media={`(min-width: ${screens.sm})`}
@@ -27,12 +26,11 @@ export default function ProfilePhoto({ className }: Props) {
             ${cloudinary(ID, {
               version: VERSION,
               transformations: [
-                zoom,
                 {
                   width: SM_WIDTH_PX,
                   aspectRatio: '4:5',
                   crop: 'fill',
-                  gravity: 'custom',
+                  gravity: 'face',
                   format: 'auto',
                   quality: 'auto',
                 },
@@ -41,12 +39,11 @@ export default function ProfilePhoto({ className }: Props) {
             ${cloudinary(ID, {
               version: VERSION,
               transformations: [
-                zoom,
                 {
                   width: SM_WIDTH_PX * 2,
                   aspectRatio: '4:5',
                   crop: 'fill',
-                  gravity: 'custom',
+                  gravity: 'face',
                   format: 'auto',
                   quality: 'auto',
                 },
@@ -61,12 +58,11 @@ export default function ProfilePhoto({ className }: Props) {
           src={cloudinary(ID, {
             version: VERSION,
             transformations: [
-              zoom,
               {
                 width: 450,
-                aspectRatio: '4:2',
+                aspectRatio: '2:1',
                 crop: 'fill',
-                gravity: 'auto',
+                gravity: 'face',
                 format: 'auto',
                 quality: 'auto',
               },
@@ -76,10 +72,9 @@ export default function ProfilePhoto({ className }: Props) {
             ${cloudinary(ID, {
               version: VERSION,
               transformations: [
-                zoom,
                 {
                   width: 450,
-                  aspectRatio: '4:2',
+                  aspectRatio: '2:1',
                   crop: 'fill',
                   gravity: 'face',
                   format: 'auto',
@@ -90,10 +85,9 @@ export default function ProfilePhoto({ className }: Props) {
             ${cloudinary(ID, {
               version: VERSION,
               transformations: [
-                zoom,
                 {
                   width: 900,
-                  aspectRatio: '4:2',
+                  aspectRatio: '2:1',
                   crop: 'fill',
                   gravity: 'face',
                   format: 'auto',
