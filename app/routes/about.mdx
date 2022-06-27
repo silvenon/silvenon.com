@@ -9,6 +9,8 @@ meta:
 ---
 
 import Prose from '~/components/Prose'
+import Icon from '~/components/Icon'
+import { socialLinks } from '~/consts'
 
 <Prose className="pb-10 mt-2 lg:mt-4">
   <div className="text-center">
@@ -19,7 +21,29 @@ import Prose from '~/components/Prose'
     <use href="/icons.svg#hand" />
   </svg>
 
-  My name is Matija, I'm a frontend developer from Zagreb, Croatia (Europe 😆 🌍). My current focus is developer experience, I like learning about tools like bundlers, compilers, task managers etc.
+  <div className="text-center">
+    My name is Matija, I'm a frontend developer from Zagreb, Croatia (Europe 😆 🌍). My current focus is developer experience, I like learning about tools like bundlers, compilers, task managers etc.
+  </div>
+
+  <div className="flex items-center justify-center">
+    {socialLinks.map((network) => (
+      <a
+        key={network.id}
+        title={network.name}
+        href={network.url}
+        target="_blank"
+        rel="noreferrer"
+        className="block p-4 transition-colors duration-200"
+      >
+        <span className="sr-only">{network.name}</span>
+        <Icon
+          aria-hidden="true"
+          icon={network.icon}
+          className="h-6 w-6 md:h-8 md:w-8"
+        />
+      </a>
+    ))}
+  </div>
 
   ## Open source
 

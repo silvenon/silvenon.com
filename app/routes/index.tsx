@@ -3,11 +3,9 @@ import { json } from '@remix-run/node'
 import type { LoaderFunction, MetaFunction } from '@remix-run/node'
 import { Fragment } from 'react'
 import { ExternalLinkIcon } from '@heroicons/react/outline'
-import clsx from 'clsx'
 import type { Except, SetOptional } from 'type-fest'
 import PostDate from '~/components/PostDate'
 import ProfilePhoto from '~/components/ProfilePhoto'
-import Icon from '~/components/Icon'
 import Prose from '~/components/Prose'
 import { getMeta } from '~/utils/seo'
 import { getAllEntries } from '~/utils/posts.server'
@@ -18,7 +16,7 @@ import type {
   ExternalStandalonePost,
   ExternalSeries,
 } from '~/utils/posts.server'
-import { SITE_DESCRIPTION, author, socialLinks } from '~/consts'
+import { SITE_DESCRIPTION, author } from '~/consts'
 import circuitBoard from '~/images/circuit-board.svg'
 
 type LoaderData = Array<
@@ -80,31 +78,7 @@ export default function Home() {
               </p>
             </Prose>
             <div className="sm:order-1 sm:w-40">
-              <div className="relative">
-                <ProfilePhoto />
-                <div className="absolute bottom-0 right-0 mr-0.5 flex sm:left-0 sm:justify-center">
-                  {socialLinks.map((network) => (
-                    <a
-                      key={network.id}
-                      title={network.name}
-                      href={network.url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className={clsx(
-                        'mx-1 block rounded-t-md bg-white bg-opacity-50 p-2 text-black  transition-colors duration-200 hover:bg-white hover:bg-opacity-100 sm:mx-1.5',
-                        'dark:bg-gray-800 dark:bg-opacity-50 dark:text-white dark:hover:bg-gray-800 dark:hover:bg-opacity-100',
-                      )}
-                    >
-                      <span className="sr-only">{network.name}</span>
-                      <Icon
-                        aria-hidden="true"
-                        icon={network.icon}
-                        className="h-5 w-5 fill-current"
-                      />
-                    </a>
-                  ))}
-                </div>
-              </div>
+              <ProfilePhoto />
             </div>
           </div>
         </div>
