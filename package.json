@@ -35,10 +35,11 @@
     "start": "remix-serve build",
     "prelint": "eslint-config-prettier src/root.tsx src/__tests__/posts.test.ts",
     "lint": "eslint . --ext js,jsx,ts,tsx --report-unused-disable-directives --cache --cache-location ./node_modules/.cache/eslint",
-    "test": "vitest",
-    "test:e2e": "start-server-and-test start 3000 'playwright test'",
+    "test": "run-p test:*",
+    "test:unit": "vitest --run",
+    "test:e2e": "playwright test",
     "typecheck": "tsc --build && tsc --build integration",
-    "validate": "run-p 'test -- --run' lint typecheck test:e2e"
+    "validate": "run-p test lint typecheck"
   },
   "browserslist": [
     "defaults",
@@ -140,7 +141,6 @@
     "remark-unwrap-images": "^3.0.1",
     "shiki": "^0.10.0",
     "simple-git-hooks": "^2.7.0",
-    "start-server-and-test": "^1.14.0",
     "tailwindcss": "^3.1.2",
     "type-fest": "^2.12.2",
     "typescript": "^4.5.4",
