@@ -82,7 +82,7 @@ jobs:
           CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
 
       - name: ⚡ Run vitest
-        run: npm run test -- --coverage
+        run: npm run test:unit -- --coverage
         env:
           CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
 
