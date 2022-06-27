@@ -109,7 +109,7 @@ jobs:
         with:
           path: |
             ~/.cache/ms-playwright
-          key: cache-playwright-linux-1.19.2
+          key: cache-playwright-linux-1.22.2
 
       - name: 📥 Download deps
         uses: bahmutov/npm-install@v1
