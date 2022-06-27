@@ -11,7 +11,6 @@ WORKDIR /app
 
 COPY package.json package-lock.json ./
 RUN npm install --production=false
-RUN npx metronome patch @remix-run/serve
 
 # Setup production node_modules
 FROM base as production-deps

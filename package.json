@@ -18,7 +18,8 @@
   },
   "license": "MIT",
   "scripts": {
-    "setup": "npm install && metronome patch @remix-run/serve && simple-git-hooks && npm run dotenv",
+    "setup": "npm install && simple-git-hooks && npm run dotenv",
+    "postinstall": "metronome patch @remix-run/serve",
     "dotenv": "node node_modules/dotenv-safe/config.js",
     "generate:css": "tailwindcss --input ./tailwind.css --output ./app/tailwind.css",
     "generate:posts": "node -r esbuild-register scripts/compile-posts.ts",
