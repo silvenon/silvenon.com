@@ -61,7 +61,7 @@ export default function ProseImage({
             ...proseSizes.map(
               (size) => `(min-width: ${screens[size]}) ${proseMaxWidth[size]}`,
             ),
-            `calc(100vw - (var(--content-padding) * 2))`,
+            `calc(100vw - (var(--page-padding) * 2))`,
           ].join(', ')}
         />
       </div>

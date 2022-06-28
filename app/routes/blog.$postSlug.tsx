@@ -5,8 +5,7 @@ import invariant from 'tiny-invariant'
 import { getMeta } from '~/utils/seo'
 import { author } from '~/consts'
 import Post from '~/components/Post'
-import Prose from '~/components/Prose'
-import NotFound from '~/components/NotFound'
+import Boundary from '~/components/Boundary'
 import { getSeries, getStandalonePost } from '~/utils/posts.server'
 import { formatDateISO } from '~/utils/date'
 
@@ -27,7 +26,7 @@ export const loader: LoaderFunction = async ({ params }) => {
     return redirect(`/blog/${series.slug}/${series.parts[0].slug}`, 302)
   }
   const post = await getStandalonePost(params.postSlug)
-  if (!post) throw new Response('Not Found', { status: 404 })
+  if (!post) throw new Response('Post not found', { status: 404 })
   try {
     const data: LoaderData = {
       slug: post.slug,
@@ -49,7 +48,11 @@ export const meta: MetaFunction = ({ data }: { data?: LoaderData }) => {
   return {
     ...(title && description
       ? getMeta({ title, description })
-      : { title: 'Post Error' }),
+      : getMeta({
+          title: 'Post not found',
+          description:
+            'The post is not found at this URL, but might exist elsewhere.',
+        })),
     'og:type': 'article',
     'article:author': author.name,
     ...(published
@@ -69,10 +72,12 @@ export default function StandalonePost() {
 export function CatchBoundary() {
   const caught = useCatch()
   return (
-    <Prose as="main" className="py-4 text-center">
-      {caught.status === 404 ? (
-        <NotFound title="Post Not Found">
-          <p>
+    <Boundary
+      status={caught.status}
+      title={caught.data ?? caught.statusText}
+      description={
+        caught.status === 404 ? (
+          <>
             It&apos;s likely that you got here by following a link to one of my
             blog posts which no longer has that URL. You should be able to find
             the content you&apos;re looking for elsewhere on this site, unless I
@@ -80,14 +85,9 @@ export function CatchBoundary() {
             <span role="img" aria-label="embarrassed">
               😳
             </span>
-          </p>
-        </NotFound>
-      ) : (
-        <h1>
-          <span className="text-amber-600">{caught.status}</span>{' '}
-          {caught.statusText}
-        </h1>
-      )}
-    </Prose>
+          </>
+        ) : null
+      }
+    />
   )
 }

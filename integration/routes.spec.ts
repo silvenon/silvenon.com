@@ -31,9 +31,9 @@ test.describe('routes', () => {
   test('not found', async ({ page }) => {
     const pageTitle = page.locator('role=heading[level=1]')
     await page.goto('/non-existent-page')
-    await expect(pageTitle).toHaveText('Page Not Found')
+    await expect(pageTitle).toHaveText('Nothing found at this URL.')
     await page.goto('/blog/non-existent-post')
-    await expect(pageTitle).toHaveText('Post Not Found')
+    await expect(pageTitle).toHaveText('Post not found')
   })
 
   test('redirects', async ({ page }) => {

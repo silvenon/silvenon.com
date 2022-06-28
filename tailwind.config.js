@@ -39,11 +39,10 @@ module.exports = {
   darkMode: 'class',
   theme: {
     screens,
-    container: (theme) => ({
-      center: true,
-      padding: theme('spacing.4'),
-    }),
     extend: {
+      spacing: {
+        page: 'var(--page-padding)',
+      },
       colors: {
         gray: colors.zinc,
         page: colors.white,

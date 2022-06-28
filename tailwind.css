@@ -5,7 +5,7 @@
 @layer base {
 
   :root {
-    --content-padding: theme('spacing.4');
+    --page-padding: theme('spacing.4');
   }
 
   :root {

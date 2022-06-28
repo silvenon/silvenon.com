@@ -1,23 +1,20 @@
 import clsx from 'clsx'
 
-interface Props {
+interface Props
+  extends Pick<
+    React.HTMLAttributes<HTMLDivElement>,
+    'id' | 'className' | 'style' | 'children'
+  > {
   as?: keyof JSX.IntrinsicElements
-  id?: string
-  className?: string
-  children: React.ReactNode
 }
 
-export default function Prose({
-  as: Component = 'div',
-  id,
-  className,
-  children,
-}: Props) {
+export default function Prose({ as: Component = 'div', ...props }: Props) {
   return (
     <Component
-      id={id}
+      {...props}
       className={clsx(
-        className,
+        props.className,
+        'px-page',
         'prose prose-sm prose-zinc mx-auto dark:prose-invert sm:prose-base lg:prose-lg xl:prose-xl 2xl:prose-2xl',
         'prose-a:text-purple-700 hover:prose-a:text-amber-600',
         'prose-figure:text-center',
@@ -29,8 +26,6 @@ export default function Prose({
         'dark:prose-code:border-gray-800 dark:prose-code:bg-code-background-dark dark:prose-code:text-code-foreground-dark',
         'dark:prose-pre:bg-code-background-dark dark:prose-pre:text-code-foreground-dark',
       )}
-    >
-      {children}
-    </Component>
+    />
   )
 }

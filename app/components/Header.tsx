@@ -5,7 +5,7 @@ import Prose from './Prose'
 export default function Header() {
   const location = useLocation()
   return (
-    <header id="top" className="print:hidden">
+    <header id="top" className="px-page print:hidden">
       <Prose className="flex items-center">
         <div className="flex-1">
           {location.pathname !== '/' && (

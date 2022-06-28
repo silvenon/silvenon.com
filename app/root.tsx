@@ -15,14 +15,12 @@ import type {
 } from '@remix-run/node'
 import { MetronomeLinks } from '@metronome-sh/react'
 import clsx from 'clsx'
-import Prose from './components/Prose'
 import Analytics from './components/Analytics'
 import cloudinary from './utils/cloudinary'
 import { getCanonicalUrl } from './utils/http'
 import { author } from './consts'
 import styles from './tailwind.css'
-import Header from './components/Header'
-import NotFound from './components/NotFound'
+import Boundary from './components/Boundary'
 import { removeTrailingSlash } from './utils/http'
 
 interface LoaderData {
@@ -89,15 +87,16 @@ export const links: LinksFunction = () => {
 }
 
 function Document({
+  loaderData,
   title,
   className,
   children,
 }: {
+  loaderData?: LoaderData
   title?: string
   className?: string
   children: React.ReactNode
 }) {
-  const data = useLoaderData<LoaderData>()
   return (
     <html lang="en" className="h-full">
       <head>
@@ -109,8 +108,8 @@ function Document({
             <meta property="twitter:title" content={title} />
           </>
         ) : null}
-        {data?.canonicalUrl ? (
-          <link rel="canonical" href={data.canonicalUrl} />
+        {loaderData?.canonicalUrl ? (
+          <link rel="canonical" href={loaderData.canonicalUrl} />
         ) : null}
         <Links />
         <MetronomeLinks />
@@ -134,11 +133,10 @@ function Document({
       </head>
       <body
         className={clsx(
-          'h-full bg-page px-[var(--content-padding)] text-black selection:bg-amber-300 selection:text-black dark:bg-page-dark dark:text-white',
+          'h-full bg-page text-black selection:bg-amber-300 selection:text-black dark:bg-page-dark dark:text-white',
           className,
         )}
       >
-        <Header />
         {children}
         <ScrollRestoration />
         <LiveReload />
@@ -149,8 +147,9 @@ function Document({
 }
 
 export default function App() {
+  const data = useLoaderData<LoaderData>()
   return (
-    <Document>
+    <Document loaderData={data}>
       <Outlet />
     </Document>
   )
@@ -159,39 +158,46 @@ export default function App() {
 export function CatchBoundary() {
   const caught = useCatch()
   return (
-    <Document title={caught.status === 404 ? 'Page Not Found' : undefined}>
-      <Prose as="main" className="py-4 text-center">
-        {caught.status === 404 ? (
-          <NotFound title="Page Not Found">Nothing found at this URL.</NotFound>
-        ) : (
-          <h1>
-            <span className="text-amber-600">{caught.status}</span>{' '}
-            {caught.statusText}
-          </h1>
-        )}
-      </Prose>
+    <Document title={caught.status === 404 ? 'Page not found' : undefined}>
+      <Boundary
+        status={caught.status}
+        title={
+          caught.status === 404
+            ? 'Nothing found at this URL.'
+            : caught.statusText
+        }
+        description={
+          caught.status === 404 ? (
+            <p>It looks like the page you’re looking for doesn't exist.</p>
+          ) : undefined
+        }
+      />
     </Document>
   )
 }
 
 export function ErrorBoundary({ error }: { error: Error }) {
   return (
-    <Document title="Error">
-      <Prose as="main" className="py-4">
-        <h1>Oh no!</h1>
-        {!error.stack?.includes(error.message) ? (
-          <p className="break-words">{error.message}</p>
-        ) : null}
-        <pre>
-          <code>
-            {error.stack?.split('\n').map((line) => (
-              <span key={line} className="line">
-                {line}
-              </span>
-            ))}
-          </code>
-        </pre>
-      </Prose>
+    <Document title="Page error">
+      <Boundary
+        title="Oh no!"
+        errorOutput={
+          <>
+            {!error.stack?.includes(error.message) ? (
+              <span className="break-words">{error.message}</span>
+            ) : null}
+            <pre>
+              <code>
+                {error.stack?.split('\n').map((line) => (
+                  <span key={line} className="line">
+                    {line}
+                  </span>
+                ))}
+              </code>
+            </pre>
+          </>
+        }
+      />
     </Document>
   )
 }

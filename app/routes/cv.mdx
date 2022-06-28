@@ -6,6 +6,7 @@ meta:
   robots: noindex
 ---
 
+import Header from '~/components/Header'
 import Prose from '~/components/Prose'
 import cloudinary from '~/utils/cloudinary'
 import { screens } from '~/consts'
@@ -34,6 +35,7 @@ export function Experience({ role, company, duration: [start, end], children }) 
   )
 }
 
+<Header />
 <Prose as="main" className="mt-2 pb-6 md:pb-10 lg:mt-4">
   <h1 className="flex flex-col items-center text-center sm:flex-row sm:text-left">
     <div className="sm:flex-1">
