@@ -170,9 +170,7 @@ export default function Home() {
                 <Fragment key={series.slug}>
                   <article>
                     <h3>
-                      <Link
-                        to={`/blog/${series.slug}/${series.parts[0].slug}?root`}
-                      >
+                      <Link to={`/blog/${series.slug}/${series.parts[0].slug}`}>
                         {series.title}
                       </Link>
                     </h3>
