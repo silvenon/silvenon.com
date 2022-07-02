@@ -49,9 +49,11 @@ export default function Post(props: Props) {
           <article>
             {isSeries ? (
               <h1 className="space-y-2 text-center lg:space-y-4">
-                <div>{props.series.title}</div>
+                <div>
+                  {props.series.title}
+                  <span className="sr-only">:</span>
+                </div>
                 <div className="text-[0.8em] font-normal dark:font-light">
-                  Part {props.seriesPart + 1}:{' '}
                   {props.htmlTitle ? (
                     <span
                       dangerouslySetInnerHTML={{ __html: props.htmlTitle }}
