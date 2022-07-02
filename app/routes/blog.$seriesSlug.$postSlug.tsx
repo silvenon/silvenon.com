@@ -27,9 +27,9 @@ export const loader: LoaderFunction = async ({ params }) => {
   invariant(params.postSlug, 'slug parameter is required')
 
   const series = await getSeries(params.seriesSlug)
-  if (!series) throw new Response('Not Found', { status: 404 })
+  if (!series) throw new Response('Post not found', { status: 404 })
   const part = series.parts.find(({ slug }) => slug === params.postSlug)
-  if (!part) throw new Response('Not Found', { status: 404 })
+  if (!part) throw new Response('Post not found', { status: 404 })
 
   try {
     const data: LoaderData = {
@@ -57,7 +57,7 @@ export const meta: MetaFunction = ({ data }: { data?: LoaderData }) => {
   return {
     ...(title && description
       ? getMeta({ title: `${series?.title}: ${title}`, description })
-      : { title: 'Post Error' }),
+      : { title: 'Post not found' }),
     'og:type': 'article',
     'article:author': author.name,
     ...(series?.published
