@@ -16,7 +16,7 @@ Mock functions, are powerful and have many purposes--we can create new dummy fun
 
 ## Spying
 
-Let's start with the most basic example. I assume you already know [how to set up Jest](https://jestjs.io/docs/en/getting-started)? Good. Let's open a test file:
+Let's start with the most basic example. I assume you already know [how to set up Jest](https://jestjs.io/docs/getting-started)? Good. Let's open a test file:
 
 ```js
 const fn = jest.fn()
@@ -186,7 +186,7 @@ Now, since our codebase is split across files, let's start exploring mocking in 
 
 ## Conclusion
 
-It took me a long time to understand the nuances of these features, how to get what I want and how to even _know_ what I want. I encourage you to scroll through the [`expect` reference](https://jestjs.io/docs/en/expect) to learn more about these features and how they compare to the ones that I didn't cover in this post. If you catch yourself making assertions on the `mock` property directly, try to see if there's already a built-in matcher for the assertion you're looking for, maybe also combining them with utilities like [`expect.objectContaining`](https://jestjs.io/docs/en/expect#expectobjectcontainingobject). This has the benefit of being more readable and having a better error message if your test fails.
+It took me a long time to understand the nuances of these features, how to get what I want and how to even _know_ what I want. I encourage you to scroll through the [`expect` reference](https://jestjs.io/docs/expect) to learn more about these features and how they compare to the ones that I didn't cover in this post. If you catch yourself making assertions on the `mock` property directly, try to see if there's already a built-in matcher for the assertion you're looking for, maybe also combining them with utilities like [`expect.objectContaining`](https://jestjs.io/docs/en/expect#expectobjectcontainingobject). This has the benefit of being more readable and having a better error message if your test fails.
 
 I hope that this post brought you some clarity on the subject, have fun building better tests!
 

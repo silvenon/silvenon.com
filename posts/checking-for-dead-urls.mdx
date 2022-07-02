@@ -32,7 +32,7 @@ checkForDeadUrls()
 
 ## Collecting URLs
 
-To collect URLs we're going to parse every HTML file with [PostHTML](https://posthtml.org), which converts HTML content to an AST (abstract syntax tree), operates on that AST using an [ecosystem of plugins](http://posthtml.github.io/posthtml-plugins/), and converts that AST back to a string. This is similar to how PostCSS and Babel work with CSS and JavaScript respectively.
+To collect URLs we're going to parse every HTML file with [PostHTML](https://posthtml.org), which converts HTML content to an AST (abstract syntax tree), operates on that AST using an [ecosystem of plugins](https://posthtml.github.io/posthtml-plugins/), and converts that AST back to a string. This is similar to how PostCSS and Babel work with CSS and JavaScript respectively.
 
 The plugin we're going to use is [posthtml-urls](https://www.npmjs.com/package/posthtml-urls), which loops through every URL:
 
@@ -74,7 +74,7 @@ First we're creating a PostHTML processor by passing a configured `posthtml-urls
 
 ## Starting a local server
 
-Now that we collected the URLs, we need to check their liveness. In this post I'm differentiating between local and external URLs. For checking local URLs we'll need to start a local server, one easy way to do this is with [BrowserSync](https://www.browsersync.io/):
+Now that we collected the URLs, we need to check their liveness. In this post I'm differentiating between local and external URLs. For checking local URLs we'll need to start a local server, one easy way to do this is with [BrowserSync](https://browsersync.io/):
 
 ```bash
 yarn add browser-sync

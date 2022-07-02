@@ -1,4 +1,4 @@
-# [silvenon.com](https://silvenon.com)
+# [silvenon.com](https://silvenon.com/)
 
 This is my blog, it's based on the [Remix Indie Stack](https://github.com/remix-run/indie-stack).
 
