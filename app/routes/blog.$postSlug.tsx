@@ -47,13 +47,16 @@ export const meta: MetaFunction = ({ data }: { data?: LoaderData }) => {
   const { title, description, published, lastModified } = data ?? {}
   return {
     ...(title && description
-      ? getMeta({ title, description })
+      ? getMeta({
+          type: 'article',
+          title,
+          description,
+        })
       : getMeta({
           title: 'Post not found',
           description:
             'The post is not found at this URL, but might exist elsewhere.',
         })),
-    'og:type': 'article',
     'article:author': author.name,
     ...(published
       ? { 'article:published_time': formatDateISO(published) }
