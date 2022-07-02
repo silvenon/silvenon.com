@@ -17,7 +17,7 @@ import type {
   ExternalStandalonePost,
   ExternalSeries,
 } from '~/utils/posts.server'
-import { SITE_DESCRIPTION, author } from '~/consts'
+import { author } from '~/consts'
 import circuitBoard from '~/images/circuit-board.svg'
 
 type LoaderData = Array<
@@ -58,7 +58,7 @@ export const loader: LoaderFunction = async () => {
 export const meta: MetaFunction = () =>
   getMeta({
     title: author.name,
-    description: SITE_DESCRIPTION,
+    description: `Matija Marohnić is a frontend developer from Croatia, he enjoys exploring latest tech. Read this blog to learn about React, frontend tools, testing, and more!`,
   })
 
 export default function Home() {
