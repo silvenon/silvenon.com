@@ -120,6 +120,11 @@ jobs:
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: npx playwright install --with-deps
 
+      - name: ⚙️ Build
+        run: npm run build
+        env:
+          CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
+
       - name: 🎭 Playwright run
         run: npm run test:e2e
         env:

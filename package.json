@@ -37,8 +37,9 @@
     "lint": "eslint . --ext js,jsx,ts,tsx --report-unused-disable-directives --cache --cache-location ./node_modules/.cache/eslint",
     "test": "run-p test:*",
     "test:unit": "vitest --run",
-    "test:e2e": "playwright test",
+    "test:e2e": "NODE_ENV=production playwright test",
     "typecheck": "tsc --build && tsc --build integration",
+    "prevalidate": "npm run build",
     "validate": "run-p test lint typecheck"
   },
   "browserslist": [
