@@ -1,0 +1,20 @@
+---
+title: Writing codemods with jscodeshfit
+description: Codemods are really useful for automatically refactoring large amounts of code in a similar way, yet there aren't many resources on this topic.
+category: DEV
+published: 2018-02-21
+---
+
+There are times in your project when you need to update a lot of code in a similar way. For example, you updated a library that has a breaking change, so you want to update your code to use the new API. Let's also say that the required changes are very simple and don't require any thought, but not simple enough for a regex. Making these changes manually in large codebases is not only tedious, but sometimes even not worth it, so what can we do?
+
+Regular expressions are limited because they don't understand syntax, but codemods do because they use abstract syntax trees (ASTs). In the following talk I give an introduction to writing codemods with Facebook's tool [jscodeshift](https://github.com/facebook/jscodeshift):
+
+<div className="aspect-w-16 aspect-h-9">
+	<iframe
+		src="https://www.youtube.com/embed/UBFrgVWUYMk?start=386"
+		title="YouTube video player"
+		frameborder="0"
+		allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+		allowFullScreen
+	/>
+</div>
