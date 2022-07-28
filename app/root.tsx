@@ -8,11 +8,7 @@ import {
   useCatch,
 } from '@remix-run/react'
 import { redirect, json } from '@remix-run/node'
-import type {
-  LoaderFunction,
-  MetaFunction,
-  LinksFunction,
-} from '@remix-run/node'
+import type { MetaFunction, LinksFunction, LoaderArgs } from '@remix-run/node'
 import { MetronomeLinks } from '@metronome-sh/react'
 import clsx from 'clsx'
 import Analytics from './components/Analytics'
@@ -28,15 +24,17 @@ interface LoaderData {
   canonicalUrl: string
 }
 
-export const loader: LoaderFunction = ({ request }) => {
+export async function loader({ request }: LoaderArgs) {
   if (request.url !== removeTrailingSlash(request.url)) {
     throw redirect(removeTrailingSlash(request.url), { status: 308 })
   }
-  const data: LoaderData = {
-    appName: process.env.FLY_APP_NAME,
-    canonicalUrl: getCanonicalUrl(request),
-  }
-  return json(data, 200)
+  return json<LoaderData>(
+    {
+      appName: process.env.FLY_APP_NAME,
+      canonicalUrl: getCanonicalUrl(request),
+    },
+    200,
+  )
 }
 
 export const meta: MetaFunction = ({ data }) => {
@@ -147,7 +145,7 @@ function Document({
 }
 
 export default function App() {
-  const data = useLoaderData<LoaderData>()
+  const data = useLoaderData<typeof loader>()
   return (
     <Document loaderData={data}>
       <Outlet />

@@ -2,8 +2,8 @@ import { formatDate, formatDateISO } from '../utils/date'
 import { CalendarIcon, PencilIcon } from '@heroicons/react/outline'
 
 interface Props {
-  published?: Date
-  lastModified?: Date
+  published?: string
+  lastModified?: string
 }
 
 export default function PostDate({ published, lastModified }: Props) {

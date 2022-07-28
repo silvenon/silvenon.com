@@ -1,6 +1,7 @@
 import { useLoaderData, useCatch } from '@remix-run/react'
 import { redirect } from '@remix-run/node'
-import type { LoaderFunction, MetaFunction } from '@remix-run/node'
+import type { MetaFunction, LoaderArgs } from '@remix-run/node'
+import { json } from '@remix-run/node'
 import invariant from 'tiny-invariant'
 import { getMeta } from '~/utils/seo'
 import { author } from '~/consts'
@@ -19,7 +20,7 @@ export interface LoaderData {
   code: string
 }
 
-export const loader: LoaderFunction = async ({ params }) => {
+export async function loader({ params }: LoaderArgs) {
   invariant(params.postSlug, 'slug is required')
   const series = await getSeries(params.postSlug)
   if (series !== null) {
@@ -28,7 +29,7 @@ export const loader: LoaderFunction = async ({ params }) => {
   const post = await getStandalonePost(params.postSlug)
   if (!post) throw new Response('Post not found', { status: 404 })
   try {
-    const data: LoaderData = {
+    return json<LoaderData>({
       slug: post.slug,
       title: post.title,
       description: post.description,
@@ -36,8 +37,7 @@ export const loader: LoaderFunction = async ({ params }) => {
       published: post.published,
       lastModified: post.lastModified,
       code: post.output,
-    }
-    return data
+    })
   } catch (err) {
     throw new Response('Failed to compile blog post', { status: 500 })
   }
@@ -66,7 +66,7 @@ export const meta: MetaFunction = ({ data }: { data?: LoaderData }) => {
 }
 
 export default function StandalonePost() {
-  const data = useLoaderData<LoaderData>()
+  const data = useLoaderData<typeof loader>()
   return <Post {...data} />
 }
 

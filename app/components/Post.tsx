@@ -15,8 +15,8 @@ interface StandalonePost {
   slug: string
   title: string
   htmlTitle?: string
-  published?: Date
-  lastModified?: Date
+  published?: string
+  lastModified?: string
   code: string
 }
 
@@ -25,7 +25,7 @@ interface SeriesPart extends Omit<StandalonePost, 'slug' | 'published'> {
   series: {
     slug: string
     title: string
-    published?: Date
+    published?: string
     parts: Array<{
       slug: string
       title: string

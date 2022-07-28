@@ -1,6 +1,6 @@
 import { useLoaderData, Link } from '@remix-run/react'
 import { json } from '@remix-run/node'
-import type { LoaderFunction, MetaFunction } from '@remix-run/node'
+import type { MetaFunction, LoaderArgs } from '@remix-run/node'
 import Header from '~/components/Header'
 import { Fragment } from 'react'
 import { ExternalLinkIcon } from '@heroicons/react/outline'
@@ -29,7 +29,7 @@ type LoaderData = Array<
   | ExternalSeries
 >
 
-export const loader: LoaderFunction = async () => {
+export async function loader(_: LoaderArgs) {
   const entries = await getAllEntries()
   const data: LoaderData = entries.map((entry) => {
     if ('source' in entry) return entry
@@ -62,7 +62,7 @@ export const meta: MetaFunction = () =>
   })
 
 export default function Home() {
-  const entries = useLoaderData<LoaderData>()
+  const entries = useLoaderData<typeof loader>()
   return (
     <>
       <Header />
