@@ -29,6 +29,8 @@ describe('validate posts', () => {
     ).data
     expect(frontmatter).toHaveProperty('title')
     expect(frontmatter).toHaveProperty('description')
+    // recommended by Ahrefs
+    expect(frontmatter.description.length).toBeGreaterThan(110)
     // Google truncates descriptions after 160
     expect(frontmatter.description.length).toBeLessThanOrEqual(160)
     try {

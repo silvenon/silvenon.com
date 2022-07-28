@@ -54,8 +54,6 @@ export const meta: MetaFunction = ({ data }: { data?: LoaderData }) => {
         })
       : getMeta({
           title: 'Post not found',
-          description:
-            'The post is not found at this URL, but might exist elsewhere.',
         })),
     'article:author': author.name,
     ...(published
