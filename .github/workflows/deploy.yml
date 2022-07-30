@@ -102,6 +102,15 @@ jobs:
         with:
           node-version: 16
 
+      - name: 📥 Download deps
+        uses: bahmutov/npm-install@v1
+        with:
+          useLockFile: false
+
+      - name: Get Playwright version
+        id: get-playwright-version
+        run: echo "::set-output name=version::$(node -e "console.log(require('@playwright/test/package.json').version)")"
+
       # https://playwrightsolutions.com/playwright-github-action-to-cache-the/
       - name: Cache Playwright binaries
         uses: actions/cache@v3
@@ -109,12 +118,7 @@ jobs:
         with:
           path: |
             ~/.cache/ms-playwright
-          key: cache-playwright-linux-1.22.2
-
-      - name: 📥 Download deps
-        uses: bahmutov/npm-install@v1
-        with:
-          useLockFile: false
+          key: cache-playwright-linux-${{ steps.get-playwright-version.outputs.version }}
 
       - name: Install Playwright Browsers
         if: steps.playwright-cache.outputs.cache-hit != 'true'
