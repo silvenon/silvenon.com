@@ -1,5 +1,6 @@
 import {
   Links,
+  Scripts,
   LiveReload,
   Meta,
   Outlet,
@@ -10,6 +11,7 @@ import {
 import { redirect, json } from '@remix-run/node'
 import type { MetaFunction, LinksFunction, LoaderArgs } from '@remix-run/node'
 import { MetronomeLinks } from '@metronome-sh/react'
+import { DarkModeProvider } from './services/dark-mode'
 import clsx from 'clsx'
 import Analytics from './components/Analytics'
 import cloudinary from './utils/cloudinary'
@@ -18,6 +20,7 @@ import { author } from './consts'
 import styles from './tailwind.css'
 import Boundary from './components/Boundary'
 import { removeTrailingSlash } from './utils/http'
+import { isDarkMode } from '~/components/DarkModeToggle'
 
 interface LoaderData {
   appName?: string
@@ -122,9 +125,9 @@ function Document({
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              const isDarkMode = localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
-              document.documentElement.classList.toggle('dark', isDarkMode)
-              document.querySelector('meta[name="twitter:widgets:theme"]').setAttribute('content', isDarkMode ? 'dark' : 'light')
+              const darkMode = (${isDarkMode})(window.matchMedia('(prefers-color-scheme: dark)').matches)
+              document.documentElement.classList.toggle('dark', darkMode)
+              document.querySelector('meta[name="twitter:widgets:theme"]').setAttribute('content', darkMode ? 'dark' : 'light')
             `,
           }}
         />
@@ -135,8 +138,9 @@ function Document({
           className,
         )}
       >
-        {children}
+        <DarkModeProvider>{children}</DarkModeProvider>
         <ScrollRestoration />
+        <Scripts />
         <LiveReload />
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
