@@ -87,11 +87,14 @@ jobs:
           CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
 
   playwright:
-    name: 🎭 Playwright
+    name: 🎭 Playwright (${{ matrix.project }})
     timeout-minutes: 60
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.24.0-focal
+    container: mcr.microsoft.com/playwright:v1.24.0-focal
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [Chrome, Safari, Firefox]
     steps:
       - name: 🛑 Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.10.0
@@ -105,9 +108,7 @@ jobs:
           node-version: 16
 
       - name: 📥 Download deps
-        uses: bahmutov/npm-install@v1
-        with:
-          useLockFile: false
+        run: npm ci
 
       - name: ⚙️ Build
         run: npm run build
@@ -115,10 +116,17 @@ jobs:
           CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
 
       - name: 🎭 Playwright run
-        run: npm run test:e2e
+        run: npm run test:e2e -- --project=${{ matrix.project }}
         env:
           CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
           SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
+
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
 
   build:
     name: 🐳 Build
