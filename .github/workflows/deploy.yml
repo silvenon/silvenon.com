@@ -133,6 +133,7 @@ jobs:
         run: npm run test:e2e
         env:
           CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
+          SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
 
       - uses: actions/upload-artifact@v3
         if: always()
