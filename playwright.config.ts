@@ -4,16 +4,6 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-let webServerCommand = 'npm run dev'
-
-if (process.env.CI) {
-  webServerCommand = 'npm run start'
-}
-
-if (process.env.VALIDATION) {
-  webServerCommand = 'npm run preview'
-}
-
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
@@ -110,9 +100,15 @@ const config: PlaywrightTestConfig = {
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: webServerCommand,
+    command:
+      process.env.CI || process.env.VALIDATING
+        ? 'npm run start'
+        : 'npm run dev',
     port: 3000,
     reuseExistingServer: true,
+    env: {
+      TESTING: '1',
+    },
   },
 }
 

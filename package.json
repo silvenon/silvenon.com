@@ -40,7 +40,7 @@
     "test:e2e": "playwright test",
     "typecheck": "tsc --build && tsc --build integration",
     "prevalidate": "npm run build",
-    "validate": "VALIDATION=1 run-p test lint typecheck"
+    "validate": "VALIDATING=1 run-p test lint typecheck"
   },
   "browserslist": [
     "defaults",
