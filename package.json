@@ -64,6 +64,7 @@
   "nano-staged": {
     "*.{js,ts,tsx}": [
       "eslint --fix",
+      "prettier --write",
       "vitest related --run"
     ]
   },
@@ -130,7 +131,6 @@
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
     "jsdom": "^20.0.0",
