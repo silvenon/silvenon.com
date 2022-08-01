@@ -118,7 +118,7 @@ jobs:
           useLockFile: false
 
       - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+        run: npx playwright install --with-deps chromium webkit
 
       - name: ⚙️ Build
         run: npm run build

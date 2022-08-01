@@ -56,13 +56,6 @@ const config: PlaywrightTestConfig = {
               ...devices['Desktop Safari'],
             },
           },
-
-          {
-            name: 'firefox',
-            use: {
-              ...devices['Desktop Firefox'],
-            },
-          },
         ]
       : []),
 
