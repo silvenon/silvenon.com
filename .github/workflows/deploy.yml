@@ -118,7 +118,7 @@ jobs:
         with:
           path: |
             ~/.cache/ms-playwright
-          key: cache-playwright-linux-${{ steps.get-playwright-version.outputs.version }}
+          key: cache-playwright-linux-${{ steps.get-playwright-version.outputs.version }}-${{ hashFiles('playwright.config.ts') }}
 
       - name: Install Playwright Browsers
         if: steps.playwright-cache.outputs.cache-hit != 'true'
