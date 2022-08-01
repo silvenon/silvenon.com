@@ -7,10 +7,12 @@ import {
   ScrollRestoration,
   useLoaderData,
   useCatch,
+  useTransition,
 } from '@remix-run/react'
 import { redirect, json } from '@remix-run/node'
 import type { MetaFunction, LinksFunction, LoaderArgs } from '@remix-run/node'
 import { MetronomeLinks } from '@metronome-sh/react'
+import { useRef } from 'react'
 import { DarkMode, useDarkMode } from './services/dark-mode'
 import clsx from 'clsx'
 import Analytics from './components/Analytics'
@@ -150,8 +152,28 @@ function Document({
 }
 
 function DocumentWithProviders(props: React.ComponentProps<typeof Document>) {
+  const transition = useTransition()
+  const loaderDarkMode = props.loaderData?.darkMode
+  const specifiedDarkModeRef = useRef(loaderDarkMode)
+
+  if (
+    transition.state === 'submitting' &&
+    transition.location.pathname === '/dark-mode'
+  ) {
+    const optimisticDarkMode = transition.submission.formData.get('darkMode')
+    if (typeof optimisticDarkMode === 'string') {
+      specifiedDarkModeRef.current =
+        optimisticDarkMode === 'os' ? undefined : optimisticDarkMode === 'true'
+    }
+  } else if (
+    transition.state !== 'loading' ||
+    transition.location?.pathname !== '/'
+  ) {
+    specifiedDarkModeRef.current = loaderDarkMode
+  }
+
   return (
-    <DarkMode.Provider specifiedValue={props.loaderData?.darkMode}>
+    <DarkMode.Provider specifiedValue={specifiedDarkModeRef.current}>
       <Document {...props} />
     </DarkMode.Provider>
   )
