@@ -4,11 +4,15 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// require('dotenv').config();
+let webServerCommand = 'npm run dev'
+
+if (process.env.CI) {
+  webServerCommand = 'npm run start'
+}
+
+if (process.env.VALIDATION) {
+  webServerCommand = 'npm run preview'
+}
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -106,10 +110,7 @@ const config: PlaywrightTestConfig = {
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command:
-      process.env.CI || process.env.NODE_ENV === 'production'
-        ? 'npm start'
-        : 'npm run dev',
+    command: webServerCommand,
     port: 3000,
     reuseExistingServer: true,
   },
