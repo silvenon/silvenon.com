@@ -85,6 +85,7 @@
     "date-fns": "^2.27.0",
     "feed": "^4.2.2",
     "gray-matter": "^4.0.3",
+    "isbot": "^3.5.0",
     "js-yaml": "^4.1.0",
     "mdx-bundler": "^9.0.0",
     "micromark": "^3.0.10",
