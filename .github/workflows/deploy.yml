@@ -90,6 +90,8 @@ jobs:
     name: 🎭 Playwright
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.24.0-focal
     steps:
       - name: 🛑 Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.10.0
@@ -107,23 +109,6 @@ jobs:
         with:
           useLockFile: false
 
-      - name: Get Playwright version
-        id: get-playwright-version
-        run: echo "::set-output name=version::$(node -e "console.log(require('@playwright/test/package.json').version)")"
-
-      # https://playwrightsolutions.com/playwright-github-action-to-cache-the/
-      - name: Cache Playwright binaries
-        uses: actions/cache@v3
-        id: playwright-cache
-        with:
-          path: |
-            ~/.cache/ms-playwright
-          key: cache-playwright-linux-${{ steps.get-playwright-version.outputs.version }}-${{ hashFiles('playwright.config.ts') }}
-
-      - name: Install Playwright Browsers
-        if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: npx playwright install --with-deps
-
       - name: ⚙️ Build
         run: npm run build
         env:
@@ -134,13 +119,6 @@ jobs:
         env:
           CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
           SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
-
-      - uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 30
 
   build:
     name: 🐳 Build
