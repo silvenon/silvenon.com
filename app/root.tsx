@@ -11,7 +11,7 @@ import {
 import { redirect, json } from '@remix-run/node'
 import type { MetaFunction, LinksFunction, LoaderArgs } from '@remix-run/node'
 import { MetronomeLinks } from '@metronome-sh/react'
-import { DarkModeProvider } from './services/dark-mode'
+import { DarkMode, useDarkMode } from './services/dark-mode'
 import clsx from 'clsx'
 import Analytics from './components/Analytics'
 import cloudinary from './utils/cloudinary'
@@ -20,11 +20,12 @@ import { author } from './consts'
 import styles from './tailwind.css'
 import Boundary from './components/Boundary'
 import { removeTrailingSlash } from './utils/http'
-import { isDarkMode } from '~/components/DarkModeToggle'
+import { getDarkMode } from '~/session.server'
 
 interface LoaderData {
   appName?: string
   canonicalUrl: string
+  darkMode?: boolean
 }
 
 export async function loader({ request }: LoaderArgs) {
@@ -35,12 +36,13 @@ export async function loader({ request }: LoaderArgs) {
     {
       appName: process.env.FLY_APP_NAME,
       canonicalUrl: getCanonicalUrl(request),
+      darkMode: await getDarkMode(request),
     },
     200,
   )
 }
 
-export const meta: MetaFunction = ({ data }) => {
+export const meta: MetaFunction = ({ data }: { data?: LoaderData }) => {
   return {
     ...(data?.appName === 'silvenon-staging' ? { robots: 'noindex' } : null),
     charset: 'utf-8',
@@ -60,7 +62,6 @@ export const meta: MetaFunction = ({ data }) => {
     'og:image:type': 'image/jpeg',
     'og:image:width': '1080',
     'og:image:height': '1080',
-    'twitter:widgets:theme': 'light',
     // Twitter Card
     // https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/summary
     'twitter:card': 'summary',
@@ -98,8 +99,17 @@ function Document({
   className?: string
   children: React.ReactNode
 }) {
+  const [darkMode] = useDarkMode()
+
   return (
-    <html lang="en" className="h-full">
+    <html
+      lang="en"
+      className={clsx(
+        'h-full',
+        typeof window === 'undefined' ? 'no-js' : 'js',
+        darkMode && 'dark',
+      )}
+    >
       <head>
         <Meta />
         {title ? (
@@ -121,16 +131,7 @@ function Document({
             `,
           }}
         />
-        {/* https://tailwindcss.com/docs/dark-mode#toggling-dark-mode-manually */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              const darkMode = (${isDarkMode})(window.matchMedia('(prefers-color-scheme: dark)').matches)
-              document.documentElement.classList.toggle('dark', darkMode)
-              document.querySelector('meta[name="twitter:widgets:theme"]').setAttribute('content', darkMode ? 'dark' : 'light')
-            `,
-          }}
-        />
+        <DarkMode.Head />
       </head>
       <body
         className={clsx(
@@ -138,7 +139,7 @@ function Document({
           className,
         )}
       >
-        <DarkModeProvider>{children}</DarkModeProvider>
+        {children}
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
@@ -148,19 +149,29 @@ function Document({
   )
 }
 
+function DocumentWithProviders(props: React.ComponentProps<typeof Document>) {
+  return (
+    <DarkMode.Provider specifiedValue={props.loaderData?.darkMode}>
+      <Document {...props} />
+    </DarkMode.Provider>
+  )
+}
+
 export default function App() {
   const data = useLoaderData<typeof loader>()
   return (
-    <Document loaderData={data}>
+    <DocumentWithProviders loaderData={data}>
       <Outlet />
-    </Document>
+    </DocumentWithProviders>
   )
 }
 
 export function CatchBoundary() {
   const caught = useCatch()
   return (
-    <Document title={caught.status === 404 ? 'Page not found' : undefined}>
+    <DocumentWithProviders
+      title={caught.status === 404 ? 'Page not found' : undefined}
+    >
       <Boundary
         status={caught.status}
         title={
@@ -174,13 +185,13 @@ export function CatchBoundary() {
           ) : undefined
         }
       />
-    </Document>
+    </DocumentWithProviders>
   )
 }
 
 export function ErrorBoundary({ error }: { error: Error }) {
   return (
-    <Document title="Page error">
+    <DocumentWithProviders title="Page error">
       <Boundary
         title="Oh no!"
         errorOutput={
@@ -200,6 +211,6 @@ export function ErrorBoundary({ error }: { error: Error }) {
           </>
         }
       />
-    </Document>
+    </DocumentWithProviders>
   )
 }

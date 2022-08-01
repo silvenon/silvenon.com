@@ -41,7 +41,7 @@ type Props = StandalonePost | SeriesPart
 export default function Post(props: Props) {
   const PostContent = useMemo(() => getMDXComponent(props.code), [props.code])
   const location = useLocation()
-  const darkMode = useDarkMode()
+  const [darkMode] = useDarkMode()
 
   const isSeries = 'series' in props
 

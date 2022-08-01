@@ -1,13 +1,13 @@
 import { test, expect } from '@playwright/test'
 
 test.describe('dark mode', () => {
-  test('toggle', async ({ page }) => {
+  test('toggle in UI', async ({ page }) => {
     const document = page.locator('role=document')
     const enableSwitch = page.locator('role=switch[name="Enable dark mode"]')
     const disableSwitch = page.locator('role=switch[name="Disable dark mode"]')
     const resetBtn = page.locator('role=button[name="Reset to OS"]')
 
-    page.emulateMedia({ colorScheme: 'light' })
+    await page.emulateMedia({ colorScheme: 'light' })
 
     await page.goto('/')
 
@@ -34,5 +34,41 @@ test.describe('dark mode', () => {
     await page.reload()
     await expect(document).not.toHaveClass(/dark/)
     await expect(resetBtn).not.toBeVisible()
+  })
+
+  test('toggle in OS', async ({ page }) => {
+    const document = page.locator('role=document')
+
+    await page.goto('/')
+
+    await page.emulateMedia({ colorScheme: 'light' })
+    await expect(document).not.toHaveClass(/dark/)
+
+    await page.emulateMedia({ colorScheme: 'dark' })
+    await expect(document).toHaveClass(/dark/)
+
+    await page.emulateMedia({ colorScheme: 'light' })
+    await expect(document).not.toHaveClass(/dark/)
+  })
+
+  test.describe('hydration error', () => {
+    for (const [pageName, route] of [
+      ['home', '/'],
+      ['blog post', '/blog/e2e-testing-with-cypress-vs-playwright'],
+    ]) {
+      for (const colorScheme of ['light', 'dark'] as const) {
+        test(`${colorScheme} mode on ${pageName} page`, async ({ page }) => {
+          const msgs: string[] = []
+          page.on('console', (msg) => {
+            if (msg.type() === 'error' && /did not match/i.test(msg.text())) {
+              msgs.push(msg.text())
+            }
+          })
+          await page.emulateMedia({ colorScheme })
+          await page.goto(route)
+          expect(msgs, msgs.join('\n\n')).toHaveLength(0)
+        })
+      }
+    }
   })
 })

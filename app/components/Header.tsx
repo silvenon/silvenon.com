@@ -1,5 +1,5 @@
 import { Link, useLocation } from '@remix-run/react'
-import DarkModeToggle from './DarkModeToggle'
+import { DarkMode } from '~/services/dark-mode'
 import Prose from './Prose'
 
 export default function Header() {
@@ -61,7 +61,7 @@ export default function Header() {
         </div>
 
         <div className="flex flex-1 items-center justify-end">
-          <DarkModeToggle />
+          <DarkMode.Toggle />
         </div>
       </Prose>
     </header>
