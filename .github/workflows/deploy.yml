@@ -87,14 +87,9 @@ jobs:
           CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
 
   playwright:
-    name: 🎭 Playwright (${{ matrix.project }})
+    name: 🎭 Playwright
     timeout-minutes: 60
     runs-on: ubuntu-latest
-    container: mcr.microsoft.com/playwright:v1.24.0-focal
-    strategy:
-      fail-fast: false
-      matrix:
-        project: [Chrome, Safari, Firefox]
     steps:
       - name: 🛑 Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.10.0
@@ -108,7 +103,25 @@ jobs:
           node-version: 16
 
       - name: 📥 Download deps
-        run: npm ci
+        uses: bahmutov/npm-install@v1
+        with:
+          useLockFile: false
+
+      - name: Get Playwright version
+        id: get-playwright-version
+        run: echo "::set-output name=version::$(node -e "console.log(require('@playwright/test/package.json').version)")"
+
+      # https://playwrightsolutions.com/playwright-github-action-to-cache-the/
+      - name: Cache Playwright binaries
+        uses: actions/cache@v3
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: cache-playwright-linux-${{ steps.get-playwright-version.outputs.version }}-${{ hashFiles('playwright.config.ts') }}
+
+      - name: Install Playwright Browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps
 
       - name: ⚙️ Build
         run: npm run build
@@ -116,7 +129,7 @@ jobs:
           CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
 
       - name: 🎭 Playwright run
-        run: npm run test:e2e -- --project=${{ matrix.project }}
+        run: npm run test:e2e
         env:
           CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
           SESSION_SECRET: ${{ secrets.SESSION_SECRET }}

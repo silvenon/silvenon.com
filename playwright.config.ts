@@ -42,7 +42,7 @@ const config: PlaywrightTestConfig = {
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'Chrome',
+      name: 'chromium',
       use: {
         ...devices['Desktop Chrome'],
       },
@@ -51,14 +51,14 @@ const config: PlaywrightTestConfig = {
     ...(process.env.CI
       ? [
           {
-            name: 'Safari',
+            name: 'webkit',
             use: {
               ...devices['Desktop Safari'],
             },
           },
 
           {
-            name: 'Firefox',
+            name: 'firefox',
             use: {
               ...devices['Desktop Firefox'],
             },
