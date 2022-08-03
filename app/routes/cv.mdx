@@ -21,13 +21,17 @@ export function getImageUrl(transform) {
   })
 }
 
-export function Experience({ role, company, duration: [start, end], children }) {
+export function Experience({ role, project, duration: [start, end], tech, children }) {
   return (
     <div>
       <h3>
-        <span>{role}</span>{' '}
-        <span className="font-light dark:font-thin">at</span>{' '}
-        <span>{company}</span>{' '}
+        {role && (
+          <>
+            <span>{role}</span>{' '}
+            <span className="font-light dark:font-thin">at</span>{' '}
+          </>
+        )}
+        <span>{project}</span>{' '}
         <span className="whitespace-nowrap font-light dark:font-thin">({start}—{end})</span>
       </h3>
       {children}
@@ -60,17 +64,16 @@ export function Experience({ role, company, duration: [start, end], children }) 
 
   ## Skills & Technologies
 
-  <div className="[&_li]:break-inside-avoid-column sm:columns-2">
+  <div className="[&_li]:break-inside-avoid-column">
     - **styling**: Tailwind CSS, Styled Components, Linaria, Sass, CSS Modules...
     - **bundlers and build tools**: Webpack, Vite, Parcel, esbuild, Rollup, Gulp, `zx`, Grunt
     - **React**: Redux, React Router, Headless UI, Heroicons, Material UI...
     - **static site generation**: Next.js, Eleventy, Gatsby, Vite, gulp, Jekyll
-      - also, curious about Astro
     - **fullstack**: Next.js, Remix
-    - **edge computing**: currently exploring Fly.io, Cloudflare Workers & Pages, Netlify, Vercel, Deno...
+    - **edge computing**: Fly.io, Cloudflare Workers & Pages, Netlify, Vercel, Deno...
     - **databases**: Prisma, Cloudflare Workers KV
     - **SEO**: Monica Lent's course _SEO for Devs_
-    - **testing**: Jest, Vitest, Cypress, Playwright, Testing Library, MSW (Mock Service Worker)
+    - **testing**: Jest, Vitest, Cypress, Playwright, Testing Library, MSW, course "[Testing JavaScript](https://testingjavascript.com/)"
     - **type checking**: TypeScript, Flow
     - **linting**: ESLint, Stylelint, remark-lint...
     - **handling monorepos**: Lerna, generating changelogs with Conventional Commits
@@ -80,51 +83,45 @@ export function Experience({ role, company, duration: [start, end], children }) 
     - **templating languages**: Haml, Pug, Handlebars, Nunjucks, EJS etc.
     - **HTML email**: Mailchimp, MJML
     - **version control**: loving Git more than the average person, see my [series of posts on Git history](https://silvenon.com/blog/better-git-history)
-    - **public speaking**: on meetups ([here are some of my slides](https://speakerdeck.com/silvenon)) and in a Toastmasters club
-    - **maintaining open source software**: MDX, React Transition Group, Yeoman generators
-    - **writing**: blogging, documenting, Docusaurus, Storybook (later hopefully Vitebook)
+    - **public speaking**: teaching on meetups ([here are some of my slides](https://speakerdeck.com/silvenon))
+    - **maintaining open source software**: component libraries, MDX, React Transition Group, Yeoman generators
+    - **writing**: blogging, documenting, Docusaurus, Storybook
     - **mentoring & teaching**: friends, colleagues and others on [Mentoring Byte](https://www.mentoringbyte.com)
   </div>
 
   ## Professional experience
 
   <div className="[&>*]:break-inside-avoid-page">
-    <Experience role="Senior JavaScript Developer" company="Reactor Studio" duration={[2018, 2022]}>
-      - React, TypeScript, Jest, Cypress, Gatsby, Next.js, Lerna, Styled Components, Storybook
-      - working on booking tickets, where I wrote a lot of end-to-end tests
-      - frontend platform, improving experience for many developers in the team
-      - development lead of a React design system
+    <Experience role="Senior JavaScript Developer" project="Reactor Studio" duration={[2018, 2022]}>
+      - lead the development of an open source React design system
+      - improved experience for many developers in the team as a frontend platform developer
+      - refactored and managed set of projects into a monorepository
+      - migrated documentation to Gatsby
+      - developed booking of travel tickets with a lot of end-to-end tests
     </Experience>
 
-    <Experience role="React Developer" company="GIS Cloud" duration={[2017, 2018]}>
-      - developer co-lead of a React app
-      - type checking with Flow
-      - mentoring junior developers
+    <Experience role="React Developer" project="GIS Cloud" duration={[2017, 2018]}>
+      - developed a GIS React app
+      - used Flow for type checking
+      - refactored code using codemods with jscodeshift
+      - mentored junior developers
     </Experience>
 
-    <Experience role="Frontend Developer" company="Citrusbyte" duration={[2016, 2017]}>
-      - worked with a remote team
-      - Phoenix project (an MVC framework in Elixir)
-      - I enhanced the stack with modern frontend practices
-      - learned a lot about end-to-end testing
+    <Experience role="Frontend Developer" project="Citrusbyte" duration={[2016, 2017]}>
+      - worked with a remote team of 60+ developers
+      - developed a Phoenix project (an MVC framework in Elixir)
+      - enhanced the stack with modern frontend practices
     </Experience>
 
-    <Experience role="Frontend Developer" company="Profico" duration={[2013, 2016]}>
-      - worked with skilled designers
-      - learned a lot about slicing and animation on the web
+    <Experience role="Frontend Developer" project="Profico" duration={[2013, 2016]}>
+      - worked with skilled graphic and motion designers
+      - built many static web sites, and started specializing in SSG
       - as this was the advent of Node.js I continuously explored all the latest tools
-      - started specializing in static site generation
     </Experience>
 
-    <Experience role="Frontend Developer" company="Sentia" duration={[2012, 2013]}>
-      - dating app in Rails
-      - getting the hang of an MVC framework
+    <Experience role="Frontend Developer" project="Sentia" duration={[2012, 2013]}>
+      - developed a Rails dating app
       - eventually started moving away from Ruby
-    </Experience>
-
-    <Experience role="Web Content Manager" company="bonbon" duration={[2012, 2014]}>
-      - content management via CMS
-      - design work
     </Experience>
 
     <div>
@@ -135,22 +132,19 @@ export function Experience({ role, company, duration: [start, end], children }) 
       The following are my most significant contributions.
     </div>
 
-    <div>
-      ### MDX
+    <Experience project="MDX" duration={[2018, 2020]}>
+      - contributed significantly in the early stages and entered the core development team
+      - built VS Code extension for MDX
+    </Experience>
 
-      When I started contributing to [MDX](https://mdxjs.com/) it was in its early stages, it was an honor to help make it what it is today as a core developer. This project is where I learned a ton about abstract syntax trees, and continued exploring the [unified](https://unifiedjs.com) ecosystem.
-    </div>
+    <Experience project="React Transition Group" duration={[2018, 2020]}>
+      - wrote a [blog post about using React Transition Group](https://silvenon.com/blog/the-nuances-of-react-transition-group)
+      - contributed to this popular library as a collaborator, improving documentation, triaging issues etc.
+    </Experience>
 
-    <div>
-      ### React Transition Group
-
-      After figuring out how [React Transition Group](https://reactcommunity.org/react-transition-group/) worked I wrote a [blog post](https://silvenon.com/blog/the-nuances-of-react-transition-group) about it because the documentation was lacking at the time. When I started contributing to the documentation I was made collaborator, so I started working on it more seriously. Maintaining such a popular project was a very valuable learning experience.
-    </div>
-
-    <div>
-      ### Yeoman
-
-      In the good ol' days when I was learning build tools like Grunt and Gulp I found [Yeoman](https://yeoman.io) generators to be excellent usage examples, so as I was learning I started heavily contributing to a few generators, and was eventually added to the core develpoment team.
-    </div>
+    <Experience project="Yeoman generators" duration={[2014, 2020]}>
+      - Yeoman generators were excellent sources for learning tools like Grunt and Gulp
+      - as I was learning I started contributing to the generators, and entered the core development team
+    </Experience>
   </div>
 </Prose>
