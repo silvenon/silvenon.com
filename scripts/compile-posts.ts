@@ -9,58 +9,59 @@ const SOURCE_DIR = path.join(process.cwd(), 'posts')
 const OUTPUT_DIR = path.join(process.cwd(), 'app/posts')
 const CACHE_DIR = path.join(process.cwd(), 'node_modules/.cache/posts')
 
+const criticalFiles = [
+  // if any of these files change we need to clear the cache
+  'compile-posts.ts',
+  'utils/cloudinary.ts',
+  'utils/code-theme.js',
+  'utils/esbuild-plugin-cloudinary.ts',
+  'utils/mdx.ts',
+  'utils/rehype-pretty-code.ts',
+]
+
 let noCache: boolean = false
 
 async function compilePosts() {
-  const criticalFiles = await Promise.all(
-    [
-      // if any of these files change we need to clear the cache
-      'compile-posts.ts',
-      'utils/cloudinary.ts',
-      'utils/code-theme.js',
-      'utils/esbuild-plugin-cloudinary.ts',
-      'utils/mdx.ts',
-      'utils/rehype-pretty-code.ts',
-    ].map(async (file) => ({
-      cachePath: path.join(CACHE_DIR, 'scripts', file),
-      lastModified: await fs
-        .stat(path.join(__dirname, file))
-        .then((stat) => stat.mtimeMs),
-    })),
-  )
-
-  const criticalMeta = await Promise.all(
-    criticalFiles.map(async ({ cachePath, lastModified }) => {
-      const cacheKey = JSON.stringify(lastModified)
-      return {
-        hasChanged: (await cacache.get.info(cachePath, cacheKey)) === null,
+  const criticalResults = await Promise.allSettled(
+    criticalFiles.map(async (file) => {
+      const cacheKey = `scripts/${file}`
+      const stats = await fs.stat(path.join(__dirname, file))
+      const size = stats.size
+      const lastModified = stats.mtime.getTime()
+      try {
+        const { data } = await cacache.get(CACHE_DIR, cacheKey)
+        const cached = JSON.parse(data.toString('utf-8'))
+        const hasChanged =
+          cached.lastModified !== lastModified || cached.size !== size
+        if (hasChanged)
+          throw new Error(
+            `Critical file "${file}" has been changed: ${cached.lastModified}/${lastModified}, ${cached.size}/${size}`,
+          )
+      } catch (err) {
+        console.log(err)
+        const dataToCache = JSON.stringify({ lastModified, size })
+        await cacache.put(CACHE_DIR, cacheKey, dataToCache)
+        throw err
       }
     }),
   )
 
-  if (criticalMeta.some(({ hasChanged }) => hasChanged)) {
-    console.log('Some of the critical files have changed, clearing cache!')
+  if (criticalResults.some((result) => result.status === 'rejected')) {
+    console.log('Some of the critical files have been changed, clearing cache!')
     noCache = true
   }
 
-  await Promise.all(
-    criticalFiles.map(async ({ cachePath, lastModified }) => {
-      if (noCache) await cacache.rm.all(cachePath)
-      await cacache.put(cachePath, JSON.stringify(lastModified), '')
-    }),
-  )
-
-  const dirents = await cachedReaddir(SOURCE_DIR)
+  const contentDirents = await cachedReaddirContent()
   const postFiles: string[] = []
 
-  for (const dirent of dirents) {
+  for (const dirent of contentDirents) {
     if (dirent.name === '__tests__') continue
     if (dirent.isFile) {
       if (!dirent.name.endsWith('.mdx')) continue
       postFiles.push(dirent.name)
     } else {
       const seriesSlug = dirent.name
-      const partDirents = await cachedReaddir(path.join(SOURCE_DIR, seriesSlug))
+      const partDirents = await cachedReaddirContent(seriesSlug)
       for (const partDirent of partDirents) {
         if (
           partDirent.name === 'series.json' ||
@@ -96,22 +97,24 @@ async function compile(file: string) {
     return
   }
 
-  const cachePath = path.join(CACHE_DIR, file)
-  const lastModified = await fs
-    .stat(path.join(SOURCE_DIR, file))
-    .then((stat) => stat.mtimeMs)
-  const cacheKey = JSON.stringify(lastModified)
+  const stats = await fs.stat(path.join(SOURCE_DIR, file))
+  const lastModified = stats.mtime.getTime()
+  const cacheKey = `content/${file}`
   const outputPath = path.join(OUTPUT_DIR, file).replace(/\.mdx$/, '.js')
 
   try {
+    if (noCache) throw new Error('Cache has been disabled')
+    const info = await cacache.get.info(CACHE_DIR, cacheKey)
+    if (info === null) {
+      throw new Error(`Cache entry for "posts/${file}" not found, compiling...`)
+    }
+    if (info.metadata.lastModified !== lastModified) {
+      throw new Error(`"posts/${file}" has changed, recomputing cache...`)
+    }
     await new Promise<void>(async (resolve, reject) => {
-      if (noCache) {
-        await cacache.rm.all(cachePath)
-        return reject()
-      }
       try {
         cacache.get
-          .stream(cachePath, cacheKey)
+          .stream(CACHE_DIR, cacheKey)
           .on('end', resolve)
           .on('error', reject)
           .pipe(createWriteStream(outputPath))
@@ -122,31 +125,43 @@ async function compile(file: string) {
   } catch {
     const code = await compileMDXFile(path.join(SOURCE_DIR, file))
     await fs.writeFile(outputPath, code)
-    await cacache.put(cachePath, cacheKey, code)
+    await cacache.put(CACHE_DIR, cacheKey, code, {
+      metadata: {
+        lastModified,
+      },
+    })
   }
 }
 
-async function cachedReaddir(
-  dir: string,
+async function cachedReaddirContent(
+  contentDir: string = '',
 ): Promise<Array<{ name: string; isFile: boolean }>> {
-  const cachePath = path.join(CACHE_DIR, path.relative(SOURCE_DIR, dir))
-  const lastModified = await fs.stat(dir).then((stat) => stat.mtimeMs)
-  const cacheKey = JSON.stringify(lastModified)
-  if (noCache) await cacache.rm.all(cachePath)
-  return (noCache ? Promise.reject() : cacache.get(cachePath, cacheKey))
-    .then((obj) => JSON.parse(obj.data.toString('utf-8')))
-    .catch(async () => {
-      const dirents = (
-        await fs.readdir(dir, {
-          withFileTypes: true,
-        })
-      ).map((dirent) => ({
-        name: dirent.name,
-        isFile: dirent.isFile(),
-      }))
-      await cacache.put(cachePath, cacheKey, JSON.stringify(dirents))
-      return dirents
-    })
+  const cacheKey = `content/${contentDir}`
+  const stats = await fs.stat(path.join(SOURCE_DIR, contentDir))
+  const lastModified = stats.mtime.getTime()
+  try {
+    if (noCache) throw new Error('Cache has been disabled')
+    const { data } = await cacache.get(CACHE_DIR, cacheKey)
+    const cached = JSON.parse(data.toString('utf-8'))
+    if (cached.lastModified !== lastModified) {
+      throw new Error(
+        `The directory "${contentDir}" has changed, recomputing cache...`,
+      )
+    }
+    return cached.dirents
+  } catch {
+    const dirents = (
+      await fs.readdir(path.join(SOURCE_DIR, contentDir), {
+        withFileTypes: true,
+      })
+    ).map((dirent) => ({
+      name: dirent.name,
+      isFile: dirent.isFile(),
+    }))
+    const dataToCache = JSON.stringify({ dirents, lastModified })
+    await cacache.put(CACHE_DIR, cacheKey, dataToCache)
+    return dirents
+  }
 }
 
 compilePosts()
