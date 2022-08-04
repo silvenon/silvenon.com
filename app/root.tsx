@@ -12,7 +12,6 @@ import {
 import { redirect, json } from '@remix-run/node'
 import type { MetaFunction, LinksFunction, LoaderArgs } from '@remix-run/node'
 import { MetronomeLinks } from '@metronome-sh/react'
-import { useRef } from 'react'
 import { DarkMode, useDarkMode } from './services/dark-mode'
 import clsx from 'clsx'
 import Analytics from './components/Analytics'
@@ -153,8 +152,7 @@ function Document({
 
 function DocumentWithProviders(props: React.ComponentProps<typeof Document>) {
   const transition = useTransition()
-  const loaderDarkMode = props.loaderData?.darkMode
-  const specifiedDarkModeRef = useRef(loaderDarkMode)
+  let specifiedDarkMode = props.loaderData?.darkMode
 
   if (
     transition.state === 'submitting' &&
@@ -162,18 +160,13 @@ function DocumentWithProviders(props: React.ComponentProps<typeof Document>) {
   ) {
     const optimisticDarkMode = transition.submission.formData.get('darkMode')
     if (typeof optimisticDarkMode === 'string') {
-      specifiedDarkModeRef.current =
+      specifiedDarkMode =
         optimisticDarkMode === 'os' ? undefined : optimisticDarkMode === 'true'
     }
-  } else if (
-    transition.state !== 'loading' ||
-    transition.location?.pathname !== '/'
-  ) {
-    specifiedDarkModeRef.current = loaderDarkMode
   }
 
   return (
-    <DarkMode.Provider specifiedValue={specifiedDarkModeRef.current}>
+    <DarkMode.Provider specifiedValue={specifiedDarkMode}>
       <Document {...props} />
     </DarkMode.Provider>
   )
