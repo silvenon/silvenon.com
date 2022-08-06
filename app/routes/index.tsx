@@ -1,7 +1,6 @@
 import { useLoaderData, Link } from '@remix-run/react'
 import { json } from '@remix-run/node'
 import type { MetaFunction, LoaderArgs } from '@remix-run/node'
-import Header from '~/components/Header'
 import { Fragment } from 'react'
 import { ExternalLinkIcon } from '@heroicons/react/outline'
 import type { Except, SetOptional } from 'type-fest'
@@ -65,7 +64,6 @@ export default function Home() {
   const entries = useLoaderData<typeof loader>()
   return (
     <>
-      <Header />
       <section className="relative mt-4 mb-10 border-t-2 border-b-2 border-purple-400 bg-purple-300 px-4 dark:border-purple-400 dark:bg-purple-800">
         <div
           className="absolute inset-0 opacity-70 dark:opacity-30"
@@ -217,21 +215,18 @@ export default function Home() {
 
 export function ErrorBoundary({ error }: { error: Error }) {
   return (
-    <>
-      <Header />
-      <Prose as="main" className="py-4">
-        <h1>Error while rendering posts</h1>
-        <p>{error.message}</p>
-        <pre>
-          <code>
-            {error.stack?.split('\n').map((line) => (
-              <span key={line} className="line">
-                {line}
-              </span>
-            ))}
-          </code>
-        </pre>
-      </Prose>
-    </>
+    <Prose as="main" className="py-4">
+      <h1>Error while rendering posts</h1>
+      <p>{error.message}</p>
+      <pre>
+        <code>
+          {error.stack?.split('\n').map((line) => (
+            <span key={line} className="line">
+              {line}
+            </span>
+          ))}
+        </code>
+      </pre>
+    </Prose>
   )
 }

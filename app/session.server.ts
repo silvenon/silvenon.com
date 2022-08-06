@@ -12,7 +12,7 @@ export const sessionStorage = createCookieSessionStorage({
     secrets: [process.env.SESSION_SECRET],
     // secure doesn't work on localhost for Safari
     // https://web.dev/when-to-use-local-https/
-    secure: process.env.NODE_ENV === 'production' && !process.env.TESTING,
+    secure: process.env.NODE_ENV === 'production' && !process.env.E2E_TESTING,
   },
 })
 

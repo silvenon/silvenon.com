@@ -4,8 +4,11 @@ import { RemixServer } from '@remix-run/react'
 import { Response } from '@remix-run/node'
 import type { EntryContext, Headers } from '@remix-run/node'
 import isbot from 'isbot'
+import { getEnv } from './utils/env.server'
 
 const ABORT_DELAY = 5000
+
+global.ENV = getEnv()
 
 export default function handleRequest(
   request: Request,

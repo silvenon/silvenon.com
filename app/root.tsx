@@ -15,6 +15,7 @@ import { useRef } from 'react'
 import { MetronomeLinks } from '@metronome-sh/react'
 import { DarkMode, useDarkMode } from './services/dark-mode'
 import clsx from 'clsx'
+import Header from './components/Header'
 import Analytics from './components/Analytics'
 import cloudinary from './utils/cloudinary'
 import { getCanonicalUrl } from './utils/http'
@@ -22,9 +23,11 @@ import { author } from './consts'
 import styles from './tailwind.css'
 import Boundary from './components/Boundary'
 import { removeTrailingSlash } from './utils/http'
+import { getEnv } from '~/utils/env.server'
 import { getDarkMode } from '~/session.server'
 
 interface LoaderData {
+  ENV: ReturnType<typeof getEnv>
   appName?: string
   canonicalUrl: string
   darkMode?: boolean
@@ -36,6 +39,7 @@ export async function loader({ request }: LoaderArgs) {
   }
   return json<LoaderData>(
     {
+      ENV: getEnv(),
       appName: process.env.FLY_APP_NAME,
       canonicalUrl: getCanonicalUrl(request),
       darkMode: await getDarkMode(request),
@@ -90,15 +94,8 @@ export const links: LinksFunction = () => {
   ]
 }
 
-function Document({
-  loaderData,
-  title,
-  children,
-}: {
-  loaderData?: LoaderData
-  title?: string
-  children: React.ReactNode
-}) {
+function App() {
+  const data = useLoaderData<typeof loader>()
   const [darkMode] = useDarkMode()
 
   return (
@@ -112,16 +109,7 @@ function Document({
     >
       <head>
         <Meta />
-        {title ? (
-          <>
-            <title>{title}</title>
-            <meta property="og:title" content={title} />
-            <meta property="twitter:title" content={title} />
-          </>
-        ) : null}
-        {loaderData?.canonicalUrl ? (
-          <link rel="canonical" href={loaderData.canonicalUrl} />
-        ) : null}
+        <link rel="canonical" href={data.canonicalUrl} />
         <Links />
         <MetronomeLinks />
         <script
@@ -131,10 +119,18 @@ function Document({
             `,
           }}
         />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.ENV = ${JSON.stringify(data.ENV)}
+            `,
+          }}
+        />
         <DarkMode.Head />
       </head>
       <body className="h-full bg-page text-black selection:bg-amber-300 selection:text-black dark:bg-page-dark dark:text-white">
-        {children}
+        <Header />
+        <Outlet />
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
@@ -144,9 +140,10 @@ function Document({
   )
 }
 
-function DocumentWithProviders(props: React.ComponentProps<typeof Document>) {
+export default function AppWithProviders() {
+  const data = useLoaderData<typeof loader>()
   const transition = useTransition()
-  const specifiedDarkModeRef = useRef(props.loaderData?.darkMode)
+  const specifiedDarkModeRef = useRef(data.darkMode)
 
   if (
     transition.state === 'submitting' &&
@@ -161,65 +158,68 @@ function DocumentWithProviders(props: React.ComponentProps<typeof Document>) {
 
   return (
     <DarkMode.Provider specifiedValue={specifiedDarkModeRef.current}>
-      <Document {...props} />
+      <App />
     </DarkMode.Provider>
-  )
-}
-
-export default function App() {
-  const data = useLoaderData<typeof loader>()
-  return (
-    <DocumentWithProviders loaderData={data}>
-      <Outlet />
-    </DocumentWithProviders>
   )
 }
 
 export function CatchBoundary() {
   const caught = useCatch()
   return (
-    <DocumentWithProviders
-      title={caught.status === 404 ? 'Page not found' : undefined}
-    >
-      <Boundary
-        status={caught.status}
-        title={
-          caught.status === 404
-            ? 'Nothing found at this URL.'
-            : caught.statusText
-        }
-        description={
-          caught.status === 404 ? (
-            <p>It looks like the page you’re looking for doesn't exist.</p>
-          ) : undefined
-        }
-      />
-    </DocumentWithProviders>
+    <html lang="en" className="dark h-full">
+      <head>
+        <Meta />
+        <title>{caught.status === 404 ? 'Page not found' : 'Page error'}</title>
+        <Links />
+      </head>
+      <body className="h-full">
+        <Boundary
+          status={caught.status}
+          title={
+            caught.status === 404
+              ? 'Nothing found at this URL.'
+              : caught.statusText
+          }
+          description={
+            caught.status === 404 ? (
+              <p>It looks like the page you’re looking for doesn't exist.</p>
+            ) : undefined
+          }
+        />
+      </body>
+    </html>
   )
 }
 
 export function ErrorBoundary({ error }: { error: Error }) {
   return (
-    <DocumentWithProviders title="Page error">
-      <Boundary
-        title="Oh no!"
-        errorOutput={
-          <>
-            {!error.stack?.includes(error.message) ? (
-              <span className="break-words">{error.message}</span>
-            ) : null}
-            <pre>
-              <code>
-                {error.stack?.split('\n').map((line) => (
-                  <span key={line} className="line">
-                    {line}
-                  </span>
-                ))}
-              </code>
-            </pre>
-          </>
-        }
-      />
-    </DocumentWithProviders>
+    <html lang="en" className="dark h-full">
+      <head>
+        <Meta />
+        <title>Page error</title>
+        <Links />
+      </head>
+      <body className="h-full">
+        <Boundary
+          title="Oh no!"
+          errorOutput={
+            <>
+              {!error.stack?.includes(error.message) ? (
+                <span className="break-words">{error.message}</span>
+              ) : null}
+              <pre>
+                <code>
+                  {error.stack?.split('\n').map((line) => (
+                    <span key={line} className="line">
+                      {line}
+                    </span>
+                  ))}
+                </code>
+              </pre>
+            </>
+          }
+        />
+      </body>
+    </html>
   )
 }

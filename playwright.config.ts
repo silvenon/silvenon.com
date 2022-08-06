@@ -100,7 +100,7 @@ const config: PlaywrightTestConfig = {
     port: 3000,
     reuseExistingServer: true,
     env: {
-      TESTING: '1',
+      E2E_TESTING: 'true',
     },
   },
 }
