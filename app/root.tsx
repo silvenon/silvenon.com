@@ -93,12 +93,10 @@ export const links: LinksFunction = () => {
 function Document({
   loaderData,
   title,
-  className,
   children,
 }: {
   loaderData?: LoaderData
   title?: string
-  className?: string
   children: React.ReactNode
 }) {
   const [darkMode] = useDarkMode()
@@ -135,12 +133,7 @@ function Document({
         />
         <DarkMode.Head />
       </head>
-      <body
-        className={clsx(
-          'h-full bg-page text-black selection:bg-amber-300 selection:text-black dark:bg-page-dark dark:text-white',
-          className,
-        )}
-      >
+      <body className="h-full bg-page text-black selection:bg-amber-300 selection:text-black dark:bg-page-dark dark:text-white">
         {children}
         <ScrollRestoration />
         <Scripts />
