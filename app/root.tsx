@@ -16,7 +16,6 @@ import { MetronomeLinks } from '@metronome-sh/react'
 import { DarkMode, useDarkMode } from './services/dark-mode'
 import clsx from 'clsx'
 import Header from './components/Header'
-import Analytics from './components/Analytics'
 import cloudinary from './utils/cloudinary'
 import { getCanonicalUrl } from './utils/http'
 import { author } from './consts'
@@ -134,7 +133,6 @@ function App() {
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
-        <Analytics />
       </body>
     </html>
   )
