@@ -138,7 +138,7 @@ function Document({
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
-        {process.env.NODE_ENV === 'production' && <Analytics />}
+        <Analytics />
       </body>
     </html>
   )
