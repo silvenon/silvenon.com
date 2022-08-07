@@ -82,7 +82,6 @@
     "clsx": "^1.1.1",
     "cross-env": "^7.0.3",
     "date-fns": "^2.27.0",
-    "fathom-client": "^3.5.0",
     "feed": "^4.2.2",
     "gray-matter": "^4.0.3",
     "isbot": "^3.5.0",
