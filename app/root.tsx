@@ -137,7 +137,7 @@ function App() {
           data-excluded-domains="localhost,staging.silvenon.com"
           data-spa="history"
           defer
-        ></script>
+        />
         <Scripts />
         <LiveReload />
       </body>
