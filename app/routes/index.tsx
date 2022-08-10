@@ -18,6 +18,9 @@ import type {
 } from '~/utils/posts.server'
 import { author } from '~/consts'
 import circuitBoard from '~/images/circuit-board.svg'
+import { Icon } from '@iconify/react'
+import { socialLinks } from '~/consts'
+import clsx from 'clsx'
 
 type LoaderData = Array<
   | Except<StandalonePost, 'output'>
@@ -73,13 +76,40 @@ export default function Home() {
           <div className="rounded-lg bg-white p-3 ring-2 ring-purple-400 dark:bg-gray-800 sm:flex">
             <Prose className="p-3 pb-4 sm:order-2 sm:flex-1 sm:self-center lg:px-5 lg:py-3">
               <h1 className="!mb-0">{author.name}</h1>
-              <p>
-                {author.bio} <Link to="about">More about me →</Link>
-              </p>
+              <p>{author.bio}</p>
             </Prose>
             <div className="sm:order-1 sm:w-40">
               <ProfilePhoto />
             </div>
+          </div>
+          <div className="absolute inset-x-0 bottom-0 flex translate-y-1/2 items-center justify-center sm:ml-4 sm:justify-start sm:pl-40 lg:ml-5 2xl:justify-end 2xl:pr-4">
+            {socialLinks.map((network) => (
+              <a
+                key={network.name}
+                title={network.name}
+                href={network.url}
+                target="_blank"
+                rel="noreferrer"
+                className="group block p-3 sm:p-2"
+              >
+                <span className="sr-only">{network.name}</span>
+                <span
+                  className={clsx(
+                    'block rounded-full border-2 border-transparent bg-purple-400 p-1.5 text-white transition duration-200 group-hover:scale-125 group-hover:text-white dark:bg-purple-400 dark:text-black dark:group-hover:shadow sm:p-2',
+                    network.name === 'GitHub' &&
+                      'group-hover:bg-github dark:group-hover:border-white/75',
+                    network.name === 'Twitter' && 'group-hover:bg-twitter',
+                    network.name === 'LinkedIn' && 'group-hover:bg-linkedin',
+                  )}
+                >
+                  <Icon
+                    aria-hidden="true"
+                    icon={network.icon}
+                    className="h-5 w-5 lg:h-6 lg:w-6"
+                  />
+                </span>
+              </a>
+            ))}
           </div>
         </div>
       </section>

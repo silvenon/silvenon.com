@@ -21,21 +21,18 @@ export const proseFontSize = {
 
 export const socialLinks = [
   {
-    id: 'github',
     name: 'GitHub',
     url: 'https://github.com/silvenon',
     icon: githubIcon,
   },
   {
-    id: 'twitter',
     name: 'Twitter',
     url: 'https://twitter.com/silvenon',
     icon: twitterIcon,
   },
   {
-    id: 'linkedin',
     name: 'LinkedIn',
     url: 'https://www.linkedin.com/in/silvenon',
     icon: linkedInIcon,
   },
-]
+] as const

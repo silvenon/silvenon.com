@@ -47,6 +47,9 @@ module.exports = {
         gray: colors.zinc,
         page: colors.white,
         'page-dark': colors.zinc[900],
+        github: '#333',
+        twitter: '#1da1f2',
+        linkedin: '#0077b5',
         'code-foreground': codeTheme.light.colors['editor.foreground'],
         // most light themes have a completely white background, we want it to be slightly gray
         // 'code-background': codeTheme.light.colors['editor.background'],

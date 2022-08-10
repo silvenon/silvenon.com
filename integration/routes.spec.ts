@@ -2,11 +2,7 @@ import { test, expect } from '@playwright/test'
 
 test.describe('routes', () => {
   test('https', async ({ page }) => {
-    for (const route of [
-      '/',
-      '/about',
-      '/blog/tailwind-and-separation-of-concerns',
-    ]) {
+    for (const route of ['/', '/blog/tailwind-and-separation-of-concerns']) {
       const [response] = await Promise.all([
         page.waitForEvent('response', async (response) => {
           const contentType = await response.headerValue('content-type')
