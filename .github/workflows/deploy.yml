@@ -25,10 +25,23 @@ jobs:
       - name: 📥 Download deps
         uses: bahmutov/npm-install@v1
 
+      - name: Cache
+        uses: actions/cache@v3
+        with:
+          path: /tmp/.posts-cache
+          key: ${{ runner.os }}-posts-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-posts-
+
       - name: 📝 Compile
         run: npm run build:posts
         env:
           CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
+
+      - name: 🚚 Move cache
+        run: |
+          rm -rf /tmp/.posts-cache
+          mv /tmp/.posts-cache-new /tmp/.posts-cache
 
   # lint:
   #   name: ⬣ ESLint

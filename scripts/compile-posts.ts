@@ -7,7 +7,10 @@ import { compileMDXFile } from './utils/mdx'
 
 const SOURCE_DIR = path.join(process.cwd(), 'posts')
 const OUTPUT_DIR = path.join(process.cwd(), 'app/posts')
-const CACHE_DIR = path.join(process.cwd(), 'node_modules/.cache/posts')
+const CACHE_DIR_FROM = process.env.CI
+  ? '/tmp/.posts-cache'
+  : path.join(process.cwd(), 'node_modules/.cache/posts')
+const CACHE_DIR_TO = process.env.CI ? '/tmp/.posts-cache-new' : CACHE_DIR_FROM
 
 let noCache: boolean = false
 
@@ -21,20 +24,46 @@ const criticalFiles = [
   'utils/rehype-pretty-code.ts',
 ]
 
+async function cachePut(key: string, data: any) {
+  await cacache.put(
+    CACHE_DIR_TO,
+    key,
+    typeof data === 'object' ? JSON.stringify(data) : data,
+  )
+}
+
+async function cacheGet(key: string) {
+  const { data } = await cacache.get(CACHE_DIR_FROM, key)
+  const result = data.toString('utf-8')
+  try {
+    return JSON.parse(result)
+  } catch {
+    return result
+  }
+}
+
+function cacheGetStream(key: string) {
+  return cacache.get.stream(CACHE_DIR_FROM, key)
+}
+
 async function compilePosts() {
   const criticalResults = await Promise.allSettled(
     criticalFiles.map(async (file) => {
       const stats = await fs.stat(path.join(__dirname, file))
       const lastModified = stats.mtime.getTime()
       const size = stats.size
+      const cacheKey = `scripts/${file}`
       try {
-        const { data } = await cacache.get(CACHE_DIR, file)
-        const cached = JSON.parse(data.toString('utf-8'))
+        const cached = await cacheGet(cacheKey)
         if (cached.lastModified !== lastModified || cached.size !== size) {
+          console.log(
+            `"${cacheKey}": modified (${cached.lastModified}/${lastModified}), size (${cached.size}/${size})`,
+          )
           throw new Error('Critical file has changed')
         }
       } catch (err) {
-        cacache.put(CACHE_DIR, file, JSON.stringify({ lastModified, size }))
+        console.log(err)
+        await cachePut(cacheKey, { lastModified, size })
         throw err
       }
     }),
@@ -102,15 +131,13 @@ async function compile(file: string) {
 
   try {
     if (noCache) throw new Error('Cache is disabled')
-    const { data } = await cacache.get(CACHE_DIR, metaCacheKey)
-    const cached = JSON.parse(data.toString('utf-8'))
+    const cached = await cacheGet(metaCacheKey)
     if (cached.lastModified !== lastModified || cached.size !== size) {
       throw new Error(`File "${contentCacheKey}" has changed`)
     }
     await new Promise<void>(async (resolve, reject) => {
       try {
-        cacache.get
-          .stream(CACHE_DIR, contentCacheKey)
+        cacheGetStream(contentCacheKey)
           .on('end', resolve)
           .on('error', reject)
           .pipe(createWriteStream(outputPath))
@@ -121,12 +148,8 @@ async function compile(file: string) {
   } catch {
     const code = await compileMDXFile(path.join(SOURCE_DIR, file))
     await fs.writeFile(outputPath, code)
-    await cacache.put(
-      CACHE_DIR,
-      metaCacheKey,
-      JSON.stringify({ lastModified, size }),
-    )
-    await cacache.put(CACHE_DIR, contentCacheKey, code)
+    await cachePut(metaCacheKey, { lastModified, size })
+    await cachePut(contentCacheKey, code)
   }
 }
 
@@ -139,8 +162,7 @@ async function cachedReaddir(
   const cacheKey = `posts/${dir}`
   try {
     if (noCache) throw new Error('Cache is disabled')
-    const { data } = await cacache.get(CACHE_DIR, cacheKey)
-    const cached = JSON.parse(data.toString('utf-8'))
+    const cached = await cacheGet(cacheKey)
     if (cached.lastModified !== lastModified || cached.size !== size) {
       throw new Error(`Directory "${cacheKey}" has changed`)
     }
@@ -152,11 +174,7 @@ async function cachedReaddir(
         isFile: dirent.isFile(),
       }),
     )
-    await cacache.put(
-      CACHE_DIR,
-      cacheKey,
-      JSON.stringify({ lastModified, size, dirents }),
-    )
+    await cachePut(cacheKey, { lastModified, size, dirents })
     return dirents
   }
 }
