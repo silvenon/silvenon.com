@@ -34,7 +34,10 @@ test.describe('routes', () => {
     await expect(page).toHaveURL('/blog/intro-to-eslint')
     await page.goto('/blog/intro-to-eslint/?param=bla')
     await expect(page).toHaveURL('/blog/intro-to-eslint?param=bla')
-    await page.goto('/blog/better-git-history')
+    await Promise.all([
+      page.waitForResponse((response) => response.status() === 302),
+      page.goto('/blog/better-git-history'),
+    ])
     await expect(page).toHaveURL('/blog/better-git-history/introduction')
   })
 
