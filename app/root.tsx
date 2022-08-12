@@ -27,7 +27,7 @@ import { getDarkMode } from '~/session.server'
 
 interface LoaderData {
   ENV: ReturnType<typeof getEnv>
-  appName?: string
+  staging: boolean
   canonicalUrl: string
   darkMode?: boolean
 }
@@ -39,7 +39,7 @@ export async function loader({ request }: LoaderArgs) {
   return json<LoaderData>(
     {
       ENV: getEnv(),
-      appName: process.env.FLY_APP_NAME,
+      staging: Boolean(process.env.STAGING),
       canonicalUrl: getCanonicalUrl(request),
       darkMode: await getDarkMode(request),
     },
@@ -49,7 +49,7 @@ export async function loader({ request }: LoaderArgs) {
 
 export const meta: MetaFunction = ({ data }: { data?: LoaderData }) => {
   return {
-    ...(data?.appName === 'silvenon-staging' ? { robots: 'noindex' } : null),
+    ...(data?.staging ? { robots: 'noindex' } : null),
     charset: 'utf-8',
     viewport: 'width=device-width,initial-scale=1',
     // Open Graph

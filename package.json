@@ -26,7 +26,6 @@
     "build": "run-s build:css build:remix",
     "build:css": "npm run generate:css -- --minify",
     "build:remix": "remix build",
-    "deploy": "fly deploy --remote-only",
     "start": "remix-serve api",
     "preview": "binode --require dotenv/config -- @remix-run/serve:remix-serve api",
     "prelint": "eslint-config-prettier src/root.tsx src/__tests__/posts.test.ts",
