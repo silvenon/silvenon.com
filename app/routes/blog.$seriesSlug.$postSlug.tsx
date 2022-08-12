@@ -27,7 +27,11 @@ export async function loader({ params }: LoaderArgs) {
   invariant(params.seriesSlug, 'series parameter is required')
   invariant(params.postSlug, 'slug parameter is required')
 
-  const series = await getSeries(params.seriesSlug)
+  const series = await getSeries({
+    seriesSlug: params.seriesSlug,
+    partSlug: params.postSlug,
+    compile: true,
+  })
   if (!series) throw new Response('Post not found', { status: 404 })
   const part = series.parts.find(({ slug }) => slug === params.postSlug)
   if (!part) throw new Response('Post not found', { status: 404 })

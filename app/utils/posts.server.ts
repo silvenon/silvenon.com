@@ -2,8 +2,11 @@ import matter from 'gray-matter'
 import fs from 'fs/promises'
 import path from 'path'
 import { parseISO, compareDesc } from 'date-fns'
-import { ROOT_DIR } from '../consts.server'
+import compilePost from '~/posts/compile-post'
+import { instanceOfNodeError } from '~/utils/errors'
 
+type StandalonePostFrontmatter = Omit<StandalonePost, 'slug' | 'output'>
+type StandalonePostWithoutOutput = Omit<StandalonePost, 'output'>
 export interface StandalonePost {
   slug: string
   title: string
@@ -16,6 +19,17 @@ export interface StandalonePost {
   output: string
 }
 
+type SeriesPartFrontmatter = Omit<StandalonePostFrontmatter, 'published'> & {
+  seriesPart: number
+}
+export type SeriesPart = Omit<StandalonePost, 'published'> & {
+  seriesPart: number
+}
+type SeriesPartWithoutOutput = Omit<SeriesPart, 'output'>
+type SeriesMeta = Omit<Series, 'slug' | 'parts'>
+type SeriesWithoutOutput = Omit<Series, 'parts'> & {
+  parts: SeriesPartWithoutOutput[]
+}
 export interface Series {
   slug: string
   title: string
@@ -24,10 +38,6 @@ export interface Series {
   published?: Date
   tweet: string
   parts: SeriesPart[]
-}
-
-export interface SeriesPart extends Omit<StandalonePost, 'published'> {
-  seriesPart: number
 }
 
 export interface ExternalStandalonePost {
@@ -111,32 +121,39 @@ export const externalPosts: Array<ExternalStandalonePost | ExternalSeries> = [
   },
 ]
 
+const POSTS_DIR = path.resolve(__dirname, '../posts')
+
 export async function getAllEntries() {
+  const dirents = await fs.readdir(POSTS_DIR, { withFileTypes: true })
+
   const entries: Array<
-    StandalonePost | Series | ExternalStandalonePost | ExternalSeries
-  > = [...externalPosts]
-
-  const dirents = await fs.readdir(`${ROOT_DIR}/../posts`, {
-    withFileTypes: true,
-  })
-
-  for (const dirent of dirents) {
-    if (dirent.name === '__tests__') continue
-    if (dirent.isFile()) {
-      if (!dirent.name.endsWith('.mdx')) continue
-      const postSlug = path.basename(dirent.name, '.mdx')
-      const post = await getStandalonePost(postSlug)
-      if (post !== null) entries.push(post)
-      else throw new Error(`Could not find post "${postSlug}"`)
-    } else {
-      const seriesSlug = dirent.name
-      const series = await getSeries(seriesSlug)
-      if (series !== null) entries.push(series)
-      else throw new Error(`Could not find series "${seriesSlug}"`)
-    }
-  }
-
-  entries.sort((a, b) => {
+    | StandalonePostWithoutOutput
+    | SeriesWithoutOutput
+    | ExternalStandalonePost
+    | ExternalSeries
+  > = [
+    ...externalPosts,
+    ...(
+      await Promise.all(
+        dirents.map(async (dirent) => {
+          if (dirent.name === '__tests__') return null
+          if (dirent.isFile()) {
+            if (!dirent.name.endsWith('.mdx')) return null
+            const postSlug = path.basename(dirent.name, '.mdx')
+            const meta = await getStandalonePost({
+              slug: postSlug,
+              compile: false,
+            })
+            return meta
+          } else {
+            const seriesSlug = dirent.name
+            const series = await getSeries({ seriesSlug, compile: false })
+            return series
+          }
+        }),
+      )
+    ).filter(Boolean as any as <T>(entry: T | null) => entry is T),
+  ].sort((a, b) => {
     const publishedA =
       'source' in a && 'parts' in a ? a.parts[0].published : a.published
     const publishedB =
@@ -153,69 +170,120 @@ export async function getAllEntries() {
   return entries.filter((entry) => 'source' in entry || entry.published)
 }
 
-export async function getStandalonePost(
-  slug: string,
-): Promise<StandalonePost | null> {
-  let source, output
+export function getStandalonePost<T extends boolean>(options: {
+  slug: string
+  compile: T
+}): Promise<
+  (T extends true ? StandalonePost : StandalonePostWithoutOutput) | null
+>
+export async function getStandalonePost({
+  slug,
+  compile,
+}: {
+  slug: string
+  compile: boolean
+}): Promise<StandalonePost | StandalonePostWithoutOutput | null> {
+  const file = `${POSTS_DIR}/${slug}.mdx`
+
   try {
-    source = await fs.readFile(`${ROOT_DIR}/../posts/${slug}.mdx`, 'utf8')
-    output = await fs.readFile(`${ROOT_DIR}/posts/${slug}.js`, 'utf8')
-  } catch {
-    return null
+    await fs.stat(file)
+  } catch (err) {
+    if (instanceOfNodeError(err, Error) && err.code === 'ENOENT') {
+      return null
+    }
+    throw err
   }
-  const file = matter(source)
-  const frontmatter = file.data as Omit<StandalonePost, 'slug' | 'output'>
+
+  let frontmatter: StandalonePostFrontmatter
+  let output: string | undefined
+  if (compile) {
+    const result = await compilePost<StandalonePostFrontmatter>({ file })
+    frontmatter = result.frontmatter
+    output = result.code
+  } else {
+    const { data } = matter(await fs.readFile(file, 'utf8'))
+    frontmatter = data as StandalonePostFrontmatter
+  }
   if (!frontmatter.published && process.env.NODE_ENV === 'production') {
     return null
   }
   return { ...frontmatter, slug, output }
 }
 
-export async function getSeries(seriesSlug: string): Promise<Series | null> {
-  let series
+export function getSeries(options: {
+  seriesSlug: string
+  compile: false
+}): Promise<SeriesWithoutOutput | null>
+export function getSeries(options: {
+  seriesSlug: string
+  partSlug: string
+  compile: true
+}): Promise<Series | null>
+export async function getSeries({
+  seriesSlug,
+  partSlug: currentPartSlug,
+  compile,
+}: {
+  seriesSlug: string
+  partSlug?: string
+  compile: boolean
+}): Promise<Series | SeriesWithoutOutput | null> {
+  const seriesFile = `${POSTS_DIR}/${seriesSlug}/series.json`
+  let content: string
+
   try {
-    series = JSON.parse(
-      await fs.readFile(`${ROOT_DIR}/posts/${seriesSlug}/series.json`, 'utf8'),
-    ) as Omit<Series, 'slug' | 'published' | 'parts'> & { published?: string }
-  } catch {
-    return null
+    content = await fs.readFile(seriesFile, 'utf8')
+  } catch (err) {
+    if (instanceOfNodeError(err, Error) && err.code === 'ENOENT') {
+      return null
+    }
+    throw err
   }
+
+  const series = JSON.parse(content, (key, value) =>
+    key === 'published' ? parseISO(value) : value,
+  ) as SeriesMeta
 
   if (!series.published && process.env.NODE_ENV === 'production') {
     return null
   }
 
-  const parts: SeriesPart[] = []
-
-  const partDirents = await fs.readdir(`${ROOT_DIR}/../posts/${seriesSlug}`, {
+  const partDirents = await fs.readdir(`${POSTS_DIR}/${seriesSlug}`, {
     withFileTypes: true,
   })
 
-  for (const partDirent of partDirents) {
-    if (!partDirent.name.endsWith('.mdx')) continue
-    const slug = path.basename(partDirent.name, '.mdx')
-    const source = await fs.readFile(
-      `${ROOT_DIR}/../posts/${seriesSlug}/${slug}.mdx`,
-      'utf8',
+  const parts: Array<SeriesPart | SeriesPartWithoutOutput> = (
+    await Promise.all(
+      partDirents.map(async (dirent) => {
+        if (!dirent.name.endsWith('.mdx')) return null
+        const partSlug = path.basename(dirent.name, '.mdx')
+        const file = `${POSTS_DIR}/${seriesSlug}/${partSlug}.mdx`
+        let frontmatter: SeriesPartFrontmatter
+        let output: string | undefined
+        if (compile && partSlug === currentPartSlug) {
+          const result = await compilePost<SeriesPartFrontmatter>({ file })
+          frontmatter = result.frontmatter
+          output = result.code
+        } else {
+          const source = await fs.readFile(file, 'utf8')
+          const { data } = matter(source)
+          frontmatter = data as SeriesPartFrontmatter
+          output = undefined
+        }
+        return {
+          ...frontmatter,
+          slug: path.basename(dirent.name, '.mdx'),
+          output,
+        }
+      }),
     )
-    const output = await fs.readFile(
-      `${ROOT_DIR}/posts/${seriesSlug}/${slug}.js`,
-      'utf8',
-    )
-    const file = matter(source)
-    const frontmatter = file.data as Omit<SeriesPart, 'slug' | 'output'>
-    parts.push({
-      ...frontmatter,
-      slug: path.basename(partDirent.name, '.mdx'),
-      output,
-    })
-  }
-
-  parts.sort((a, b) => a.seriesPart - b.seriesPart)
+  )
+    .filter(Boolean as any as <T>(part: T | null) => part is T)
+    .sort((a, b) => a.seriesPart - b.seriesPart)
 
   return {
     ...series,
-    published: series.published ? parseISO(series.published) : undefined,
+    published: series.published,
     slug: seriesSlug,
     parts,
   }

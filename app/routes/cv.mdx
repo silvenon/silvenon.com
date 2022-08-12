@@ -10,6 +10,8 @@ import Prose from '~/components/Prose'
 import cloudinary from '~/utils/cloudinary'
 import { screens } from '~/consts'
 
+const links = () => []
+
 export function getImageUrl(transform) {
   return cloudinary('in-roermond', {
     crop: 'fill',

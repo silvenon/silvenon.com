@@ -1,5 +1,10 @@
 import type { Plugin } from 'esbuild'
-import { getImageDimensions } from './cloudinary'
+import { v2 as cloudinary } from 'cloudinary'
+import invariant from 'tiny-invariant'
+
+invariant(process.env.CLOUDINARY_URL, 'CLOUDINARY_URL must be set')
+
+cloudinary.config(true)
 
 const esbuildPluginCloudinary: Plugin = {
   name: 'cloudinary',
@@ -23,6 +28,15 @@ const esbuildPluginCloudinary: Plugin = {
       }
     })
   },
+}
+
+async function getImageDimensions(id: string): Promise<{
+  width: number
+  height: number
+}> {
+  const response = await cloudinary.api.resources_by_ids(id)
+  const { width, height } = response.resources[0]
+  return { width, height }
 }
 
 export default esbuildPluginCloudinary

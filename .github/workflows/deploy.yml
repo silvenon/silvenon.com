@@ -76,11 +76,6 @@ jobs:
         with:
           useLockFile: false
 
-      - name: 📝 Compile posts
-        run: npm run build:posts
-        env:
-          CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
-
       - name: ⚡ Run vitest
         run: npm run test:unit -- --coverage
         env:
@@ -120,8 +115,6 @@ jobs:
 
       - name: ⚙️ Build
         run: npm run build
-        env:
-          CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
 
       - name: 🎭 Playwright run
         run: npm run test:e2e
@@ -179,9 +172,6 @@ jobs:
           context: .
           push: true
           tags: registry.fly.io/${{ steps.app_name.outputs.value }}:${{ github.ref_name }}-${{ github.sha }}
-          # CLOUDINARY_URL is needed for building posts
-          secrets: |
-            "CLOUDINARY_URL=${{ secrets.CLOUDINARY_URL }}"
           build-args: |
             COMMIT_SHA=${{ github.sha }}
           cache-from: type=local,src=/tmp/.buildx-cache

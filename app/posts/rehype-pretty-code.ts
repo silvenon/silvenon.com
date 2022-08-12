@@ -2,7 +2,7 @@ import rehypePrettyCode from 'rehype-pretty-code'
 import type { Options } from 'rehype-pretty-code'
 import type { Element } from 'hast'
 import clsx from 'clsx'
-import theme from './code-theme'
+import theme from './code-theme.cjs'
 import type { Root } from 'hast'
 
 interface Theme extends JSON {

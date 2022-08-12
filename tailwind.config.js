@@ -5,7 +5,7 @@ const forms = require('@tailwindcss/forms')
 const aspectRatio = require('@tailwindcss/aspect-ratio')
 const typographyStyles = require('@tailwindcss/typography/src/styles')
 const screens = require('./app/screens.json')
-const codeTheme = require('./scripts/utils/code-theme')
+const codeTheme = require('./app/posts/code-theme.cjs')
 
 const js = plugin(({ addVariant }) => {
   addVariant('no-js', '.no-js &')

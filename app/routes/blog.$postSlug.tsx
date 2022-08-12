@@ -22,11 +22,14 @@ export interface LoaderData {
 
 export async function loader({ params }: LoaderArgs) {
   invariant(params.postSlug, 'slug is required')
-  const series = await getSeries(params.postSlug)
+  const series = await getSeries({
+    seriesSlug: params.postSlug,
+    compile: false,
+  })
   if (series !== null) {
     return redirect(`/blog/${series.slug}/${series.parts[0].slug}`, 302)
   }
-  const post = await getStandalonePost(params.postSlug)
+  const post = await getStandalonePost({ slug: params.postSlug, compile: true })
   if (!post) throw new Response('Post not found', { status: 404 })
   try {
     return json<LoaderData>({
