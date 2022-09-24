@@ -76,7 +76,10 @@ async function compilePosts() {
     const watcher = chokidar.watch(['**/*.mdx', '**/series.json'], {
       cwd: SOURCE_DIR,
     })
-    watcher.on('change', (path) => compile(path))
+    watcher.on('change', (path) => {
+      console.log(`File ${path} has changed, recompiling!`)
+      compile(path)
+    })
     console.log('Watching posts for changes...')
   } else {
     await fs.rm(OUTPUT_DIR, { recursive: true, force: true })
