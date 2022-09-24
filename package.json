@@ -39,7 +39,8 @@
     "test:unit": "vitest --run",
     "test:e2e": "playwright test",
     "typecheck": "tsc --build && tsc --build integration",
-    "validate": "run-s build && run-p test lint typecheck"
+    "check:playwright": "node -r esbuild-register scripts/check-playwright-version.ts",
+    "validate": "run-s build && run-p test lint typecheck check:playwright"
   },
   "browserslist": [
     "defaults",
