@@ -18,7 +18,7 @@ import type {
 } from '~/utils/posts.server'
 import { author } from '~/consts'
 import circuitBoard from '~/images/circuit-board.svg'
-import { Icon } from '@iconify/react'
+import Icon from '~/components/Icon'
 import { socialLinks } from '~/consts'
 import clsx from 'clsx'
 
