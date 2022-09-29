@@ -9,6 +9,7 @@ import Post from '~/components/Post'
 import Boundary from '~/components/Boundary'
 import { getSeries, getStandalonePost } from '~/utils/posts.server'
 import { formatDateISO } from '~/utils/date'
+import { loader as catchallLoader } from './$'
 
 export interface LoaderData {
   slug: string
@@ -20,14 +21,15 @@ export interface LoaderData {
   code: string
 }
 
-export async function loader({ params }: LoaderArgs) {
+export async function loader(args: LoaderArgs) {
+  const { params } = args
   invariant(params.postSlug, 'slug is required')
   const series = await getSeries(params.postSlug)
   if (series !== null) {
     return redirect(`/blog/${series.slug}/${series.parts[0].slug}`, 302)
   }
   const post = await getStandalonePost(params.postSlug)
-  if (!post) throw new Response('Post not found', { status: 404 })
+  if (!post) return catchallLoader(args)
   try {
     return json<LoaderData>({
       slug: post.slug,

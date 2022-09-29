@@ -7,6 +7,7 @@ import { author } from '~/consts'
 import Post from '~/components/Post'
 import { getSeries } from '~/utils/posts.server'
 import { formatDateISO } from '~/utils/date'
+import { loader as catchallLoader } from './$'
 import type { LoaderData as StandalonePostLoaderData } from './blog.$postSlug'
 
 export interface LoaderData
@@ -23,14 +24,15 @@ export interface LoaderData
   }
 }
 
-export async function loader({ params }: LoaderArgs) {
+export async function loader(args: LoaderArgs) {
+  const { params } = args
   invariant(params.seriesSlug, 'series parameter is required')
   invariant(params.postSlug, 'slug parameter is required')
 
   const series = await getSeries(params.seriesSlug)
-  if (!series) throw new Response('Post not found', { status: 404 })
+  if (!series) return catchallLoader(args)
   const part = series.parts.find(({ slug }) => slug === params.postSlug)
-  if (!part) throw new Response('Post not found', { status: 404 })
+  if (!part) return catchallLoader(args)
 
   try {
     return json<LoaderData>({

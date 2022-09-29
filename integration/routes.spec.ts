@@ -30,6 +30,10 @@ test.describe('routes', () => {
   test('redirects', async ({ page }) => {
     await page.goto('/intro-to-eslint')
     await expect(page).toHaveURL('/blog/intro-to-eslint')
+    await page.goto('/blog/intro-to-eslint-81f6c9f24ce5')
+    await expect(page).toHaveURL('/blog/intro-to-eslint')
+    await page.goto('/blog/mocking-modules-with-jest')
+    await expect(page).toHaveURL('/blog/mocking-with-jest/modules')
     await page.goto('/blog/intro-to-eslint/')
     await expect(page).toHaveURL('/blog/intro-to-eslint')
     await page.goto('/blog/intro-to-eslint/?param=bla')
