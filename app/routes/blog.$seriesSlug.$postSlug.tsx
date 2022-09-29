@@ -80,5 +80,3 @@ export default function SeriesPart() {
   const data = useLoaderData<typeof loader>()
   return <Post {...data} />
 }
-
-export { CatchBoundary } from './blog.$postSlug'

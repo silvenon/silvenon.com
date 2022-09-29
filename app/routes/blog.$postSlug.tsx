@@ -1,4 +1,4 @@
-import { useLoaderData, useCatch } from '@remix-run/react'
+import { useLoaderData } from '@remix-run/react'
 import { redirect } from '@remix-run/node'
 import type { MetaFunction, LoaderArgs } from '@remix-run/node'
 import { json } from '@remix-run/node'
@@ -6,7 +6,6 @@ import invariant from 'tiny-invariant'
 import { getMeta } from '~/utils/seo'
 import { author } from '~/consts'
 import Post from '~/components/Post'
-import Boundary from '~/components/Boundary'
 import { getSeries, getStandalonePost } from '~/utils/posts.server'
 import { formatDateISO } from '~/utils/date'
 import { loader as catchallLoader } from './$'
@@ -70,27 +69,4 @@ export const meta: MetaFunction = ({ data }: { data?: LoaderData }) => {
 export default function StandalonePost() {
   const data = useLoaderData<typeof loader>()
   return <Post {...data} />
-}
-
-export function CatchBoundary() {
-  const caught = useCatch()
-  return (
-    <Boundary
-      status={caught.status}
-      title={caught.data ?? caught.statusText}
-      description={
-        caught.status === 404 ? (
-          <>
-            It&apos;s likely that you got here by following a link to one of my
-            blog posts which no longer has that URL. You should be able to find
-            the content you&apos;re looking for elsewhere on this site, unless I
-            deleted that post!{' '}
-            <span role="img" aria-label="embarrassed">
-              😳
-            </span>
-          </>
-        ) : null
-      }
-    />
-  )
 }

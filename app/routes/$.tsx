@@ -45,7 +45,10 @@ export const loader: LoaderFunction = async ({ request }) => {
     }
   }
 
-  throw new Response('Not Found', { status: 404 })
+  throw new Response(
+    pathname.startsWith('/blog/') ? 'Post not found' : 'Page not found',
+    { status: 404 },
+  )
 }
 
 export default function Catchall() {

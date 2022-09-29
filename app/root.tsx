@@ -8,6 +8,7 @@ import {
   useLoaderData,
   useCatch,
   useTransition,
+  useLocation,
 } from '@remix-run/react'
 import { redirect, json } from '@remix-run/node'
 import type { MetaFunction, LinksFunction, LoaderArgs } from '@remix-run/node'
@@ -173,26 +174,43 @@ export default function AppWithProviders() {
 
 export function CatchBoundary() {
   const caught = useCatch()
+  const { pathname } = useLocation()
+  const title =
+    caught.data ?? (caught.status === 404 ? 'Page not found' : 'Page error')
+
+  let description
+  if (caught.status === 404) {
+    description = pathname.startsWith('/blog/') ? (
+      <p>
+        It&apos;s likely that you got here by following a link to one of my blog
+        posts which no longer has that URL. You should be able to find the
+        content you&apos;re looking for elsewhere on this site, unless I deleted
+        that post!{' '}
+        <span role="img" aria-label="embarrassed">
+          😳
+        </span>
+      </p>
+    ) : (
+      <p>It looks like the page you’re looking for doesn't exist.</p>
+    )
+  }
+
   return (
     <html lang="en" className="dark h-full">
       <head>
         <Meta />
-        <title>{caught.status === 404 ? 'Page not found' : 'Page error'}</title>
+        <title>{title}</title>
         <Links />
       </head>
       <body className="h-full">
         <Boundary
           status={caught.status}
           title={
-            caught.status === 404
+            !pathname.startsWith('/blog/') && caught.status === 404
               ? 'Nothing found at this URL.'
-              : caught.statusText
+              : title
           }
-          description={
-            caught.status === 404 ? (
-              <p>It looks like the page you’re looking for doesn't exist.</p>
-            ) : undefined
-          }
+          description={description}
         />
       </body>
     </html>
