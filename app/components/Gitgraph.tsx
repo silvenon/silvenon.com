@@ -22,7 +22,7 @@ const Gitgraph = ({ children }: Props) => {
 
   return (
     <div
-      className="flex justify-center overflow-x-auto font-mono text-xs [-webkit-overflow-scrolling:touch] sm:text-sm lg:text-base"
+      className="overflow-x-auto font-mono text-xs [-webkit-overflow-scrolling:touch] sm:text-sm lg:text-base [&_svg]:mx-auto"
       data-testid="gitgraph"
     >
       {hasJs ? (
