@@ -22,6 +22,7 @@ import { getCanonicalUrl } from './utils/http'
 import { author } from './consts'
 import styles from './tailwind.css'
 import Boundary from './components/Boundary'
+import Analytics from './components/Analytics'
 import { removeTrailingSlash } from './utils/http'
 import { getEnv } from '~/utils/env.server'
 import { getDarkMode } from '~/session.server'
@@ -132,16 +133,7 @@ function App() {
         <Header />
         <Outlet />
         <ScrollRestoration />
-        <script
-          src="https://reliable-brave.silvenon.com/script.js"
-          data-site="GSHQIEZX"
-          data-excluded-domains="localhost,staging.silvenon.com"
-          data-spa="history"
-          // currently the canonical URLs don't change during client-side navigation, so only the
-          // initially loaded page and full refresh would be tracked, not navigating through the site
-          data-canonical="false"
-          defer
-        />
+        <Analytics />
         <Scripts />
         <LiveReload />
       </body>
