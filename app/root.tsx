@@ -14,7 +14,7 @@ import { redirect, json } from '@remix-run/node'
 import type { MetaFunction, LinksFunction, LoaderArgs } from '@remix-run/node'
 import { useRef } from 'react'
 import { MetronomeLinks } from '@metronome-sh/react'
-import { DarkMode, useDarkMode } from './services/dark-mode'
+import { DarkMode } from './services/dark-mode'
 import clsx from 'clsx'
 import Header from './components/Header'
 import cloudinary from './utils/cloudinary'
@@ -97,17 +97,10 @@ export const links: LinksFunction = () => {
 
 function App() {
   const data = useLoaderData<typeof loader>()
-  const [darkMode] = useDarkMode()
+  const hasJs = typeof window !== 'undefined'
 
   return (
-    <html
-      lang="en"
-      className={clsx(
-        'h-full',
-        typeof window === 'undefined' ? 'no-js' : 'js',
-        darkMode && 'dark',
-      )}
-    >
+    <DarkMode.Html lang="en" className={clsx('h-full', hasJs ? 'js' : 'no-js')}>
       <head>
         <Meta />
         <link rel="canonical" href={data.canonicalUrl} />
@@ -137,7 +130,7 @@ function App() {
         <Scripts />
         <LiveReload />
       </body>
-    </html>
+    </DarkMode.Html>
   )
 }
 

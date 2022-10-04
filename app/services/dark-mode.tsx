@@ -1,6 +1,7 @@
 import { createContext, useState, useContext, useEffect, useId } from 'react'
 import { Form, useLocation } from '@remix-run/react'
 import { SunIcon, MoonIcon } from '@heroicons/react/outline'
+import clsx from 'clsx'
 
 const DarkModeContext = createContext<[boolean | null, boolean]>([null, false])
 
@@ -42,6 +43,13 @@ function DarkModeProvider({ specifiedValue, children }: ProviderProps) {
 
 export function useDarkMode() {
   return useContext(DarkModeContext)
+}
+
+function DarkModeHtml(props: React.ComponentProps<'html'>) {
+  const [darkMode] = useDarkMode()
+  return (
+    <html {...props} className={clsx(props.className, darkMode && 'dark')} />
+  )
 }
 
 // https://tailwindcss.com/docs/dark-mode#toggling-dark-mode-manually
@@ -150,6 +158,7 @@ function DarkModeToggle() {
 
 export const DarkMode = {
   Provider: DarkModeProvider,
+  Html: DarkModeHtml,
   Head: DarkModeHead,
   Toggle: DarkModeToggle,
 }
