@@ -108,7 +108,10 @@ function rehypeHideDuplicateCodeBlocks() {
           node.properties?.className,
           theme === 'light'
             ? 'dark:hidden'
-            : ['hidden', node.tagName === 'pre' ? 'dark:block' : 'dark:inline'],
+            : [
+                'hidden border border-gray-700',
+                node.tagName === 'pre' ? 'dark:block' : 'dark:inline',
+              ],
         ),
       })
     })

@@ -2,5 +2,5 @@
 // both rehype-pretty-code and Tailwind
 module.exports = {
   light: require('shiki/themes/vitesse-light.json'),
-  dark: require('../themes/noctis.json'),
+  dark: require('shiki/themes/slack-dark.json'),
 }
