@@ -619,6 +619,7 @@
             "source.wsd keyword.other.linebegin",
             "keyword.other.skinparam.keyword",
             "keyword.other.nim",
+            "markup.deleted",
             "markup.deleted.diff",
             "source.tf support.class.variable",
             "meta.function.lua keyword.control.lua",
@@ -638,6 +639,7 @@
             "source.css support.constant",
             "entity.name.import.go",
             "markup.raw.texttt",
+            "markup.inserted",
             "markup.inserted.diff",
             "source.scala punctuation.definition.character",
             "constant.character.literal.scala",
@@ -809,10 +811,7 @@
       },
       {
          "name": "INVALID",
-         "scope": [
-            "invalid",
-            "invalid.illegal"
-         ],
+         "scope": ["invalid", "invalid.illegal"],
          "settings": {
             "foreground": "#e3541c"
          }
