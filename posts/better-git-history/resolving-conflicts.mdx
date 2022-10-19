@@ -70,7 +70,7 @@ index 0000000..ba19f3a
 
 The conflict is in `index.html` and it looks like this:
 
-```html
+```txt
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -152,7 +152,7 @@ Now Git history looks like this:
 
 Merging these two branches into `master` will inevitably lead to a conflict. The order of conflict annotations depends on which branch we merge first, but that doesn't matter, so let's say that we merged `performance` first. Merging `a11y` would cause the following conflict:
 
-```html
+```txt
 <a href="/">
 <<<<<<< HEAD
   <svg viewBox="0 0 50 50" version="1.1" xmlns="http://www.w3.org/2000/svg">
@@ -189,7 +189,7 @@ git config --global merge.conflictstyle=diff3
 
 Now in addition to showing us what the current and incoming changes are, Git will also show us _merged common ancestors_, i.e. our starting point, which looks like this:
 
-```html
+```txt
 <a href="/">
 <<<<<<< HEAD
   <svg viewBox="0 0 50 50" version="1.1" xmlns="http://www.w3.org/2000/svg">
