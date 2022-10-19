@@ -48,7 +48,15 @@
   "prettier": {
     "semi": false,
     "singleQuote": true,
-    "trailingComma": "all"
+    "trailingComma": "all",
+    "overrides": [
+      {
+        "files": "noctis.json",
+        "options": {
+          "tabWidth": 3
+        }
+      }
+    ]
   },
   "eslintIgnore": [
     "/node_modules",
