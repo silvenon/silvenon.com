@@ -112,7 +112,7 @@ Let's say that on `master` we have a linked logo:
 
 ```html
 <a href="/">
-  <img src="/images/logo.png" >
+  <img src="/images/logo.png">
 </a>
 ```
 
@@ -120,9 +120,9 @@ then one person creates a branch `performance` to convert the logo to an inline 
 
 ```diff
  <a href="/">
--  <img src="/images/logo.png" >
+-  <img src="/images/logo.png">
 +  <svg viewBox="0 0 50 50" version="1.1" xmlns="http://www.w3.org/2000/svg">
-+    <path d="..." >
++    <path d="...">
 +  </svg>
  </a>
 ```
@@ -131,8 +131,8 @@ but another person makes a conflicting change in a separate branch `a11y`, impro
 
 ```diff
  <a href="/">
--  <img src="/images/logo.png" >
-+  <img src="/images/logo.png" alt="Home" >
+-  <img src="/images/logo.png">
++  <img src="/images/logo.png" alt="Home">
  </a>
 ```
 
@@ -156,10 +156,10 @@ Merging these two branches into `master` will inevitably lead to a conflict. The
 <a href="/">
 <<<<<<< HEAD
   <svg viewBox="0 0 50 50" version="1.1" xmlns="http://www.w3.org/2000/svg">
-    <path d="..." >
+    <path d="...">
   </svg>
 =======
-  <img src="/images/logo.png" alt="" >
+  <img src="/images/logo.png" alt="">
 >>>>>>> a11y
 </a>
 ```
@@ -172,7 +172,7 @@ After analyzing Git history we remembered that the only change we did to `<img>`
 <a href="/">
   <svg role="img" viewBox="0 0 50 50" version="1.1" xmlns="http://www.w3.org/2000/svg">
     <title>Home</title>
-    <path d="..." >
+    <path d="...">
   </svg>
 </a>
 ```
@@ -193,12 +193,12 @@ Now in addition to showing us what the current and incoming changes are, Git wil
 <a href="/">
 <<<<<<< HEAD
   <svg viewBox="0 0 50 50" version="1.1" xmlns="http://www.w3.org/2000/svg">
-    <path d="..." >
+    <path d="...">
   </svg>
 ||||||| merged common ancestors
-  <img src="/images/logo.png" >
+  <img src="/images/logo.png">
 =======
-  <img src="/images/logo.png" alt="" >
+  <img src="/images/logo.png" alt="">
 >>>>>>> a11y
 </a>
 ```
