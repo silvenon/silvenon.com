@@ -13,12 +13,14 @@ import { loader as catchallLoader } from './$'
 export async function loader(args: LoaderArgs) {
   const { params } = args
   invariant(params.postSlug, 'slug is required')
+
   const series = await getSeries(params.postSlug)
   if (series !== null) {
     return redirect(`/blog/${series.slug}/${series.parts[0].slug}`, 302)
   }
   const post = await getStandalonePost(params.postSlug)
   if (!post) return catchallLoader(args)
+
   return json({
     slug: post.slug,
     title: post.title,
@@ -32,17 +34,14 @@ export async function loader(args: LoaderArgs) {
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   // type of data is incorrect, in case of an error it's undefined
-  const { title, description, published, lastModified } = data ?? {}
+  if (!data) return getMeta({ title: 'Post not found' })
+  const { title, description, published, lastModified } = data
   return {
-    ...(title && description
-      ? getMeta({
-          type: 'article',
-          title,
-          description,
-        })
-      : getMeta({
-          title: 'Post not found',
-        })),
+    ...getMeta({
+      type: 'article',
+      title,
+      description,
+    }),
     'article:author': author.name,
     ...(published
       ? { 'article:published_time': formatDateISO(published) }
