@@ -1,9 +1,9 @@
+import type { LoaderArgs } from '@remix-run/node'
 import { redirect } from '@remix-run/node'
-import type { LoaderFunction } from '@remix-run/node'
 import fs from 'fs'
 import toml from 'toml'
 
-export const loader: LoaderFunction = async ({ request }) => {
+export async function loader({ request }: LoaderArgs) {
   const { pathname } = new URL(request.url)
 
   // redirect posts before simplifying paths

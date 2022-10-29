@@ -27,18 +27,11 @@ import { removeTrailingSlash } from './utils/http'
 import { getEnv } from '~/utils/env.server'
 import { getDarkMode } from '~/session.server'
 
-interface LoaderData {
-  ENV: ReturnType<typeof getEnv>
-  appName?: string
-  canonicalUrl: string
-  darkMode?: boolean
-}
-
 export async function loader({ request }: LoaderArgs) {
   if (request.url !== removeTrailingSlash(request.url)) {
     throw redirect(removeTrailingSlash(request.url), { status: 308 })
   }
-  return json<LoaderData>(
+  return json(
     {
       ENV: getEnv(),
       appName: process.env.FLY_APP_NAME,
@@ -49,14 +42,14 @@ export async function loader({ request }: LoaderArgs) {
   )
 }
 
-export const meta: MetaFunction = ({ data }: { data?: LoaderData }) => {
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return {
-    ...(data?.appName === 'silvenon-staging' ? { robots: 'noindex' } : null),
+    ...(data.appName === 'silvenon-staging' ? { robots: 'noindex' } : null),
     charset: 'utf-8',
     viewport: 'width=device-width,initial-scale=1',
     // Open Graph
     'og:site_name': author.name,
-    ...(data?.canonicalUrl ? { 'og:url': data.canonicalUrl } : null),
+    'og:url': data.canonicalUrl,
     // https://developers.facebook.com/docs/sharing/best-practices/#images
     'og:image:url': cloudinary('in-reactor-1.jpg', {
       version: 3,

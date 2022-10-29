@@ -3,61 +3,40 @@ import { json } from '@remix-run/node'
 import type { MetaFunction, LoaderArgs } from '@remix-run/node'
 import { Fragment } from 'react'
 import { ExternalLinkIcon } from '@heroicons/react/outline'
-import type { Except, SetOptional } from 'type-fest'
 import PostDate from '~/components/PostDate'
 import ProfilePhoto from '~/components/ProfilePhoto'
 import Prose from '~/components/Prose'
 import { getMeta } from '~/utils/seo'
 import { getAllEntries } from '~/utils/posts.server'
-import type {
-  StandalonePost,
-  Series,
-  SeriesPart,
-  ExternalStandalonePost,
-  ExternalSeries,
-} from '~/utils/posts.server'
 import { author } from '~/consts'
 import circuitBoard from '~/images/circuit-board.svg'
 import Icon from '~/components/Icon'
 import { socialLinks } from '~/consts'
 import clsx from 'clsx'
 
-type LoaderData = Array<
-  | Except<StandalonePost, 'output'>
-  | (Omit<Series, 'parts'> & {
-      parts: Array<Except<SeriesPart, 'output'>>
-    })
-  | ExternalStandalonePost
-  | ExternalSeries
->
-
 export async function loader(_: LoaderArgs) {
   const entries = await getAllEntries()
-  const data: LoaderData = entries.map((entry) => {
+  const data = entries.map((entry) => {
     if ('source' in entry) return entry
     if ('parts' in entry) {
       return {
         ...entry,
         parts: entry.parts.map((part) => {
-          const partWithoutOutput: SetOptional<SeriesPart, 'output'> = {
-            ...part,
-          }
-          delete partWithoutOutput.output
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { output, ...partWithoutOutput } = part
           return partWithoutOutput
         }),
       }
     }
-    const postWithoutOutput: SetOptional<StandalonePost, 'output'> = {
-      ...entry,
-    }
-    delete postWithoutOutput.output
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { output, ...postWithoutOutput } = entry
     return postWithoutOutput
   })
 
   return json(data, 200)
 }
 
-export const meta: MetaFunction = () =>
+export const meta: MetaFunction<typeof loader> = () =>
   getMeta({
     title: author.name,
     description: `Matija Marohnić is a frontend developer from Croatia, he enjoys exploring latest tech. Read this blog to learn about React, frontend tools, testing, and more!`,

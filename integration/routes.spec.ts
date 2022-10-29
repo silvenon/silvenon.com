@@ -27,6 +27,8 @@ test.describe('routes', () => {
     await expect(navigation).not.toBeVisible()
     await page.goto('/blog/non-existent-post')
     await expect(pageTitle).toHaveText('Post not found')
+    await page.goto('/blog/no-existent-series/non-existent-part')
+    await expect(pageTitle).toHaveText('Post not found')
     await expect(navigation).not.toBeVisible()
   })
 

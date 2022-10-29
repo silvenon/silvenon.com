@@ -8,21 +8,6 @@ import Post from '~/components/Post'
 import { getSeries } from '~/utils/posts.server'
 import { formatDateISO } from '~/utils/date'
 import { loader as catchallLoader } from './$'
-import type { LoaderData as StandalonePostLoaderData } from './blog.$postSlug'
-
-export interface LoaderData
-  extends Omit<StandalonePostLoaderData, 'slug' | 'published'> {
-  seriesPart: number
-  series: {
-    slug: string
-    title: string
-    published?: Date
-    parts: Array<{
-      slug: string
-      title: string
-    }>
-  }
-}
 
 export async function loader(args: LoaderArgs) {
   const { params } = args
@@ -35,7 +20,7 @@ export async function loader(args: LoaderArgs) {
   if (!part) return catchallLoader(args)
 
   try {
-    return json<LoaderData>({
+    return json({
       title: part.title,
       htmlTitle: part.htmlTitle,
       description: part.description,
@@ -54,7 +39,8 @@ export async function loader(args: LoaderArgs) {
   }
 }
 
-export const meta: MetaFunction = ({ data }: { data?: LoaderData }) => {
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  // type of data is incorrect, in case of an error it's undefined
   const { title, series, description, lastModified } = data ?? {}
   return {
     ...(title && description

@@ -10,16 +10,6 @@ import { getSeries, getStandalonePost } from '~/utils/posts.server'
 import { formatDateISO } from '~/utils/date'
 import { loader as catchallLoader } from './$'
 
-export interface LoaderData {
-  slug: string
-  htmlTitle?: string
-  title: string
-  description: string
-  published?: Date
-  lastModified?: Date
-  code: string
-}
-
 export async function loader(args: LoaderArgs) {
   const { params } = args
   invariant(params.postSlug, 'slug is required')
@@ -29,22 +19,19 @@ export async function loader(args: LoaderArgs) {
   }
   const post = await getStandalonePost(params.postSlug)
   if (!post) return catchallLoader(args)
-  try {
-    return json<LoaderData>({
-      slug: post.slug,
-      title: post.title,
-      description: post.description,
-      htmlTitle: post.htmlTitle,
-      published: post.published,
-      lastModified: post.lastModified,
-      code: post.output,
-    })
-  } catch (err) {
-    throw new Response('Failed to compile blog post', { status: 500 })
-  }
+  return json({
+    slug: post.slug,
+    title: post.title,
+    description: post.description,
+    htmlTitle: post.htmlTitle,
+    published: post.published,
+    lastModified: post.lastModified,
+    code: post.output,
+  })
 }
 
-export const meta: MetaFunction = ({ data }: { data?: LoaderData }) => {
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  // type of data is incorrect, in case of an error it's undefined
   const { title, description, published, lastModified } = data ?? {}
   return {
     ...(title && description
