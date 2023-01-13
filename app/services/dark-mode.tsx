@@ -1,6 +1,6 @@
 import { createContext, useState, useContext, useEffect, useId } from 'react'
 import { Form, useLocation } from '@remix-run/react'
-import { SunIcon, MoonIcon } from '@heroicons/react/outline'
+import { SunIcon, MoonIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 
 const DarkModeContext = createContext<[boolean | null, boolean]>([null, false])
