@@ -3,6 +3,11 @@ node_modules
 /build
 /public/build
 /app/posts
+/coverage
+/playwright-report
+
+package-lock.json
+
 .env
 
 /app/styles/tailwind.css
