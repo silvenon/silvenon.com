@@ -2,7 +2,7 @@ import { useLoaderData, Link } from '@remix-run/react'
 import { json } from '@remix-run/node'
 import type { MetaFunction, LoaderArgs } from '@remix-run/node'
 import { Fragment } from 'react'
-import { ExternalLinkIcon } from '@heroicons/react/outline'
+import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline'
 import PostDate from '~/components/PostDate'
 import ProfilePhoto from '~/components/ProfilePhoto'
 import Prose from '~/components/Prose'
@@ -122,7 +122,7 @@ export default function Home() {
                               className="inline-flex items-center space-x-2"
                             >
                               <span>Read on {externalSeries.source}</span>
-                              <ExternalLinkIcon
+                              <ArrowTopRightOnSquareIcon
                                 aria-hidden="true"
                                 className="h-6 w-6"
                               />
@@ -159,7 +159,7 @@ export default function Home() {
                         className="inline-flex items-center space-x-2"
                       >
                         <span>Read on {externalPost.source}</span>
-                        <ExternalLinkIcon
+                        <ArrowTopRightOnSquareIcon
                           aria-hidden="true"
                           className="h-6 w-6"
                         />
