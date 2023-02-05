@@ -110,6 +110,7 @@
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.4",
     "@vitejs/plugin-react": "^3.0.1",
+    "@vitest/coverage-c8": "^0.28.4",
     "binode": "^1.0.5",
     "browserslist": "^4.19.1",
     "cacache": "^16.1.0",
@@ -117,8 +118,8 @@
     "cloudinary": "^1.27.1",
     "cross-env": "^7.0.3",
     "dotenv": "^16.0.1",
-    "esbuild": "^0.16.17",
-    "esbuild-plugin-browserslist": "^0.6.0",
+    "esbuild": "^0.17.4",
+    "esbuild-plugin-browserslist": "^0.7.0",
     "esbuild-register": "^3.3.2",
     "eslint": "^8.8.0",
     "eslint-config-prettier": "^8.1.0",
@@ -130,12 +131,12 @@
     "rehype-pretty-code": "^0.9.0",
     "remark-smartypants": "^2.0.0",
     "remark-unwrap-images": "^3.0.1",
-    "shiki": "^0.12.1",
+    "shiki": "^0.14.0",
     "simple-git-hooks": "^2.7.0",
     "tailwindcss": "^3.1.2",
     "typescript": "^4.5.4",
     "unist-util-visit": "^4.1.0",
     "vite-tsconfig-paths": "^4.0.3",
-    "vitest": "^0.27.1"
+    "vitest": "^0.28.4"
   }
 }
