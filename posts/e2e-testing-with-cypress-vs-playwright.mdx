@@ -105,9 +105,35 @@ When I do need to see what's going on in the browser I can run my tests in debug
 
 ### VS Code extension
 
-As the cherry on top, Playwright also features a VS Code extension, which enables you to run desired tests in isolation by simply clicking on them! The line of code that's currently being executed will be highlighted, so that if something takes a while you'll immediately know where's the holdup. Upon failure you'll get the most delightful experience where the failing line literally expands with the error report right below it! From there you'll also be able to open a full HTML report in your browser. And if the reason for failure isn't obvious to you and you want to see the test action, the extension allows you to do so by running the test in debug mode. In that case the execution will automatically halt upon failure so you can see in the browser what's going on, and if you want to halt at an earlier point you can simply set a breakpoing in VS Code!
+One of my favorite aspects of Playwright isn't actually a feature per se, it's their VS Code extension, which drastically improves the experience of running tests. For example, instead of using something like `test.only` you can run your desired test in isolation by simply clicking on it! The line of code that's currently being executed will be highlighted, so that if something takes a while you'll immediately know where's the holdup. Upon failure you'll get the most delightful experience where the failing line literally expands with the error report right below it! From there you'll also be able to open a full HTML report in your browser. And if the reason for failure isn't obvious to you, the extension allows you to easily run the test in debug mode. In that case the execution will automatically halt upon failure so you can see in the browser what's going on, and if you want to halt at an earlier point you can simply set a breakpoing in VS Code!
 
 Using this extension is infinitely more convenient for development than the CLI. 🤯 I'm honestly barely containing my excitement just from writing about this. 😄
+
+### Web server
+
+If you want to run end-to-end tests in a single command, you need a way to start your server before running the tests, and close it afterwards. With Cypress you have to use something like [`start-server-and-test`](https://www.npmjs.com/package/start-server-and-test), which, despite being a great package, can look a bit awkward to an untrained eye:
+
+```json
+{
+  "scripts": {
+    "test": "start-server-and-test 'node server.js' 3000 'npx cypress run'"
+  }
+}
+```
+
+Playwright, fortunately, has this functionality bult-in! You can tap into it by adding the following to your configuration:
+
+```js
+{
+  webServer: {
+    command: 'node server.js',
+    port: 3000,
+    reuseExistingServer: true
+  }
+}
+```
+
+This is much easier to read, isn't it? The additional `reuseExistingServer` flag tells Playwright to skip starting the server if the port is already in use, which makes it easy to run tests during development.
 
 ## How to test our overflow bug
 

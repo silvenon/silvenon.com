@@ -4,7 +4,7 @@ import { createDarkModeSession, resetDarkModeToOS } from '~/session.server'
 
 export async function action({ request }: ActionArgs) {
   const form = await request.formData()
-  const { darkMode } = Object.fromEntries(form.entries())
+  const { darkMode } = Object.fromEntries(form)
 
   if (darkMode === 'os') {
     return resetDarkModeToOS(request)

@@ -1,8 +1,8 @@
 import type { IconifyIcon } from '@iconify/react'
 
-interface Props {
+interface Props
+  extends Pick<React.ComponentProps<'svg'>, 'className' | 'aria-hidden'> {
   icon: IconifyIcon
-  className?: string
 }
 
 export default function Icon({ icon, className }: Props) {

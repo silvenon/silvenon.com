@@ -70,7 +70,7 @@ index 0000000..ba19f3a
 
 The conflict is in `index.html` and it looks like this:
 
-```html
+```txt
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -112,7 +112,7 @@ Let's say that on `master` we have a linked logo:
 
 ```html
 <a href="/">
-  <img src="/images/logo.png" >
+  <img src="/images/logo.png">
 </a>
 ```
 
@@ -120,9 +120,9 @@ then one person creates a branch `performance` to convert the logo to an inline 
 
 ```diff
  <a href="/">
--  <img src="/images/logo.png" >
+-  <img src="/images/logo.png">
 +  <svg viewBox="0 0 50 50" version="1.1" xmlns="http://www.w3.org/2000/svg">
-+    <path d="..." >
++    <path d="...">
 +  </svg>
  </a>
 ```
@@ -131,8 +131,8 @@ but another person makes a conflicting change in a separate branch `a11y`, impro
 
 ```diff
  <a href="/">
--  <img src="/images/logo.png" >
-+  <img src="/images/logo.png" alt="Home" >
+-  <img src="/images/logo.png">
++  <img src="/images/logo.png" alt="Home">
  </a>
 ```
 
@@ -152,14 +152,14 @@ Now Git history looks like this:
 
 Merging these two branches into `master` will inevitably lead to a conflict. The order of conflict annotations depends on which branch we merge first, but that doesn't matter, so let's say that we merged `performance` first. Merging `a11y` would cause the following conflict:
 
-```html
+```txt
 <a href="/">
 <<<<<<< HEAD
   <svg viewBox="0 0 50 50" version="1.1" xmlns="http://www.w3.org/2000/svg">
-    <path d="..." >
+    <path d="...">
   </svg>
 =======
-  <img src="/images/logo.png" alt="" >
+  <img src="/images/logo.png" alt="">
 >>>>>>> a11y
 </a>
 ```
@@ -172,7 +172,7 @@ After analyzing Git history we remembered that the only change we did to `<img>`
 <a href="/">
   <svg role="img" viewBox="0 0 50 50" version="1.1" xmlns="http://www.w3.org/2000/svg">
     <title>Home</title>
-    <path d="..." >
+    <path d="...">
   </svg>
 </a>
 ```
@@ -189,16 +189,16 @@ git config --global merge.conflictstyle=diff3
 
 Now in addition to showing us what the current and incoming changes are, Git will also show us _merged common ancestors_, i.e. our starting point, which looks like this:
 
-```html
+```txt
 <a href="/">
 <<<<<<< HEAD
   <svg viewBox="0 0 50 50" version="1.1" xmlns="http://www.w3.org/2000/svg">
-    <path d="..." >
+    <path d="...">
   </svg>
 ||||||| merged common ancestors
-  <img src="/images/logo.png" >
+  <img src="/images/logo.png">
 =======
-  <img src="/images/logo.png" alt="" >
+  <img src="/images/logo.png" alt="">
 >>>>>>> a11y
 </a>
 ```

@@ -22,11 +22,14 @@ const Gitgraph = ({ children }: Props) => {
 
   return (
     <div
-      className="flex justify-center overflow-x-auto font-mono text-xs [-webkit-overflow-scrolling:touch] sm:text-sm lg:text-base"
+      className="overflow-x-auto font-mono text-xs [-webkit-overflow-scrolling:touch] sm:text-sm lg:text-base [&_svg]:mx-auto"
       data-testid="gitgraph"
     >
       {hasJs ? (
         <OriginalGitgraph
+          // @gitgraph/react renders the graph only on initial render,
+          // so this way we force a re-render based on the breakpoint
+          key={matchesSm ? 'sm' : 'xs'}
           options={{
             template: templateExtend(TemplateName.Metro, {
               colors: [
@@ -40,7 +43,7 @@ const Gitgraph = ({ children }: Props) => {
                 offset: 0,
               },
               branch: {
-                lineWidth: matchesSm ? 6 : 5,
+                lineWidth: matchesSm ? 6 : 4.5,
                 spacing: matchesSm ? 46 : 30,
                 label: {
                   display: true,
@@ -50,10 +53,10 @@ const Gitgraph = ({ children }: Props) => {
                 },
               },
               commit: {
-                spacing: matchesSm ? 46 : 36,
+                spacing: matchesSm ? 46 : 34,
                 hasTooltipInCompactMode: true,
                 dot: {
-                  size: matchesSm ? 14 : 10,
+                  size: matchesSm ? 14 : 11,
                   font: 'inherit',
                 },
                 message: {

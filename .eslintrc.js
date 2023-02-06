@@ -22,7 +22,6 @@ module.exports = {
     'no-var': 'error',
     'prefer-const': 'error',
     'no-warning-comments': 'warn',
-    'no-undef': ['error', { typeof: true }],
     'no-use-before-define': ['error', { functions: false }],
   },
   overrides: [
@@ -44,7 +43,6 @@ module.exports = {
     },
     {
       files: ['*.ts', '*.tsx'],
-      extends: 'plugin:@typescript-eslint/eslint-recommended',
       rules: {
         '@typescript-eslint/no-unused-vars': [
           'error',

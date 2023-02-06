@@ -6,7 +6,6 @@ meta:
   robots: noindex
 ---
 
-import Header from '~/components/Header'
 import Prose from '~/components/Prose'
 import cloudinary from '~/utils/cloudinary'
 import { screens } from '~/consts'
@@ -39,7 +38,6 @@ export function Experience({ role, project, duration: [start, end], tech, childr
   )
 }
 
-<Header />
 <Prose as="main" className="mt-2 pb-6 md:pb-10 lg:mt-4">
   <h1 className="flex flex-col items-center text-center sm:flex-row sm:text-left">
     <div className="sm:flex-1">
@@ -88,6 +86,16 @@ export function Experience({ role, project, duration: [start, end], tech, childr
     - **writing**: blogging, documenting, Docusaurus, Storybook
     - **mentoring & teaching**: friends, colleagues and others on [Mentoring Byte](https://www.mentoringbyte.com)
   </div>
+
+  ## How I keep up with latest technologies
+
+  Frontend development moves really fast, I keep up with the latest technologies by:
+
+    - reading my Twitter and GitHub feed
+    - listening to podcasts like [Syntax](https://syntax.fm/) and [The Remix Podcast](https://remix.transistor.fm/)
+    - reading blog posts from people like [Kent C. Dodds](https://kentcdodds.com/) and [Josh W Comeau](https://www.joshwcomeau.com/)
+    - attending meetups like [CSS Café](https://www.meetup.com/css-cafe/) and conferences like [Remix Conf](https://remix.run/conf)
+    - continuously trying out new tech and engaging with the community on GitHub
 
   ## Professional experience
 

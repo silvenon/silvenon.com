@@ -1,24 +1,15 @@
-import React from 'react'
-
+// Fathom analytics
 export default function Analytics() {
-  return (
+  return process.env.NODE_ENV === 'production' ? (
     <script
-      dangerouslySetInnerHTML={{
-        __html: `
-          var _gauges = _gauges || [];
-          (function() {
-            var t   = document.createElement('script');
-            t.type  = 'text/javascript';
-            t.async = true;
-            t.id    = 'gauges-tracker';
-            t.setAttribute('data-site-id', '574df9a6bb922a0603000412');
-            t.setAttribute('data-track-path', 'https://track.gaug.es/track.gif');
-            t.src = 'https://d2fuc4clr7gvcn.cloudfront.net/track.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(t, s);
-          })();
-        `,
-      }}
+      src="https://reliable-brave.silvenon.com/script.js"
+      data-site="GSHQIEZX"
+      data-excluded-domains="localhost,staging.silvenon.com"
+      data-spa="history"
+      // currently the canonical URLs don't change during client-side navigation, so only the
+      // initially loaded page and full refresh would be tracked, not navigating through the site
+      data-canonical="false"
+      defer
     />
-  )
+  ) : null
 }

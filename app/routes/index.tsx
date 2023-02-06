@@ -1,61 +1,42 @@
 import { useLoaderData, Link } from '@remix-run/react'
 import { json } from '@remix-run/node'
 import type { MetaFunction, LoaderArgs } from '@remix-run/node'
-import Header from '~/components/Header'
 import { Fragment } from 'react'
-import { ExternalLinkIcon } from '@heroicons/react/outline'
-import type { Except, SetOptional } from 'type-fest'
+import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline'
 import PostDate from '~/components/PostDate'
 import ProfilePhoto from '~/components/ProfilePhoto'
 import Prose from '~/components/Prose'
 import { getMeta } from '~/utils/seo'
 import { getAllEntries } from '~/utils/posts.server'
-import type {
-  StandalonePost,
-  Series,
-  SeriesPart,
-  ExternalStandalonePost,
-  ExternalSeries,
-} from '~/utils/posts.server'
 import { author } from '~/consts'
 import circuitBoard from '~/images/circuit-board.svg'
-
-type LoaderData = Array<
-  | Except<StandalonePost, 'output'>
-  | (Omit<Series, 'parts'> & {
-      parts: Array<Except<SeriesPart, 'output'>>
-    })
-  | ExternalStandalonePost
-  | ExternalSeries
->
+import Icon from '~/components/Icon'
+import { socialLinks } from '~/consts'
+import clsx from 'clsx'
 
 export async function loader(_: LoaderArgs) {
   const entries = await getAllEntries()
-  const data: LoaderData = entries.map((entry) => {
+  const data = entries.map((entry) => {
     if ('source' in entry) return entry
     if ('parts' in entry) {
       return {
         ...entry,
         parts: entry.parts.map((part) => {
-          const partWithoutOutput: SetOptional<SeriesPart, 'output'> = {
-            ...part,
-          }
-          delete partWithoutOutput.output
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { output, ...partWithoutOutput } = part
           return partWithoutOutput
         }),
       }
     }
-    const postWithoutOutput: SetOptional<StandalonePost, 'output'> = {
-      ...entry,
-    }
-    delete postWithoutOutput.output
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { output, ...postWithoutOutput } = entry
     return postWithoutOutput
   })
 
   return json(data, 200)
 }
 
-export const meta: MetaFunction = () =>
+export const meta: MetaFunction<typeof loader> = () =>
   getMeta({
     title: author.name,
     description: `Matija Marohnić is a frontend developer from Croatia, he enjoys exploring latest tech. Read this blog to learn about React, frontend tools, testing, and more!`,
@@ -65,7 +46,6 @@ export default function Home() {
   const entries = useLoaderData<typeof loader>()
   return (
     <>
-      <Header />
       <section className="relative mt-4 mb-10 border-t-2 border-b-2 border-purple-400 bg-purple-300 px-4 dark:border-purple-400 dark:bg-purple-800">
         <div
           className="absolute inset-0 opacity-70 dark:opacity-30"
@@ -75,13 +55,40 @@ export default function Home() {
           <div className="rounded-lg bg-white p-3 ring-2 ring-purple-400 dark:bg-gray-800 sm:flex">
             <Prose className="p-3 pb-4 sm:order-2 sm:flex-1 sm:self-center lg:px-5 lg:py-3">
               <h1 className="!mb-0">{author.name}</h1>
-              <p>
-                {author.bio} <Link to="about">More about me →</Link>
-              </p>
+              <p>{author.bio}</p>
             </Prose>
             <div className="sm:order-1 sm:w-40">
               <ProfilePhoto />
             </div>
+          </div>
+          <div className="absolute inset-x-0 bottom-0 flex translate-y-1/2 items-center justify-center sm:ml-4 sm:justify-start sm:pl-40 lg:ml-5 2xl:justify-end 2xl:pr-4">
+            {socialLinks.map((network) => (
+              <a
+                key={network.name}
+                title={network.name}
+                href={network.url}
+                target="_blank"
+                rel="noreferrer"
+                className="group block p-3 sm:p-2"
+              >
+                <span className="sr-only">{network.name}</span>
+                <span
+                  className={clsx(
+                    'block rounded-full border-2 border-transparent bg-purple-400 p-1.5 text-white transition duration-200 group-hover:scale-125 group-hover:text-white dark:bg-purple-400 dark:text-black dark:group-hover:shadow sm:p-2',
+                    network.name === 'GitHub' &&
+                      'group-hover:bg-github dark:group-hover:border-white/75',
+                    network.name === 'Twitter' && 'group-hover:bg-twitter',
+                    network.name === 'LinkedIn' && 'group-hover:bg-linkedin',
+                  )}
+                >
+                  <Icon
+                    aria-hidden="true"
+                    icon={network.icon}
+                    className="h-5 w-5 lg:h-6 lg:w-6"
+                  />
+                </span>
+              </a>
+            ))}
           </div>
         </div>
       </section>
@@ -115,7 +122,7 @@ export default function Home() {
                               className="inline-flex items-center space-x-2"
                             >
                               <span>Read on {externalSeries.source}</span>
-                              <ExternalLinkIcon
+                              <ArrowTopRightOnSquareIcon
                                 aria-hidden="true"
                                 className="h-6 w-6"
                               />
@@ -152,7 +159,7 @@ export default function Home() {
                         className="inline-flex items-center space-x-2"
                       >
                         <span>Read on {externalPost.source}</span>
-                        <ExternalLinkIcon
+                        <ArrowTopRightOnSquareIcon
                           aria-hidden="true"
                           className="h-6 w-6"
                         />
@@ -217,21 +224,18 @@ export default function Home() {
 
 export function ErrorBoundary({ error }: { error: Error }) {
   return (
-    <>
-      <Header />
-      <Prose as="main" className="py-4">
-        <h1>Error while rendering posts</h1>
-        <p>{error.message}</p>
-        <pre>
-          <code>
-            {error.stack?.split('\n').map((line) => (
-              <span key={line} className="line">
-                {line}
-              </span>
-            ))}
-          </code>
-        </pre>
-      </Prose>
-    </>
+    <Prose as="main" className="py-4">
+      <h1>Error while rendering posts</h1>
+      <p>{error.message}</p>
+      <pre>
+        <code>
+          {error.stack?.split('\n').map((line) => (
+            <span key={line} className="line">
+              {line}
+            </span>
+          ))}
+        </code>
+      </pre>
+    </Prose>
   )
 }

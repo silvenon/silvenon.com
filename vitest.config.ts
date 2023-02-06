@@ -10,5 +10,8 @@ export default defineConfig({
     globals: true,
     setupFiles: ['./test/setup-test-env.ts'],
     include: ['./app/**/*.test.{ts,tsx}', './posts/**/*.test.{ts,tsx}'],
+    // fixes importing cloudinary-tiny-js in Node environment
+    // https://github.com/vitest-dev/vitest/issues/2258#issuecomment-1301872338
+    deps: { interopDefault: true },
   },
 })

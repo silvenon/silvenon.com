@@ -1,9 +1,9 @@
+import type { LoaderArgs } from '@remix-run/node'
 import { redirect } from '@remix-run/node'
-import type { LoaderFunction } from '@remix-run/node'
 import fs from 'fs'
 import toml from 'toml'
 
-export const loader: LoaderFunction = async ({ request }) => {
+export async function loader({ request }: LoaderArgs) {
   const { pathname } = new URL(request.url)
 
   // redirect posts before simplifying paths
@@ -45,7 +45,10 @@ export const loader: LoaderFunction = async ({ request }) => {
     }
   }
 
-  throw new Response('Not Found', { status: 404 })
+  throw new Response(
+    pathname.startsWith('/blog/') ? 'Post not found' : 'Page not found',
+    { status: 404 },
+  )
 }
 
 export default function Catchall() {

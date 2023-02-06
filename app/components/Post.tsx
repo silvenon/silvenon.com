@@ -3,7 +3,6 @@ import { useCallback, useMemo } from 'react'
 import { getMDXComponent } from 'mdx-bundler/client'
 import type { Theme as UtterancesTheme } from 'utterances-react-component'
 import { Utterances } from 'utterances-react-component'
-import Header from '~/components/Header'
 import Prose from '~/components/Prose'
 import PostDate from '~/components/PostDate'
 import Gitgraph from '~/components/Gitgraph'
@@ -65,30 +64,16 @@ export default function Post(props: Props) {
   )
 
   return (
-    <>
-      <Header />
-      <Prose className="space-y-4">
-        <main>
-          <article>
-            {isSeries ? (
-              <h1 className="space-y-2 text-center lg:space-y-4">
-                <div>
-                  <span ref={unorphanRef}>{props.series.title}</span>
-                  <span className="sr-only">:</span>
-                </div>
-                <div className="text-[0.8em] font-normal dark:font-light">
-                  {props.htmlTitle ? (
-                    <span
-                      ref={unorphanRef}
-                      dangerouslySetInnerHTML={{ __html: props.htmlTitle }}
-                    />
-                  ) : (
-                    <span ref={unorphanRef}>{props.title}</span>
-                  )}
-                </div>
-              </h1>
-            ) : (
-              <h1 className="text-center">
+    <Prose className="space-y-4">
+      <main>
+        <article>
+          {isSeries ? (
+            <h1 className="space-y-2 text-center lg:space-y-4">
+              <div>
+                <span ref={unorphanRef}>{props.series.title}</span>
+                <span className="sr-only">:</span>
+              </div>
+              <div className="text-[0.8em] font-normal dark:font-light">
                 {props.htmlTitle ? (
                   <span
                     ref={unorphanRef}
@@ -97,68 +82,78 @@ export default function Post(props: Props) {
                 ) : (
                   <span ref={unorphanRef}>{props.title}</span>
                 )}
-              </h1>
-            )}
+              </div>
+            </h1>
+          ) : (
+            <h1 className="text-center">
+              {props.htmlTitle ? (
+                <span
+                  ref={unorphanRef}
+                  dangerouslySetInnerHTML={{ __html: props.htmlTitle }}
+                />
+              ) : (
+                <span ref={unorphanRef}>{props.title}</span>
+              )}
+            </h1>
+          )}
 
-            <PostDate
-              published={
-                (isSeries ? props.series.published : props.published) ??
-                undefined
-              }
-              lastModified={props.lastModified}
-            />
-
-            {isSeries ? (
-              <>
-                <p>Parts of this series:</p>
-                <ol>
-                  {props.series.parts.map((part) => {
-                    const pathname = `/blog/${props.series.slug}/${part.slug}`
-                    return (
-                      <li key={part.slug}>
-                        {location.pathname === pathname ? (
-                          part.title
-                        ) : (
-                          <Link to={pathname}>{part.title}</Link>
-                        )}
-                      </li>
-                    )
-                  })}
-                </ol>
-                <hr />
-              </>
-            ) : null}
-
-            <PostContent
-              components={{
-                Gitgraph,
-                ProseImage,
-                HotTip,
-                Tweet,
-                ESLintPrettierDiagram,
-              }}
-            />
-
-            <div className="text-right">
-              <a className="p-2" href="#top">
-                Back to top ↑
-              </a>
-            </div>
-          </article>
-        </main>
-
-        <footer className="px-2.5">
-          <hr className="!mb-2" />
-          <Utterances
-            key={
-              isSeries ? `${props.series.slug}-${props.seriesPart}` : props.slug
+          <PostDate
+            published={
+              (isSeries ? props.series.published : props.published) ?? undefined
             }
-            repo="silvenon/silvenon.com"
-            theme={commentsTheme}
-            issueTerm="title"
+            lastModified={props.lastModified}
           />
-        </footer>
-      </Prose>
-    </>
+
+          {isSeries ? (
+            <>
+              <p>Parts of this series:</p>
+              <ol>
+                {props.series.parts.map((part) => {
+                  const pathname = `/blog/${props.series.slug}/${part.slug}`
+                  return (
+                    <li key={part.slug}>
+                      {location.pathname === pathname ? (
+                        part.title
+                      ) : (
+                        <Link to={pathname}>{part.title}</Link>
+                      )}
+                    </li>
+                  )
+                })}
+              </ol>
+              <hr />
+            </>
+          ) : null}
+
+          <PostContent
+            components={{
+              Gitgraph,
+              ProseImage,
+              HotTip,
+              Tweet,
+              ESLintPrettierDiagram,
+            }}
+          />
+
+          <div className="text-right">
+            <a className="p-2" href="#top">
+              Back to top ↑
+            </a>
+          </div>
+        </article>
+      </main>
+
+      <footer className="px-2.5">
+        <hr className="!mb-2" />
+        <Utterances
+          key={
+            isSeries ? `${props.series.slug}-${props.seriesPart}` : props.slug
+          }
+          repo="silvenon/silvenon.com"
+          theme={commentsTheme}
+          issueTerm="title"
+        />
+      </footer>
+    </Prose>
   )
 }
