@@ -39,6 +39,7 @@ module.exports = {
       files: './integration/**/*.spec.ts',
       rules: {
         'jest/valid-expect': 'off',
+        'testing-library/prefer-screen-queries': 'off',
       },
     },
     {

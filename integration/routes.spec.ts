@@ -14,14 +14,14 @@ test.describe('routes', () => {
   })
 
   test('blog post', async ({ page }) => {
-    const pageTitle = page.locator('role=heading[level=1]')
+    const pageTitle = page.getByRole('heading', { level: 1 })
     await page.goto('/blog/intro-to-eslint')
     await expect(pageTitle).toHaveText(/Intro to ESLint/)
   })
 
   test('not found', async ({ page }) => {
-    const pageTitle = page.locator('role=heading[level=1]')
-    const navigation = page.locator('role=navigation')
+    const pageTitle = page.getByRole('heading', { level: 1 })
+    const navigation = page.getByRole('navigation')
     await page.goto('/non-existent-page')
     await expect(pageTitle).toHaveText('Nothing found at this URL.')
     await expect(navigation).not.toBeVisible()

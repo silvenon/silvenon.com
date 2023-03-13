@@ -2,10 +2,12 @@ import { test, expect } from '@playwright/test'
 
 test.describe('dark mode', () => {
   test('toggle in UI', async ({ page }) => {
-    const document = page.locator('role=document')
-    const enableSwitch = page.locator('role=switch[name="Enable dark mode"]')
-    const disableSwitch = page.locator('role=switch[name="Disable dark mode"]')
-    const resetBtn = page.locator('role=button[name="Reset to OS"]')
+    const document = page.getByRole('document')
+    const enableSwitch = page.getByRole('switch', { name: 'Enable dark mode' })
+    const disableSwitch = page.getByRole('switch', {
+      name: 'Disable dark mode',
+    })
+    const resetBtn = page.getByRole('button', { name: 'Reset to OS' })
 
     await page.emulateMedia({ colorScheme: 'light' })
 
@@ -37,7 +39,7 @@ test.describe('dark mode', () => {
   })
 
   test('toggle in OS', async ({ page }) => {
-    const document = page.locator('role=document')
+    const document = page.getByRole('document')
 
     await page.goto('/')
 

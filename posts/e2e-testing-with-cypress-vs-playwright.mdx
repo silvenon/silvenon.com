@@ -69,7 +69,7 @@ Locators in Playwright are very powerful, they feature a wide range of ways of s
 Creating locators is synchronous because they are being executed only when you actually do something with them, for example the following code will select the switch three times:
 
 ```js
-const mySwitch = page.locator('role=switch')
+const mySwitch = page.getByRole('switch')
 
 await expect(mySwitch).toHaveText('Enable')
 await mySwitch.click()
