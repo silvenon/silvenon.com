@@ -51,18 +51,15 @@ test.describe('routes', () => {
     const canonical = page.locator('link[rel=canonical]')
     const ogUrl = page.locator('meta[property="og:url"]')
 
+    const assertCanonical = async (url: string) => {
+      await expect(canonical).toHaveAttribute('href', url)
+      await expect(ogUrl).toHaveAttribute('content', url)
+    }
+
     await page.goto('/')
-    await expect(canonical).toHaveAttribute('href', 'http://localhost:3000/')
-    await expect(ogUrl).toHaveAttribute('content', 'http://localhost:3000/')
+    await assertCanonical('http://localhost:3000/')
 
     await page.goto('/blog/intro-to-eslint/')
-    await expect(canonical).toHaveAttribute(
-      'href',
-      'http://localhost:3000/blog/intro-to-eslint',
-    )
-    await expect(ogUrl).toHaveAttribute(
-      'content',
-      'http://localhost:3000/blog/intro-to-eslint',
-    )
+    await assertCanonical('http://localhost:3000/blog/intro-to-eslint')
   })
 })
