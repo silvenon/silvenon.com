@@ -20,5 +20,5 @@ export function removeTrailingSlash(href: string) {
 export function getCanonicalUrl(request: Request) {
   const origin = getDomainUrl(request)
   const { pathname, search } = new URL(request.url)
-  return removeTrailingSlash(`${origin}${pathname}${search}`)
+  return `${origin}${pathname}${search}`
 }
