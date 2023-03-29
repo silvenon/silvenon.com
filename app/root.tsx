@@ -10,7 +10,7 @@ import {
   useTransition,
   useLocation,
 } from '@remix-run/react'
-import { redirect, json } from '@remix-run/node'
+import { json } from '@remix-run/node'
 import type { MetaFunction, LinksFunction, LoaderArgs } from '@remix-run/node'
 import { useRef } from 'react'
 import { MetronomeLinks } from '@metronome-sh/react'
@@ -18,19 +18,17 @@ import { DarkMode } from './services/dark-mode'
 import clsx from 'clsx'
 import Header from './components/Header'
 import cloudinary from './utils/cloudinary'
-import { getCanonicalUrl } from './utils/http'
+import { removeTrailingSlash, getCanonicalUrl } from './utils/http'
 import { author } from './consts'
 import styles from './tailwind.css'
 import Boundary from './components/Boundary'
 import Analytics from './components/Analytics'
-import { removeTrailingSlash } from './utils/http'
 import { getEnv } from '~/utils/env.server'
 import { getDarkMode } from '~/session.server'
 
 export async function loader({ request }: LoaderArgs) {
-  if (request.url !== removeTrailingSlash(request.url)) {
-    throw redirect(removeTrailingSlash(request.url), { status: 308 })
-  }
+  removeTrailingSlash(request)
+
   return json(
     {
       ENV: getEnv(),

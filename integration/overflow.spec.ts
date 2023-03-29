@@ -5,7 +5,7 @@ test.describe('overflow', () => {
     await page.goto('/blog/checking-for-dead-urls')
     await page.setViewportSize(devices['iPhone SE'].viewport)
 
-    const document = page.locator('role=document')
+    const document = page.getByRole('document')
 
     const scrollWidth = await document.evaluate((doc) => doc.scrollWidth)
     const clientWidth = await document.evaluate((doc) => doc.clientWidth)
