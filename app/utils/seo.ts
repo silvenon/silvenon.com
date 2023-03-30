@@ -1,4 +1,4 @@
-import type { HtmlMetaDescriptor } from '@remix-run/react'
+import type { V2_HtmlMetaDescriptor } from '@remix-run/node'
 
 interface Options {
   type?: 'website' | 'article'
@@ -10,7 +10,7 @@ export function getMeta({
   type = 'website',
   title,
   description,
-}: Options): HtmlMetaDescriptor {
+}: Options): V2_HtmlMetaDescriptor[] {
   if (description && process.env.NODE_ENV === 'development') {
     if (description.length < 110) {
       throw new Error(
@@ -23,13 +23,17 @@ export function getMeta({
       )
     }
   }
-  return {
-    'og:type': type,
-    title,
-    'og:title': title,
-    'twitter:title': title,
-    description,
-    'og:description': description,
-    'twitter:description': description,
-  }
+  return [
+    { property: 'og:type', content: type },
+    { title },
+    { property: 'og:title', content: title },
+    { name: 'twitter:title', content: title },
+    ...(description
+      ? [
+          { name: 'description', content: description },
+          { property: 'og:description', content: description },
+          { name: 'twitter:description', content: description },
+        ]
+      : []),
+  ]
 }

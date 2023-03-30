@@ -1,6 +1,6 @@
 import { useLoaderData, Link } from '@remix-run/react'
 import { json } from '@remix-run/node'
-import type { MetaFunction, LoaderArgs } from '@remix-run/node'
+import type { V2_MetaFunction, LoaderArgs } from '@remix-run/node'
 import { Fragment } from 'react'
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline'
 import PostDate from '~/components/PostDate'
@@ -36,7 +36,7 @@ export async function loader(_: LoaderArgs) {
   return json(data, 200)
 }
 
-export const meta: MetaFunction<typeof loader> = () =>
+export const meta: V2_MetaFunction<typeof loader> = () =>
   getMeta({
     title: author.name,
     description: `Matija Marohnić is a frontend developer from Croatia, he enjoys exploring latest tech. Read this blog to learn about React, frontend tools, testing, and more!`,

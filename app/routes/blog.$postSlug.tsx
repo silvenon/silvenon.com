@@ -1,6 +1,6 @@
 import { useLoaderData } from '@remix-run/react'
 import { redirect } from '@remix-run/node'
-import type { MetaFunction, LoaderArgs } from '@remix-run/node'
+import type { V2_MetaFunction, LoaderArgs } from '@remix-run/node'
 import { json } from '@remix-run/node'
 import invariant from 'tiny-invariant'
 import { getMeta } from '~/utils/seo'
@@ -32,24 +32,30 @@ export async function loader(args: LoaderArgs) {
   })
 }
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
+export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
   // type of data is incorrect, in case of an error it's undefined
   if (!data) return getMeta({ title: 'Post not found' })
   const { title, description, published, lastModified } = data
-  return {
-    ...getMeta({
-      type: 'article',
-      title,
-      description,
-    }),
-    'article:author': author.name,
+  return [
+    ...getMeta({ type: 'article', title, description }),
+    { property: 'article:author', content: author.name },
     ...(published
-      ? { 'article:published_time': formatDateISO(published) }
-      : null),
+      ? [
+          {
+            property: 'article:published_time',
+            content: formatDateISO(published),
+          },
+        ]
+      : []),
     ...(lastModified
-      ? { 'article:modified_time': formatDateISO(lastModified) }
-      : null),
-  }
+      ? [
+          {
+            property: 'article:modified_time',
+            content: formatDateISO(lastModified),
+          },
+        ]
+      : []),
+  ]
 }
 
 export default function StandalonePost() {

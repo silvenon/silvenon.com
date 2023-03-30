@@ -11,7 +11,7 @@ import {
   useLocation,
 } from '@remix-run/react'
 import { json } from '@remix-run/node'
-import type { MetaFunction, LinksFunction, LoaderArgs } from '@remix-run/node'
+import type { LinksFunction, LoaderArgs } from '@remix-run/node'
 import { useRef } from 'react'
 import { MetronomeLinks } from '@metronome-sh/react'
 import { DarkMode } from './services/dark-mode'
@@ -40,42 +40,6 @@ export async function loader({ request }: LoaderArgs) {
   )
 }
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
-  return {
-    ...(data.appName === 'silvenon-staging' ? { robots: 'noindex' } : null),
-    charset: 'utf-8',
-    viewport: 'width=device-width,initial-scale=1',
-    // Open Graph
-    'og:site_name': author.name,
-    'og:url': data.canonicalUrl,
-    // https://developers.facebook.com/docs/sharing/best-practices/#images
-    'og:image:url': cloudinary('in-reactor-1.jpg', {
-      version: 3,
-      width: 1080,
-      aspectRatio: '1:1',
-      crop: 'fill',
-      gravity: 'face',
-      quality: 'auto',
-    }),
-    'og:image:type': 'image/jpeg',
-    'og:image:width': '1080',
-    'og:image:height': '1080',
-    // Twitter Card
-    // https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/summary
-    'twitter:card': 'summary',
-    'twitter:site': '@silvenon',
-    'twitter:image': cloudinary('in-reactor-1.jpg', {
-      version: 3,
-      width: 3024,
-      aspectRatio: '1:1',
-      crop: 'fill',
-      gravity: 'face',
-      format: 'webp',
-      quality: 'auto',
-    }),
-  }
-}
-
 export const links: LinksFunction = () => {
   return [
     { rel: 'stylesheet', href: styles },
@@ -93,8 +57,47 @@ function App() {
   return (
     <DarkMode.Html lang="en" className={clsx('h-full', hasJs ? 'js' : 'no-js')}>
       <head>
-        <Meta />
+        {data.appName === 'silvenon-staging' && (
+          <meta name="robots" content="noindex" />
+        )}
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
         <link rel="canonical" href={data.canonicalUrl} />
+        {/* Open Graph */}
+        <meta property="og:site_name" content={author.name} />
+        <meta property="og:url" content={data.canonicalUrl} />
+        {/* https://developers.facebook.com/docs/sharing/best-practices/#images */}
+        <meta
+          property="og:image:url"
+          content={cloudinary('in-reactor-1.jpg', {
+            version: 3,
+            width: 1080,
+            aspectRatio: '1:1',
+            crop: 'fill',
+            gravity: 'face',
+            quality: 'auto',
+          })}
+        />
+        <meta property="og:image:type" content="image/jpeg" />
+        <meta property="og:image:width" content="1080" />
+        <meta property="og:image:height" content="1080" />
+        {/* Twitter Card */}
+        {/* https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/summary */}
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:site" content="@silvenon" />
+        <meta
+          name="twitter:image"
+          content={cloudinary('in-reactor-1.jpg', {
+            version: 3,
+            width: 3024,
+            aspectRatio: '1:1',
+            crop: 'fill',
+            gravity: 'face',
+            format: 'webp',
+            quality: 'auto',
+          })}
+        />
+        <Meta />
         <Links />
         <MetronomeLinks />
         <script

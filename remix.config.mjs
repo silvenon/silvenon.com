@@ -7,6 +7,7 @@ export default {
   future: {
     v2_routeConvention: true,
     unstable_tailwind: true,
+    v2_meta: true,
   },
   serverDependenciesToBundle: [
     /^micromark.*/,
