@@ -5,6 +5,7 @@ export default {
   cacheDirectory: './node_modules/.cache/remix',
   ignoredRouteFiles: ['**/*.test.{ts,tsx}'],
   future: {
+    v2_routeConvention: true,
     unstable_tailwind: true,
   },
   serverDependenciesToBundle: [
