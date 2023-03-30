@@ -7,7 +7,7 @@ import {
   ScrollRestoration,
   useLoaderData,
   useCatch,
-  useTransition,
+  useNavigation,
   useLocation,
 } from '@remix-run/react'
 import { json } from '@remix-run/node'
@@ -130,14 +130,14 @@ function App() {
 
 export default function AppWithProviders() {
   const data = useLoaderData<typeof loader>()
-  const transition = useTransition()
+  const navigation = useNavigation()
   const specifiedDarkModeRef = useRef(data.darkMode)
 
   if (
-    transition.state === 'submitting' &&
-    transition.location.pathname === '/dark-mode'
+    navigation.state === 'submitting' &&
+    navigation.location.pathname === '/dark-mode'
   ) {
-    const optimisticDarkMode = transition.submission.formData.get('darkMode')
+    const optimisticDarkMode = navigation.formData.get('darkMode')
     if (typeof optimisticDarkMode === 'string') {
       specifiedDarkModeRef.current =
         optimisticDarkMode === 'os' ? undefined : optimisticDarkMode === 'true'
