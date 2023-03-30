@@ -20,18 +20,15 @@ jobs:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v3
 
-      - name: ⎔ Setup node
-        uses: actions/setup-node@v3
+      - uses: oven-sh/setup-bun@v1
         with:
-          node-version-file: package.json
+          bun-version: latest
 
       - name: 📥 Download deps
-        uses: bahmutov/npm-install@v1
-        with:
-          useLockFile: false
+        run: bun install
 
-      - name: 🔬 Lint
-        run: npm run lint
+      - name: �🔬 Lint
+        run: bun run lint
 
   typecheck:
     name: ʦ TypeScript
@@ -43,18 +40,15 @@ jobs:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v3
 
-      - name: ⎔ Setup node
-        uses: actions/setup-node@v3
+      - uses: oven-sh/setup-bun@v1
         with:
-          node-version-file: package.json
+          bun-version: latest
 
       - name: 📥 Download deps
-        uses: bahmutov/npm-install@v1
-        with:
-          useLockFile: false
+        run: bun install
 
       - name: 🔎 Type check
-        run: npm run typecheck --if-present
+        run: bun run typecheck
 
   vitest:
     name: ⚡ Vitest
@@ -66,23 +60,20 @@ jobs:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v3
 
-      - name: ⎔ Setup node
-        uses: actions/setup-node@v3
+      - uses: oven-sh/setup-bun@v1
         with:
-          node-version-file: package.json
+          bun-version: latest
 
       - name: 📥 Download deps
-        uses: bahmutov/npm-install@v1
-        with:
-          useLockFile: false
+        run: bun install
 
       - name: 📝 Compile posts
-        run: npm run build:posts
+        run: bun scripts/compile-posts.ts
         env:
           CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
 
       - name: ⚡ Run vitest
-        run: npm run test:unit -- --coverage
+        run: bun x vitest run --coverage
         env:
           CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
 
@@ -97,34 +88,26 @@ jobs:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v3
 
-      - name: ⎔ Setup node
-        uses: actions/setup-node@v3
+      - uses: oven-sh/setup-bun@v1
         with:
-          node-version-file: package.json
-
-      # https://playwrightsolutions.com/playwright-github-action-to-cache-the/
-      - name: Cache Playwright binaries
-        uses: actions/cache@v3
-        id: playwright-cache
-        with:
-          path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ hashFiles('package-lock.json') }}
+          bun-version: latest
 
       - name: 📥 Download deps
-        uses: bahmutov/npm-install@v1
-        with:
-          useLockFile: false
+        run: bun install
 
       - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+        run: bun x playwright install --with-deps
 
-      - name: ⚙️ Build
-        run: npm run build
+      - name: 📝 Compile posts
+        run: bun scripts/compile-posts.ts
         env:
           CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
 
+      - name: ⚙️ Build app
+        run: bun x remix build
+
       - name: 🎭 Playwright run
-        run: npm run test:e2e
+        run: bun x playwright test --retries=2
         env:
           CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
           SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
