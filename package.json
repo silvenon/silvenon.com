@@ -51,7 +51,8 @@
     "/node_modules",
     "/app/posts",
     "/build",
-    "/public/build"
+    "/public/build",
+    "/playwright-report"
   ],
   "simple-git-hooks": {
     "pre-commit": "npx nano-staged",
