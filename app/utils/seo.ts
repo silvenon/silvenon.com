@@ -1,4 +1,4 @@
-import type { V2_HtmlMetaDescriptor } from '@remix-run/node'
+import type { V2_MetaDescriptor } from '@remix-run/node'
 
 interface Options {
   type?: 'website' | 'article'
@@ -10,7 +10,7 @@ export function getMeta({
   type = 'website',
   title,
   description,
-}: Options): V2_HtmlMetaDescriptor[] {
+}: Options): V2_MetaDescriptor[] {
   if (description && process.env.NODE_ENV === 'development') {
     if (description.length < 110) {
       throw new Error(
