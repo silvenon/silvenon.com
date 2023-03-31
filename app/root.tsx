@@ -222,6 +222,7 @@ export function ErrorBoundary() {
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <Meta />
         <Links />
+        <MetronomeLinks />
       </head>
       <body className="h-full">{content}</body>
     </html>
