@@ -6,9 +6,10 @@ import {
   Outlet,
   ScrollRestoration,
   useLoaderData,
-  useCatch,
   useNavigation,
   useLocation,
+  useRouteError,
+  isRouteErrorResponse,
 } from '@remix-run/react'
 import { json } from '@remix-run/node'
 import type { LinksFunction, LoaderArgs } from '@remix-run/node'
@@ -151,80 +152,78 @@ export default function AppWithProviders() {
   )
 }
 
-export function CatchBoundary() {
-  const caught = useCatch()
+export function ErrorBoundary() {
+  const error = useRouteError()
   const { pathname } = useLocation()
-  const title =
-    caught.data ?? (caught.status === 404 ? 'Page not found' : 'Page error')
 
-  let description
-  if (caught.status === 404) {
-    description = pathname.startsWith('/blog/') ? (
-      <p>
-        It&apos;s likely that you got here by following a link to one of my blog
-        posts which no longer has that URL. You should be able to find the
-        content you&apos;re looking for elsewhere on this site, unless I deleted
-        that post!{' '}
-        <span role="img" aria-label="embarrassed">
-          😳
-        </span>
-      </p>
-    ) : (
-      <p>It looks like the page you’re looking for doesn't exist.</p>
+  let title: string
+  let content: React.ReactNode
+
+  if (isRouteErrorResponse(error)) {
+    title =
+      error.data ?? (error.status === 404 ? 'Page not found' : 'Page error')
+    let description: React.ReactNode = null
+    if (error.status === 404) {
+      description = pathname.startsWith('/blog/') ? (
+        <p>
+          It's likely that you got here by following a link to one of my blog
+          posts which no longer has that URL. You should be able to find the
+          content you're looking for elsewhere on this site, unless I deleted
+          that post! 😳
+        </p>
+      ) : (
+        <p>It looks like the page you're looking for doesn't exist.</p>
+      )
+    }
+    content = (
+      <Boundary
+        status={error.status}
+        title={
+          !pathname.startsWith('/blog/') && error.status === 404
+            ? 'Nothing found at this URL.'
+            : title
+        }
+        description={description}
+      />
     )
+  } else if (error instanceof Error) {
+    title = 'Page error'
+    content = (
+      <Boundary
+        title="Oh no!"
+        errorOutput={
+          <>
+            {!error.stack?.includes(error.message) ? (
+              <span className="break-words">{error.message}</span>
+            ) : null}
+            <pre>
+              <code>
+                {error.stack?.split('\n').map((line) => (
+                  <span key={line} className="line">
+                    {line}
+                  </span>
+                ))}
+              </code>
+            </pre>
+          </>
+        }
+      />
+    )
+  } else {
+    title = 'Unknown error'
+    content = <Boundary title={title} />
   }
 
   return (
     <html lang="en" className="dark h-full">
       <head>
-        <Meta />
         <title>{title}</title>
-        <Links />
-      </head>
-      <body className="h-full">
-        <Boundary
-          status={caught.status}
-          title={
-            !pathname.startsWith('/blog/') && caught.status === 404
-              ? 'Nothing found at this URL.'
-              : title
-          }
-          description={description}
-        />
-      </body>
-    </html>
-  )
-}
-
-export function ErrorBoundary({ error }: { error: Error }) {
-  return (
-    <html lang="en" className="dark h-full">
-      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
         <Meta />
-        <title>Page error</title>
         <Links />
       </head>
-      <body className="h-full">
-        <Boundary
-          title="Oh no!"
-          errorOutput={
-            <>
-              {!error.stack?.includes(error.message) ? (
-                <span className="break-words">{error.message}</span>
-              ) : null}
-              <pre>
-                <code>
-                  {error.stack?.split('\n').map((line) => (
-                    <span key={line} className="line">
-                      {line}
-                    </span>
-                  ))}
-                </code>
-              </pre>
-            </>
-          }
-        />
-      </body>
+      <body className="h-full">{content}</body>
     </html>
   )
 }

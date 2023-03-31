@@ -20,15 +20,18 @@ test.describe('routes', () => {
   })
 
   test('not found', async ({ page }) => {
-    const pageTitle = page.getByRole('heading', { level: 1 })
+    const heading = page.getByRole('heading', { level: 1 })
     const navigation = page.getByRole('navigation')
     await page.goto('/non-existent-page')
-    await expect(pageTitle).toHaveText('Nothing found at this URL.')
+    await expect(page).toHaveTitle('Page not found')
+    await expect(heading).toHaveText('Nothing found at this URL.')
     await expect(navigation).not.toBeVisible()
     await page.goto('/blog/non-existent-post')
-    await expect(pageTitle).toHaveText('Post not found')
+    await expect(page).toHaveTitle('Post not found')
+    await expect(heading).toHaveText('Post not found')
     await page.goto('/blog/no-existent-series/non-existent-part')
-    await expect(pageTitle).toHaveText('Post not found')
+    await expect(page).toHaveTitle('Post not found')
+    await expect(heading).toHaveText('Post not found')
     await expect(navigation).not.toBeVisible()
   })
 

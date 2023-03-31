@@ -1,4 +1,4 @@
-import { useLoaderData, Link } from '@remix-run/react'
+import { useLoaderData, Link, useRouteError } from '@remix-run/react'
 import { json } from '@remix-run/node'
 import type { V2_MetaFunction, LoaderArgs } from '@remix-run/node'
 import { Fragment } from 'react'
@@ -222,20 +222,27 @@ export default function Home() {
   )
 }
 
-export function ErrorBoundary({ error }: { error: Error }) {
+export function ErrorBoundary() {
+  const error = useRouteError()
   return (
     <Prose as="main" className="py-4">
-      <h1>Error while rendering posts</h1>
-      <p>{error.message}</p>
-      <pre>
-        <code>
-          {error.stack?.split('\n').map((line) => (
-            <span key={line} className="line">
-              {line}
-            </span>
-          ))}
-        </code>
-      </pre>
+      {error instanceof Error ? (
+        <>
+          <h1>Error while rendering posts</h1>
+          <p>{error.message}</p>
+          <pre>
+            <code>
+              {error.stack?.split('\n').map((line) => (
+                <span key={line} className="line">
+                  {line}
+                </span>
+              ))}
+            </code>
+          </pre>
+        </>
+      ) : (
+        <h1>Unknown error while rendering posts</h1>
+      )}
     </Prose>
   )
 }

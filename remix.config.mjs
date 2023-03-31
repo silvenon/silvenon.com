@@ -8,6 +8,7 @@ export default {
     v2_routeConvention: true,
     unstable_tailwind: true,
     v2_meta: true,
+    v2_errorBoundary: true,
   },
   serverDependenciesToBundle: [
     /^micromark.*/,
