@@ -1,4 +1,4 @@
-import { loader } from '../'
+import { loader } from '../_index'
 
 describe('home route', () => {
   test('loader should remove output from entries', async () => {

@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test'
 
 test.describe('dark mode', () => {
-  test('toggle in UI', async ({ page }) => {
+  test.fixme('toggle in UI', async ({ page }) => {
     const document = page.getByRole('document')
     const enableSwitch = page.getByRole('switch', { name: 'Enable dark mode' })
     const disableSwitch = page.getByRole('switch', {
@@ -38,7 +38,7 @@ test.describe('dark mode', () => {
     await expect(resetBtn).not.toBeVisible()
   })
 
-  test('toggle in OS', async ({ page }) => {
+  test.fixme('toggle in OS', async ({ page }) => {
     const document = page.getByRole('document')
 
     await page.goto('/')

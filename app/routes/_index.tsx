@@ -1,6 +1,6 @@
-import { useLoaderData, Link } from '@remix-run/react'
+import { useLoaderData, Link, useRouteError } from '@remix-run/react'
 import { json } from '@remix-run/node'
-import type { MetaFunction, LoaderArgs } from '@remix-run/node'
+import type { V2_MetaFunction, LoaderArgs } from '@remix-run/node'
 import { Fragment } from 'react'
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline'
 import PostDate from '~/components/PostDate'
@@ -36,7 +36,7 @@ export async function loader(_: LoaderArgs) {
   return json(data, 200)
 }
 
-export const meta: MetaFunction<typeof loader> = () =>
+export const meta: V2_MetaFunction<typeof loader> = () =>
   getMeta({
     title: author.name,
     description: `Matija Marohnić is a frontend developer from Croatia, he enjoys exploring latest tech. Read this blog to learn about React, frontend tools, testing, and more!`,
@@ -222,20 +222,27 @@ export default function Home() {
   )
 }
 
-export function ErrorBoundary({ error }: { error: Error }) {
+export function ErrorBoundary() {
+  const error = useRouteError()
   return (
     <Prose as="main" className="py-4">
-      <h1>Error while rendering posts</h1>
-      <p>{error.message}</p>
-      <pre>
-        <code>
-          {error.stack?.split('\n').map((line) => (
-            <span key={line} className="line">
-              {line}
-            </span>
-          ))}
-        </code>
-      </pre>
+      {error instanceof Error ? (
+        <>
+          <h1>Error while rendering posts</h1>
+          <p>{error.message}</p>
+          <pre>
+            <code>
+              {error.stack?.split('\n').map((line) => (
+                <span key={line} className="line">
+                  {line}
+                </span>
+              ))}
+            </code>
+          </pre>
+        </>
+      ) : (
+        <h1>Unknown error while rendering posts</h1>
+      )}
     </Prose>
   )
 }
