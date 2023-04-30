@@ -9,6 +9,7 @@ export default {
     unstable_tailwind: true,
     v2_meta: true,
     v2_errorBoundary: true,
+    v2_normalizeFormMethod: true,
   },
   serverDependenciesToBundle: [
     /^micromark.*/,
