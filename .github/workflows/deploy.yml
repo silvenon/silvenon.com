@@ -1,4 +1,4 @@
-name: 🚀 Deploy
+name: Deploy
 on:
   push:
     branches:
@@ -11,93 +11,93 @@ permissions:
 
 jobs:
   lint:
-    name: ⬣ ESLint
+    name: ESLint
     runs-on: ubuntu-latest
     steps:
-      - name: 🛑 Cancel Previous Runs
+      - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.11.0
 
-      - name: ⬇️ Checkout repo
+      - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: ⎔ Setup node
+      - name: Setup node
         uses: actions/setup-node@v3
         with:
           node-version-file: package.json
 
-      - name: 📥 Download deps
+      - name: Download deps
         uses: bahmutov/npm-install@v1
         with:
           useLockFile: false
 
-      - name: 🔬 Lint
+      - name: Lint
         run: npm run lint
 
   typecheck:
-    name: ʦ TypeScript
+    name: TypeScript
     runs-on: ubuntu-latest
     steps:
-      - name: 🛑 Cancel Previous Runs
+      - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.11.0
 
-      - name: ⬇️ Checkout repo
+      - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: ⎔ Setup node
+      - name: Setup node
         uses: actions/setup-node@v3
         with:
           node-version-file: package.json
 
-      - name: 📥 Download deps
+      - name: Download deps
         uses: bahmutov/npm-install@v1
         with:
           useLockFile: false
 
-      - name: 🔎 Type check
+      - name: Type check
         run: npm run typecheck --if-present
 
   vitest:
-    name: ⚡ Vitest
+    name: Vitest
     runs-on: ubuntu-latest
     steps:
-      - name: 🛑 Cancel Previous Runs
+      - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.11.0
 
-      - name: ⬇️ Checkout repo
+      - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: ⎔ Setup node
+      - name: Setup node
         uses: actions/setup-node@v3
         with:
           node-version-file: package.json
 
-      - name: 📥 Download deps
+      - name: Download deps
         uses: bahmutov/npm-install@v1
         with:
           useLockFile: false
 
-      - name: 📝 Compile posts
+      - name: Compile posts
         run: npm run build:posts
         env:
           CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
 
-      - name: ⚡ Run vitest
+      - name: Run vitest
         run: npm run test:unit -- --coverage
         env:
           CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
 
   playwright:
-    name: 🎭 Playwright
+    name: Playwright
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
-      - name: 🛑 Cancel Previous Runs
+      - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.11.0
 
-      - name: ⬇️ Checkout repo
+      - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: ⎔ Setup node
+      - name: Setup node
         uses: actions/setup-node@v3
         with:
           node-version-file: package.json
@@ -110,7 +110,7 @@ jobs:
           path: ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-${{ hashFiles('package-lock.json') }}
 
-      - name: 📥 Download deps
+      - name: Download deps
         uses: bahmutov/npm-install@v1
         with:
           useLockFile: false
@@ -118,12 +118,12 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      - name: ⚙️ Build
+      - name: Build
         run: npm run build
         env:
           CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
 
-      - name: 🎭 Playwright run
+      - name: Playwright run
         run: npm run test:e2e
         env:
           CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
@@ -137,43 +137,43 @@ jobs:
           retention-days: 30
 
   build:
-    name: 🐳 Build
+    name: Build
     # only build/deploy main branch on pushes
     if: ${{ (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev') && github.event_name == 'push' }}
     runs-on: ubuntu-latest
     steps:
-      - name: 🛑 Cancel Previous Runs
+      - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.11.0
 
-      - name: ⬇️ Checkout repo
+      - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: 👀 Read app name
+      - name: Read app name
         uses: SebRollen/toml-action@v1.0.2
         id: app_name
         with:
           file: "fly.toml"
           field: "app"
 
-      - name: 🐳 Set up Docker Buildx
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
       # Setup cache
-      - name: ⚡️ Cache Docker layers
+      - name: Cache Docker layers
         uses: actions/cache@v3
         with:
           path: /tmp/.buildx-cache
           key: ${{ runner.os }}-buildx-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-buildx-
-      - name: 🔑 Fly Registry Auth
+      - name: Fly Registry Auth
         uses: docker/login-action@v2
         with:
           registry: registry.fly.io
           username: x
           password: ${{ secrets.FLY_API_TOKEN }}
 
-      - name: 🐳 Docker build
+      - name: Docker build
         uses: docker/build-push-action@v4
         with:
           context: .
@@ -192,42 +192,42 @@ jobs:
       # Temp fix
       # https://github.com/docker/build-push-action/issues/252
       # https://github.com/moby/buildkit/issues/1896
-      - name: 🚚 Move cache
+      - name: Move cache
         run: |
           rm -rf /tmp/.buildx-cache
           mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
   deploy:
-    name: 🚀 Deploy
+    name: Deploy
     runs-on: ubuntu-latest
     needs: [lint, typecheck, vitest, playwright, build]
     # only build/deploy main branch on pushes
     if: ${{ (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev') && github.event_name == 'push' }}
 
     steps:
-      - name: 🛑 Cancel Previous Runs
+      - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.11.0
 
-      - name: ⬇️ Checkout repo
+      - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: 👀 Read app name
+      - name: Read app name
         uses: SebRollen/toml-action@v1.0.2
         id: app_name
         with:
           file: "fly.toml"
           field: "app"
 
-      - name: 🦋 Set up Fly
+      - name: Set up Fly
         uses: superfly/flyctl-actions/setup-flyctl@master
 
-      - name: 🚀 Deploy Staging
+      - name: Deploy Staging
         if: ${{ github.ref == 'refs/heads/dev' }}
         run: flyctl deploy --app ${{ steps.app_name.outputs.value }}-staging --image registry.fly.io/${{ steps.app_name.outputs.value }}:${{ github.ref_name }}-${{ github.sha }}
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 
-      - name: 🚀 Deploy Production
+      - name: Deploy Production
         if: ${{ github.ref == 'refs/heads/main' }}
         run: flyctl deploy --image registry.fly.io/${{ steps.app_name.outputs.value }}:${{ github.ref_name }}-${{ github.sha }}
         env:
