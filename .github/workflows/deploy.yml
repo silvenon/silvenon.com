@@ -107,8 +107,9 @@ jobs:
         uses: actions/cache@v3
         id: playwright-cache
         with:
-          path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ hashFiles('package-lock.json') }}
+          path: |
+            ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-chromium-webkit-${{ hashFiles('package-lock.json') }}
 
       - name: Download deps
         uses: bahmutov/npm-install@v1
@@ -116,7 +117,8 @@ jobs:
           useLockFile: false
 
       - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps chromium webkit
 
       - name: Build
         run: npm run build
