@@ -1,13 +1,11 @@
 import { test, expect } from '@playwright/test'
-import invariant from 'tiny-invariant'
 
 test.describe('routes', () => {
   test('https', async ({ page }) => {
     for (const route of ['/', '/blog/tailwind-and-separation-of-concerns']) {
       const response = await page.goto(route, { waitUntil: 'commit' })
-      invariant(response, 'response should be defined')
       expect(
-        await response.headerValue('Strict-Transport-Security'),
+        await response?.headerValue('Strict-Transport-Security'),
         `Route "${route}" is missing the Strict-Transport-Security header`,
       ).not.toBeNull()
     }
