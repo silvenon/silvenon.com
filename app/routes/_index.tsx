@@ -38,6 +38,7 @@ export async function loader(_: LoaderArgs) {
 
 export const meta: V2_MetaFunction<typeof loader> = () =>
   getMeta({
+    type: 'website',
     title: author.name,
     description: `Matija Marohnić is a frontend developer from Croatia, he enjoys exploring latest tech. Read this blog to learn about React, frontend tools, testing, and more!`,
     image: {

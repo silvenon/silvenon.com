@@ -3,7 +3,7 @@ import cloudinary from '~/utils/cloudinary'
 import type { Gravity } from '~/utils/cloudinary'
 
 interface Options {
-  type?: 'website' | 'article'
+  type: 'website' | 'article'
   title: string
   description?: string
   image?: {
@@ -15,7 +15,7 @@ interface Options {
 }
 
 export function getMeta({
-  type = 'website',
+  type,
   title,
   description,
   image,
