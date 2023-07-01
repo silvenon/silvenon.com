@@ -18,7 +18,6 @@ import { MetronomeLinks } from '@metronome-sh/react'
 import { DarkMode } from './services/dark-mode'
 import clsx from 'clsx'
 import Header from './components/Header'
-import cloudinary from './utils/cloudinary'
 import { removeTrailingSlash, getCanonicalUrl } from './utils/http'
 import { author } from './consts'
 import styles from './tailwind.css'
@@ -64,40 +63,10 @@ function App() {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <link rel="canonical" href={data.canonicalUrl} />
-        {/* Open Graph */}
         <meta property="og:site_name" content={author.name} />
         <meta property="og:url" content={data.canonicalUrl} />
-        {/* https://developers.facebook.com/docs/sharing/best-practices/#images */}
-        <meta
-          property="og:image:url"
-          content={cloudinary('in-reactor-1.jpg', {
-            version: 3,
-            width: 1080,
-            aspectRatio: '1:1',
-            crop: 'fill',
-            gravity: 'face',
-            quality: 'auto',
-          })}
-        />
-        <meta property="og:image:type" content="image/jpeg" />
-        <meta property="og:image:width" content="1080" />
-        <meta property="og:image:height" content="1080" />
-        {/* Twitter Card */}
-        {/* https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/summary */}
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:site" content="@silvenon" />
-        <meta
-          name="twitter:image"
-          content={cloudinary('in-reactor-1.jpg', {
-            version: 3,
-            width: 3024,
-            aspectRatio: '1:1',
-            crop: 'fill',
-            gravity: 'face',
-            format: 'webp',
-            quality: 'auto',
-          })}
-        />
         <Meta />
         <Links />
         <MetronomeLinks />

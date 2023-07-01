@@ -40,6 +40,12 @@ export const meta: V2_MetaFunction<typeof loader> = () =>
   getMeta({
     title: author.name,
     description: `Matija Marohnić is a frontend developer from Croatia, he enjoys exploring latest tech. Read this blog to learn about React, frontend tools, testing, and more!`,
+    image: {
+      publicId: 'in-reactor-1.jpg',
+      alt: 'a photo of Matija Marohnić',
+      version: 3,
+      gravity: 'face',
+    },
   })
 
 export default function Home() {
