@@ -44,7 +44,7 @@ export function Experience({ role, project, duration: [start, end], tech, childr
   )
 }
 
-<Prose as="main" className="mt-2 pb-6 md:pb-10 lg:mt-4">
+<Prose as="main" className="mt-2 pb-6 md:pb-10 lg:mt-4 print:my-0 print:p-0">
   <h1 className="flex flex-col items-center text-center sm:flex-row sm:text-left">
     <div className="sm:flex-1">
       <span>Matija Marohnić</span><br />
@@ -75,6 +75,8 @@ export function Experience({ role, project, duration: [start, end], tech, childr
     - **writing**: blogging, documenting
   </div>
 
+  <div className="break-after-page" />
+
   ## Technologies
 
   With my experience in open source I can take solving problems a step further by debugging libraries, reporting bugs and even fixing them.
@@ -93,9 +95,11 @@ export function Experience({ role, project, duration: [start, end], tech, childr
     - **version control**: loving Git more than the average person, see my [series of posts on Git history](https://silvenon.com/blog/better-git-history)
   </div>
 
+  <div className="break-after-page" />
+
   ## Professional experience
 
-  <div className="print:[&>*]:break-inside-avoid-page">
+  <div className="print:grid print:grid-cols-2 print:gap-x-4 print:[&>*]:break-inside-avoid-page">
     <Experience role="Senior Frontend Developer" project="Profico" duration={[2022]}>
       - worked on a legacy React project
       - reduced the amount of friction by properly enforcing checks and speeding up parts of the workflow
@@ -134,15 +138,17 @@ export function Experience({ role, project, duration: [start, end], tech, childr
       - developed a Rails dating app
       - eventually started moving away from Ruby
     </Experience>
+  </div>
 
-    <div>
-      ## Open source experience
+  <div className="break-after-page" />
 
-      Open source is where I learned most of what I know about programming, teamwork and communication. It's a crucial part of my professional education, so it's important to me that my clients support open source either by donating or, even better, allocating time for employees and contractors to contribute.
+  ## Open source experience
 
-      The following are my most notable contributions.
-    </div>
+  Open source is where I learned most of what I know about programming, teamwork and communication. It's a crucial part of my professional education, so it's important to me that my clients support open source either by donating or, even better, allocating time for employees and contractors to contribute.
 
+  The following are my most notable contributions.
+
+  <div className="print:grid print:grid-cols-2 print:[&>*]:break-inside-avoid-page">
     <Experience role="Core team member" project="MDX" duration={[2018, 2020]}>
       - contributed significantly in the early stages of MDX v1
       - managed the monorepo infrastructure
@@ -154,9 +160,8 @@ export function Experience({ role, project, duration: [start, end], tech, childr
       - started collaborating after writing a [blog post about the nuances of the library](https://silvenon.com/blog/the-nuances-of-react-transition-group)
       - mostly improved documentation and examples based on open issues
     </Experience>
-
-    <Experience role="Core team member" project="Yeoman generators" duration={[2014, 2020]}>
-      - as I was learning Grunt and Gulp I started contributing to the generators
-    </Experience>
   </div>
+  <Experience role="Core team member" project="Yeoman generators" duration={[2014, 2020]}>
+    - as I was learning Grunt and Gulp I started contributing to the generators
+  </Experience>
 </Prose>
