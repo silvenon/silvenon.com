@@ -12,7 +12,7 @@ interface ProviderProps {
 
 function DarkModeProvider({ specifiedValue, children }: ProviderProps) {
   const [matchesValue, setMatchesValue] = useState<boolean | null>(() => {
-    if (typeof window === 'undefined') {
+    if (typeof document === 'undefined') {
       // there's no way for us to know what the theme should be in this context
       // the client will have to figure it out before hydration.
       return null

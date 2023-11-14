@@ -56,7 +56,7 @@ export const links: LinksFunction = () => {
 
 function App() {
   const data = useLoaderData<typeof loader>()
-  const hasJs = typeof window !== 'undefined'
+  const hasJs = typeof document !== 'undefined'
 
   return (
     <DarkMode.Html lang="en" className={clsx('h-full', hasJs ? 'js' : 'no-js')}>
