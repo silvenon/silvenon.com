@@ -6,14 +6,12 @@ import {
   Outlet,
   ScrollRestoration,
   useLoaderData,
-  useNavigation,
   useLocation,
   useRouteError,
   isRouteErrorResponse,
 } from '@remix-run/react'
 import { redirect, json } from '@remix-run/node'
 import type { LinksFunction, LoaderArgs } from '@remix-run/node'
-import { useRef } from 'react'
 import { MetronomeLinks } from '@metronome-sh/react'
 import { DarkMode } from './services/dark-mode'
 import clsx from 'clsx'
@@ -54,68 +52,53 @@ export const links: LinksFunction = () => {
   ]
 }
 
-function App() {
+export default function App() {
   const data = useLoaderData<typeof loader>()
   const hasJs = typeof document !== 'undefined'
 
   return (
-    <DarkMode.Html lang="en" className={clsx('h-full', hasJs ? 'js' : 'no-js')}>
-      <head>
-        {data.appName === 'silvenon-staging' && (
-          <meta name="robots" content="noindex" />
-        )}
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <CanonicalLink origin={data.origin} />
-        <meta property="og:site_name" content={author.name} />
-        <meta name="twitter:card" content="summary" />
-        <meta name="twitter:site" content="@silvenon" />
-        <Meta />
-        <Links />
-        <MetronomeLinks />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
+    <AnalyticsProvider>
+      <DarkMode.Provider sessionValue={data.darkMode}>
+        <DarkMode.Html
+          lang="en"
+          className={clsx('h-full', hasJs ? 'js' : 'no-js')}
+        >
+          <head>
+            {data.appName === 'silvenon-staging' && (
+              <meta name="robots" content="noindex" />
+            )}
+            <meta charSet="utf-8" />
+            <meta
+              name="viewport"
+              content="width=device-width,initial-scale=1"
+            />
+            <CanonicalLink origin={data.origin} />
+            <meta property="og:site_name" content={author.name} />
+            <meta name="twitter:card" content="summary" />
+            <meta name="twitter:site" content="@silvenon" />
+            <Meta />
+            <Links />
+            <MetronomeLinks />
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `
               document.documentElement.classList.replace('no-js', 'js')
             `,
-          }}
-        />
-        <DarkMode.Head />
-      </head>
-      <body className="h-full bg-page text-black selection:bg-amber-300 selection:text-black dark:bg-page-dark dark:text-white">
-        <Header />
-        <Outlet />
-        <ScrollRestoration />
-        {data.NODE_ENV === 'production' && <AnalyticsScript />}
-        <Scripts />
-        <LiveReload />
-      </body>
-    </DarkMode.Html>
-  )
-}
-
-export default function AppWithProviders() {
-  const data = useLoaderData<typeof loader>()
-  const navigation = useNavigation()
-  const specifiedDarkModeRef = useRef(data.darkMode)
-
-  if (
-    navigation.state === 'submitting' &&
-    navigation.location.pathname === '/dark-mode'
-  ) {
-    const optimisticDarkMode = navigation.formData.get('darkMode')
-    if (typeof optimisticDarkMode === 'string') {
-      specifiedDarkModeRef.current =
-        optimisticDarkMode === 'os' ? undefined : optimisticDarkMode === 'true'
-    }
-  }
-
-  return (
-    <DarkMode.Provider specifiedValue={specifiedDarkModeRef.current}>
-      <AnalyticsProvider>
-        <App />
-      </AnalyticsProvider>
-    </DarkMode.Provider>
+              }}
+            />
+            <DarkMode.Head />
+          </head>
+          <body className="h-full bg-page text-black selection:bg-amber-300 selection:text-black dark:bg-page-dark dark:text-white">
+            <Header />
+            <Outlet />
+            <ScrollRestoration />
+            {data.NODE_ENV === 'production' && <AnalyticsScript />}
+            <Scripts />
+            <LiveReload />
+          </body>
+        </DarkMode.Html>
+      </DarkMode.Provider>
+    </AnalyticsProvider>
   )
 }
 
