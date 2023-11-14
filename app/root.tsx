@@ -23,7 +23,6 @@ import { author } from './consts'
 import styles from './tailwind.css'
 import Boundary from './components/Boundary'
 import { AnalyticsProvider, AnalyticsScript } from './services/analytics'
-import { getEnv } from '~/utils/env.server'
 import { getDarkMode } from '~/session.server'
 import CanonicalLink from './components/CanonicalLink'
 
@@ -36,7 +35,6 @@ export async function loader({ request }: LoaderArgs) {
 
   return json(
     {
-      ENV: getEnv(),
       NODE_ENV: process.env.NODE_ENV,
       appName: process.env.FLY_APP_NAME,
       origin: getDomainUrl(request),
@@ -79,13 +77,6 @@ function App() {
           dangerouslySetInnerHTML={{
             __html: `
               document.documentElement.classList.replace('no-js', 'js')
-            `,
-          }}
-        />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.ENV = ${JSON.stringify(data.ENV)}
             `,
           }}
         />
