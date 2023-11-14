@@ -30,7 +30,7 @@ export async function loader({ request }: LoaderArgs) {
   const desiredUrl = removeTrailingSlash(request.url)
 
   if (request.url !== desiredUrl) {
-    throw redirect(desiredUrl, { status: 308 })
+    throw redirect(desiredUrl, { status: 301 })
   }
 
   return json(
