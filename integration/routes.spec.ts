@@ -64,6 +64,9 @@ test.describe('routes', () => {
     await assertCanonical('http://localhost:3000/blog/intro-to-eslint')
 
     await page.goto('/?param=bla')
-    await assertCanonical('http://localhost:3000/?param=bla')
+    await assertCanonical('http://localhost:3000/')
+
+    await page.goto('/#foo')
+    await assertCanonical('http://localhost:3000/')
   })
 })

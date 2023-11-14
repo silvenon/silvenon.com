@@ -11,29 +11,35 @@ import {
   useRouteError,
   isRouteErrorResponse,
 } from '@remix-run/react'
-import { json } from '@remix-run/node'
+import { redirect, json } from '@remix-run/node'
 import type { LinksFunction, LoaderArgs } from '@remix-run/node'
 import { useRef } from 'react'
 import { MetronomeLinks } from '@metronome-sh/react'
 import { DarkMode } from './services/dark-mode'
 import clsx from 'clsx'
 import Header from './components/Header'
-import { removeTrailingSlash, getCanonicalUrl } from './utils/http'
+import { removeTrailingSlash, getDomainUrl } from './utils/http'
 import { author } from './consts'
 import styles from './tailwind.css'
 import Boundary from './components/Boundary'
-import Analytics from './components/Analytics'
+import { AnalyticsProvider, AnalyticsScript } from './services/analytics'
 import { getEnv } from '~/utils/env.server'
 import { getDarkMode } from '~/session.server'
+import CanonicalLink from './components/CanonicalLink'
 
 export async function loader({ request }: LoaderArgs) {
-  removeTrailingSlash(request)
+  const desiredUrl = removeTrailingSlash(request.url)
+
+  if (request.url !== desiredUrl) {
+    throw redirect(desiredUrl, { status: 308 })
+  }
 
   return json(
     {
       ENV: getEnv(),
+      NODE_ENV: process.env.NODE_ENV,
       appName: process.env.FLY_APP_NAME,
-      canonicalUrl: getCanonicalUrl(request),
+      origin: getDomainUrl(request),
       darkMode: await getDarkMode(request),
     },
     200,
@@ -62,9 +68,8 @@ function App() {
         )}
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <link rel="canonical" href={data.canonicalUrl} />
+        <CanonicalLink origin={data.origin} />
         <meta property="og:site_name" content={author.name} />
-        <meta property="og:url" content={data.canonicalUrl} />
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:site" content="@silvenon" />
         <Meta />
@@ -90,7 +95,7 @@ function App() {
         <Header />
         <Outlet />
         <ScrollRestoration />
-        <Analytics />
+        {data.NODE_ENV === 'production' && <AnalyticsScript />}
         <Scripts />
         <LiveReload />
       </body>
@@ -116,7 +121,9 @@ export default function AppWithProviders() {
 
   return (
     <DarkMode.Provider specifiedValue={specifiedDarkModeRef.current}>
-      <App />
+      <AnalyticsProvider>
+        <App />
+      </AnalyticsProvider>
     </DarkMode.Provider>
   )
 }
