@@ -1,24 +1,38 @@
 import { createContext, useState, useContext, useEffect, useId } from 'react'
-import { Form, useLocation } from '@remix-run/react'
+import { Form, useLocation, useNavigation } from '@remix-run/react'
 import { SunIcon, MoonIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 
 const DarkModeContext = createContext<[boolean | null, boolean]>([null, false])
 
 interface ProviderProps {
-  specifiedValue?: boolean
+  sessionValue: boolean | undefined
   children: React.ReactNode
 }
 
-function DarkModeProvider({ specifiedValue, children }: ProviderProps) {
+function DarkModeProvider({ sessionValue, children }: ProviderProps) {
   const [matchesValue, setMatchesValue] = useState<boolean | null>(() => {
-    if (typeof window === 'undefined') {
+    if (typeof document === 'undefined') {
       // there's no way for us to know what the theme should be in this context
       // the client will have to figure it out before hydration.
       return null
     }
     return window.matchMedia('(prefers-color-scheme: dark)').matches
   })
+
+  const navigation = useNavigation()
+  let specifiedValue = sessionValue
+
+  if (
+    navigation.state === 'submitting' &&
+    navigation.location.pathname === '/dark-mode'
+  ) {
+    const optimisticDarkMode = navigation.formData.get('darkMode')
+    if (typeof optimisticDarkMode === 'string') {
+      specifiedValue =
+        optimisticDarkMode === 'os' ? undefined : optimisticDarkMode === 'true'
+    }
+  }
 
   useEffect(() => {
     const mql = window.matchMedia('(prefers-color-scheme: dark)')

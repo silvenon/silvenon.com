@@ -1,5 +1,5 @@
 import { Link, useLocation } from '@remix-run/react'
-import { useCallback, useMemo } from 'react'
+import { useMemo } from 'react'
 import { getMDXComponent } from 'mdx-bundler/client'
 import type { Theme as UtterancesTheme } from 'utterances-react-component'
 import { Utterances } from 'utterances-react-component'
@@ -11,7 +11,6 @@ import ProseImage from '~/components/ProseImage'
 import HotTip from '~/components/HotTip'
 import ESLintPrettierDiagram from '~/components/ESLintPrettierDiagram'
 import { useDarkMode } from '~/services/dark-mode'
-import unorphan from 'unorphan'
 
 interface StandalonePost {
   slug: string
@@ -54,45 +53,30 @@ export default function Post(props: Props) {
     commentsTheme = 'github-light'
   }
 
-  const unorphanRef = useCallback(
-    (node: HTMLElement | null) => {
-      if (node) unorphan(node)
-    },
-    // unorphan needs to be computed when these change
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [isSeries],
-  )
-
   return (
     <Prose className="space-y-4">
       <main>
         <article>
           {isSeries ? (
-            <h1 className="space-y-2 text-center lg:space-y-4">
+            <h1 className="space-y-2 text-center [text-wrap:balance] lg:space-y-4">
               <div>
-                <span ref={unorphanRef}>{props.series.title}</span>
+                {props.series.title}
                 <span className="sr-only">:</span>
               </div>
               <div className="text-[0.8em] font-normal dark:font-light">
                 {props.htmlTitle ? (
-                  <span
-                    ref={unorphanRef}
-                    dangerouslySetInnerHTML={{ __html: props.htmlTitle }}
-                  />
+                  <span dangerouslySetInnerHTML={{ __html: props.htmlTitle }} />
                 ) : (
-                  <span ref={unorphanRef}>{props.title}</span>
+                  props.title
                 )}
               </div>
             </h1>
           ) : (
-            <h1 className="text-center">
+            <h1 className="text-center [text-wrap:balance]">
               {props.htmlTitle ? (
-                <span
-                  ref={unorphanRef}
-                  dangerouslySetInnerHTML={{ __html: props.htmlTitle }}
-                />
+                <span dangerouslySetInnerHTML={{ __html: props.htmlTitle }} />
               ) : (
-                <span ref={unorphanRef}>{props.title}</span>
+                props.title
               )}
             </h1>
           )}

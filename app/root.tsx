@@ -6,35 +6,36 @@ import {
   Outlet,
   ScrollRestoration,
   useLoaderData,
-  useNavigation,
   useLocation,
   useRouteError,
   isRouteErrorResponse,
 } from '@remix-run/react'
-import { json } from '@remix-run/node'
+import { redirect, json } from '@remix-run/node'
 import type { LinksFunction, LoaderArgs } from '@remix-run/node'
-import { useRef } from 'react'
 import { MetronomeLinks } from '@metronome-sh/react'
 import { DarkMode } from './services/dark-mode'
 import clsx from 'clsx'
 import Header from './components/Header'
-import cloudinary from './utils/cloudinary'
-import { removeTrailingSlash, getCanonicalUrl } from './utils/http'
+import { removeTrailingSlash, getDomainUrl } from './utils/http'
 import { author } from './consts'
 import styles from './tailwind.css'
 import Boundary from './components/Boundary'
-import Analytics from './components/Analytics'
-import { getEnv } from '~/utils/env.server'
+import { AnalyticsProvider, AnalyticsScript } from './services/analytics'
 import { getDarkMode } from '~/session.server'
+import CanonicalLink from './components/CanonicalLink'
 
 export async function loader({ request }: LoaderArgs) {
-  removeTrailingSlash(request)
+  const desiredUrl = removeTrailingSlash(request.url)
+
+  if (request.url !== desiredUrl) {
+    throw redirect(desiredUrl, { status: 301 })
+  }
 
   return json(
     {
-      ENV: getEnv(),
+      NODE_ENV: process.env.NODE_ENV,
       appName: process.env.FLY_APP_NAME,
-      canonicalUrl: getCanonicalUrl(request),
+      origin: getDomainUrl(request),
       darkMode: await getDarkMode(request),
     },
     200,
@@ -51,104 +52,53 @@ export const links: LinksFunction = () => {
   ]
 }
 
-function App() {
+export default function App() {
   const data = useLoaderData<typeof loader>()
-  const hasJs = typeof window !== 'undefined'
+  const hasJs = typeof document !== 'undefined'
 
   return (
-    <DarkMode.Html lang="en" className={clsx('h-full', hasJs ? 'js' : 'no-js')}>
-      <head>
-        {data.appName === 'silvenon-staging' && (
-          <meta name="robots" content="noindex" />
-        )}
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <link rel="canonical" href={data.canonicalUrl} />
-        {/* Open Graph */}
-        <meta property="og:site_name" content={author.name} />
-        <meta property="og:url" content={data.canonicalUrl} />
-        {/* https://developers.facebook.com/docs/sharing/best-practices/#images */}
-        <meta
-          property="og:image:url"
-          content={cloudinary('in-reactor-1.jpg', {
-            version: 3,
-            width: 1080,
-            aspectRatio: '1:1',
-            crop: 'fill',
-            gravity: 'face',
-            quality: 'auto',
-          })}
-        />
-        <meta property="og:image:type" content="image/jpeg" />
-        <meta property="og:image:width" content="1080" />
-        <meta property="og:image:height" content="1080" />
-        {/* Twitter Card */}
-        {/* https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/summary */}
-        <meta name="twitter:card" content="summary" />
-        <meta name="twitter:site" content="@silvenon" />
-        <meta
-          name="twitter:image"
-          content={cloudinary('in-reactor-1.jpg', {
-            version: 3,
-            width: 3024,
-            aspectRatio: '1:1',
-            crop: 'fill',
-            gravity: 'face',
-            format: 'webp',
-            quality: 'auto',
-          })}
-        />
-        <Meta />
-        <Links />
-        <MetronomeLinks />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
+    <AnalyticsProvider>
+      <DarkMode.Provider sessionValue={data.darkMode}>
+        <DarkMode.Html
+          lang="en"
+          className={clsx('h-full', hasJs ? 'js' : 'no-js')}
+        >
+          <head>
+            {data.appName === 'silvenon-staging' && (
+              <meta name="robots" content="noindex" />
+            )}
+            <meta charSet="utf-8" />
+            <meta
+              name="viewport"
+              content="width=device-width,initial-scale=1"
+            />
+            <CanonicalLink origin={data.origin} />
+            <meta property="og:site_name" content={author.name} />
+            <meta name="twitter:card" content="summary" />
+            <meta name="twitter:site" content="@silvenon" />
+            <Meta />
+            <Links />
+            <MetronomeLinks />
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `
               document.documentElement.classList.replace('no-js', 'js')
             `,
-          }}
-        />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.ENV = ${JSON.stringify(data.ENV)}
-            `,
-          }}
-        />
-        <DarkMode.Head />
-      </head>
-      <body className="h-full bg-page text-black selection:bg-amber-300 selection:text-black dark:bg-page-dark dark:text-white">
-        <Header />
-        <Outlet />
-        <ScrollRestoration />
-        <Analytics />
-        <Scripts />
-        <LiveReload />
-      </body>
-    </DarkMode.Html>
-  )
-}
-
-export default function AppWithProviders() {
-  const data = useLoaderData<typeof loader>()
-  const navigation = useNavigation()
-  const specifiedDarkModeRef = useRef(data.darkMode)
-
-  if (
-    navigation.state === 'submitting' &&
-    navigation.location.pathname === '/dark-mode'
-  ) {
-    const optimisticDarkMode = navigation.formData.get('darkMode')
-    if (typeof optimisticDarkMode === 'string') {
-      specifiedDarkModeRef.current =
-        optimisticDarkMode === 'os' ? undefined : optimisticDarkMode === 'true'
-    }
-  }
-
-  return (
-    <DarkMode.Provider specifiedValue={specifiedDarkModeRef.current}>
-      <App />
-    </DarkMode.Provider>
+              }}
+            />
+            <DarkMode.Head />
+          </head>
+          <body className="h-full bg-page text-black selection:bg-amber-300 selection:text-black dark:bg-page-dark dark:text-white">
+            <Header />
+            <Outlet />
+            <ScrollRestoration />
+            {data.NODE_ENV === 'production' && <AnalyticsScript />}
+            <Scripts />
+            <LiveReload />
+          </body>
+        </DarkMode.Html>
+      </DarkMode.Provider>
+    </AnalyticsProvider>
   )
 }
 
