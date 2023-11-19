@@ -37,7 +37,7 @@ export async function loader(args: LoaderArgs) {
 
 export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
   // type of data is incorrect, in case of an error it's undefined
-  if (!data) return getMeta({ title: 'Post not found' })
+  if (!data) return getMeta({ type: 'website', title: 'Post not found' })
   const { title, series, description, lastModified } = data
   return [
     ...getMeta({
