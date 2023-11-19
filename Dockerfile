@@ -1,5 +1,5 @@
 # base node image
-FROM node:16-bullseye-slim as base
+FROM node:18-bullseye-slim as base
 
 # set for base and all layer that inherit from it
 ENV NODE_ENV=production
@@ -9,8 +9,8 @@ FROM base as deps
 
 WORKDIR /app
 
-COPY package.json package-lock.json ./
-RUN npm install --production=false
+COPY package.json package-lock.json .npmrc ./
+RUN npm install --include=dev
 
 # Setup production node_modules
 FROM base as production-deps
@@ -18,8 +18,8 @@ FROM base as production-deps
 WORKDIR /app
 
 COPY --from=deps /app/node_modules /app/node_modules
-COPY package.json package-lock.json ./
-RUN npm prune --production
+COPY package.json package-lock.json .npmrc ./
+RUN npm prune --omit=dev
 
 # Build the app
 FROM base as build
@@ -47,7 +47,7 @@ COPY --from=production-deps /app/node_modules /app/node_modules
 COPY --from=build /app/build /app/build
 COPY --from=build /app/public /app/public
 COPY --from=build /app/app/posts /app/app/posts
-COPY . .
+COPY --from=build /app/package.json /app/package.json
 
 EXPOSE 3000
 
