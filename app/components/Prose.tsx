@@ -25,6 +25,7 @@ export default function Prose({ as: Component = 'div', ...props }: Props) {
         'dark:prose-a:text-purple-300 dark:hover:prose-a:text-amber-400',
         'dark:prose-code:border-gray-800 dark:prose-code:bg-code-background-dark dark:prose-code:text-code-foreground-dark',
         'dark:prose-pre:bg-code-background-dark dark:prose-pre:text-code-foreground-dark',
+        'print:max-w-[90ch] print:px-0',
       )}
     />
   )

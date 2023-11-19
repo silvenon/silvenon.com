@@ -1,5 +1,3 @@
-import { redirect } from '@remix-run/node'
-
 export function getDomainUrl(request: Request) {
   const host =
     request.headers.get('X-Forwarded-Host') ?? request.headers.get('host')
@@ -10,17 +8,13 @@ export function getDomainUrl(request: Request) {
   return `${protocol}://${host}`
 }
 
-// "silvenon.com/" -> "silvenon.com/"
+// "silvenon.com/" -> "silvenon.com/" (home remains the same)
 // "silvenon.com/blog/post/" -> "silvenon.com/blog/post"
-export function removeTrailingSlash(request: Request) {
-  const url = new URL(request.url)
+// "silvenon.com/blog/post/?query=param" -> "silvenon.com/blog/post?query=param"
+export function removeTrailingSlash(href: string): string {
+  const url = new URL(href)
   if (url.pathname.endsWith('/') && url.pathname !== '/') {
-    throw redirect(url.pathname.slice(0, -1) + url.search, { status: 308 })
+    url.pathname = url.pathname.slice(0, -1)
   }
-}
-
-export function getCanonicalUrl(request: Request) {
-  const origin = getDomainUrl(request)
-  const { pathname, search } = new URL(request.url)
-  return `${origin}${pathname}${search}`
+  return url.href
 }
