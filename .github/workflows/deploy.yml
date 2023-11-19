@@ -98,14 +98,6 @@ jobs:
           cache-dependency-path: ./package.json
           node-version-file: package.json
 
-      # https://playwrightsolutions.com/playwright-github-action-to-cache-the/
-      - name: Cache Playwright binaries
-        uses: actions/cache@v3
-        id: playwright-cache
-        with:
-          path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ hashFiles('package-lock.json') }}
-
       - name: Install deps
         run: npm install
 
