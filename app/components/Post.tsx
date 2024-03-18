@@ -1,8 +1,6 @@
 import { Link, useLocation } from '@remix-run/react'
-import { useMemo } from 'react'
-import { getMDXComponent } from 'mdx-bundler/client'
-import type { Theme as UtterancesTheme } from 'utterances-react-component'
-import { Utterances } from 'utterances-react-component'
+import { Suspense } from 'react'
+import Comments from '~/components/Comments'
 import Prose from '~/components/Prose'
 import PostDate from '~/components/PostDate'
 import Gitgraph from '~/components/Gitgraph'
@@ -10,7 +8,7 @@ import Tweet from '~/components/Tweet'
 import ProseImage from '~/components/ProseImage'
 import HotTip from '~/components/HotTip'
 import ESLintPrettierDiagram from '~/components/ESLintPrettierDiagram'
-import { useDarkMode } from '~/services/dark-mode'
+import type { MDXContent } from 'mdx/types'
 
 interface StandalonePost {
   slug: string
@@ -18,7 +16,7 @@ interface StandalonePost {
   htmlTitle?: string
   published?: string
   lastModified?: string
-  code: string
+  PostContent: React.LazyExoticComponent<MDXContent>
 }
 
 interface SeriesPart extends Omit<StandalonePost, 'slug' | 'published'> {
@@ -37,21 +35,10 @@ interface SeriesPart extends Omit<StandalonePost, 'slug' | 'published'> {
 type Props = StandalonePost | SeriesPart
 
 export default function Post(props: Props) {
-  const PostContent = useMemo(() => getMDXComponent(props.code), [props.code])
   const location = useLocation()
-  const [darkMode] = useDarkMode()
+  const { PostContent } = props
 
   const isSeries = 'series' in props
-
-  let commentsTheme: UtterancesTheme
-
-  if (darkMode === null) {
-    commentsTheme = 'preferred-color-scheme'
-  } else if (darkMode) {
-    commentsTheme = 'github-dark'
-  } else {
-    commentsTheme = 'github-light'
-  }
 
   return (
     <Prose className="space-y-4">
@@ -109,15 +96,18 @@ export default function Post(props: Props) {
             </>
           ) : null}
 
-          <PostContent
-            components={{
-              Gitgraph,
-              ProseImage,
-              HotTip,
-              Tweet,
-              ESLintPrettierDiagram,
-            }}
-          />
+          <Suspense fallback={null}>
+            <PostContent
+              components={{
+                Gitgraph,
+                ProseImage,
+                HotTip,
+                Tweet,
+                ESLintPrettierDiagram,
+                figure: Figure,
+              }}
+            />
+          </Suspense>
 
           <div className="text-right">
             <a className="p-2" href="#top">
@@ -129,15 +119,19 @@ export default function Post(props: Props) {
 
       <footer className="px-2.5">
         <hr className="!mb-2" />
-        <Utterances
+        <Comments
           key={
             isSeries ? `${props.series.slug}-${props.seriesPart}` : props.slug
           }
-          repo="silvenon/silvenon.com"
-          theme={commentsTheme}
-          issueTerm="title"
         />
       </footer>
     </Prose>
   )
+}
+
+function Figure(props: React.ComponentProps<'figure'>) {
+  if ('data-rehype-pretty-code-figure' in props) {
+    return <>{props.children}</>
+  }
+  return <figure {...props} />
 }

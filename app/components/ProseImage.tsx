@@ -1,6 +1,5 @@
 import type CSS from 'csstype'
 import cloudinary from '../utils/cloudinary'
-import { screens } from '../consts'
 import clsx from 'clsx'
 
 // approximate px values of @tailwindcss/typography's 65ch on different viewports
@@ -10,7 +9,6 @@ const proseMaxWidth = {
   xl: '780px',
   '2xl': '920px',
 }
-const proseSizes: Array<keyof typeof proseMaxWidth> = ['sm', 'lg', 'xl', '2xl']
 const imageSizes = [640, 768, 1024, 1536, 2048]
 const largestImageSize = Math.max(...imageSizes)
 
@@ -40,7 +38,7 @@ export default function ProseImage({
   return (
     <div className="not-prose mx-auto" style={{ maxWidth }}>
       <div
-        className="aspect-w-[var(--width)] aspect-h-[var(--height)]"
+        className="aspect-h-[var(--height)] aspect-w-[var(--width)]"
         style={{
           '--width': width,
           '--height': height,
@@ -58,9 +56,10 @@ export default function ProseImage({
             .map((size) => `${getImageUrl(cloudinaryId, size)} ${size}w`)
             .join(', ')}
           sizes={[
-            ...proseSizes.map(
-              (size) => `(min-width: ${screens[size]}) ${proseMaxWidth[size]}`,
-            ),
+            `(min-width: ${import.meta.env.SCREEN_SM}) ${proseMaxWidth.sm}`,
+            `(min-width: ${import.meta.env.SCREEN_LG}) ${proseMaxWidth.lg}`,
+            `(min-width: ${import.meta.env.SCREEN_XL}) ${proseMaxWidth.xl}`,
+            `(min-width: ${import.meta.env.SCREEN_2XL}) ${proseMaxWidth['2xl']}`,
             `calc(100vw - (var(--page-padding) * 2))`,
           ].join(', ')}
         />

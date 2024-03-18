@@ -1,5 +1,5 @@
 import { formatDate, formatDateISO } from '../utils/date'
-import { CalendarDaysIcon, PencilSquareIcon } from '@heroicons/react/20/solid'
+import spriteUrl from '~/sprite.svg'
 
 interface Props {
   published?: string
@@ -15,12 +15,16 @@ export default function PostDate({ published, lastModified }: Props) {
           className="flex items-center space-x-2 text-gray-500 dark:text-gray-400"
           dateTime={formatDateISO(published)}
         >
-          <CalendarDaysIcon aria-hidden="true" className="h-5 w-5" />
+          <svg aria-hidden="true" className="h-5 w-5">
+            <use href={`${spriteUrl}#calendar`} />
+          </svg>
           <span>{formatDate(published)}</span>
         </time>
         {lastModified ? (
           <span className="inline-flex items-center space-x-2 text-gray-500 dark:text-gray-400">
-            <PencilSquareIcon aria-hidden="true" className="h-5 w-5" />
+            <svg aria-hidden="true" className="h-5 w-5">
+              <use href={`${spriteUrl}#pencil`} />
+            </svg>
             <span>
               Last modified on{' '}
               <time className="" dateTime={formatDateISO(lastModified)}>
@@ -35,7 +39,9 @@ export default function PostDate({ published, lastModified }: Props) {
 
   return (
     <div className="flex items-center space-x-2 text-amber-600 dark:text-amber-300">
-      <PencilSquareIcon className="h-5 w-5" />
+      <svg className="h-5 w-5">
+        <use href={`${spriteUrl}#pencil`} />
+      </svg>
       <span>Draft</span>
     </div>
   )

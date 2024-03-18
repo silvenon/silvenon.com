@@ -1,6 +1,6 @@
 import { createContext, useState, useContext, useEffect, useId } from 'react'
 import { Form, useLocation, useNavigation } from '@remix-run/react'
-import { SunIcon, MoonIcon } from '@heroicons/react/24/outline'
+import spriteUrl from '~/sprite.svg'
 import clsx from 'clsx'
 
 const DarkModeContext = createContext<[boolean | null, boolean]>([null, false])
@@ -27,7 +27,7 @@ function DarkModeProvider({ sessionValue, children }: ProviderProps) {
     navigation.state === 'submitting' &&
     navigation.location.pathname === '/dark-mode'
   ) {
-    const optimisticDarkMode = navigation.formData.get('darkMode')
+    const optimisticDarkMode = navigation.formData?.get('darkMode')
     if (typeof optimisticDarkMode === 'string') {
       specifiedValue =
         optimisticDarkMode === 'os' ? undefined : optimisticDarkMode === 'true'
@@ -62,6 +62,7 @@ export function useDarkMode() {
 function DarkModeHtml(props: React.ComponentProps<'html'>) {
   const [darkMode] = useDarkMode()
   return (
+    // eslint-disable-next-line jsx-a11y/html-has-lang
     <html {...props} className={clsx(props.className, darkMode && 'dark')} />
   )
 }
@@ -140,13 +141,17 @@ function DarkModeToggle() {
             className="absolute inset-0 flex h-full w-full items-center justify-center transition-opacity duration-200 ease-out dark:opacity-0 dark:duration-100 dark:ease-out"
             aria-hidden="true"
           >
-            <SunIcon className="h-3 w-3 bg-white text-gray-400" />
+            <svg className="h-3 w-3 bg-white text-gray-400">
+              <use href={`${spriteUrl}#sun`} />
+            </svg>
           </span>
           <span
             className="absolute inset-0 flex h-full w-full items-center justify-center opacity-0 transition-opacity duration-100 ease-out dark:opacity-100 dark:duration-200 dark:ease-in"
             aria-hidden="true"
           >
-            <MoonIcon className="h-3 w-3 bg-white text-purple-500" />
+            <svg className="h-3 w-3 bg-white text-purple-500">
+              <use href={`${spriteUrl}#moon`} />
+            </svg>
           </span>
         </span>
       </button>

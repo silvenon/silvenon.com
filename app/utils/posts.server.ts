@@ -1,44 +1,54 @@
-import matter from 'gray-matter'
 import fs from 'fs/promises'
-import path from 'path'
-import { parseISO, compareDesc } from 'date-fns'
-import { ROOT_DIR } from '../consts.server'
+import { basename, dirname, join as joinPath } from 'path'
 
-export interface StandalonePost {
-  slug: string
+const standalonePostFrontmatter = import.meta.glob<StandalonePostFrontmattter>(
+  '/posts/*.mdx',
+  { import: 'frontmatter' },
+)
+const seriesPostFrontmatter = import.meta.glob<SeriesPostFrontmatter>(
+  '/posts/*/*.mdx',
+  { import: 'frontmatter' },
+)
+const seriesMeta = import.meta.glob<SeriesMeta>('/posts/*/series.json', {
+  import: 'default',
+})
+
+export interface StandalonePostFrontmattter {
   title: string
   htmlTitle?: string
   description: string
   category?: string
-  published?: Date
-  lastModified?: Date
+  published?: string
+  lastModified?: string
   tweet?: string
-  output: string
 }
 
-export interface Series {
-  slug: string
+export interface SeriesPostFrontmatter {
+  seriesPart: number
   title: string
   htmlTitle?: string
   description: string
-  published?: Date
-  tweet: string
-  parts: SeriesPart[]
+  category?: string
+  lastModified?: string
 }
 
-export interface SeriesPart extends Omit<StandalonePost, 'published'> {
-  seriesPart: number
+export interface SeriesMeta {
+  title: string
+  htmlTitle?: string
+  description: string
+  published?: string
+  tweet?: string
 }
 
-export interface ExternalStandalonePost {
+interface ExternalStandalonePost {
   title: string
   description: string
   source: string
   url: string
-  published: Date
+  published: string
 }
 
-export interface ExternalSeries {
+interface ExternalSeries {
   title: string
   description: string
   source: string
@@ -46,7 +56,7 @@ export interface ExternalSeries {
     title: string
     description: string
     url: string
-    published: Date
+    published: string
   }>
 }
 
@@ -56,7 +66,7 @@ export const externalPosts: Array<ExternalStandalonePost | ExternalSeries> = [
     description: `Manual testing is usually slow, tedious and error-prone, we need a way to automate testing across different browsers and platforms.`,
     source: 'Semaphore',
     url: 'https://semaphoreci.com/community/tutorials/setting-up-an-end-to-end-testing-workflow-with-gulp-mocha-and-webdriverio',
-    published: parseISO('2015-10-21'),
+    published: '2015-10-21',
   },
   {
     title: `Testing with AVA`,
@@ -67,19 +77,19 @@ export const externalPosts: Array<ExternalStandalonePost | ExternalSeries> = [
         title: `Getting Started`,
         description: `Setting up our todo application using Create React App, configuring AVA, and running our first test.`,
         url: 'https://semaphoreci.com/community/tutorials/getting-started-with-create-react-app-and-ava',
-        published: parseISO('2016-10-25'),
+        published: '2016-10-25',
       },
       {
         title: `Common Redux Patterns`,
         description: `Testing Redux actions, reducers, and selectors, and configuring the Redux store.`,
         url: 'https://semaphoreci.com/community/tutorials/testing-common-redux-patterns-in-react-using-ava',
-        published: parseISO('2016-11-30'),
+        published: '2016-11-30',
       },
       {
         title: `React Components`,
         description: `Building and testing the UI using Enzyme, Test Utilities, Sinon.JS and redux-mock-store.`,
         url: 'https://semaphoreci.com/community/tutorials/testing-react-components-with-ava',
-        published: parseISO('2017-02-01'),
+        published: '2017-02-01',
       },
     ],
   },
@@ -92,13 +102,13 @@ export const externalPosts: Array<ExternalStandalonePost | ExternalSeries> = [
         title: `CSS-in-JS`,
         description: `Digging into the concept of CSS-in-JS. If you're already acquainted with this concept, you might still enjoy a stroll through the philosohpy of this approach.`,
         url: 'https://css-tricks.com/bridging-the-gap-between-css-and-javascript-css-in-js/',
-        published: parseISO('2018-12-03'),
+        published: '2018-12-03',
       },
       {
         title: `CSS Modules, PostCSS and the Future of CSS`,
         description: `Exploring tools for "plain ol' CSS" by refactoring the Photo component from the example in the CSS-in-JS article, the previous part of this series.`,
         url: 'https://css-tricks.com/bridging-the-gap-between-css-and-javascript-css-modules-postcss-and-the-future-of-css/',
-        published: parseISO('2018-12-04'),
+        published: '2018-12-04',
       },
     ],
   },
@@ -107,116 +117,109 @@ export const externalPosts: Array<ExternalStandalonePost | ExternalSeries> = [
     description: `My experience of rewriting my Gatsby blog to Next.js, what went well, and what didn’t.`,
     source: 'LogRocket',
     url: 'https://blog.logrocket.com/migrating-from-gatsby-to-next-js/',
-    published: parseISO('2020-06-16'),
+    published: '2020-06-16',
   },
 ]
 
-export async function getAllEntries() {
-  const entries: Array<
-    StandalonePost | Series | ExternalStandalonePost | ExternalSeries
-  > = [...externalPosts]
+export async function getAllPostsMeta() {
+  const entries = await Promise.all([
+    ...externalPosts,
+    ...Object.keys(standalonePostFrontmatter).map(async (path) => {
+      const slug = basename(path, '.mdx')
+      const meta = await standalonePostFrontmatter[path]()
+      const result: StandalonePostFrontmattter & {
+        slug: string
+        fileModified?: string
+      } = { ...meta, slug }
+      if (import.meta.env.DEV) {
+        result.fileModified = (
+          await fs.stat(joinPath(process.cwd(), path))
+        ).mtime.toISOString()
+      }
+      return result
+    }),
+    ...Object.keys(seriesMeta).map((path) => {
+      return getSeriesMeta(basename(dirname(path)))
+    }),
+  ])
 
-  const dirents = await fs.readdir(`${ROOT_DIR}/../posts`, {
-    withFileTypes: true,
-  })
-
-  for (const dirent of dirents) {
-    if (dirent.name === '__tests__') continue
-    if (dirent.isFile()) {
-      if (!dirent.name.endsWith('.mdx')) continue
-      const postSlug = path.basename(dirent.name, '.mdx')
-      const post = await getStandalonePost(postSlug)
-      if (post !== null) entries.push(post)
-      else throw new Error(`Could not find post "${postSlug}"`)
-    } else {
-      const seriesSlug = dirent.name
-      const series = await getSeries(seriesSlug)
-      if (series !== null) entries.push(series)
-      else throw new Error(`Could not find series "${seriesSlug}"`)
-    }
-  }
-
-  entries.sort((a, b) => {
-    const publishedA =
-      'source' in a && 'parts' in a ? a.parts[0].published : a.published
-    const publishedB =
-      'source' in b && 'parts' in b ? b.parts[0].published : b.published
-    if (!publishedA) return -1
-    if (!publishedB) return 1
-    return compareDesc(publishedA, publishedB)
-  })
-
-  if (process.env.NODE_ENV === 'development') {
-    return entries
-  }
-
-  return entries.filter((entry) => 'source' in entry || entry.published)
-}
-
-export async function getStandalonePost(
-  slug: string,
-): Promise<StandalonePost | null> {
-  let source, output
-  try {
-    source = await fs.readFile(`${ROOT_DIR}/../posts/${slug}.mdx`, 'utf8')
-    output = await fs.readFile(`${ROOT_DIR}/posts/${slug}.js`, 'utf8')
-  } catch {
-    return null
-  }
-  const file = matter(source)
-  const frontmatter = file.data as Omit<StandalonePost, 'slug' | 'output'>
-  if (!frontmatter.published && process.env.NODE_ENV === 'production') {
-    return null
-  }
-  return { ...frontmatter, slug, output }
-}
-
-export async function getSeries(seriesSlug: string): Promise<Series | null> {
-  let series
-  try {
-    series = JSON.parse(
-      await fs.readFile(`${ROOT_DIR}/posts/${seriesSlug}/series.json`, 'utf8'),
-    ) as Omit<Series, 'slug' | 'published' | 'parts'> & { published?: string }
-  } catch {
-    return null
-  }
-
-  if (!series.published && process.env.NODE_ENV === 'production') {
-    return null
-  }
-
-  const parts: SeriesPart[] = []
-
-  const partDirents = await fs.readdir(`${ROOT_DIR}/../posts/${seriesSlug}`, {
-    withFileTypes: true,
-  })
-
-  for (const partDirent of partDirents) {
-    if (!partDirent.name.endsWith('.mdx')) continue
-    const slug = path.basename(partDirent.name, '.mdx')
-    const source = await fs.readFile(
-      `${ROOT_DIR}/../posts/${seriesSlug}/${slug}.mdx`,
-      'utf8',
-    )
-    const output = await fs.readFile(
-      `${ROOT_DIR}/posts/${seriesSlug}/${slug}.js`,
-      'utf8',
-    )
-    const file = matter(source)
-    const frontmatter = file.data as Omit<SeriesPart, 'slug' | 'output'>
-    parts.push({
-      ...frontmatter,
-      slug: path.basename(partDirent.name, '.mdx'),
-      output,
+  return entries
+    .filter((entry): entry is NonNullable<typeof entry> => entry !== null)
+    .filter((entry) => {
+      // exclude drafts in production
+      return import.meta.env.DEV || 'source' in entry || 'published' in entry
     })
+    .sort((a, b) => {
+      let publishedA =
+        'source' in a && 'parts' in a ? a.parts[0].published : a.published
+      if (typeof publishedA !== 'string' && 'fileModified' in a) {
+        publishedA = a.fileModified
+      }
+
+      let publishedB =
+        'source' in b && 'parts' in b ? b.parts[0].published : b.published
+      if (typeof publishedB !== 'string' && 'fileModified' in b) {
+        publishedB = b.fileModified
+      }
+
+      if (typeof publishedA !== 'string') return -1
+      if (typeof publishedB !== 'string') return 1
+      const publishedDateA = new Date(publishedA)
+      const publishedDateB = new Date(publishedB)
+      if (publishedDateA > publishedDateB) return -1
+      if (publishedDateA < publishedDateB) return 1
+
+      return 0
+    })
+}
+
+export async function getStandalonePostMeta(slug: string) {
+  const path = `/posts/${slug}.mdx`
+  const isStandalonePost = path in standalonePostFrontmatter
+  if (!isStandalonePost) return null
+  const frontmatter = await standalonePostFrontmatter[path]()
+  const isPublished = 'published' in frontmatter
+  if (!isPublished && !import.meta.env.DEV) return null
+  return frontmatter
+}
+
+export async function getSeriesMeta(slug: string) {
+  const seriesPath = `/posts/${slug}/series.json`
+  const isSeries = seriesPath in seriesMeta
+  if (!isSeries) return null
+  const meta = await seriesMeta[seriesPath]()
+  const isPublished = 'published' in meta
+  if (!isPublished && !import.meta.env.DEV) return null
+  const partPaths = Object.keys(seriesPostFrontmatter).filter((postPath) =>
+    postPath.startsWith(`/posts/${slug}/`),
+  )
+  const parts = await Promise.all(
+    partPaths.map(async (postPath) => {
+      const meta = await seriesPostFrontmatter[postPath]()
+      return { slug: basename(postPath, '.mdx'), ...meta }
+    }),
+  ).then((parts) => {
+    return parts.sort((a, b) => a.seriesPart - b.seriesPart)
+  })
+
+  const result: SeriesMeta & {
+    slug: string
+    parts: typeof parts
+    fileModified?: string
+  } = { ...meta, slug, parts }
+
+  if (import.meta.env.DEV) {
+    result.fileModified = new Date(
+      Math.max(
+        ...(await Promise.all(
+          [seriesPath, ...partPaths].map(async (path) => {
+            const stats = await fs.stat(joinPath(process.cwd(), path))
+            return stats.mtimeMs
+          }),
+        )),
+      ),
+    ).toISOString()
   }
 
-  parts.sort((a, b) => a.seriesPart - b.seriesPart)
-
-  return {
-    ...series,
-    published: series.published ? parseISO(series.published) : undefined,
-    slug: seriesSlug,
-    parts,
-  }
+  return result
 }

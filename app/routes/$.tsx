@@ -1,17 +1,13 @@
-import type { LoaderArgs } from '@remix-run/node'
+import type { LoaderFunctionArgs } from '@remix-run/node'
 import { redirect } from '@remix-run/node'
-import fs from 'fs'
-import toml from 'toml'
+import { getRedirects } from '~/.server/redirects'
 
-export async function loader({ request }: LoaderArgs) {
+export async function loader({ request }: LoaderFunctionArgs) {
   const { pathname } = new URL(request.url)
 
   // redirect posts before simplifying paths
   if (pathname.startsWith('/blog/posts/')) {
-    return redirect(
-      pathname.replace(new RegExp(`^/blog/posts/`), '/blog/'),
-      301,
-    )
+    throw redirect(pathname.replace(new RegExp(`^/blog/posts/`), '/blog/'), 301)
   }
 
   if (
@@ -22,26 +18,14 @@ export async function loader({ request }: LoaderArgs) {
     // no more pagination
     pathname.startsWith('/blog/page/')
   ) {
-    return redirect('/', 302)
+    throw redirect('/', 302)
   }
 
-  const { redirects } = toml.parse(
-    await fs.promises.readFile(`${__dirname}/../app/redirects.toml`, 'utf8'),
-  ) as {
-    redirects: Array<{
-      source: string
-      destination: string
-      permanent?: boolean
-    }>
-    rewrites: Array<{
-      source: string
-      destination: string
-    }>
-  }
+  const redirects = await getRedirects()
 
   for (const { source, destination, permanent } of redirects) {
     if (source === pathname) {
-      return redirect(destination, permanent ? 301 : 302)
+      throw redirect(destination, permanent ? 301 : 302)
     }
   }
 

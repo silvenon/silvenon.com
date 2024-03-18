@@ -5,19 +5,17 @@ node_modules
 .DS_Store
 
 # text editors
-.vscode/*
-!.vscode/launch.json
 .idea
 
 # secrets
-.env
+.env*.local
 
 # build
+/.cache
 /build
-/public/build
-/app/posts
-/coverage
-tsconfig.tsbuildinfo
+
+# Playwright
 /test-results/
 /playwright-report/
-/playwright/.cache/
+/blob-report/
+/playwright/.cache

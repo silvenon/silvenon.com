@@ -2,9 +2,10 @@
 
 This is my blog, it's based on the [Remix Indie Stack](https://github.com/remix-run/indie-stack).
 
-## What's in here
+## What's in here?
 
-- The [Remix](https://remix.run) framework
+- [Vite](https://vitejs.dev/) for developing and building the app
+- The [Remix](https://remix.run) framework as a Vite plugin
 - [Fly app deployment](https://fly.io) with [Docker](https://www.docker.com/)
 - [GitHub Actions](https://github.com/features/actions) for deploy on merge to production and staging environments
 - Images hosted and otpimized by [Cloudinary](https://cloudinary.com)
@@ -14,7 +15,8 @@ This is my blog, it's based on the [Remix Indie Stack](https://github.com/remix-
 - Unit testing with [Vitest](https://vitest.dev) and [Testing Library](https://testing-library.com)
 - Code formatting with [Prettier](https://prettier.io)
 - Linting with [ESLint](https://eslint.org)
-- Static Types with [TypeScript](https://typescriptlang.org)
+- Static types with [TypeScript](https://typescriptlang.org)
+- Managing git hooks and custom scripts with [Lefthook](https://github.com/evilmartians/lefthook)
 
 ## Setup
 
@@ -33,10 +35,12 @@ You only need to run this once:
 ## Validate
 
   ```sh
-  npm run lint # run ESLint
-  npm test # run Vitest tests
-  npm run test:e2e # run Playwright tests
-  npm run typecheck # run TypeScript
+  npm run lint # lint code
+  npm run pretty # check formatting
+  npm test # run unit and end-to-end tests
+  npm run test:unit # run unit tests
+  npm run test:e2e # run end-to-end tests
+  npm run typecheck # check types
 
   npm run validate # run all of the above
   ```

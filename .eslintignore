@@ -1,8 +1,4 @@
 node_modules
-*.log
-.DS_Store
-
-.env*.local
 
 /.cache
 /build
@@ -11,3 +7,8 @@ node_modules
 /playwright-report/
 /blob-report/
 /playwright/.cache
+
+!.server
+!.client
+
+!.prettierrc.js

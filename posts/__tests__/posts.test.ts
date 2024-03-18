@@ -1,43 +1,46 @@
 // @vitest-environment node
-import fs from 'fs'
 import path from 'path'
-import matter from 'gray-matter'
+import type {
+  StandalonePostFrontmattter,
+  SeriesPostFrontmatter,
+  SeriesMeta,
+} from '~/utils/posts.server'
 
-const posts: string[] = []
-for (const dirent of fs.readdirSync(`${__dirname}/..`, {
-  withFileTypes: true,
-})) {
-  if (dirent.isFile()) {
-    posts.push(`${__dirname}/../${dirent.name}`)
-  } else {
-    if (dirent.name === '__tests__') continue
-    for (const subDirent of fs.readdirSync(`${__dirname}/../${dirent.name}`, {
-      withFileTypes: true,
-    })) {
-      if (subDirent.name === 'series.json') continue
-      if (subDirent.isFile()) {
-        posts.push(`${__dirname}/../${dirent.name}/${subDirent.name}`)
-      }
-    }
-  }
+const postModules = {
+  ...import.meta.glob<StandalonePostFrontmattter>('/posts/*.mdx', {
+    import: 'frontmatter',
+    eager: true,
+  }),
+  ...import.meta.glob<SeriesPostFrontmatter>('/posts/*/*.mdx', {
+    import: 'frontmatter',
+    eager: true,
+  }),
+  ...import.meta.glob<SeriesMeta>('/posts/*/series.json', {
+    import: 'default',
+    eager: true,
+  }),
 }
 
 describe('validate posts', () => {
-  test.each(posts)('%s', async (filePath) => {
-    const frontmatter = matter(
-      await fs.promises.readFile(filePath, 'utf-8'),
-    ).data
-    expect(frontmatter).toHaveProperty('title')
-    expect(frontmatter).toHaveProperty('description')
+  test.each(
+    Object.keys(postModules).map((importPath) => [
+      path.relative('/posts', importPath),
+      importPath,
+    ]),
+  )('%s', async (basename, importPath) => {
+    const meta = postModules[importPath]
+    expect(meta).toHaveProperty('title')
+    expect(meta).toHaveProperty('description')
     // recommended by Ahrefs
-    expect(frontmatter.description.length).toBeGreaterThan(110)
+    expect(meta.description.length).toBeGreaterThan(110)
     // Google truncates descriptions after 160
-    expect(frontmatter.description.length).toBeLessThanOrEqual(160)
-    try {
-      await fs.promises.access(`${path.dirname(filePath)}/series.json`)
-      expect(frontmatter).toHaveProperty('seriesPart')
-    } catch (err) {
-      // series.json doesn't exist, so post is not a series, do nothing
+    expect(meta.description.length).toBeLessThanOrEqual(160)
+    if (basename.includes('/')) {
+      const seriesImportPath = path.join(
+        path.dirname(importPath),
+        'series.json',
+      )
+      expect(postModules).toHaveProperty(seriesImportPath)
     }
   })
 })

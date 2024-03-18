@@ -1,4 +1,4 @@
-import type { V2_MetaDescriptor } from '@remix-run/node'
+import type { MetaDescriptor } from '@remix-run/node'
 import cloudinary from '~/utils/cloudinary'
 import type { Gravity } from '~/utils/cloudinary'
 
@@ -19,8 +19,8 @@ export function getMeta({
   title,
   description,
   image,
-}: Options): V2_MetaDescriptor[] {
-  if (description && process.env.NODE_ENV === 'development') {
+}: Options): MetaDescriptor[] {
+  if (description && import.meta.env.DEV) {
     if (description.length < 110) {
       throw new Error(
         `Page description should be at least 110 characters long, currently it's ${description.length}.\n\n"${description}"`,

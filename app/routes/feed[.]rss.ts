@@ -2,7 +2,7 @@ import type { LoaderFunction } from '@remix-run/node'
 import { Feed } from 'feed'
 import path from 'path'
 import cloudinary from '~/utils/cloudinary'
-import { getAllEntries } from '~/utils/posts.server'
+import { getAllPostsMeta } from '~/utils/posts.server'
 import { getDomainUrl } from '~/utils/http'
 import { author } from '~/consts'
 
@@ -21,7 +21,7 @@ export const loader: LoaderFunction = async ({ request }) => {
     copyright: '',
   })
 
-  const entries = await getAllEntries()
+  const entries = await getAllPostsMeta()
 
   for (const entry of entries) {
     if ('source' in entry) {
@@ -34,7 +34,7 @@ export const loader: LoaderFunction = async ({ request }) => {
             link: part.url,
             description: part.description,
             author: [author],
-            date: part.published,
+            date: new Date(part.published),
           })
         }
       } else {
@@ -44,7 +44,7 @@ export const loader: LoaderFunction = async ({ request }) => {
           link: entry.url,
           description: entry.description,
           author: [author],
-          date: entry.published,
+          date: new Date(entry.published),
         })
       }
     } else if ('parts' in entry) {
@@ -58,7 +58,7 @@ export const loader: LoaderFunction = async ({ request }) => {
           link: path.join(domain, pathname),
           description: part.description,
           author: [author],
-          date: series.published,
+          date: new Date(series.published),
         })
       }
     } else {
@@ -70,7 +70,7 @@ export const loader: LoaderFunction = async ({ request }) => {
         link: path.join(domain, pathname),
         description: entry.description,
         author: [author],
-        date: entry.published,
+        date: new Date(entry.published),
       })
     }
   }

@@ -1,8 +1,8 @@
 import { json, redirect } from '@remix-run/node'
-import type { ActionArgs, LoaderArgs } from '@remix-run/node'
+import type { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node'
 import { createDarkModeSession, resetDarkModeToOS } from '~/session.server'
 
-export async function action({ request }: ActionArgs) {
+export async function action({ request }: ActionFunctionArgs) {
   const form = await request.formData()
   const { darkMode } = Object.fromEntries(form)
 
@@ -20,6 +20,6 @@ export async function action({ request }: ActionArgs) {
   )
 }
 
-export async function loader(_: LoaderArgs) {
+export async function loader(_: LoaderFunctionArgs) {
   return redirect('/')
 }

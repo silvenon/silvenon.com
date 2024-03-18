@@ -12,7 +12,7 @@ export default function HotTip({ children }: Props) {
       </div>
       {/* remove the bottom margin both from the last child and the last code block in light mode */}
       {/* which is 2nd to last because the last one is the hidden dark mode block */}
-      <div className="[&_pre]:mx-0 [&>*:last-child]:mb-0 [&>pre[data-theme=light]:nth-last-child(2)]:mb-0">
+      <div className="[&>*:last-child]:mb-0 [&>pre[data-theme=light]:nth-last-child(2)]:mb-0 [&_pre]:mx-0">
         {children}
       </div>
     </div>

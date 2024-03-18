@@ -1,6 +1,5 @@
 import clsx from 'clsx'
 import cloudinary from '~/utils/cloudinary'
-import { screens } from '../consts'
 
 const ID = 'in-roermond.jpg'
 const VERSION = 1
@@ -15,13 +14,13 @@ export default function ProfilePhoto({ className }: Props) {
   return (
     <div
       className={clsx(
-        'aspect-w-2 aspect-h-1 sm:aspect-w-4 sm:aspect-h-5',
+        'aspect-h-1 aspect-w-2 sm:aspect-h-5 sm:aspect-w-4',
         className,
       )}
     >
       <picture>
         <source
-          media={`(min-width: ${screens.sm})`}
+          media={`(min-width: ${import.meta.env.SCREEN_SM})`}
           srcSet={`
             ${cloudinary(ID, {
               version: VERSION,

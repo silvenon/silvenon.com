@@ -1,14 +1,9 @@
-import { format, formatISO, parseISO } from 'date-fns'
-
 export function formatDate(date: string | Date): string {
-  return format(
-    typeof date === 'string' ? parseISO(date) : date,
-    'MMMM do, yyyy',
+  return new Intl.DateTimeFormat('en-US', { dateStyle: 'long' }).format(
+    typeof date === 'string' ? new Date(date) : date,
   )
 }
 
 export function formatDateISO(date: string | Date): string {
-  return formatISO(typeof date === 'string' ? parseISO(date) : date, {
-    representation: 'date',
-  })
+  return typeof date === 'string' ? date : date.toISOString().split('T')[0]
 }

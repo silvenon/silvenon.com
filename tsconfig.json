@@ -1,25 +1,14 @@
 {
-  "compilerOptions": {
-    "noEmit": true,
-    "target": "ES2019",
-    "module": "ES2020",
-    "moduleResolution": "node",
-    "lib": ["DOM", "DOM.Iterable", "ES2019"],
-    "types": ["vitest/globals"],
-    "typeRoots": ["./types", "./node_modules/@types"],
-    "jsx": "react-jsx",
-    "isolatedModules": true,
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "strict": true,
-    "skipLibCheck": true,
-    "allowJs": true,
-    "forceConsistentCasingInFileNames": true,
-    "baseUrl": ".",
-    "paths": {
-      "~/*": ["./app/*"],
-    },
-  },
-  "exclude": ["node_modules", "./integration", "./app/posts"],
-  "include": ["**/*.ts", "**/*.tsx"],
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./integration" }
+  ],
+  "ts-node": {
+    "transpileOnly": true,
+    "preferTsExts": true,
+    "compilerOptions": {
+      "module": "NodeNext"
+    }
+  }
 }

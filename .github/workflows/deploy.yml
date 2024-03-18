@@ -16,45 +16,65 @@ permissions:
   contents: read
 
 jobs:
-  lint:
+  prettier:
+    name: Prettier
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check formatting
+        run: npm run pretty
+
+  eslint:
     name: ESLint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Setup node
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
+          node-version: 18
           cache: npm
-          cache-dependency-path: ./package.json
-          node-version-file: package.json
 
-      - name: Install deps
-        run: npm install
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check config
+        run: npm run lint:check-config
 
       - name: Lint
         run: npm run lint
 
-  typecheck:
+  typescript:
     name: TypeScript
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Setup node
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
+          node-version: 18
           cache: npm
-          cache-dependency-path: ./package.json
-          node-version-file: package.json
 
-      - name: Install deps
-        run: npm install
+      - name: Install dependencies
+        run: npm ci
 
-      - name: Type check
-        run: npm run typecheck --if-present
+      - name: Check types
+        run: npm run typecheck
 
   vitest:
     name: Vitest
@@ -63,23 +83,22 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Setup node
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
+          node-version: 18
           cache: npm
-          cache-dependency-path: ./package.json
-          node-version-file: package.json
 
-      - name: Install deps
-        run: npm install
+      - name: Install dependencies
+        run: npm ci
 
       - name: Compile posts
         run: npm run build:posts
         env:
           CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
 
-      - name: Run vitest
-        run: npm run test:unit -- --coverage
+      - name: Run tests
+        run: npm run test:unit
         env:
           CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
 
@@ -91,25 +110,38 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Setup node
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
+          node-version: 18
           cache: npm
-          cache-dependency-path: ./package.json
-          node-version-file: package.json
 
-      - name: Install deps
-        run: npm install
+      - name: Install dependencies
+        run: npm ci
 
-      - name: Install Playwright Browsers
+      - name: Add environment variables
+        run: |
+          echo "NODE_VERSION=$(node --version)" >> $GITHUB_ENV
+          npm list @playwright/test --depth=0 --json > npm-list-playwright.json
+          echo "PLAYWRIGHT_VERSION=$(node --print "require('./npm-list-playwright.json').dependencies['@playwright/test'].version")" >> $GITHUB_ENV
+
+      - name: Cache binaries
+        uses: actions/cache@v3
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: os-${{ runner.os }}-node-${{ env.NODE_VERSION }}-playwright-v${{ env.PLAYWRIGHT_VERSION }}
+
+      - name: Install browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: npx playwright install --with-deps
 
-      - name: Build
+      - name: Build app
         run: npm run build
         env:
           CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
 
-      - name: Playwright run
+      - name: Run tests
         run: npm run test:e2e
         env:
           CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
@@ -125,7 +157,7 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
-    needs: [lint, typecheck, vitest, playwright]
+    needs: [prettier, eslint, typescript, vitest, playwright]
     # only deploy main/dev branch on pushes
     if: ${{ (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev') && github.event_name == 'push' }}
 

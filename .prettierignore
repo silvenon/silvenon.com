@@ -1,14 +1,10 @@
 node_modules
 
+/.cache
 /build
-/public/build
-/app/posts
-/coverage
 /playwright-report
 
 package-lock.json
-
-.env
 
 # Prettier doesn't yet play nice with MDX v2, for example it can't keep JSX
 # in a single line if it exceeds print width, which results in a nested <p>
@@ -22,6 +18,3 @@ package-lock.json
 *.yaml
 
 README.md
-
-# tsconfig.json supports trailing commas, but Prettier doesn't know that
-tsconfig.json

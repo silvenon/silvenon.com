@@ -1,11 +1,9 @@
-const colors = require('tailwindcss/colors')
-const plugin = require('tailwindcss/plugin')
-const typography = require('@tailwindcss/typography')
-const forms = require('@tailwindcss/forms')
-const aspectRatio = require('@tailwindcss/aspect-ratio')
-const typographyStyles = require('@tailwindcss/typography/src/styles')
-const screens = require('./app/screens.json')
-const codeTheme = require('./scripts/utils/code-theme')
+import colors from 'tailwindcss/colors'
+import plugin from 'tailwindcss/plugin'
+import typography from '@tailwindcss/typography'
+import forms from '@tailwindcss/forms'
+import aspectRatio from '@tailwindcss/aspect-ratio'
+import typographyStyles from '@tailwindcss/typography/src/styles'
 
 const js = plugin(({ addVariant }) => {
   addVariant('no-js', '.no-js &')
@@ -26,8 +24,13 @@ const a11y = plugin(({ addVariant }) => {
 })
 
 /** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: ['app/**/*.{ts,tsx,mdx}', 'posts/**/*.mdx', 'scripts/**/*.ts'],
+export default {
+  content: [
+    'app/**/*.{ts,tsx,mdx}',
+    'posts/**/*.mdx',
+    'scripts/**/*.ts',
+    'etc/**/*.ts',
+  ],
   safelist: [
     'token', // syntax highlighting
     'twitter-tweet', // tweets are being loaded using a library
@@ -38,7 +41,6 @@ module.exports = {
   plugins: [typography, forms, aspectRatio, js, light, a11y],
   darkMode: 'class',
   theme: {
-    screens,
     extend: {
       spacing: {
         page: 'var(--page-padding)',
@@ -50,34 +52,51 @@ module.exports = {
         github: '#333',
         twitter: '#1da1f2',
         linkedin: '#0077b5',
-        'code-foreground': codeTheme.light.colors['editor.foreground'],
-        // most light themes have a completely white background, we want it to be slightly gray
-        // 'code-background': codeTheme.light.colors['editor.background'],
-        // 'code-highlight':
-        //   codeTheme.light.colors['editor.lineHighlightBackground'],
-        'code-background': colors.zinc[100],
-        'code-highlight': colors.zinc[200],
-        'code-foreground-dark': codeTheme.dark.colors['editor.foreground'],
-        'code-background-dark': codeTheme.dark.colors['editor.background'],
-        'code-highlight-dark':
-          codeTheme.dark.colors['editor.lineHighlightBackground'],
       },
-      typography: (theme) => ({
+      typography: ({ theme }) => ({
         DEFAULT: {
           css: {
-            'pre code': {
-              // needed to prevent highlighted lines from being cut off when scrolling horizontally
-              display: 'grid',
-              // the .prose-code variant overrides this, possibly a bug with @tailwindcss/typography
-              backgroundColor: 'transparent !important',
-              borderWidth: '0 !important',
-              borderRadius: '0 !important',
-              padding: '0 !important',
-              fontWeight: 'inherit !important',
-              color: 'inherit !important',
-              fontSize: 'inherit !important',
-              fontFamily: 'inherit !important',
-              lineHeight: 'inherit !important',
+            code: {
+              fontWeight: theme('fontWeight.normal'),
+            },
+            'code:not(pre code)': {
+              borderRadius: theme('borderRadius.lg'),
+              padding: `${theme('spacing.1')} ${theme('spacing.2')}`,
+            },
+            ':is(code, pre)[data-theme=*=" "], :is(code, pre)[data-theme*=" "] span':
+              {
+                color: 'var(--shiki-light)',
+                // most light themes have a completely white background, we want it to be slightly darker
+                backgroundColor: theme('colors.gray.100'),
+              },
+            'pre [data-highlighted-line]': {
+              backgroundColor: theme('colors.gray.200'),
+            },
+            'pre [data-highlighted-line] span': {
+              backgroundColor: 'transparent',
+            },
+          },
+        },
+        invert: {
+          css: {
+            'code:not(pre code)': {
+              borderWidth: 1,
+              borderColor: theme('colors.gray.800'),
+            },
+            pre: {
+              borderWidth: 1,
+              borderColor: theme('colors.gray.700'),
+            },
+            ':is(code, pre)[data-theme=*=" "], :is(code, pre)[data-theme*=" "] span':
+              {
+                color: 'var(--shiki-dark)',
+                backgroundColor: 'var(--shiki-dark-bg)',
+              },
+            'pre [data-highlighted-line]': {
+              backgroundImage: `linear-gradient(to right, ${theme('colors.gray.700')}, ${theme('colors.gray.800')})`,
+            },
+            'pre [data-highlighted-line] span': {
+              backgroundColor: 'transparent',
             },
           },
         },
@@ -87,12 +106,17 @@ module.exports = {
             {
               css: {
                 pre: {
-                  paddingLeft: false,
-                  paddingRight: false,
+                  paddingLeft: 0,
+                  paddingRight: 0,
                   marginLeft: `-${typographyStyles[size].css[0].pre.paddingLeft}`,
                   marginRight: `-${typographyStyles[size].css[0].pre.paddingRight}`,
+                  lineHeight: theme('lineHeight.loose'),
                 },
-                'pre code .line': {
+                'pre code': {
+                  padding: 0,
+                  fontSize: '1em',
+                },
+                'pre [data-line]': {
                   paddingLeft: typographyStyles[size].css[0].pre.paddingLeft,
                   paddingRight: typographyStyles[size].css[0].pre.paddingRight,
                 },

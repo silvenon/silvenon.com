@@ -1,10 +1,7 @@
-import type { PlaywrightTestConfig } from '@playwright/test'
-import { devices } from '@playwright/test'
-import dotenv from 'dotenv'
+import { defineConfig, devices } from '@playwright/test'
+import { PORT } from './consts'
 
-dotenv.config()
-
-const config: PlaywrightTestConfig = {
+export default defineConfig({
   testDir: './integration',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
@@ -34,11 +31,11 @@ const config: PlaywrightTestConfig = {
   ],
   webServer: {
     command: 'npm start',
-    port: 3000,
+    port: PORT,
+    reuseExistingServer: !process.env.CI,
     env: {
+      SESSION_SECRET: 'test123',
       E2E_TESTING: 'true',
     },
   },
-}
-
-export default config
+})

@@ -1,42 +1,70 @@
 import { useLoaderData } from '@remix-run/react'
-import type { LoaderArgs, V2_MetaFunction } from '@remix-run/node'
+import type {
+  LoaderFunctionArgs,
+  HeadersFunction,
+  MetaFunction,
+} from '@remix-run/node'
 import { json } from '@remix-run/node'
+import { lazy } from 'react'
 import invariant from 'tiny-invariant'
 import { getMeta } from '~/utils/seo'
 import { author } from '~/consts'
 import Post from '~/components/Post'
-import { getSeries } from '~/utils/posts.server'
+import { getSeriesMeta } from '~/utils/posts.server'
 import { formatDateISO } from '~/utils/date'
 import { loader as catchallLoader } from './$'
+import type { MDXModule } from 'mdx/types'
 
-export async function loader(args: LoaderArgs) {
+const seriesPostBySlug = Object.fromEntries(
+  Object.entries(import.meta.glob<MDXModule>('/posts/*/*.mdx')).map(
+    ([path, load]) => {
+      const slug = path.split('/').slice(-1)[0].replace('.mdx', '')
+      return [slug, lazy(load)]
+    },
+  ),
+)
+
+export async function loader(args: LoaderFunctionArgs) {
   const { params } = args
   invariant(params.seriesSlug, 'series parameter is required')
   invariant(params.postSlug, 'slug parameter is required')
 
-  const series = await getSeries(params.seriesSlug)
-  if (!series) return catchallLoader(args)
+  const series = await getSeriesMeta(params.seriesSlug)
+  if (!series) throw await catchallLoader(args)
   const part = series.parts.find(({ slug }) => slug === params.postSlug)
-  if (!part) return catchallLoader(args)
+  if (!part) throw await catchallLoader(args)
 
-  return json({
-    title: part.title,
-    htmlTitle: part.htmlTitle,
-    description: part.description,
-    seriesPart: part.seriesPart,
-    series: {
-      slug: params.seriesSlug,
-      title: series.title,
-      published: series.published,
-      parts: series.parts,
+  return json(
+    {
+      slug: part.slug,
+      title: part.title,
+      htmlTitle: part.htmlTitle,
+      description: part.description,
+      seriesPart: part.seriesPart,
+      series: {
+        slug: params.seriesSlug,
+        title: series.title,
+        published: series.published,
+        parts: series.parts,
+      },
+      lastModified: part.lastModified,
     },
-    lastModified: part.lastModified,
-    code: part.output,
-  })
+    {
+      headers: {
+        'Cache-Control': 'public, max-age=3600',
+      },
+    },
+  )
 }
 
-export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
-  // type of data is incorrect, in case of an error it's undefined
+export const headers: HeadersFunction = ({ loaderHeaders }) => {
+  const cacheControl = loaderHeaders.get('Cache-Control')
+  const result = new Headers()
+  if (cacheControl) result.set('Cache-Control', cacheControl)
+  return result
+}
+
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
   if (!data) return getMeta({ type: 'website', title: 'Post not found' })
   const { title, series, description, lastModified } = data
   return [
@@ -67,5 +95,6 @@ export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
 
 export default function SeriesPart() {
   const data = useLoaderData<typeof loader>()
-  return <Post {...data} />
+  const SeriesPost = seriesPostBySlug[data.slug]
+  return <Post {...data} PostContent={SeriesPost} />
 }

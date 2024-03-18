@@ -1,21 +1,12 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
     "noEmit": true,
     "types": ["node"],
     "esModuleInterop": true,
-    "moduleResolution": "node",
-    "target": "es2019",
+    "module": "NodeNext",
+    "target": "ES2022",
     "strict": true,
-    "skipLibCheck": true,
-    "resolveJsonModule": true,
-    "typeRoots": ["../types", "../node_modules/@types"],
+    "skipLibCheck": true
   },
-  "exclude": [
-    "../node_modules/@types/jest",
-    "../node_modules/@testing-library/jest-dom"
-  ],
-  "include": [
-    "**/*.ts",
-  ],
+  "include": ["**/*.ts"]
 }

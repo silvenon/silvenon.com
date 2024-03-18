@@ -6,14 +6,13 @@ import {
 import type { GitgraphUserApi } from '@gitgraph/core'
 import { useMediaQuery } from '@react-hook/media-query'
 import { useState, useEffect } from 'react'
-import { screens } from '../consts'
 
 interface Props {
   children(gitgraph: GitgraphUserApi<React.ReactElement<SVGElement>>): void
 }
 
 const Gitgraph = ({ children }: Props) => {
-  const matchesSm = useMediaQuery(`(min-width: ${screens.sm})`)
+  const matchesSm = useMediaQuery(`(min-width: ${import.meta.env.SCREEN_SM})`)
   const [hasJs, setHasJs] = useState(false)
 
   useEffect(() => {

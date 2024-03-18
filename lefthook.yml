@@ -1,0 +1,48 @@
+# git hooks
+
+pre-commit:
+  piped: true
+  commands:
+    eslint:
+      priority: 1
+      glob: "*.{js,cjs,ts,tsx}"
+      run: npx eslint --fix {staged_files}
+      stage_fixed: true
+    prettier:
+      priority: 2
+      run: npx prettier --write --ignore-unknown {staged_files}
+      stage_fixed: true
+
+pre-push:
+  parallel: true
+  commands:
+    eslint-check-config:
+      run: npm run lint:check-config
+    eslint:
+      run: npm run lint
+    prettier:
+      run: npm run pretty
+    typescript:
+      run: npm run typecheck
+    vitest:
+      run: npm run test:unit
+    playwright:
+      run: npm run build -- --logLevel=silent && npm run test:e2e
+
+# custom scripts
+
+setup:
+  parallel: true
+  commands:
+    lefthook:
+      run: npx lefthook install
+    playwright:
+      run: npx playwright install --with-deps
+
+test:
+  parallel: true
+  commands:
+    vitest:
+      run: npm run test:unit
+    playwright:
+      run: npm run test:e2e

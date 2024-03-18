@@ -78,13 +78,14 @@ export function AnalyticsScript() {
               queuedCommand.value,
             )
             break
-          default:
+          default: {
             const _: never = queuedCommand
             console.error(
               `Unknown queued command: ${JSON.stringify(
                 (_ as QueuedCommand).type,
               )}`,
             )
+          }
         }
       } else {
         // Fathom isn't available even though the script has loaded
