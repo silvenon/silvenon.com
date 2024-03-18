@@ -1,10 +1,12 @@
 import { v2 as cloudinary } from 'cloudinary'
-import dotenv from 'dotenv'
+import { loadEnv } from 'vite'
 import invariant from 'tiny-invariant'
 
-dotenv.config()
+const env = loadEnv(process.env.NODE_ENV ?? 'development', process.cwd(), '')
 
-invariant(process.env.CLOUDINARY_URL, 'CLOUDINARY_URL must be set')
+invariant(env.CLOUDINARY_URL, 'CLOUDINARY_URL must be set')
+
+process.env.CLOUDINARY_URL = env.CLOUDINARY_URL
 
 cloudinary.config(true)
 

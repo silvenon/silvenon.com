@@ -1,0 +1,21 @@
+---
+title: Let's not downplay the drawbacks of TypeScript
+description: TypeScript is a great tool, I won't stop using it because it has saved me many times, but before piling onto people who choose not to use it, let's be realistic about its drawbacks.
+category: DEV
+---
+
+I won't stop using TypeScript unless my ecosystem drops it. But let's be real about its drawbacks:
+
+- the documentation is not great, it's not really written for modern web development
+- the search is bad, keywords are hard to find, go ahead, find the documentation for `infer` or `satisfies`, I'll wait
+	- don't break your back looking for `satisfies` because it only exists in the changelog, will it exist in the documentation itself anytime soon? or at all? who knows
+- TypeScript's strict mode defaults to `false`, so by default TypeScript is lying to you about the types in your code
+	- who is this choice for? I have no idea
+- I find the configuration API confusing and underdocumented, but I understand that TypeScript is both a type checker and compiler, but this is an unfortunate complexity that can get in the way of understanding how to configure it
+- in frontend some parts of our codebases are being used differently, some are bundled to be run in the browser, and some are being run with Node.js, so how to type check this properly? at first Project References seem like the perfect feature to combat the different configurations problems, but it turns out that they are not really meant to be used for that, and they are not really documented well enough to understand how to use them
+	- Vite example with React + TS
+- should I use `/// <references>` or put my types in configuration `types`? is it the same? probably, but when to use one over the other?
+- configuring ESLint to work well with TypeScript is very hard, I still haven't mastered it even though I love understanding how tools work, and for the first time I'm frankly getting sick of it (Bun example, everything else works except that)
+- we have to have gurus like Matt Pocock to teach us TypeScript, I didn't need a guru to teach me how to use React correctly, I didn't continue to fail to integrate React (these are apples and oranges, though)
+	- actually I did, Dan Abramov, but he works there, his tweets and blog posts were just scattered official documentation
+- its error messages can be quite hard to read, if not almost impossible, depending on the sometimes necessary complexity of the type declarations

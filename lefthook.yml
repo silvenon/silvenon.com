@@ -1,0 +1,34 @@
+# git hooks
+
+pre-commit:
+  commands:
+    eslint:
+      glob: "*.{js,cjs,ts,tsx}"
+      run: npx eslint --fix {staged_files}
+      stage_fixed: true
+    prettier:
+      run: npx prettier --write --ignore-unknown {staged_files}
+      stage_fixed: true
+
+pre-push:
+  commands:
+    build:
+      run: npm run build
+    validate:
+      run: npm run validate
+
+# custom scripts
+
+setup:
+  parallel: true
+  commands:
+    playwright:
+      run: npx playwright install --with-deps
+
+typecheck:
+  parallel: true
+  commands:
+    typecheck-root:
+      run: npx tsc --noEmit
+    typecheck-e2e:
+      run: npx tsc --project integration --noEmit

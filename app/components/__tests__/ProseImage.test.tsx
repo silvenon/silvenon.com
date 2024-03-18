@@ -1,4 +1,4 @@
-// @vitest-environment jsdom
+// @vitest-environment happy-dom
 import { render } from '@testing-library/react'
 import ProseImage from '../ProseImage'
 
@@ -12,6 +12,8 @@ describe('ProseImage', () => {
         height={600}
       />,
     )
+
+    // eslint-disable-next-line testing-library/no-node-access
     expect(container.firstChild).toMatchSnapshot()
   })
 })

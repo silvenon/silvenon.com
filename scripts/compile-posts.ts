@@ -1,9 +1,13 @@
 import fs from 'fs/promises'
 import { createWriteStream } from 'fs'
 import path from 'path'
+import { fileURLToPath } from 'url'
 import chokidar from 'chokidar'
 import cacache from 'cacache'
-import { compileMDXFile } from './utils/mdx'
+import { resolveConfig as resolveViteConfig } from 'vite'
+import { compileMDXFile } from './utils/mdx.ts'
+
+const __dirname = fileURLToPath(path.dirname(import.meta.url))
 
 const SOURCE_DIR = path.join(process.cwd(), 'posts')
 const OUTPUT_DIR = path.join(process.cwd(), 'app/posts')
@@ -13,13 +17,27 @@ const criticalFiles = [
   // if any of these files change we need to clear the cache
   'compile-posts.ts',
   'utils/cloudinary.ts',
-  'utils/code-theme.js',
   'utils/esbuild-plugin-cloudinary.ts',
   'utils/mdx.ts',
-  'utils/rehype-pretty-code.ts',
+  '../etc/mdx.ts',
+  '../etc/code-theme.ts',
 ]
 
 let noCache: boolean = false
+
+const viteConfig = await resolveViteConfig(
+  { mode: process.env.NODE_ENV },
+  'build',
+)
+const compileOptions = {
+  target: viteConfig.build.target || 'esnext',
+}
+
+class ChangeError extends Error {
+  constructor(message: string) {
+    super(message)
+  }
+}
 
 async function compilePosts() {
   const criticalResults = await Promise.allSettled(
@@ -34,11 +52,10 @@ async function compilePosts() {
         const hasChanged =
           cached.lastModified !== lastModified || cached.size !== size
         if (hasChanged)
-          throw new Error(
+          throw new ChangeError(
             `Critical file "${file}" has been changed: ${cached.lastModified}/${lastModified}, ${cached.size}/${size}`,
           )
       } catch (err) {
-        console.log(err)
         const dataToCache = JSON.stringify({ lastModified, size })
         await cacache.put(CACHE_DIR, cacheKey, dataToCache)
         throw err
@@ -46,7 +63,21 @@ async function compilePosts() {
     }),
   )
 
-  if (criticalResults.some((result) => result.status === 'rejected')) {
+  criticalResults
+    .filter(
+      (result): result is PromiseRejectedResult =>
+        result.status === 'rejected' && !(result.reason instanceof ChangeError),
+    )
+    .forEach((result) => {
+      console.error(result.reason)
+    })
+
+  if (
+    criticalResults.some(
+      (result) =>
+        result.status === 'rejected' && result.reason instanceof ChangeError,
+    )
+  ) {
     console.log('Some of the critical files have been changed, clearing cache!')
     noCache = true
   }
@@ -79,7 +110,7 @@ async function compilePosts() {
     })
     watcher.on('change', (path) => {
       console.log(`File ${path} has changed, recompiling!`)
-      compile(path)
+      void compile(path)
     })
     console.log('Watching posts for changes...')
   } else {
@@ -114,7 +145,7 @@ async function compile(file: string) {
     if (info.metadata.lastModified !== lastModified) {
       throw new Error(`"posts/${file}" has changed, recomputing cache...`)
     }
-    await new Promise<void>(async (resolve, reject) => {
+    await new Promise<void>((resolve, reject) => {
       try {
         cacache.get
           .stream(CACHE_DIR, cacheKey)
@@ -126,7 +157,10 @@ async function compile(file: string) {
       }
     })
   } catch {
-    const code = await compileMDXFile(path.join(SOURCE_DIR, file))
+    const code = await compileMDXFile(
+      path.join(SOURCE_DIR, file),
+      compileOptions,
+    )
     await fs.writeFile(outputPath, code)
     await cacache.put(CACHE_DIR, cacheKey, code, {
       metadata: {
@@ -167,4 +201,4 @@ async function cachedReaddirContent(
   }
 }
 
-compilePosts()
+await compilePosts()

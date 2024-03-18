@@ -1,0 +1,45 @@
+---
+title: Why I'll continue using SVG-in-JS for now
+description: SVG sprites are definitely better for performance, but tooling isn't there yet.
+category: DEV
+published: 2014-09-10
+lastModified: 2014-10-11
+---
+
+- the default experience for editing SVGs in VS Code is horrible, there is no formatting and no intellisense
+- tools would have to generate hashed sprites for each icon, and there is only `rmx-cli svg-sprite` as far as I know
+  - no watch mode, and it would be best if it's standalone, rather than part of `rmx-cli`
+- unused icons will just stay in the file-system and the sprite, there are no bundlers to remove them
+
+Perhaps this API is a good start:
+
+```tsx
+import href from '~/icons/my-icon.svg'
+
+<svg>
+	<use href={href} />
+</svg>
+```
+
+but we need tooling to support it, perhaps more than a single CLI tool.
+
+This would be even better:
+
+```tsx
+import Icon from '~/components/Icon'
+import myIcon from '~/icons/my-icon.svg'
+
+<Icon icon={myIcon} />
+```
+
+Both approaches would require the bundler to be able to figure out the sprite id and generate the SVG sprite with just imported icons.
+
+This looks better to me because `rmx-cli` would require a separate running process, and would limit icon id purely with TypeScript. However, I'm not sure where the sprite goes, it needs to be placed somewhere, we need to be able to access its URL so that we can choose to preload it... the ideal developer experience is not clear to me yet. Maybe having extra icons is not that bad since the sprite can be cached, so a smaller sprite that needs to be downloaded again is worse that a bigger one that's already cached.
+
+The first goal is to ensure that people don't have to edit any SVG at all. Icon sites like Heroicons and Iconify allow copying entire SVG icons, so all that people would need to do is paste them in an `icons` directory as SVG files.
+
+A last nice-to-have is for the tool to warn if SVG features are being used in icons that won't work in sprites, like `<mask>`.
+
+Possible tool names:
+
+- Icon Way

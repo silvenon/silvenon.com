@@ -1,5 +1,5 @@
 import type { Plugin } from 'esbuild'
-import { getImageDimensions } from './cloudinary'
+import { getImageDimensions } from './cloudinary.ts'
 
 const esbuildPluginCloudinary: Plugin = {
   name: 'cloudinary',

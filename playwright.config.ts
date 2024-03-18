@@ -1,10 +1,6 @@
-import type { PlaywrightTestConfig } from '@playwright/test'
-import { devices } from '@playwright/test'
-import dotenv from 'dotenv'
+import { defineConfig, devices } from '@playwright/test'
 
-dotenv.config()
-
-const config: PlaywrightTestConfig = {
+export default defineConfig({
   testDir: './integration',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
@@ -39,6 +35,4 @@ const config: PlaywrightTestConfig = {
       E2E_TESTING: 'true',
     },
   },
-}
-
-export default config
+})

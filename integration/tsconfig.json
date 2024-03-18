@@ -1,15 +1,13 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
     "noEmit": true,
     "types": ["node"],
     "esModuleInterop": true,
-    "moduleResolution": "node",
-    "target": "es2019",
+    "module": "NodeNext",
+    "target": "ES2022",
     "strict": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "typeRoots": ["../types", "../node_modules/@types"],
   },
   "exclude": [
     "../node_modules/@types/jest",

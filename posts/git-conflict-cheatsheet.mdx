@@ -1,0 +1,146 @@
+---
+title: Git conflict cheatsheet
+description: Got a git conflict? Here are some tips to help you resolve it.
+category: DEV
+---
+
+So you merged the main or develop branch into your feature branch? Or maybe the other way around? Or did you git rebase? Maybe via `git pull`?
+
+Either way it's crucial that you get the resolution right, otherwise you might lose your or someone else's hard work. Wouldn't that be a shame? 😢 It happened to me many times, that's why I'm writing this.
+
+Git conflicts may be very uncomfortable, but here are some pointers to help you minimize the pain, depending on where you're at.
+
+This post assumes that you're using git via CLI.
+
+## "I didn't expect conflicts, and I don't want to deal with them now."
+
+Do you want to go back to where you started from? Abort mission!
+
+```sh
+git merge --abort
+```
+
+or if the conflict happened during a rebase:
+
+```sh
+git rebase --abort
+```
+
+## "How can I see where both current and incoming changes started from?"
+
+diff 3
+
+## "It's not enough to see where the changes started from, I need to understand the context of incoming changes."
+
+## "I have a conflict in one long line of code, how can I see which words have changed?"
+
+You just answered your own question: word diff. The conflict happened because you and "they" (which is often also you 😆) have changed some words or indentation, or both! And now you want to interrogate the git history to see what has actually changed.
+
+- trick with selecting lines up to the point where VS Code stops highlighting the other line(s)
+
+(...)
+
+## "The conflict happened somewhere in a huge block of code due to indentation changes, but I can't tell what changed."
+
+The conflict happen because two commits changed the same line(s) of code. Can't the "current changes" during a merge describe where you're at on your branch. (...)
+
+```sh
+git fetch develop
+git diff --ignore-all-space origin/develop..feature -- path/to/file
+```
+
+## "I deleted a file, but it has been changed in the meantime."
+
+These ones can be tough... 💀 But don't let my skull emoji discourage you! In my experience there are basically three paths of resolving this, so pick the one closest to your case.
+
+### 1. "My current changes makes that file obsolete, I don't care about the additional changes."
+
+If you don't need the changes made to the file on the other branch, you can just delete the file that git left for you and continue on your way!
+
+```sh
+git rm path/to/obsolete-file.js # git rm resolves the conflict for you
+git merge --continue # if there are no other conflicts, this will finish the merge
+```
+
+### 2. "In my branch I renamed that file and changed it significantly, I need to incorporate those additional changes into my new file."
+
+If you renamed and significantly change a file, it can happen that git isn't able to detect that it's the same file, that's why it claims that you deleted it instead of following the rename and merging the changes.
+
+If files are similar enough, you can compare those two files via `git diff` to incorporate the changes manually. I do this by creating a temporary file that contains the latest "deleted" file:
+
+```sh
+git show develop:path/to/file.js > theirs.js
+```
+
+Then I can compare the two files via `git diff`, but the key here is to ignore git history, we want to strictly compare the contents of the files:
+
+```sh
+git diff --no-index path/to/ours.js theirs.js
+```
+
+Couple of notes here:
+
+- `--no-index` tells git to ignore history and just compare the files
+- the order of files matters in how the diff will be presented, I put `ours.js` first because I wanted to see what `theirs.js` brings to the table, i.e. which changes I'd need to make in `ours.js` to get to `theirs.js`, which is more helpful for me for this use case because I'm looking for new changes in `theirs.js` (draw an arrow in the command to make it easier to remember the order)
+- you can pass additional options to `git diff` depending on your needs, for example I often use `--ignore-all-space`
+
+The usefullness of this tactic will depend on how much `ours.js` has diverged. If it's too different and the diff isn't helpful, then you might want to consider the next tactic.
+
+### 3. "I significantly refactored the contents of the deleted file, and I want to see what changed in the meantime."
+
+If your changes have diverged too much you can compare the deleted file with the latest version of the file before you deleted it, that way you can see the new changes and act accordingly. This is somewhat similar to the previous case in the sense that you'd again be comparing two files, but in this case they will probably more similar.
+
+First you need to find the commit which holds the latest version of the deleted file on your branch, to do this you can run something like:
+
+```sh
+git log -- path/to/file.js
+```
+
+Passing `--` is necessary because that path doesn't exist anymore on your branch, otherwise git will throw an error and suggest passing `--`. The first commit you see in the log is the one where you deleted the file, so you need to choose the commit before that one. Let's say that that commit's hash is `123abc`, then you can resurrect the deleted file:
+
+```sh
+git show 123abc:path/to/file.js > ours.js
+```
+
+Then just like in the previous case recover the latest version of the file on the other branch:
+
+```sh
+git show develop:path/to/file.js > theirs.js
+```
+
+Then you can compare the two files:
+
+```sh
+git diff --no-index ours.js theirs.js
+```
+
+Hopefully that helps you understand what changed in the meantime, so that you can incorporate those changes into your refactored code.
+
+Be careful and take your time so that you don't lose valuable changes!
+
+## "Resolving this will take a long time, I want to save my progress and continue later."
+
+(?)
+
+## "I'm done with resolving the conflicts, but I'm not sure if I did it right."
+
+- `git diff develop`
+- (...)
+
+## "I'm not happy with the resolution, I lost a lot of valuable changes. I would like to start over."
+
+(?)
+
+## "Why do conflicts keep happening in my project so often? They seem unnecessary."
+
+This won't help you fix your conflict now, but will help you minimize the number of conflicts in the future. Here are some guidelines for your future PRs:
+
+- minimize your diffs, stick to the scope of your PR, extract optimizations into a separate branch or even create a new draft PR, so that you don't forget
+- avoid indentation changes if you can, I sometimes even add unnecessary React fragments to maintain the same indentation level
+- avoid both changing and extracting code somewhere else, because what if someone else changed that code in the meantime? how will they compare what you changed?
+- try adding some basic tests for your feature, something that would break if your changes are lost during a conflict resolution
+- as you get more experienced in resolving conflicts, try to imagine that someone gets a conflict because of your changes, will they be able to resolve it easily?
+
+## Conclusion
+
+Are there some cases that I missed? Feel free to let me know, I want to keep updating this post so that it can become a useful reference.

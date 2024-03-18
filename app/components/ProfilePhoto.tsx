@@ -15,7 +15,7 @@ export default function ProfilePhoto({ className }: Props) {
   return (
     <div
       className={clsx(
-        'aspect-w-2 aspect-h-1 sm:aspect-w-4 sm:aspect-h-5',
+        'aspect-h-1 aspect-w-2 sm:aspect-h-5 sm:aspect-w-4',
         className,
       )}
     >

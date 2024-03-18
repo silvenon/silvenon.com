@@ -1,7 +1,6 @@
 import { useLoaderData } from '@remix-run/react'
-import { redirect } from '@remix-run/node'
-import type { V2_MetaFunction, LoaderArgs } from '@remix-run/node'
-import { json } from '@remix-run/node'
+import { redirect, json } from '@remix-run/node'
+import type { MetaFunction, LoaderFunctionArgs } from '@remix-run/node'
 import invariant from 'tiny-invariant'
 import { getMeta } from '~/utils/seo'
 import { author } from '~/consts'
@@ -10,7 +9,7 @@ import { getSeries, getStandalonePost } from '~/utils/posts.server'
 import { formatDateISO } from '~/utils/date'
 import { loader as catchallLoader } from './$'
 
-export async function loader(args: LoaderArgs) {
+export async function loader(args: LoaderFunctionArgs) {
   const { params } = args
   invariant(params.postSlug, 'slug is required')
 
@@ -32,7 +31,7 @@ export async function loader(args: LoaderArgs) {
   })
 }
 
-export const meta: V2_MetaFunction<typeof loader> = ({ data }) => {
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
   // type of data is incorrect, in case of an error it's undefined
   if (!data) return getMeta({ type: 'website', title: 'Post not found' })
   const { title, description, published, lastModified } = data

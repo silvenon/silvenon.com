@@ -27,7 +27,7 @@ function DarkModeProvider({ sessionValue, children }: ProviderProps) {
     navigation.state === 'submitting' &&
     navigation.location.pathname === '/dark-mode'
   ) {
-    const optimisticDarkMode = navigation.formData.get('darkMode')
+    const optimisticDarkMode = navigation.formData?.get('darkMode')
     if (typeof optimisticDarkMode === 'string') {
       specifiedValue =
         optimisticDarkMode === 'os' ? undefined : optimisticDarkMode === 'true'
@@ -62,6 +62,7 @@ export function useDarkMode() {
 function DarkModeHtml(props: React.ComponentProps<'html'>) {
   const [darkMode] = useDarkMode()
   return (
+    // eslint-disable-next-line jsx-a11y/html-has-lang
     <html {...props} className={clsx(props.className, darkMode && 'dark')} />
   )
 }

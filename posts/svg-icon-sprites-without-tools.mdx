@@ -1,0 +1,161 @@
+---
+title: "SVG icon sprites in React: workflow ideas, anyone?"
+description: Now that that we have revisited the topic of using SVG icons in JavaScript, we've started building tools around SVG sprites. But do we really need them?
+category: DEV
+---
+
+I was blown away by the post [Breaking Up with SVG-in-JS in 2023](https://kurtextrem.de/posts/svg-in-js), and I bet it prompted many of us to start rethinking how we're using SVG in our work.
+
+We use it primarily for icons, often through npm packages, so that's what I'm going to talk about in this post. Occasionally much bigger SVGs find their way into our bundle as well, but either way we should start switching to external SVG files.
+
+I'd like to examine the two most common approaches for using SVG icons — SVG-in-JS and SVG sprites.
+
+**Note**: if SVG sprites are unfamiliar to you (`<symbol>{:xml}` + `<use>{:xml}`), the post [The "best" way to manage icons in React.js](https://benadam.me/thoughts/react-svg-sprites/) will quickly bring you up to speed.
+
+## Icons with SVG-in-JS
+
+I'd like to start by saying that I wasn't even fully aware that I had been using using SVG-in-JS! I assume it's because of the following reasons:
+
+1. JSX doesn't look like repeating calls to `React.createElement`, so using SVG there feels like regular inline SVG to me
+2. `<path>{:html}` elements can be hell of a lot bigger than they initially seem
+3. using icons through packages hides their SVG code
+
+To use an open source set of icons like [Radix Icons](https://www.radix-ui.com/icons) or [Heroicons](https://heroicons.com/) we can usually install it by running something like `npm install @radix-ui/react-icons` and import the ones we want to use:
+
+```jsx
+import { FaceIcon, ImageIcon, SunIcon } from '@radix-ui/react-icons'
+
+function MyComponent () {
+  return (
+    <div>
+      <FaceIcon />
+      <SunIcon />
+      <ImageIcon />
+    </div>
+  )
+}
+```
+
+### Downsides
+
+  - icon's JSX code takes up at least 3x more file size than its SVG equivalent
+  - a lot of inline SVG means increases the size of the HTML document, which hurts runtime performance and memory usage
+  - pasting any custom SVG code into JSX needs attribute adjustments, for example `fill-rule` needs to become `fillRule`, which is very tedious
+    - fortunately, this can be autofixed with [`react/no-unknown-property`](https://github.com/jsx-eslint/eslint-plugin-react/blob/d73cd516aa21e2331e321e4cd28258347622221b/docs/rules/no-unknown-property.md)
+
+### Benefits
+
+	- easy to use, just `npm install` + `import`
+	- our bundle contains only the icons that we use
+  - editing SVG code in JSX is easier (IntelliSense, Prettier, ESLint, TypeScript...)
+
+## Icons with SVG sprites
+
+SVG sprites have been here for a long time, but I'm not surprised why SVG-in-JS became a more popular practice — sprites are tricky. Currently there are no stable tools to automate creating them (...)
+
+There are some tools today to help with sprites, but before we get to those let's do this manually.
+
+To achieve the result above the first step is to manually copy over each icon's SVG to the sprite file and convert it to a `<symbol>{:xml}` tag:
+
+```xml
+<!-- sprite.svg -->
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <symbol id="face" viewBox="0 0 15 15">
+      <path d="M7.49991 0.876892C3.84222 0.876892 0.877075 3.84204 0.877075 7.49972C0.877075 11.1574 3.84222 14.1226 7.49991 14.1226C11.1576 14.1226 14.1227 11.1574 14.1227 7.49972C14.1227 3.84204 11.1576 0.876892 7.49991 0.876892ZM1.82708 7.49972C1.82708 4.36671 4.36689 1.82689 7.49991 1.82689C10.6329 1.82689 13.1727 4.36671 13.1727 7.49972C13.1727 10.6327 10.6329 13.1726 7.49991 13.1726C4.36689 13.1726 1.82708 10.6327 1.82708 7.49972ZM5.03747 9.21395C4.87949 8.98746 4.56782 8.93193 4.34133 9.08991C4.11484 9.24789 4.05931 9.55956 4.21729 9.78605C4.93926 10.8211 6.14033 11.5 7.50004 11.5C8.85974 11.5 10.0608 10.8211 10.7828 9.78605C10.9408 9.55956 10.8852 9.24789 10.6587 9.08991C10.4323 8.93193 10.1206 8.98746 9.9626 9.21395C9.41963 9.99238 8.51907 10.5 7.50004 10.5C6.481 10.5 5.58044 9.99238 5.03747 9.21395ZM5.37503 6.84998C5.85828 6.84998 6.25003 6.45815 6.25003 5.97498C6.25003 5.4918 5.85828 5.09998 5.37503 5.09998C4.89179 5.09998 4.50003 5.4918 4.50003 5.97498C4.50003 6.45815 4.89179 6.84998 5.37503 6.84998ZM10.5 5.97498C10.5 6.45815 10.1083 6.84998 9.62503 6.84998C9.14179 6.84998 8.75003 6.45815 8.75003 5.97498C8.75003 5.4918 9.14179 5.09998 9.62503 5.09998C10.1083 5.09998 10.5 5.4918 10.5 5.97498Z" fill-rule="evenodd" clip-rule="evenodd"></path>
+    </symbol>
+    <symbol id="sun" viewBox="0 0 15 15">
+      <path d="M7.5 0C7.77614 0 8 0.223858 8 0.5V2.5C8 2.77614 7.77614 3 7.5 3C7.22386 3 7 2.77614 7 2.5V0.5C7 0.223858 7.22386 0 7.5 0ZM2.1967 2.1967C2.39196 2.00144 2.70854 2.00144 2.90381 2.1967L4.31802 3.61091C4.51328 3.80617 4.51328 4.12276 4.31802 4.31802C4.12276 4.51328 3.80617 4.51328 3.61091 4.31802L2.1967 2.90381C2.00144 2.70854 2.00144 2.39196 2.1967 2.1967ZM0.5 7C0.223858 7 0 7.22386 0 7.5C0 7.77614 0.223858 8 0.5 8H2.5C2.77614 8 3 7.77614 3 7.5C3 7.22386 2.77614 7 2.5 7H0.5ZM2.1967 12.8033C2.00144 12.608 2.00144 12.2915 2.1967 12.0962L3.61091 10.682C3.80617 10.4867 4.12276 10.4867 4.31802 10.682C4.51328 10.8772 4.51328 11.1938 4.31802 11.3891L2.90381 12.8033C2.70854 12.9986 2.39196 12.9986 2.1967 12.8033ZM12.5 7C12.2239 7 12 7.22386 12 7.5C12 7.77614 12.2239 8 12.5 8H14.5C14.7761 8 15 7.77614 15 7.5C15 7.22386 14.7761 7 14.5 7H12.5ZM10.682 4.31802C10.4867 4.12276 10.4867 3.80617 10.682 3.61091L12.0962 2.1967C12.2915 2.00144 12.608 2.00144 12.8033 2.1967C12.9986 2.39196 12.9986 2.70854 12.8033 2.90381L11.3891 4.31802C11.1938 4.51328 10.8772 4.51328 10.682 4.31802ZM8 12.5C8 12.2239 7.77614 12 7.5 12C7.22386 12 7 12.2239 7 12.5V14.5C7 14.7761 7.22386 15 7.5 15C7.77614 15 8 14.7761 8 14.5V12.5ZM10.682 10.682C10.8772 10.4867 11.1938 10.4867 11.3891 10.682L12.8033 12.0962C12.9986 12.2915 12.9986 12.608 12.8033 12.8033C12.608 12.9986 12.2915 12.9986 12.0962 12.8033L10.682 11.3891C10.4867 11.1938 10.4867 10.8772 10.682 10.682ZM5.5 7.5C5.5 6.39543 6.39543 5.5 7.5 5.5C8.60457 5.5 9.5 6.39543 9.5 7.5C9.5 8.60457 8.60457 9.5 7.5 9.5C6.39543 9.5 5.5 8.60457 5.5 7.5ZM7.5 4.5C5.84315 4.5 4.5 5.84315 4.5 7.5C4.5 9.15685 5.84315 10.5 7.5 10.5C9.15685 10.5 10.5 9.15685 10.5 7.5C10.5 5.84315 9.15685 4.5 7.5 4.5Z" fill-rule="evenodd" clip-rule="evenodd"></path>
+    </symbol>
+    <symbol id="image" viewBox="0 0 15 15">
+      <path d="M2.5 1H12.5C13.3284 1 14 1.67157 14 2.5V12.5C14 13.3284 13.3284 14 12.5 14H2.5C1.67157 14 1 13.3284 1 12.5V2.5C1 1.67157 1.67157 1 2.5 1ZM2.5 2C2.22386 2 2 2.22386 2 2.5V8.3636L3.6818 6.6818C3.76809 6.59551 3.88572 6.54797 4.00774 6.55007C4.12975 6.55216 4.24568 6.60372 4.32895 6.69293L7.87355 10.4901L10.6818 7.6818C10.8575 7.50607 11.1425 7.50607 11.3182 7.6818L13 9.3636V2.5C13 2.22386 12.7761 2 12.5 2H2.5ZM2 12.5V9.6364L3.98887 7.64753L7.5311 11.4421L8.94113 13H2.5C2.22386 13 2 12.7761 2 12.5ZM12.5 13H10.155L8.48336 11.153L11 8.6364L13 10.6364V12.5C13 12.7761 12.7761 13 12.5 13ZM6.64922 5.5C6.64922 5.03013 7.03013 4.64922 7.5 4.64922C7.96987 4.64922 8.35078 5.03013 8.35078 5.5C8.35078 5.96987 7.96987 6.35078 7.5 6.35078C7.03013 6.35078 6.64922 5.96987 6.64922 5.5ZM7.5 3.74922C6.53307 3.74922 5.74922 4.53307 5.74922 5.5C5.74922 6.46693 6.53307 7.25078 7.5 7.25078C8.46693 7.25078 9.25078 6.46693 9.25078 5.5C9.25078 4.53307 8.46693 3.74922 7.5 3.74922Z" fill-rule="evenodd" clip-rule="evenodd"></path>
+    </symbol>
+  </defs>
+</svg>
+```
+
+For each icon's SVG I had to make quite a lot of adjustments:
+
+1. changed `<svg>{:xml}` to `<symbol>{:xml}`
+2. removed the following attribues from `<symbol>{:xml}`: `xmlns`, `width`, `height`, `fill`, `stroke`
+3. removed the following attributes from `<path>{:xml}`: `fill`, `stroke`
+4. added an `id` to `<symbol>{:xml}`, which serves as the icon name
+
+Attributes that represent size and color need to be removed because I might want those to be customizable upon usage:
+
+```jsx
+function Icon({ icon, ...svgProps }) {
+  return (
+    <svg {...svgProps}>
+      <use href={`/sprite.svg#${icon}`} />
+    </svg>
+  )
+}
+
+function MyComponent () {
+  return (
+    <div>
+      <Icon icon="face" width="15" height="15" fill="currentColor" />
+      <Icon icon="sun" width="15" height="15" fill="currentColor" />
+      <Icon icon="image" width="15" height="15" fill="currentColor" />
+    </div>
+  )
+}
+```
+
+### Downsides
+
+  - adjustments are needed for adding icons to the sprite
+  - no IntellSense, SVG is just XML to VS Code
+  - no Prettier either, but sometimes I trick it by parsing SVG as HTML using <span className="whitespace-nowrap">`--parser=html`</span>
+  - resources about sprites are outdated, so I recommend bookmarking the catalyst article [Breaking Up with SVG-in-JS in 2023](https://kurtextrem.de/posts/svg-in-js) as a reference
+
+### Benefits
+
+  - smaller bundle size
+  - faster runtime performance
+  - smaller `node_modules` size
+  - when you get the hang of it, you won't feel limited to your installed icon set
+    - check out [Iconify](https://icon-sets.iconify.design/) to have some fun!
+
+## Workflows? Tools?
+
+If done manually, managing an SVG sprite can be tricky, adding new icons is much slower due to repetitive adjustments, also, unused icons remain in the sprite... it would be nice to have some tools to help us.
+
+### My ideal workflow
+
+When adding a new icon to my project I'm either in Figma or browsing an open source icon set's website. In either case it's usually easy for me to copy the icon's SVG code, so the workflow I'm actually looking for is:
+
+  1. paste the icon's SVG code somewhere as-is
+  2. being able to import the icon as a React component
+  3. a git-ignored SVG sprite gets created containing only imported icons
+
+The "tree-shaking" aspect of this workflow sounds impossible without a bundler plugin, but unused icons ending up in the sprite isn't the worst thing ever, so that workflow can be achieved with a tool or a custom script.
+
+### Existing tools
+
+[Sly CLI](https://sly-cli.fly.dev//cli) is a tool for adding components from supported registries, including icons. Among other things it supports adding custom transformer scripts to automate repetitive adjustments, like what we're doing to add icons to our sprite. So a Radix UI icon file added by Sly CLI can look like this:
+
+```svg
+<!-- Downloaded from @radix-ui/icons -->
+<!-- License https://github.com/radix-ui/icons/blob/master/LICENSE -->
+<!-- https://github.com/radix-ui/icons/tree/master/packages/radix-icons/icons -->
+<svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path
+    d="M8.14645 3.14645C8.34171 2.95118 8.65829 2.95118 8.85355 3.14645L12.8536 7.14645C13.0488 7.34171 13.0488 7.65829 12.8536 7.85355L8.85355 11.8536C8.65829 12.0488 8.34171 12.0488 8.14645 11.8536C7.95118 11.6583 7.95118 11.3417 8.14645 11.1464L11.2929 8H2.5C2.22386 8 2 7.77614 2 7.5C2 7.22386 2.22386 7 2.5 7H11.2929L8.14645 3.85355C7.95118 3.65829 7.95118 3.34171 8.14645 3.14645Z"
+    fill="currentColor"
+    fill-rule="evenodd"
+    clip-rule="evenodd"
+  ></path>
+</svg>
+```
+
+Sly CLI also supports defining a script that will run every time new components are added, that's a good place to run a script for bundling added icons into a sprite.
+
+Epic Stack for Remix uses this workflow, check out its [icons documentation](https://github.com/epicweb-dev/epic-stack/blob/6da99116c26b82d846476b15363c642a4551428c/docs/icons.md). Some of the logic there is explained by Sly CLI's creator, Jacob Paris, in [Use SVG sprite icons in React](https://www.jacobparis.com/content/svg-icons).
+
+However, considering that I can paste icon's SVG code into a new SVG file, I currently don't see the need for Sly CLI in my projects, it would add a layer of indirection. I will probably combine the transformer + bundling logic into the same script.
+
+## Conclusion
+
+Manually handling an SVG sprite is fine for a small project, but in a team handling icons needs to be more robust to minimize mistakes. Until the ecosystem catches up we'll need to write custom scripts or copy the ones from the Epic Stack.

@@ -11,8 +11,7 @@ import {
   isRouteErrorResponse,
 } from '@remix-run/react'
 import { redirect, json } from '@remix-run/node'
-import type { LinksFunction, LoaderArgs } from '@remix-run/node'
-import { MetronomeLinks } from '@metronome-sh/react'
+import type { LinksFunction, LoaderFunctionArgs } from '@remix-run/node'
 import { DarkMode } from './services/dark-mode'
 import clsx from 'clsx'
 import Header from './components/Header'
@@ -23,8 +22,10 @@ import Boundary from './components/Boundary'
 import { AnalyticsProvider, AnalyticsScript } from './services/analytics'
 import { getDarkMode } from '~/session.server'
 import CanonicalLink from './components/CanonicalLink'
+import NotFound from './components/NotFound.mdx'
+import NotFoundPost from './components/NotFoundPost.mdx'
 
-export async function loader({ request }: LoaderArgs) {
+export async function loader({ request }: LoaderFunctionArgs) {
   const desiredUrl = removeTrailingSlash(request.url)
 
   if (request.url !== desiredUrl) {
@@ -78,7 +79,6 @@ export default function App() {
             <meta name="twitter:site" content="@silvenon" />
             <Meta />
             <Links />
-            <MetronomeLinks />
             <script
               dangerouslySetInnerHTML={{
                 __html: `
@@ -115,14 +115,9 @@ export function ErrorBoundary() {
     let description: React.ReactNode = null
     if (error.status === 404) {
       description = pathname.startsWith('/blog/') ? (
-        <p>
-          It's likely that you got here by following a link to one of my blog
-          posts which no longer has that URL. You should be able to find the
-          content you're looking for elsewhere on this site, unless I deleted
-          that post! 😳
-        </p>
+        <NotFoundPost />
       ) : (
-        <p>It looks like the page you're looking for doesn't exist.</p>
+        <NotFound />
       )
     }
     content = (
@@ -172,7 +167,6 @@ export function ErrorBoundary() {
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <Meta />
         <Links />
-        <MetronomeLinks />
       </head>
       <body className="h-full">{content}</body>
     </html>

@@ -1,40 +1,30 @@
 import { bundleMDX } from 'mdx-bundler'
-import rehypePrettyCodePlugins from './rehype-pretty-code'
-import { esbuildPluginBrowserslist } from 'esbuild-plugin-browserslist'
-import browserslist from 'browserslist'
-import esbuildPluginCloudinary from './esbuild-plugin-cloudinary'
+import esbuildPluginCloudinary from './esbuild-plugin-cloudinary.ts'
+import { mdxOptions } from '../../etc/mdx.ts'
 import path from 'path'
+import type { ESBuildOptions } from 'vite'
 
-export async function compileMDXFile(file: string): Promise<string> {
-  const [{ default: remarkSmartypants }, { default: remarkUnwrapImages }] =
-    await Promise.all([
-      import('remark-smartypants'),
-      import('remark-unwrap-images'),
-    ])
-
+export async function compileMDXFile(
+  file: string,
+  { target }: Pick<ESBuildOptions, 'target'>,
+): Promise<string> {
   const { code } = await bundleMDX({
     file,
     cwd: path.dirname(file),
     mdxOptions: (options) => {
       options.remarkPlugins = [
         ...(options.remarkPlugins || []),
-        remarkSmartypants,
-        remarkUnwrapImages,
+        ...mdxOptions.remarkPlugins,
       ]
       options.rehypePlugins = [
         ...(options.rehypePlugins || []),
-        ...rehypePrettyCodePlugins,
+        ...mdxOptions.rehypePlugins,
       ]
       return options
     },
     esbuildOptions: (options) => {
-      options.plugins = [
-        esbuildPluginBrowserslist(browserslist(), {
-          printUnknownTargets: false,
-        }),
-        esbuildPluginCloudinary,
-        ...(options.plugins ?? []),
-      ]
+      options.target = target
+      options.plugins = [esbuildPluginCloudinary, ...(options.plugins ?? [])]
       return options
     },
   })

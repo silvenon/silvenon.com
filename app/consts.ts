@@ -1,7 +1,3 @@
-import githubIcon from '@iconify/icons-entypo-social/github'
-import twitterIcon from '@iconify/icons-entypo-social/twitter'
-import linkedInIcon from '@iconify/icons-entypo-social/linkedin'
-
 export const author = {
   name: 'Matija Marohnić',
   bio: 'I love learning about JavaScript tools, exploring static site generation, and creating delightful developer experiences.',
@@ -23,16 +19,16 @@ export const socialLinks = [
   {
     name: 'GitHub',
     url: 'https://github.com/silvenon',
-    icon: githubIcon,
+    icon: 'github',
   },
   {
     name: 'Twitter',
     url: 'https://twitter.com/silvenon',
-    icon: twitterIcon,
+    icon: 'twitter',
   },
   {
     name: 'LinkedIn',
     url: 'https://www.linkedin.com/in/silvenon',
-    icon: linkedInIcon,
+    icon: 'linkedin',
   },
 ] as const

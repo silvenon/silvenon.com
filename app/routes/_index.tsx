@@ -1,6 +1,6 @@
 import { useLoaderData, Link, useRouteError } from '@remix-run/react'
 import { json } from '@remix-run/node'
-import type { V2_MetaFunction, LoaderArgs } from '@remix-run/node'
+import type { MetaFunction, LoaderFunctionArgs } from '@remix-run/node'
 import { Fragment } from 'react'
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline'
 import PostDate from '~/components/PostDate'
@@ -8,13 +8,12 @@ import ProfilePhoto from '~/components/ProfilePhoto'
 import Prose from '~/components/Prose'
 import { getMeta } from '~/utils/seo'
 import { getAllEntries } from '~/utils/posts.server'
-import { author } from '~/consts'
+import { author, socialLinks } from '~/consts'
 import circuitBoard from '~/images/circuit-board.svg'
 import Icon from '~/components/Icon'
-import { socialLinks } from '~/consts'
 import clsx from 'clsx'
 
-export async function loader(_: LoaderArgs) {
+export async function loader(_: LoaderFunctionArgs) {
   const entries = await getAllEntries()
   const data = entries.map((entry) => {
     if ('source' in entry) return entry
@@ -22,13 +21,12 @@ export async function loader(_: LoaderArgs) {
       return {
         ...entry,
         parts: entry.parts.map((part) => {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           const { output, ...partWithoutOutput } = part
           return partWithoutOutput
         }),
       }
     }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
     const { output, ...postWithoutOutput } = entry
     return postWithoutOutput
   })
@@ -36,7 +34,7 @@ export async function loader(_: LoaderArgs) {
   return json(data, 200)
 }
 
-export const meta: V2_MetaFunction<typeof loader> = () =>
+export const meta: MetaFunction<typeof loader> = () =>
   getMeta({
     type: 'website',
     title: author.name,
@@ -53,7 +51,7 @@ export default function Home() {
   const entries = useLoaderData<typeof loader>()
   return (
     <>
-      <section className="relative mt-4 mb-10 border-t-2 border-b-2 border-purple-400 bg-purple-300 px-4 dark:border-purple-400 dark:bg-purple-800">
+      <section className="relative mb-10 mt-4 border-b-2 border-t-2 border-purple-400 bg-purple-300 px-4 dark:border-purple-400 dark:bg-purple-800">
         <div
           className="absolute inset-0 opacity-70 dark:opacity-30"
           style={{ backgroundImage: `url(${circuitBoard})` }}
