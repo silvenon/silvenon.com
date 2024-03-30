@@ -247,7 +247,7 @@ export function ErrorBoundary() {
           <pre>
             <code>
               {error.stack?.split('\n').map((line) => (
-                <span key={line} className="line">
+                <span key={line} data-line>
                   {line}
                 </span>
               ))}

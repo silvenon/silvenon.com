@@ -4,13 +4,17 @@ import {
   Meta,
   Outlet,
   ScrollRestoration,
-  useLoaderData,
   useLocation,
   useRouteError,
   isRouteErrorResponse,
+  useRouteLoaderData,
 } from '@remix-run/react'
 import { redirect, json } from '@remix-run/node'
-import type { LinksFunction, LoaderFunctionArgs } from '@remix-run/node'
+import type {
+  LinksFunction,
+  LoaderFunctionArgs,
+  MetaFunction,
+} from '@remix-run/node'
 import { DarkMode } from './services/dark-mode'
 import clsx from 'clsx'
 import Header from './components/Header'
@@ -41,6 +45,20 @@ export async function loader({ request }: LoaderFunctionArgs) {
   )
 }
 
+export const meta: MetaFunction = ({ error }) => {
+  if (!error) return []
+  let title: string
+  if (isRouteErrorResponse(error)) {
+    title =
+      error.data ?? (error.status === 404 ? 'Page not found' : 'Page error')
+  } else if (error instanceof Error) {
+    title = 'Page error'
+  } else {
+    title = 'Unknown error'
+  }
+  return [{ title }]
+}
+
 export const links: LinksFunction = () => {
   return [
     { rel: 'stylesheet', href: stylesUrl },
@@ -51,19 +69,21 @@ export const links: LinksFunction = () => {
   ]
 }
 
-export default function App() {
-  const data = useLoaderData<typeof loader>()
+export function Layout({ children }: { children: React.ReactNode }) {
+  const data = useRouteLoaderData<typeof loader>('root')
+  const error = useRouteError()
+  const origin = data?.origin ?? window.location.origin
   const hasJs = typeof document !== 'undefined'
 
   return (
     <AnalyticsProvider>
-      <DarkMode.Provider sessionValue={data.darkMode}>
+      <DarkMode.Provider sessionValue={error !== null || data?.darkMode}>
         <DarkMode.Html
           lang="en"
           className={clsx('h-full', hasJs ? 'js' : 'no-js')}
         >
           <head>
-            {data.appName === 'silvenon-staging' && (
+            {data?.appName === 'silvenon-staging' && (
               <meta name="robots" content="noindex" />
             )}
             <meta charSet="utf-8" />
@@ -71,7 +91,7 @@ export default function App() {
               name="viewport"
               content="width=device-width,initial-scale=1"
             />
-            <CanonicalLink origin={data.origin} />
+            <CanonicalLink origin={origin} />
             <meta property="og:site_name" content={author.name} />
             <meta name="twitter:card" content="summary" />
             <meta name="twitter:site" content="@silvenon" />
@@ -87,8 +107,7 @@ export default function App() {
             <DarkMode.Head />
           </head>
           <body className="h-full bg-page text-black selection:bg-amber-300 selection:text-black dark:bg-page-dark dark:text-white">
-            <Header />
-            <Outlet />
+            {children}
             <ScrollRestoration />
             {import.meta.env.PROD && <AnalyticsScript />}
             <Scripts />
@@ -99,16 +118,22 @@ export default function App() {
   )
 }
 
+export default function App() {
+  return (
+    <>
+      <Header />
+      <Outlet />
+    </>
+  )
+}
+
 export function ErrorBoundary() {
   const error = useRouteError()
   const { pathname } = useLocation()
 
-  let title: string
   let content: React.ReactNode
 
   if (isRouteErrorResponse(error)) {
-    title =
-      error.data ?? (error.status === 404 ? 'Page not found' : 'Page error')
     let description: React.ReactNode = null
     if (error.status === 404) {
       description = pathname.startsWith('/blog/') ? (
@@ -123,13 +148,13 @@ export function ErrorBoundary() {
         title={
           !pathname.startsWith('/blog/') && error.status === 404
             ? 'Nothing found at this URL.'
-            : title
+            : error.data ??
+              (error.status === 404 ? 'Page not found' : 'Page error')
         }
         description={description}
       />
     )
   } else if (error instanceof Error) {
-    title = 'Page error'
     content = (
       <Boundary
         title="Oh no!"
@@ -141,7 +166,7 @@ export function ErrorBoundary() {
             <pre>
               <code>
                 {error.stack?.split('\n').map((line) => (
-                  <span key={line} className="line">
+                  <span key={line} data-line>
                     {line}
                   </span>
                 ))}
@@ -152,20 +177,8 @@ export function ErrorBoundary() {
       />
     )
   } else {
-    title = 'Unknown error'
-    content = <Boundary title={title} />
+    content = <Boundary title="Unknown error" />
   }
 
-  return (
-    <html lang="en" className="dark h-full">
-      <head>
-        <title>{title}</title>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <Meta />
-        <Links />
-      </head>
-      <body className="h-full">{content}</body>
-    </html>
-  )
+  return content
 }
