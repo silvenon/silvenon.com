@@ -18,16 +18,12 @@ export default defineConfig({
         ...devices['Desktop Chrome'],
       },
     },
-    ...(process.env.CI
-      ? [
-          {
-            name: 'webkit',
-            use: {
-              ...devices['Desktop Safari'],
-            },
-          },
-        ]
-      : []),
+    {
+      name: 'webkit',
+      use: {
+        ...devices['Desktop Safari'],
+      },
+    },
   ],
   webServer: {
     command: 'npm start',
