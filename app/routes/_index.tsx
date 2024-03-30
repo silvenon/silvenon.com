@@ -1,11 +1,11 @@
-import { useLoaderData, Link, useRouteError, Await } from '@remix-run/react'
+import { useLoaderData, Link, useRouteError } from '@remix-run/react'
 import type {
   MetaFunction,
   LoaderFunctionArgs,
   HeadersFunction,
 } from '@remix-run/node'
-import { defer } from '@remix-run/node'
-import { Fragment, Suspense } from 'react'
+import { json } from '@remix-run/node'
+import { Fragment } from 'react'
 import PostDate from '~/components/PostDate'
 import ProfilePhoto from '~/components/ProfilePhoto'
 import Prose from '~/components/Prose'
@@ -16,15 +16,9 @@ import circuitBoard from '~/images/circuit-board.svg'
 import spriteUrl from '~/sprite.svg'
 import clsx from 'clsx'
 
-export function loader(_: LoaderFunctionArgs) {
-  return defer(
-    { entries: getAllPostsMeta() },
-    {
-      headers: {
-        'Cache-Control': 'public, max-age=3600',
-      },
-    },
-  )
+export async function loader(_: LoaderFunctionArgs) {
+  const entries = await getAllPostsMeta()
+  return json({ entries })
 }
 
 export const headers: HeadersFunction = ({ loaderHeaders }) => {
@@ -49,7 +43,7 @@ export const meta: MetaFunction = () => {
 }
 
 export default function Home() {
-  const data = useLoaderData<typeof loader>()
+  const { entries } = useLoaderData<typeof loader>()
   return (
     <>
       <section className="relative mb-10 mt-4 border-b-2 border-t-2 border-purple-400 bg-purple-300 px-4 dark:border-purple-400 dark:bg-purple-800">
@@ -99,137 +93,125 @@ export default function Home() {
       <main className="mt-6 md:pb-4">
         <Prose>
           <h2>Posts</h2>
-          <Suspense
-            fallback={<div aria-label="Loading" className="loader pl-2" />}
-          >
-            <Await resolve={data.entries}>
-              {(entries) =>
-                entries.map((entry, index) => {
-                  const rule = index < entries.length - 1 ? <hr /> : null
+          {entries.map((entry, index) => {
+            const rule = index < entries.length - 1 ? <hr /> : null
 
-                  if ('source' in entry) {
-                    if ('parts' in entry) {
-                      const externalSeries = entry
-                      return (
-                        <Fragment key={externalSeries.title}>
-                          <article>
-                            <h3>{externalSeries.title}</h3>
-                            <PostDate
-                              published={externalSeries.parts[0].published}
-                            />
-                            <p>{externalSeries.description}</p>
-                            <p>Parts of this series:</p>
-                            <ol>
-                              {externalSeries.parts.map((part) => (
-                                <li key={part.title} className="space-x-2">
-                                  <span className="dark:text-white">
-                                    {part.title}
-                                  </span>
-                                  <span>·</span>
-                                  <a
-                                    href={part.url}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    className="inline-flex items-center space-x-2"
-                                  >
-                                    <span>Read on {externalSeries.source}</span>
-                                    <svg aria-hidden="true" className="h-6 w-6">
-                                      <use href={`${spriteUrl}#external`} />
-                                    </svg>
-                                  </a>
-                                </li>
-                              ))}
-                            </ol>
-                          </article>
-                          {rule}
-                        </Fragment>
-                      )
-                    }
-
-                    const externalPost = entry
-                    return (
-                      <Fragment key={externalPost.title}>
-                        <article>
-                          <h3>
+            if ('source' in entry) {
+              if ('parts' in entry) {
+                const externalSeries = entry
+                return (
+                  <Fragment key={externalSeries.title}>
+                    <article>
+                      <h3>{externalSeries.title}</h3>
+                      <PostDate published={externalSeries.parts[0].published} />
+                      <p>{externalSeries.description}</p>
+                      <p>Parts of this series:</p>
+                      <ol>
+                        {externalSeries.parts.map((part) => (
+                          <li key={part.title} className="space-x-2">
+                            <span className="dark:text-white">
+                              {part.title}
+                            </span>
+                            <span>·</span>
                             <a
-                              href={externalPost.url}
-                              target="_blank"
-                              rel="noreferrer"
-                            >
-                              {externalPost.title}
-                            </a>
-                          </h3>
-                          <PostDate published={externalPost.published} />
-                          <p>{externalPost.description}</p>
-                          <p>
-                            <a
-                              href={externalPost.url}
+                              href={part.url}
                               target="_blank"
                               rel="noreferrer"
                               className="inline-flex items-center space-x-2"
                             >
-                              <span>Read on {externalPost.source}</span>
+                              <span>Read on {externalSeries.source}</span>
                               <svg aria-hidden="true" className="h-6 w-6">
                                 <use href={`${spriteUrl}#external`} />
                               </svg>
                             </a>
-                          </p>
-                        </article>
-                        {rule}
-                      </Fragment>
-                    )
-                  }
-
-                  if ('parts' in entry) {
-                    const series = entry
-                    return (
-                      <Fragment key={series.slug}>
-                        <article>
-                          <h3>
-                            <Link
-                              to={`/blog/${series.slug}/${series.parts[0].slug}`}
-                            >
-                              {series.title}
-                            </Link>
-                          </h3>
-                          <PostDate published={series.published ?? undefined} />
-                          <p>{series.description}</p>
-                          <p>Parts of this series:</p>
-                          <ol>
-                            {series.parts.map((part) => (
-                              <li key={part.slug}>
-                                <Link to={`/blog/${series.slug}/${part.slug}`}>
-                                  {part.title}
-                                </Link>
-                              </li>
-                            ))}
-                          </ol>
-                        </article>
-                        {rule}
-                      </Fragment>
-                    )
-                  }
-
-                  const post = entry
-                  return (
-                    <Fragment key={post.slug}>
-                      <article>
-                        <h3>
-                          <Link to={`/blog/${post.slug}`}>{post.title}</Link>
-                        </h3>
-                        <PostDate published={post.published ?? undefined} />
-                        <p>{post.description}</p>
-                        <p>
-                          <Link to={`/blog/${post.slug}`}>Read more →</Link>
-                        </p>
-                      </article>
-                      {rule}
-                    </Fragment>
-                  )
-                })
+                          </li>
+                        ))}
+                      </ol>
+                    </article>
+                    {rule}
+                  </Fragment>
+                )
               }
-            </Await>
-          </Suspense>
+
+              const externalPost = entry
+              return (
+                <Fragment key={externalPost.title}>
+                  <article>
+                    <h3>
+                      <a
+                        href={externalPost.url}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {externalPost.title}
+                      </a>
+                    </h3>
+                    <PostDate published={externalPost.published} />
+                    <p>{externalPost.description}</p>
+                    <p>
+                      <a
+                        href={externalPost.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center space-x-2"
+                      >
+                        <span>Read on {externalPost.source}</span>
+                        <svg aria-hidden="true" className="h-6 w-6">
+                          <use href={`${spriteUrl}#external`} />
+                        </svg>
+                      </a>
+                    </p>
+                  </article>
+                  {rule}
+                </Fragment>
+              )
+            }
+
+            if ('parts' in entry) {
+              const series = entry
+              return (
+                <Fragment key={series.slug}>
+                  <article>
+                    <h3>
+                      <Link to={`/blog/${series.slug}/${series.parts[0].slug}`}>
+                        {series.title}
+                      </Link>
+                    </h3>
+                    <PostDate published={series.published ?? undefined} />
+                    <p>{series.description}</p>
+                    <p>Parts of this series:</p>
+                    <ol>
+                      {series.parts.map((part) => (
+                        <li key={part.slug}>
+                          <Link to={`/blog/${series.slug}/${part.slug}`}>
+                            {part.title}
+                          </Link>
+                        </li>
+                      ))}
+                    </ol>
+                  </article>
+                  {rule}
+                </Fragment>
+              )
+            }
+
+            const post = entry
+            return (
+              <Fragment key={post.slug}>
+                <article>
+                  <h3>
+                    <Link to={`/blog/${post.slug}`}>{post.title}</Link>
+                  </h3>
+                  <PostDate published={post.published ?? undefined} />
+                  <p>{post.description}</p>
+                  <p>
+                    <Link to={`/blog/${post.slug}`}>Read more →</Link>
+                  </p>
+                </article>
+                {rule}
+              </Fragment>
+            )
+          })}
         </Prose>
       </main>
     </>
