@@ -3,8 +3,6 @@ import cloudinary from '~/utils/cloudinary'
 
 const ID = 'in-roermond.jpg'
 const VERSION = 1
-// approxiamte px value of w-40
-const SM_WIDTH_PX = 160
 
 interface Props {
   className?: string
@@ -26,7 +24,7 @@ export default function ProfilePhoto({ className }: Props) {
               version: VERSION,
               transformations: [
                 {
-                  width: SM_WIDTH_PX,
+                  width: 160,
                   aspectRatio: '4:5',
                   crop: 'fill',
                   gravity: 'face',
@@ -34,12 +32,12 @@ export default function ProfilePhoto({ className }: Props) {
                   quality: 'auto',
                 },
               ],
-            })} ${SM_WIDTH_PX}w,
+            })} ${160}w,
             ${cloudinary(ID, {
               version: VERSION,
               transformations: [
                 {
-                  width: SM_WIDTH_PX * 2,
+                  width: 160 * 2,
                   aspectRatio: '4:5',
                   crop: 'fill',
                   gravity: 'face',
@@ -47,9 +45,9 @@ export default function ProfilePhoto({ className }: Props) {
                   quality: 'auto',
                 },
               ],
-            })} ${SM_WIDTH_PX * 2}w
+            })} ${260 * 2}w
           `}
-          sizes={`${SM_WIDTH_PX}px`}
+          sizes={`${160}px`}
         />
         <img
           alt=""
@@ -58,7 +56,7 @@ export default function ProfilePhoto({ className }: Props) {
             version: VERSION,
             transformations: [
               {
-                width: 450,
+                width: 160,
                 aspectRatio: '2:1',
                 crop: 'fill',
                 gravity: 'face',
@@ -72,7 +70,7 @@ export default function ProfilePhoto({ className }: Props) {
               version: VERSION,
               transformations: [
                 {
-                  width: 450,
+                  width: 360,
                   aspectRatio: '2:1',
                   crop: 'fill',
                   gravity: 'face',
@@ -80,12 +78,12 @@ export default function ProfilePhoto({ className }: Props) {
                   quality: 'auto',
                 },
               ],
-            })} 450w,
+            })}${360}w,
             ${cloudinary(ID, {
               version: VERSION,
               transformations: [
                 {
-                  width: 900,
+                  width: 360 * 2,
                   aspectRatio: '2:1',
                   crop: 'fill',
                   gravity: 'face',
@@ -93,9 +91,12 @@ export default function ProfilePhoto({ className }: Props) {
                   quality: 'auto',
                 },
               ],
-            })} 900w
+            })} ${360 * 2}w
           `}
-          sizes="100vw"
+          sizes={[
+            `(min-width: ${import.meta.env.SCREEN_SM}) 160px`,
+            'min(360px, calc(100vw - var(--page-padding) * 2 - 0.75rem * 2))',
+          ].join(', ')}
         />
       </picture>
     </div>
