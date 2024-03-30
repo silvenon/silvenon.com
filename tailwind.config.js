@@ -108,8 +108,8 @@ export default {
                 pre: {
                   paddingLeft: 0,
                   paddingRight: 0,
-                  marginLeft: `-${typographyStyles[size].css[0].pre.paddingLeft}`,
-                  marginRight: `-${typographyStyles[size].css[0].pre.paddingRight}`,
+                  marginLeft: `-${typographyStyles[size].css[0].pre.paddingInlineStart}`,
+                  marginRight: `-${typographyStyles[size].css[0].pre.paddingInlineEnd}`,
                   lineHeight: theme('lineHeight.loose'),
                 },
                 'pre code': {
@@ -117,8 +117,10 @@ export default {
                   fontSize: '1em',
                 },
                 'pre [data-line]': {
-                  paddingLeft: typographyStyles[size].css[0].pre.paddingLeft,
-                  paddingRight: typographyStyles[size].css[0].pre.paddingRight,
+                  paddingLeft:
+                    typographyStyles[size].css[0].pre.paddingInlineStart,
+                  paddingRight:
+                    typographyStyles[size].css[0].pre.paddingInlineEnd,
                 },
               },
             },
