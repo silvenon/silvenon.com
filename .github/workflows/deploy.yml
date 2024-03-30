@@ -154,18 +154,16 @@ jobs:
           field: "app"
 
       - name: Set up Fly
-        uses: superfly/flyctl-actions/setup-flyctl@1.5
-        env:
-          CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
+        uses: superfly/flyctl-actions/setup-flyctl@master
 
       - name: Deploy Staging
         if: ${{ github.ref == 'refs/heads/dev' }}
-        run: flyctl deploy --remote-only --build-arg COMMIT_SHA=${{ github.sha }} --app ${{ steps.app_name.outputs.value }}-staging
+        run: flyctl deploy --remote-only --build-arg COMMIT_SHA=${{ github.sha }} --build-arg CLOUDINARY_URL=${{ secrets.CLOUDINARY_URL }} --app ${{ steps.app_name.outputs.value }}-staging
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 
       - name: Deploy Production
         if: ${{ github.ref == 'refs/heads/main' }}
-        run: flyctl deploy --remote-only --build-arg COMMIT_SHA=${{ github.sha }} --app ${{ steps.app_name.outputs.value }}
+        run: flyctl deploy --remote-only --build-arg COMMIT_SHA=${{ github.sha }} --build-arg CLOUDINARY_URL=${{ secrets.CLOUDINARY_URL }} --app ${{ steps.app_name.outputs.value }}
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}

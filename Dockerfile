@@ -24,12 +24,14 @@ RUN npm prune --omit=dev
 # Build the app
 FROM base as build
 
+ARG CLOUDINARY_URL
+
 WORKDIR /app
 
 COPY --from=deps /app/node_modules /app/node_modules
 
 COPY . .
-RUN npm run build
+RUN CLOUDINRAY_URL=${CLOUDINRAY_URL} npm run build
 
 # Finally, build the production image with minimal footprint
 FROM base
