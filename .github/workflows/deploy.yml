@@ -114,21 +114,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Add environment variables
-        run: |
-          echo "NODE_VERSION=$(node --version)" >> $GITHUB_ENV
-          npm list @playwright/test --depth=0 --json > npm-list-playwright.json
-          echo "PLAYWRIGHT_VERSION=$(node --print "require('./npm-list-playwright.json').dependencies['@playwright/test'].version")" >> $GITHUB_ENV
-
-      - name: Cache binaries
-        uses: actions/cache@v3
-        id: playwright-cache
-        with:
-          path: ~/.cache/ms-playwright
-          key: os-${{ runner.os }}-node-${{ env.NODE_VERSION }}-playwright-v${{ env.PLAYWRIGHT_VERSION }}
-
       - name: Install browsers
-        if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: npx playwright install --with-deps
 
       - name: Build app
