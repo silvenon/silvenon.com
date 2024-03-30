@@ -56,7 +56,7 @@ export default function ProfilePhoto({ className }: Props) {
             version: VERSION,
             transformations: [
               {
-                width: 160,
+                width: 360,
                 aspectRatio: '2:1',
                 crop: 'fill',
                 gravity: 'face',
