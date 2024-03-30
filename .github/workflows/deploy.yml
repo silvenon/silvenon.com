@@ -92,11 +92,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Compile posts
-        run: npm run build:posts
-        env:
-          CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
-
       - name: Run tests
         run: npm run test:unit
         env:
