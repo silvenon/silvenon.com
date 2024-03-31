@@ -3,15 +3,14 @@ import { basename, dirname, join as joinPath } from 'path'
 
 const standalonePostFrontmatter = import.meta.glob<StandalonePostFrontmattter>(
   '/posts/*.mdx',
-  { import: 'frontmatter', eager: true },
+  { import: 'frontmatter' },
 )
 const seriesPostFrontmatter = import.meta.glob<SeriesPostFrontmatter>(
   '/posts/*/*.mdx',
-  { import: 'frontmatter', eager: true },
+  { import: 'frontmatter' },
 )
 const seriesMeta = import.meta.glob<SeriesMeta>('/posts/*/series.json', {
   import: 'default',
-  eager: true,
 })
 
 export interface StandalonePostFrontmattter {
@@ -127,7 +126,7 @@ export async function getAllPostsMeta() {
     ...externalPosts,
     ...Object.keys(standalonePostFrontmatter).map(async (path) => {
       const slug = basename(path, '.mdx')
-      const meta = standalonePostFrontmatter[path]
+      const meta = await standalonePostFrontmatter[path]()
       const result: StandalonePostFrontmattter & {
         slug: string
         fileModified?: string
@@ -174,11 +173,11 @@ export async function getAllPostsMeta() {
     })
 }
 
-export function getStandalonePostMeta(slug: string) {
+export async function getStandalonePostMeta(slug: string) {
   const path = `/posts/${slug}.mdx`
   const isStandalonePost = path in standalonePostFrontmatter
   if (!isStandalonePost) return null
-  const frontmatter = standalonePostFrontmatter[path]
+  const frontmatter = await standalonePostFrontmatter[path]()
   const isPublished = 'published' in frontmatter
   if (!isPublished && !import.meta.env.DEV) return null
   return frontmatter
@@ -188,18 +187,20 @@ export async function getSeriesMeta(slug: string) {
   const seriesPath = `/posts/${slug}/series.json`
   const isSeries = seriesPath in seriesMeta
   if (!isSeries) return null
-  const meta = seriesMeta[seriesPath]
+  const meta = await seriesMeta[seriesPath]()
   const isPublished = 'published' in meta
   if (!isPublished && !import.meta.env.DEV) return null
   const partPaths = Object.keys(seriesPostFrontmatter).filter((postPath) =>
     postPath.startsWith(`/posts/${slug}/`),
   )
-  const parts = partPaths
-    .map((postPath) => ({
-      slug: basename(postPath, '.mdx'),
-      ...seriesPostFrontmatter[postPath],
-    }))
-    .sort((a, b) => a.seriesPart - b.seriesPart)
+  const parts = await Promise.all(
+    partPaths.map(async (postPath) => {
+      const meta = await seriesPostFrontmatter[postPath]()
+      return { slug: basename(postPath, '.mdx'), ...meta }
+    }),
+  ).then((parts) => {
+    return parts.sort((a, b) => a.seriesPart - b.seriesPart)
+  })
 
   const result: SeriesMeta & {
     slug: string
