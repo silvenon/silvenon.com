@@ -26,8 +26,8 @@ const Gitgraph = ({ children }: Props) => {
     >
       {hasJs ? (
         <OriginalGitgraph
-          // @gitgraph/react renders the graph only on initial render,
-          // so this way we force a re-render based on the breakpoint
+          // @gitgraph/react renders the graph only on the initial render
+          // so by changing keys we're forcing a re-render based on the breakpoint
           key={matchesSm ? 'sm' : 'xs'}
           options={{
             template: templateExtend(TemplateName.Metro, {
