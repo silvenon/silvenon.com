@@ -12,7 +12,7 @@ const ISSUE_TERM = 'title'
 type Theme = 'preferred-color-scheme' | 'github-dark' | 'github-light'
 
 export default function Comments() {
-  const [darkMode] = useDarkMode()
+  const darkMode = useDarkMode()
 
   let theme: Theme
 

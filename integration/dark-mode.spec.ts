@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test'
 
 test.describe('dark mode', () => {
-  test.fixme('toggle in UI', async ({ page }) => {
+  test('toggle in UI', async ({ page }) => {
     const document = page.getByRole('document')
     const enableSwitch = page.getByRole('switch', { name: 'Enable dark mode' })
     const disableSwitch = page.getByRole('switch', {

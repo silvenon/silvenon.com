@@ -1,9 +1,19 @@
-import { createContext, useState, useContext, useEffect, useId } from 'react'
-import { Form, useLocation, useNavigation } from '@remix-run/react'
+import {
+  createContext,
+  useState,
+  useContext,
+  useEffect,
+  useId,
+  useMemo,
+} from 'react'
+import { useFetcher, useLocation } from '@remix-run/react'
 import spriteUrl from '~/sprite.svg'
 import clsx from 'clsx'
 
-const DarkModeContext = createContext<[boolean | null, boolean]>([null, false])
+const FETCHER_KEY = 'dark-mode'
+
+const DarkModeContext = createContext<boolean | null>(null)
+const DarkModeInternalContext = createContext<readonly [boolean]>([false])
 
 interface ProviderProps {
   sessionValue: boolean | undefined
@@ -11,6 +21,7 @@ interface ProviderProps {
 }
 
 function DarkModeProvider({ sessionValue, children }: ProviderProps) {
+  const fetcher = useFetcher({ key: FETCHER_KEY })
   const [matchesValue, setMatchesValue] = useState<boolean | null>(() => {
     if (typeof document === 'undefined') {
       // there's no way for us to know what the theme should be in this context
@@ -20,17 +31,13 @@ function DarkModeProvider({ sessionValue, children }: ProviderProps) {
     return window.matchMedia('(prefers-color-scheme: dark)').matches
   })
 
-  const navigation = useNavigation()
   let specifiedValue = sessionValue
 
-  if (
-    navigation.state === 'submitting' &&
-    navigation.location.pathname === '/dark-mode'
-  ) {
-    const optimisticDarkMode = navigation.formData?.get('darkMode')
-    if (typeof optimisticDarkMode === 'string') {
+  if (fetcher.state === 'submitting') {
+    const submittedDarkMode = fetcher.formData?.get('darkMode')
+    if (typeof submittedDarkMode === 'string') {
       specifiedValue =
-        optimisticDarkMode === 'os' ? undefined : optimisticDarkMode === 'true'
+        submittedDarkMode === 'os' ? undefined : submittedDarkMode === 'true'
     }
   }
 
@@ -47,10 +54,16 @@ function DarkModeProvider({ sessionValue, children }: ProviderProps) {
 
   const darkMode = specifiedValue ?? matchesValue
   const isSpecified = typeof specifiedValue === 'boolean'
+  const internalContextValue = useMemo(
+    () => [isSpecified] as const,
+    [isSpecified],
+  )
 
   return (
-    <DarkModeContext.Provider value={[darkMode, isSpecified]}>
-      {children}
+    <DarkModeContext.Provider value={darkMode}>
+      <DarkModeInternalContext.Provider value={internalContextValue}>
+        {children}
+      </DarkModeInternalContext.Provider>
     </DarkModeContext.Provider>
   )
 }
@@ -60,7 +73,7 @@ export function useDarkMode() {
 }
 
 function DarkModeHtml(props: React.ComponentProps<'html'>) {
-  const [darkMode] = useDarkMode()
+  const darkMode = useContext(DarkModeContext)
   return (
     // eslint-disable-next-line jsx-a11y/html-has-lang
     <html {...props} className={clsx(props.className, darkMode && 'dark')} />
@@ -69,7 +82,8 @@ function DarkModeHtml(props: React.ComponentProps<'html'>) {
 
 // https://tailwindcss.com/docs/dark-mode#toggling-dark-mode-manually
 function DarkModeHead() {
-  const [darkMode, isSpecified] = useDarkMode()
+  const darkMode = useContext(DarkModeContext)
+  const [isSpecified] = useContext(DarkModeInternalContext)
   return (
     <>
       <meta
@@ -103,13 +117,19 @@ function DarkModeHead() {
 }
 
 function DarkModeToggle() {
-  const [darkMode, isSpecified] = useDarkMode()
+  const darkMode = useContext(DarkModeContext)
+  const [isSpecified] = useContext(DarkModeInternalContext)
   const location = useLocation()
+  const fetcher = useFetcher({ key: FETCHER_KEY })
   const id = useId()
   const searchParams = new URLSearchParams([['redirectTo', location.pathname]])
+  const switchId = `${id}-switch`
+  const switchLabelId = `${id}-switch-label`
+
+  if (fetcher === null) return null
 
   return (
-    <Form
+    <fetcher.Form
       action={`/dark-mode?${searchParams}`}
       method="post"
       className="flex items-center space-x-2"
@@ -125,7 +145,7 @@ function DarkModeToggle() {
         </button>
       )}
       <button
-        id={`${id}-switch`}
+        id={switchId}
         role="switch"
         name="darkMode"
         value={String(!darkMode)}
@@ -133,7 +153,7 @@ function DarkModeToggle() {
         type="submit"
         className="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-gray-200 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 dark:bg-purple-400 dark:focus:ring-purple-400 dark:focus:ring-offset-gray-900"
       >
-        <span id={`${id}-switch-label`} className="sr-only">
+        <span id={switchLabelId} className="sr-only">
           {darkMode ? 'Disable dark mode' : 'Enable dark mode'}
         </span>
         <span className="pointer-events-none relative inline-block h-5 w-5 translate-x-0 rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out dark:translate-x-5">
@@ -161,8 +181,8 @@ function DarkModeToggle() {
             __html: `
               ;(function () {
                 const darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
-                const switchEl = document.getElementById('${id}-switch')
-                const switchLabelEl = document.getElementById('${id}-switch-label')
+                const switchEl = document.getElementById('${switchId}')
+                const switchLabelEl = document.getElementById('${switchLabelId}')
                 switchEl.setAttribute('value', String(!darkMode))
                 switchEl.setAttribute('aria-checked', String(darkMode))
                 switchLabelEl.textContent = darkMode ? 'Disable dark mode' : 'Enable dark mode'
@@ -171,7 +191,7 @@ function DarkModeToggle() {
           }}
         />
       )}
-    </Form>
+    </fetcher.Form>
   )
 }
 
