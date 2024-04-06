@@ -12,9 +12,9 @@ export const socialLinks = [
     icon: 'github',
   },
   {
-    name: 'Twitter',
-    url: 'https://twitter.com/silvenon',
-    icon: 'twitter',
+    name: 'X',
+    url: 'https://x.com/silvenon',
+    icon: 'x',
   },
   {
     name: 'LinkedIn',

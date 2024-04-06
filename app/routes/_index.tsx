@@ -82,8 +82,9 @@ export default function Home() {
                   className={clsx(
                     'block rounded-full border-2 border-transparent bg-purple-400 p-1.5 text-white transition duration-200 group-hover:scale-125 group-hover:text-white dark:bg-purple-400 dark:text-black dark:group-hover:shadow sm:p-2',
                     network.name === 'GitHub' &&
-                      'group-hover:bg-github dark:group-hover:border-white/75',
-                    network.name === 'Twitter' && 'group-hover:bg-twitter',
+                      'group-hover:bg-github dark:group-hover:border-white',
+                    network.name === 'X' &&
+                      'group-hover:bg-x dark:group-hover:border-white',
                     network.name === 'LinkedIn' && 'group-hover:bg-linkedin',
                   )}
                 >
