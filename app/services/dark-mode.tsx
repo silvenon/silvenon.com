@@ -4,7 +4,7 @@ import {
   useContext,
   useEffect,
   useId,
-  useMemo,
+  useRef,
 } from 'react'
 import { useFetcher, useLocation } from '@remix-run/react'
 import spriteUrl from '~/sprite.svg'
@@ -13,7 +13,7 @@ import clsx from 'clsx'
 const FETCHER_KEY = 'dark-mode'
 
 const DarkModeContext = createContext<boolean | null>(null)
-const DarkModeInternalContext = createContext<readonly [boolean]>([false])
+const DarkModeSessionContext = createContext<boolean | undefined>(undefined)
 
 interface ProviderProps {
   sessionValue: boolean | undefined
@@ -21,7 +21,8 @@ interface ProviderProps {
 }
 
 function DarkModeProvider({ sessionValue, children }: ProviderProps) {
-  const fetcher = useFetcher({ key: FETCHER_KEY })
+  const sessionFetcher = useFetcher({ key: FETCHER_KEY })
+  const optimisticSessionValueRef = useRef<boolean | undefined>(undefined)
   const [matchesValue, setMatchesValue] = useState<boolean | null>(() => {
     if (typeof document === 'undefined') {
       // there's no way for us to know what the theme should be in this context
@@ -31,13 +32,11 @@ function DarkModeProvider({ sessionValue, children }: ProviderProps) {
     return window.matchMedia('(prefers-color-scheme: dark)').matches
   })
 
-  let specifiedValue = sessionValue
-
-  if (fetcher.state === 'submitting') {
-    const submittedDarkMode = fetcher.formData?.get('darkMode')
-    if (typeof submittedDarkMode === 'string') {
-      specifiedValue =
-        submittedDarkMode === 'os' ? undefined : submittedDarkMode === 'true'
+  if (sessionFetcher.state !== 'idle') {
+    const submittedValue = sessionFetcher.formData?.get('darkMode')
+    if (typeof submittedValue === 'string') {
+      optimisticSessionValueRef.current =
+        submittedValue === 'os' ? undefined : submittedValue === 'true'
     }
   }
 
@@ -52,18 +51,16 @@ function DarkModeProvider({ sessionValue, children }: ProviderProps) {
     }
   }, [])
 
-  const darkMode = specifiedValue ?? matchesValue
-  const isSpecified = typeof specifiedValue === 'boolean'
-  const internalContextValue = useMemo(
-    () => [isSpecified] as const,
-    [isSpecified],
-  )
+  const darkMode =
+    optimisticSessionValueRef.current ?? sessionValue ?? matchesValue
 
   return (
     <DarkModeContext.Provider value={darkMode}>
-      <DarkModeInternalContext.Provider value={internalContextValue}>
+      <DarkModeSessionContext.Provider
+        value={optimisticSessionValueRef.current ?? sessionValue}
+      >
         {children}
-      </DarkModeInternalContext.Provider>
+      </DarkModeSessionContext.Provider>
     </DarkModeContext.Provider>
   )
 }
@@ -83,7 +80,7 @@ function DarkModeHtml(props: React.ComponentProps<'html'>) {
 // https://tailwindcss.com/docs/dark-mode#toggling-dark-mode-manually
 function DarkModeHead() {
   const darkMode = useContext(DarkModeContext)
-  const [isSpecified] = useContext(DarkModeInternalContext)
+  const sessionValue = useContext(DarkModeSessionContext)
   return (
     <>
       <meta
@@ -94,7 +91,7 @@ function DarkModeHead() {
         name="twitter:widgets:theme"
         content={darkMode ? 'dark' : 'light'}
       />
-      {!isSpecified && (
+      {typeof sessionValue === 'undefined' && (
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -118,7 +115,7 @@ function DarkModeHead() {
 
 function DarkModeToggle() {
   const darkMode = useContext(DarkModeContext)
-  const [isSpecified] = useContext(DarkModeInternalContext)
+  const sessionValue = useContext(DarkModeSessionContext)
   const location = useLocation()
   const fetcher = useFetcher({ key: FETCHER_KEY })
   const id = useId()
@@ -134,7 +131,7 @@ function DarkModeToggle() {
       method="post"
       className="flex items-center space-x-2"
     >
-      {isSpecified && (
+      {typeof sessionValue !== 'undefined' && (
         <button
           name="darkMode"
           value="os"
@@ -176,7 +173,7 @@ function DarkModeToggle() {
           </span>
         </span>
       </button>
-      {!isSpecified && (
+      {typeof sessionValue === 'undefined' && (
         <script
           dangerouslySetInnerHTML={{
             __html: `

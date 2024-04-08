@@ -38,7 +38,7 @@ test.describe('dark mode', () => {
     await expect(resetBtn).not.toBeVisible()
   })
 
-  test.fixme('toggle in OS', async ({ page }) => {
+  test('toggle in OS', async ({ page }) => {
     const document = page.getByRole('document')
 
     await page.goto('/')
