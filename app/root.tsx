@@ -73,14 +73,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const data = useRouteLoaderData<typeof loader>('root')
   const error = useRouteError()
   const origin = data?.origin ?? window.location.origin
-  const hasJs = typeof document !== 'undefined'
 
   return (
     <AnalyticsProvider>
       <DarkMode.Provider sessionValue={error !== null || data?.darkMode}>
         <DarkMode.Html
           lang="en"
-          className={clsx('h-full', hasJs ? 'js' : 'no-js')}
+          className={clsx('h-full', import.meta.env.SSR ? 'no-js' : 'js')}
         >
           <head>
             {data?.appName === 'silvenon-staging' && (
