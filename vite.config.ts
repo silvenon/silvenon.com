@@ -53,6 +53,13 @@ export default defineConfig(({ mode }) => {
     server: {
       port: PORT,
     },
+    build: {
+      assetsInlineLimit(filePath) {
+        if (filePath.endsWith('sprite.svg')) {
+          return false
+        }
+      },
+    },
     test: {
       globals: true,
       environment: 'happy-dom',
