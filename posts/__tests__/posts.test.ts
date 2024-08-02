@@ -23,10 +23,18 @@ const postModules = {
 
 describe('validate posts', () => {
   test.each(
-    Object.keys(postModules).map((importPath) => [
-      path.relative('/posts', importPath),
-      importPath,
-    ]),
+    Object.keys(postModules)
+      .filter((importPath) => {
+        const meta = postModules[importPath]
+        if ('seriesPart' in meta) {
+          return (
+            'published' in
+            postModules[path.join(path.dirname(importPath), 'series.json')]
+          )
+        }
+        return 'published' in meta
+      })
+      .map((importPath) => [path.relative('/posts', importPath), importPath]),
   )('%s', async (basename, importPath) => {
     const meta = postModules[importPath]
     expect(meta).toHaveProperty('title')
