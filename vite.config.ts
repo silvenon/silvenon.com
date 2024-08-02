@@ -1,10 +1,9 @@
-import { defineConfig, loadEnv } from 'vite'
+import { defineConfig } from 'vite'
 import { defaultExclude } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import { vitePlugin as remix } from '@remix-run/dev'
 import { installGlobals } from '@remix-run/node'
-import { metronome } from 'metronome-sh/vite'
 import mdx from '@mdx-js/rollup'
 import remarkFronmatter from 'remark-frontmatter'
 import remarkMdxFrontmatter from 'remark-mdx-frontmatter'
@@ -21,7 +20,6 @@ installGlobals()
 const fullTailwindConfig = resolveConfig(tailwindConfig)
 
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd(), '')
   return {
     plugins: [
       tsconfigPaths(),
@@ -40,7 +38,6 @@ export default defineConfig(({ mode }) => {
         remix({
           ignoredRouteFiles: ['**/*.test.{ts,tsx}'],
         }),
-      env.CI === 'true' && metronome(),
     ],
     define: {
       ...Object.fromEntries(
