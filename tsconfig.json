@@ -1,14 +1,4 @@
 {
   "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./integration" }
-  ],
-  "ts-node": {
-    "transpileOnly": true,
-    "preferTsExts": true,
-    "compilerOptions": {
-      "module": "NodeNext"
-    }
-  }
+  "references": [{ "path": "./tsconfig.app.json" }, { "path": "./integration" }]
 }
