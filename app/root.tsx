@@ -147,8 +147,8 @@ export function ErrorBoundary() {
         title={
           !pathname.startsWith('/blog/') && error.status === 404
             ? 'Nothing found at this URL.'
-            : error.data ??
-              (error.status === 404 ? 'Page not found' : 'Page error')
+            : (error.data ??
+              (error.status === 404 ? 'Page not found' : 'Page error'))
         }
         description={description}
       />
