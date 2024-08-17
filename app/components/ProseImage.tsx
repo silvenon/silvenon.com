@@ -56,10 +56,10 @@ export default function ProseImage({
             .map((size) => `${getImageUrl(cloudinaryId, size)} ${size}w`)
             .join(', ')}
           sizes={[
-            `(min-width: ${import.meta.env.SCREEN_SM}) ${proseMaxWidth.sm}`,
-            `(min-width: ${import.meta.env.SCREEN_LG}) ${proseMaxWidth.lg}`,
-            `(min-width: ${import.meta.env.SCREEN_XL}) ${proseMaxWidth.xl}`,
             `(min-width: ${import.meta.env.SCREEN_2XL}) ${proseMaxWidth['2xl']}`,
+            `(min-width: ${import.meta.env.SCREEN_XL}) ${proseMaxWidth.xl}`,
+            `(min-width: ${import.meta.env.SCREEN_LG}) ${proseMaxWidth.lg}`,
+            `(min-width: ${import.meta.env.SCREEN_SM}) ${proseMaxWidth.sm}`,
             `calc(100vw - (var(--page-padding) * 2))`,
           ].join(', ')}
         />
