@@ -38,7 +38,7 @@ export default function ProseImage({
   return (
     <div className="not-prose mx-auto" style={{ maxWidth }}>
       <div
-        className="aspect-h-[var(--height)] aspect-w-[var(--width)]"
+        className="aspect-h-[--height] aspect-w-[--width]"
         style={{
           '--width': width,
           '--height': height,
