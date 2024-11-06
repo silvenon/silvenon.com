@@ -50,7 +50,7 @@ export default {
         page: colors.white,
         'page-dark': colors.zinc[900],
         github: '#333',
-        x: '#000',
+        bluesky: '#0a7aff',
         linkedin: '#0077b5',
       },
       typography: ({ theme }) => ({

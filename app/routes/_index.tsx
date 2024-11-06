@@ -80,11 +80,9 @@ export default function Home() {
                 <span className="sr-only">{network.name}</span>
                 <span
                   className={clsx(
-                    'block rounded-full border-2 border-transparent bg-purple-400 p-1.5 text-white transition duration-200 group-hover:scale-125 group-hover:text-white dark:bg-purple-400 dark:text-black dark:group-hover:shadow sm:p-2',
-                    network.name === 'GitHub' &&
-                      'group-hover:bg-github dark:group-hover:border-white',
-                    network.name === 'X' &&
-                      'group-hover:bg-x dark:group-hover:border-white',
+                    'block rounded-full border-2 border-transparent bg-purple-400 p-1.5 text-white transition duration-200 group-hover:scale-125 group-hover:text-white dark:bg-purple-400 dark:text-black dark:group-hover:border-white dark:group-hover:shadow sm:p-2',
+                    network.name === 'GitHub' && 'group-hover:bg-github',
+                    network.name === 'Bluesky' && 'group-hover:bg-bluesky',
                     network.name === 'LinkedIn' && 'group-hover:bg-linkedin',
                   )}
                 >
