@@ -8,7 +8,7 @@ import mdx from '@mdx-js/rollup'
 import remarkFronmatter from 'remark-frontmatter'
 import remarkMdxFrontmatter from 'remark-mdx-frontmatter'
 import remarkSmartypants from 'remark-smartypants'
-import remarkUnwrapImages from 'remark-unwrap-images'
+import rehypeUnwrapImages from 'rehype-unwrap-images'
 import rehypePrettyCodeConfigured from './etc/rehype-pretty-code-configured'
 import cloudinary from './etc/vite-plugin-cloudinary'
 import resolveConfig from 'tailwindcss/resolveConfig'
@@ -29,9 +29,8 @@ export default defineConfig(({ mode }) => {
           remarkFronmatter,
           remarkMdxFrontmatter,
           remarkSmartypants,
-          remarkUnwrapImages,
         ],
-        rehypePlugins: [rehypePrettyCodeConfigured],
+        rehypePlugins: [rehypeUnwrapImages, rehypePrettyCodeConfigured],
       }),
       cloudinary(),
       mode !== 'test' &&

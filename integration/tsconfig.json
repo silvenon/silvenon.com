@@ -6,6 +6,7 @@
     "module": "NodeNext",
     "target": "ES2022",
     "strict": true,
+    "noUncheckedSideEffectImports": true,
     "skipLibCheck": true
   },
   "include": ["**/*.ts"]
