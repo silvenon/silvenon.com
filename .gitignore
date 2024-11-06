@@ -6,6 +6,7 @@ node_modules
 
 # text editors
 .idea
+.zed
 
 # secrets
 .env*.local

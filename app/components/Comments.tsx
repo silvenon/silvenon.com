@@ -24,30 +24,26 @@ export default function Comments() {
     theme = 'github-light'
   }
 
-  const initialize = useCallback<React.RefCallback<HTMLDivElement>>(
-    (node) => {
-      if (!node) return
+  // biome-ignore lint/correctness/useExhaustiveDependencies: comment section should not reset when the theme changes in case the reader is typing a comment
+  const initialize = useCallback<React.RefCallback<HTMLDivElement>>((node) => {
+    if (!node) return
 
-      if (import.meta.hot) {
-        node.replaceChildren()
-      }
+    if (import.meta.hot) {
+      node.replaceChildren()
+    }
 
-      const scriptEl = document.createElement('script')
+    const scriptEl = document.createElement('script')
 
-      scriptEl.src = SOURCE
-      scriptEl.async = true
-      scriptEl.setAttribute('crossorigin', 'anonymous')
+    scriptEl.src = SOURCE
+    scriptEl.async = true
+    scriptEl.setAttribute('crossorigin', 'anonymous')
 
-      scriptEl.setAttribute('repo', REPO)
-      scriptEl.setAttribute('issue-term', ISSUE_TERM)
-      scriptEl.setAttribute('theme', theme)
+    scriptEl.setAttribute('repo', REPO)
+    scriptEl.setAttribute('issue-term', ISSUE_TERM)
+    scriptEl.setAttribute('theme', theme)
 
-      node.appendChild(scriptEl)
-    },
-    // comment section should not reset when the theme changes in case the reader is typing a comment
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
-  )
+    node.appendChild(scriptEl)
+  }, [])
 
   return <div ref={initialize} />
 }

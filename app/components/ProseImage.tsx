@@ -44,7 +44,7 @@ export default function ProseImage({
           '--height': height,
         }}
       >
-        {/* eslint-disable-next-line jsx-a11y/alt-text */}
+        {/* biome-ignore lint/a11y/useAltText: alt is passed through props */}
         <img
           {...props}
           className={clsx(props.className, 'rounded-lg')}

@@ -1,6 +1,6 @@
 import type { LoaderFunction } from '@remix-run/node'
 import { Feed } from 'feed'
-import path from 'path'
+import path from 'node:path'
 import cloudinary from '~/utils/cloudinary'
 import { getAllPostsMeta } from '~/utils/posts.server'
 import { getDomainUrl } from '~/utils/http'

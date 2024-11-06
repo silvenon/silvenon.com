@@ -1,5 +1,5 @@
-import fs from 'fs/promises'
-import { basename, dirname, join as joinPath } from 'path'
+import fs from 'node:fs/promises'
+import { basename, dirname, join as joinPath } from 'node:path'
 
 const standalonePostFrontmatter = import.meta.glob<StandalonePostFrontmattter>(
   '/posts/*.mdx',

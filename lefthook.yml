@@ -3,10 +3,10 @@
 pre-commit:
   piped: true
   commands:
-    eslint:
+    biome:
       priority: 1
-      glob: "*.{js,cjs,ts,tsx}"
-      run: npx eslint --fix {staged_files}
+      glob: '*.{js,ts,tsx}'
+      run: npx biome check --write {staged_files}
       stage_fixed: true
     prettier:
       priority: 2
@@ -16,9 +16,7 @@ pre-commit:
 pre-push:
   parallel: true
   commands:
-    eslint-check-config:
-      run: npm run lint:check-config
-    eslint:
+    biome:
       run: npm run lint
     prettier:
       run: npm run pretty
