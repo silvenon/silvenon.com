@@ -5,9 +5,11 @@
     "target": "ES2022",
     "module": "Preserve",
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
-    "types": ["vite/client", "vitest/globals", "@remix-run/node"],
+    "rootDirs": [".", "./.react-router/types"],
+    "types": ["vite/client", "vitest/globals", "@react-router/node"],
     "jsx": "react-jsx",
     "isolatedModules": true,
+    "verbatimModuleSyntax": true,
     "useDefineForClassFields": true,
     "allowImportingTsExtensions": true,
     "strict": true,
@@ -26,7 +28,8 @@
     "**/.server/**/*.ts",
     "**/.server/**/*.tsx",
     "**/.client/**/*.ts",
-    "**/.client/**/*.tsx"
+    "**/.client/**/*.tsx",
+    "./.react-router/types/**/*"
   ],
   "exclude": ["node_modules", "./integration"]
 }

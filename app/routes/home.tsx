@@ -1,10 +1,4 @@
-import { useLoaderData, Link, useRouteError, Await } from '@remix-run/react'
-import type {
-  MetaFunction,
-  LoaderFunctionArgs,
-  HeadersFunction,
-} from '@remix-run/node'
-import { defer } from '@remix-run/node'
+import { data, Link, useRouteError, Await } from 'react-router'
 import { Fragment, Suspense } from 'react'
 import PostDate from '~/components/PostDate'
 import ProfilePhoto from '~/components/ProfilePhoto'
@@ -15,9 +9,10 @@ import { author, socialLinks } from '~/consts'
 import circuitBoard from '~/images/circuit-board.svg'
 import spriteUrl from '~/sprite.svg'
 import clsx from 'clsx'
+import type { Route } from './+types/home'
 
-export function loader(_: LoaderFunctionArgs) {
-  return defer(
+export function loader(_: Route.LoaderArgs) {
+  return data(
     { entries: getAllPostsMeta() },
     {
       headers: {
@@ -27,14 +22,14 @@ export function loader(_: LoaderFunctionArgs) {
   )
 }
 
-export const headers: HeadersFunction = ({ loaderHeaders }) => {
+export function headers({ loaderHeaders }: Route.HeadersArgs) {
   const cacheControl = loaderHeaders.get('Cache-Control')
   const result = new Headers()
   if (cacheControl) result.set('Cache-Control', cacheControl)
   return result
 }
 
-export const meta: MetaFunction = () => {
+export function meta(_: Route.MetaArgs) {
   return getMeta({
     type: 'website',
     title: author.name,
@@ -48,8 +43,7 @@ export const meta: MetaFunction = () => {
   })
 }
 
-export default function Home() {
-  const data = useLoaderData<typeof loader>()
+export default function Home({ loaderData }: Route.ComponentProps) {
   return (
     <>
       <section className="relative mb-10 mt-4 border-b-2 border-t-2 border-purple-400 bg-purple-300 px-4 dark:border-purple-400 dark:bg-purple-800">
@@ -101,7 +95,7 @@ export default function Home() {
           <Suspense
             fallback={<div aria-label="Loading" className="loader pl-2" />}
           >
-            <Await resolve={data.entries}>
+            <Await resolve={loaderData.entries}>
               {(entries) =>
                 entries.map((entry, index) => {
                   const rule = index < entries.length - 1 ? <hr /> : null
@@ -235,8 +229,7 @@ export default function Home() {
   )
 }
 
-export function ErrorBoundary() {
-  const error = useRouteError()
+export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   return (
     <Prose as="main" className="py-4">
       {error instanceof Error ? (

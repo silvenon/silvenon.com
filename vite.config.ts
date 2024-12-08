@@ -2,8 +2,7 @@ import { defineConfig } from 'vite'
 import { defaultExclude } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 import tsconfigPaths from 'vite-tsconfig-paths'
-import { vitePlugin as remix } from '@remix-run/dev'
-import { installGlobals } from '@remix-run/node'
+import { reactRouter } from '@react-router/dev/vite'
 import mdx from '@mdx-js/rollup'
 import remarkFronmatter from 'remark-frontmatter'
 import remarkMdxFrontmatter from 'remark-mdx-frontmatter'
@@ -14,8 +13,6 @@ import cloudinary from './etc/vite-plugin-cloudinary'
 import resolveConfig from 'tailwindcss/resolveConfig'
 import tailwindConfig from './tailwind.config.js'
 import { PORT } from './consts'
-
-installGlobals()
 
 const fullTailwindConfig = resolveConfig(tailwindConfig)
 
@@ -33,10 +30,7 @@ export default defineConfig(({ mode }) => {
         rehypePlugins: [rehypeUnwrapImages, rehypePrettyCodeConfigured],
       }),
       cloudinary(),
-      mode !== 'test' &&
-        remix({
-          ignoredRouteFiles: ['**/*.test.{ts,tsx}'],
-        }),
+      mode !== 'test' && reactRouter(),
     ],
     define: {
       ...Object.fromEntries(

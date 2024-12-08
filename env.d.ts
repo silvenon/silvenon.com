@@ -9,3 +9,9 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv
 }
+
+declare module '*.mdx' {
+  import type { MDXContent } from 'mdx'
+  let Component: MDXContent
+  export default Component
+}

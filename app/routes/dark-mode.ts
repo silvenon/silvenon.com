@@ -1,8 +1,8 @@
-import { json, redirect } from '@remix-run/node'
-import type { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node'
+import { redirect, data } from 'react-router'
 import { createDarkModeSession, resetDarkModeToOS } from '~/session.server'
+import type { Route } from './+types/dark-mode'
 
-export async function action({ request }: ActionFunctionArgs) {
+export async function action({ request }: Route.ActionArgs) {
   const form = await request.formData()
   const { darkMode } = Object.fromEntries(form)
 
@@ -14,12 +14,12 @@ export async function action({ request }: ActionFunctionArgs) {
     return createDarkModeSession({ request, darkMode })
   }
 
-  return json(
+  return data(
     { error: `invalid darkMode: ${JSON.stringify(darkMode)}` },
     { status: 400 },
   )
 }
 
-export async function loader(_: LoaderFunctionArgs) {
+export async function loader(_: Route.LoaderArgs) {
   return redirect('/')
 }

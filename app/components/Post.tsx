@@ -1,4 +1,4 @@
-import { Link, useLocation } from '@remix-run/react'
+import { Link, useLocation } from 'react-router'
 import { Suspense } from 'react'
 import Comments from '~/components/Comments'
 import Prose from '~/components/Prose'

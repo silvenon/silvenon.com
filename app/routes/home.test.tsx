@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
-import { createRemixStub } from '@remix-run/testing'
+import { createRoutesStub } from 'react-router'
 import type { getAllPostsMeta } from '~/utils/posts.server.ts'
-import * as homeRoute from '../_index'
+import * as homeRoute from './home'
 
 type PostsMeta = ReturnType<typeof getAllPostsMeta>
 
@@ -18,12 +18,17 @@ vi.mock('~/utils/posts.server', () => ({
   },
 }))
 
-const HomeStub = createRemixStub([
+const HomeStub = createRoutesStub([
   {
     index: true,
+    // https://github.com/remix-run/react-router/issues/12494
+    // @ts-expect-error
     loader: homeRoute.loader,
+    // @ts-expect-error
     meta: homeRoute.meta,
+    // @ts-expect-error
     Component: homeRoute.default,
+    // @ts-expect-error
     ErrorBoundary: homeRoute.ErrorBoundary,
   },
 ])

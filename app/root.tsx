@@ -1,4 +1,6 @@
 import {
+  redirect,
+  data,
   Links,
   Scripts,
   Meta,
@@ -8,13 +10,7 @@ import {
   useRouteError,
   isRouteErrorResponse,
   useRouteLoaderData,
-} from '@remix-run/react'
-import { redirect, json } from '@remix-run/node'
-import type {
-  LinksFunction,
-  LoaderFunctionArgs,
-  MetaFunction,
-} from '@remix-run/node'
+} from 'react-router'
 import { DarkMode } from './services/dark-mode'
 import clsx from 'clsx'
 import Header from './components/Header'
@@ -27,15 +23,16 @@ import { getDarkMode } from '~/session.server'
 import CanonicalLink from './components/CanonicalLink'
 import NotFound from './components/NotFound.mdx'
 import NotFoundPost from './components/NotFoundPost.mdx'
+import type { Route } from './+types/root'
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader({ request }: Route.LoaderArgs) {
   const desiredUrl = removeTrailingSlash(request.url)
 
   if (request.url !== desiredUrl) {
     throw redirect(desiredUrl, { status: 301 })
   }
 
-  return json(
+  return data(
     {
       appName: process.env.FLY_APP_NAME,
       origin: getDomainUrl(request),
@@ -45,7 +42,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   )
 }
 
-export const meta: MetaFunction = ({ error }) => {
+export function meta({ error }: Route.MetaArgs) {
   if (!error) return []
   let title: string
   if (isRouteErrorResponse(error)) {
@@ -59,14 +56,14 @@ export const meta: MetaFunction = ({ error }) => {
   return [{ title }]
 }
 
-export const links: LinksFunction = () => {
+export function links() {
   return [
     { rel: 'stylesheet', href: stylesUrl },
     { rel: 'icon', href: '/favicon.ico' },
     { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
     { rel: 'manifest', href: '/manifest.webmanifest' },
     { rel: 'me', href: 'https://twitter.com/silvenon' },
-  ]
+  ] satisfies Route.LinkDescriptors
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -117,7 +114,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   )
 }
 
-export default function App() {
+export default function App(_: Route.ComponentProps) {
   return (
     <>
       <Header />
@@ -126,8 +123,7 @@ export default function App() {
   )
 }
 
-export function ErrorBoundary() {
-  const error = useRouteError()
+export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   const { pathname } = useLocation()
 
   let content: React.ReactNode

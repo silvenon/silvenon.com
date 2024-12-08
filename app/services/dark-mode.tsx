@@ -6,7 +6,7 @@ import {
   useId,
   useRef,
 } from 'react'
-import { useFetcher, useLocation } from '@remix-run/react'
+import { useFetcher, useLocation } from 'react-router'
 import spriteUrl from '~/sprite.svg'
 import clsx from 'clsx'
 

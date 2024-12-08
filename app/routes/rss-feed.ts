@@ -1,12 +1,13 @@
-import type { LoaderFunction } from '@remix-run/node'
+import { data } from 'react-router'
 import { Feed } from 'feed'
 import path from 'node:path'
 import cloudinary from '~/utils/cloudinary'
 import { getAllPostsMeta } from '~/utils/posts.server'
 import { getDomainUrl } from '~/utils/http'
 import { author } from '~/consts'
+import type { Route } from './+types/rss-feed'
 
-export const loader: LoaderFunction = async ({ request }) => {
+export async function loader({ request }: Route.LoaderArgs) {
   const domain = getDomainUrl(request)
 
   const feed = new Feed({
@@ -77,7 +78,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   const rssString = feed.rss2()
 
-  return new Response(rssString, {
+  return data(rssString, {
     headers: {
       'Cache-Control': `public, max-age=${60 * 10}, s-maxage=${60 * 60 * 24}`,
       'Content-Type': 'application/xml',
