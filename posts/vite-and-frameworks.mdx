@@ -1,0 +1,74 @@
+---
+title: The unique position of Vite in our ecosystem
+description: My blog used to be on Medium, but it had some missing features and odd behaviors that eventually drove me away.
+published: 2025-01-05
+---
+
+import imgViteCiCommunity from 'vite-ci-community?cloudinary'
+
+I’ve been into Node.js build tools since [Grunt](https://gruntjs.com), so for the past 10-ish years I've been doing my absolute best to keep up with various tools. I always wanted to know what's around me right now, why things don't work as expected, and what might be a better approach.
+
+I'm working on a big project right now, I'll be mentioning it throughout the blog post a few times. I've inherited the setup, and up until recently I've been using webpack, plus an elaborate web of gulp tasks and plugins performing various important parts of building the project in 30s. Now my build step consists of a single `vite build`, which does all of it and more in **6s**! So, how did I get there?
+
+[Vite](https://vite.dev/) is a topic I’ve been shying away from quite a while, but it's time.
+
+So far we’ve had task runners, bundlers, compilers… so what kind of a tool is Vite exactly? It's hard to describe, but I would categorize it exactly how its website puts it -- Vite is a _build tool_.
+
+## Shoulders of giants
+
+I was a bit late to the party because for a long time Vite seemed to have been strongly geared towards building SPAs, which I was no longer interested in building since I started using Remix, but Vite’s simplicity, speed and feature set made it an irresistible playground.
+
+Remember with webpack how much many dependencies we had to install and configure just to get a feature set that most people would want? Well, Vite already has those, and its config file is optional. And if you need Sass, you just need to install the core dependency, and Vite already knows what to do with it, still no config file required! It’s a great place to spin up something quickly, to make demos and even reproduce bugs.
+
+Then Vite’s feature set started to shift towards full stack, in v3 server-side rendering was no longer experimental, and [Remix released unstable Vite support](https://remix.run/blog/remix-heart-vite).
+
+This was the defining moment for me. This is when I found out that an entire framework can stand on the shoulders of Vite I suddenly wanted to learn all about this build tool! Everything I could get my hands on, every detail of the configuration, learning how to build custom plugins, ins and outs of the HMR API, different angles of SSR support... all the way to the [Environment API](https://vite.dev/guide/api-environment.html#environment-api) even when Vite v6 was still in alpha. 😅
+
+Since I migrated my legacy application to Vite (specificaly to Environment API) my build speed became 5x faster and my development experience is ridiculously better. But the best part is that I didn’t have to give _anything_ up!
+
+Rather than migrating to a meta framework I migrated to a build tool, which gave me an easier migration path with autonomy and performance benefits at the end.
+
+## Just a plugin
+
+Frameworks used to be sort of like Next.js, where all the tools are deeply embedded into the framework. Next.js does let me [change its webpack configuration](https://nextjs.org/docs/app/api-reference/config/next-config-js/webpack), and although it can be powerful, mutating a predefined configuration feels dangerous. 😕
+
+Frameworks like React Router are basically just Vite plugins, which is an important inversion because Vite configuration is _ours_, We can do with it whatever we please. My framework doesn’t support MDX? It doesn’t have to, `npm install @mdx-js/rollup`. Neither my framework nor Vite acts the way I want out of the box? I can write my own plugin, and poof 💨 suddenly it does! My project has like five custom plugins and counting.
+
+Adding custom plugins might seem like a big deal at first, depending on what your goal is. There are various reasons why you might want to add a plugin or two:
+
+- your framework doesn’t support what you’re doing, so you’re adding a workaround, for example see this [workaround for React Router and Prisma](https://github.com/remix-run/react-router/issues/12610#issuecomment-2558799620) (also needs `externalConditions`)
+- you’re adding a new feature like generating an SVG spritesheet
+	- there are existing plugins for this, but perhaps none of them fit your needs
+- you’re fixing a DX annoyance, like adding HMR, browser reload etc.
+
+What I’m getting at is this -- we’ve never had this before! We’ve never had another tool sitting between us and our framework. Our frameworks used to be the only ones caling the shots, but distributing them as plugins of a familiar build tool gives us a lot of autonomy and encourages experimentation.
+
+This also benefits frameworks because they used to be expected to cater to so many boilerplate needs, I can imagine it was difficult to draw the line, but this is a different stage now. One better suited for people like me. What about you?
+
+## No framework?
+
+There are very realistic situations where web apps for various current and historic reasons chose to develop their own setup. Maybe at the time there weren’t good options available, and migrating to a framework now is too costly, error-prone, or perhaps even impossible. In the case of my app I simply cannot hydrate my entire app, so I had to improvise an island architecture, essentially building my own meta framework.
+
+Well, unlike taping together a lot of different tools Vite changes this dynamic and makes building your own project-specific framework quite manageable. Take a look at an [example of a React Server Components setup with Vite](https://github.com/hi-ogawa/vite-environment-examples/tree/f8624d7d64dbd5526e68baa4415253c0bdea0600/examples/react-server) by Hiroshi Ogawa, a core team member of Vite & Vitest.
+
+To some this may be a lot, but to me this is _autonomy_. Kind of like Tailwind UI where you can copy pieces of UI, and then mix & match as you please. This example means that RSCs could be yours if you want them, you no longer need to install Next.js to use RSCs. It allows you to get the most out of your application within the boundaries of your architecture.
+
+And TBH, it’s kind of fun.
+
+## Ecosystem & Community
+
+Once I learned that Remix relies on Vite, I didn’t know that many other meta frameworks and tools do as well! I can imagine that this places a lot of responsibility on Vite, so they chose to ensure that they don’t break any of the tools that depend on them!
+
+<ProseImage {...imgViteCiCommunity} alt="Vite bot comment including a table of integration test results from various tools using Vite" />
+
+They are an incredible team, they’ve been immensely helpful while I’ve been getting the hang of the Environment API during my big migration, and I’ve acquired a sense of how carefully they plan every change. It must be a difficult job to develop such an agnostic tool, so I grew to respect when they refuse to implement a highly requested change.
+
+I also used to spend a lot of time on Vite’s and Vitest’s Discord servers, I recommend it for learning more about whichever tool interests you, and also for networking. I even got a job offer just because I was helping people out with Vitest! I small reminder to myself that being helpful is contagious and rewarding 😉
+
+## Final words
+
+I believe that one of the reasons why Vite is so successful is because it’s starting to be at the crossroads of an increasing number of different kinds of tools, including Vitest and Storybook, not just meta frameworks. This leads to people from different communities to pitch in about various needs.
+
+And it’s great that Vite managed to offload so many jobs that all these tools can share, rather than reinvent them. This causes application authors to have less dependencies 👏
+
+As a person who cares immensely about creating a great developer experience I’m very excited about this new direction of application development, where we can once again all gather around a familiar tool.
