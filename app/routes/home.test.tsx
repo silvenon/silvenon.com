@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import { createRoutesStub } from 'react-router'
+import { createRoutesStub, useLoaderData } from 'react-router'
 import type { getAllPostsMeta } from '~/utils/posts.server.ts'
 import * as homeRoute from './home'
 
@@ -26,8 +26,13 @@ const HomeStub = createRoutesStub([
     loader: homeRoute.loader,
     // @ts-expect-error
     meta: homeRoute.meta,
-    // @ts-expect-error
-    Component: homeRoute.default,
+    HydrateFallback: () => null,
+    Component: () => {
+      const loaderData = useLoaderData<typeof homeRoute.loader>()
+      const Home = homeRoute.default
+      // @ts-expect-error
+      return <Home loaderData={loaderData} />
+    },
     // @ts-expect-error
     ErrorBoundary: homeRoute.ErrorBoundary,
   },
