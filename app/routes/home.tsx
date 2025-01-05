@@ -1,4 +1,4 @@
-import { data, Link, useRouteError, Await } from 'react-router'
+import { data, Link, Await } from 'react-router'
 import { Fragment, Suspense } from 'react'
 import PostDate from '~/components/PostDate'
 import ProfilePhoto from '~/components/ProfilePhoto'
