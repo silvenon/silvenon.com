@@ -1,7 +1,7 @@
 import type { Plugin } from 'vite'
 import { loadEnv } from 'vite'
 import { v2 as cloudinary } from 'cloudinary'
-import invariant from 'tiny-invariant'
+import assert from 'node:assert'
 
 const SUFFIX = '?cloudinary'
 
@@ -12,7 +12,7 @@ export default function viteCloudinary() {
     name: 'cloudinary',
     configResolved({ mode }) {
       const env = loadEnv(mode, process.cwd(), '')
-      invariant(
+      assert(
         typeof env.CLOUDINARY_URL === 'string',
         'CLOUDINARY_URL must be set',
       )

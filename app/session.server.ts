@@ -1,7 +1,7 @@
 import { createCookieSessionStorage, redirect } from 'react-router'
-import invariant from 'tiny-invariant'
+import assert from 'node:assert'
 
-invariant(process.env.SESSION_SECRET, 'SESSION_SECRET must be set')
+assert(process.env.SESSION_SECRET, 'SESSION_SECRET must be set')
 
 export const sessionStorage = createCookieSessionStorage({
   cookie: {
