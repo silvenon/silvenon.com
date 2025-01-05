@@ -5,7 +5,7 @@ import { author } from '~/consts'
 import Post from '~/components/Post'
 import { getSeriesMeta, getStandalonePostMeta } from '~/utils/posts.server'
 import { formatDateISO } from '~/utils/date'
-import { catchall } from './catchall'
+import { catchall } from '~/.server/catchall'
 import type { MDXModule } from 'mdx/types'
 import type { Route } from './+types/post-standalone'
 
