@@ -1,13 +1,13 @@
-import { data } from 'react-router'
 import { Feed } from 'feed'
 import path from 'node:path'
+import assert from 'node:assert'
 import cloudinary from '~/utils/cloudinary'
 import { getAllPostsMeta } from '~/utils/posts.server'
 import { getDomainUrl } from '~/utils/http'
 import { author } from '~/consts'
-import type { Route } from './+types/rss-feed'
+import type { Route } from './+types/feed'
 
-export async function loader({ request }: Route.LoaderArgs) {
+export async function loader({ request, params }: Route.LoaderArgs) {
   const domain = getDomainUrl(request)
 
   const feed = new Feed({
@@ -76,13 +76,13 @@ export async function loader({ request }: Route.LoaderArgs) {
     }
   }
 
-  const rssString = feed.rss2()
+  const feedContent = request.url.endsWith('.rss') ? feed.rss2() : feed.atom1()
 
-  return new Response(rssString, {
+  return new Response(feedContent, {
     headers: {
       'Cache-Control': `public, max-age=${60 * 10}, s-maxage=${60 * 60 * 24}`,
       'Content-Type': 'application/xml',
-      'Content-Length': String(Buffer.byteLength(rssString)),
+      'Content-Length': String(Buffer.byteLength(feedContent)),
     },
   })
 }

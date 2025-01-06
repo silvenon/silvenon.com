@@ -69,6 +69,12 @@ export function links() {
       href: '/feed.rss',
       title: 'RSS Feed',
     },
+    {
+      rel: 'alternate',
+      type: 'application/atom+xml',
+      href: '/feed.atom',
+      title: 'Atom Feed',
+    },
   ] satisfies Route.LinkDescriptors
 }
 
