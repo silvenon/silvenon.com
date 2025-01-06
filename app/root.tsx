@@ -63,6 +63,12 @@ export function links() {
     { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
     { rel: 'manifest', href: '/manifest.webmanifest' },
     { rel: 'me', href: 'https://twitter.com/silvenon' },
+    {
+      rel: 'alternate',
+      type: 'application/rss+xml',
+      href: '/feed.rss',
+      title: 'RSS Feed',
+    },
   ] satisfies Route.LinkDescriptors
 }
 
