@@ -1,13 +1,12 @@
 import { Feed } from 'feed'
 import path from 'node:path'
-import assert from 'node:assert'
 import cloudinary from '~/utils/cloudinary'
 import { getAllPostsMeta } from '~/utils/posts.server'
 import { getDomainUrl } from '~/utils/http'
 import { author } from '~/consts'
 import type { Route } from './+types/feed'
 
-export async function loader({ request, params }: Route.LoaderArgs) {
+export async function loader({ request }: Route.LoaderArgs) {
   const domain = getDomainUrl(request)
 
   const feed = new Feed({
