@@ -16,5 +16,6 @@ package-lock.json
 # I don't want to change YAMLs now
 *.yml
 *.yaml
+!lefthook.yml
 
 README.md
