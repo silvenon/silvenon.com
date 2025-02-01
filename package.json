@@ -30,7 +30,7 @@
     "test:unit": "vitest run",
     "test:e2e": "playwright test --reporter=list",
     "typecheck": "react-router typegen && tsc --build",
-    "validate": "lefthook run pre-push"
+    "validate": "lefthook run pre-push --force"
   },
   "dependencies": {
     "@gitgraph/react": "^1.6.0",
