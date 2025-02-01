@@ -31,7 +31,7 @@ WORKDIR /app
 COPY --from=deps /app/node_modules /app/node_modules
 
 COPY . .
-RUN CLOUDINRAY_URL=${CLOUDINRAY_URL} npm run build
+RUN npm run build
 
 # Finally, build the production image with minimal footprint
 FROM base
