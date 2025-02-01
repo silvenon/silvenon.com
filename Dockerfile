@@ -3,14 +3,17 @@ FROM node:20-bullseye-slim as base
 
 # set for base and all layer that inherit from it
 ENV NODE_ENV=production
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
 
 # Install all node_modules, including dev dependencies
 FROM base as deps
 
 WORKDIR /app
 
-COPY package.json package-lock.json .npmrc ./
-RUN npm install --include=dev
+COPY package.json pnpm-lock.yaml .npmrc ./
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod=false --frozen-lockfile
 
 # Setup production node_modules
 FROM base as production-deps
@@ -18,8 +21,8 @@ FROM base as production-deps
 WORKDIR /app
 
 COPY --from=deps /app/node_modules /app/node_modules
-COPY package.json package-lock.json .npmrc ./
-RUN npm prune --omit=dev
+COPY package.json pnpm-lock.yaml .npmrc ./
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm prune --prod
 
 # Build the app
 FROM base as build
@@ -31,7 +34,7 @@ WORKDIR /app
 COPY --from=deps /app/node_modules /app/node_modules
 
 COPY . .
-RUN npm run build
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm run build
 
 # Finally, build the production image with minimal footprint
 FROM base
@@ -45,4 +48,4 @@ COPY --from=build /app/package.json /app/package.json
 
 EXPOSE 3000
 
-CMD ["npm", "run", "start"]
+CMD ["pnpm", "run", "start"]

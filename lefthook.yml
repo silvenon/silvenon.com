@@ -1,46 +1,27 @@
-# git hooks
-
 pre-commit:
-  piped: true
-  commands:
-    biome:
-      priority: 1
-      glob: '*.{js,ts,tsx}'
-      run: npx biome check --write {staged_files}
-      stage_fixed: true
-    prettier:
-      priority: 2
-      run: npx prettier --write --ignore-unknown {staged_files}
+  parallel: true
+  jobs:
+    - glob: '*.{js,ts,tsx}'
+      group:
+        jobs:
+          - run: pnpm biome check --write {staged_files}
+            stage_fixed: true
+          - run: pnpm prettier --write {staged_files}
+            stage_fixed: true
+    - exclude: '*.{js,ts,tsx}'
+      run: pnpm prettier --write --ignore-unknown {staged_files}
       stage_fixed: true
 
 pre-push:
   parallel: true
-  commands:
-    biome:
-      run: npm run lint
-    prettier:
-      run: npm run pretty
-    typescript:
-      run: npm run typecheck
-    vitest:
-      run: npm run test:unit
-    playwright:
-      run: npm run build -- --logLevel=silent && npm run test:e2e
-
-# custom scripts
-
-setup:
-  parallel: true
-  commands:
-    lefthook:
-      run: npx lefthook install
-    playwright:
-      run: npx playwright install --with-deps
-
-test:
-  parallel: true
-  commands:
-    vitest:
-      run: npm run test:unit
-    playwright:
-      run: npm run test:e2e
+  jobs:
+    - run: pnpm lefthook validate
+    - run: pnpm run lint
+    - run: pnpm run pretty
+    - run: pnpm run typecheck
+    - run: pnpm run test:unit
+    - group:
+        piped: true
+        jobs:
+          - run: pnpm build --logLevel=silent
+          - run: pnpm test:e2e
