@@ -20,7 +20,6 @@ export interface StandalonePostFrontmattter {
   category?: string
   published?: string
   lastModified?: string
-  tweet?: string
 }
 
 export interface SeriesPostFrontmatter {
@@ -37,7 +36,6 @@ export interface SeriesMeta {
   htmlTitle?: string
   description: string
   published?: string
-  tweet?: string
 }
 
 interface ExternalStandalonePost {

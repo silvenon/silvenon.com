@@ -62,7 +62,6 @@ export function links() {
     { rel: 'icon', href: '/favicon.ico' },
     { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
     { rel: 'manifest', href: '/manifest.webmanifest' },
-    { rel: 'me', href: 'https://twitter.com/silvenon' },
     {
       rel: 'alternate',
       type: 'application/rss+xml',
