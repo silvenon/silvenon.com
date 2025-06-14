@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import { createRoutesStub, useLoaderData } from 'react-router'
+import { createRoutesStub } from 'react-router'
 import type { getAllPostsMeta } from '~/utils/posts.server.ts'
 import * as homeRoute from './home'
 
@@ -21,19 +21,10 @@ vi.mock('~/utils/posts.server', () => ({
 const HomeStub = createRoutesStub([
   {
     index: true,
-    // https://github.com/remix-run/react-router/issues/12494
-    // @ts-expect-error
     loader: homeRoute.loader,
-    // @ts-expect-error
     meta: homeRoute.meta,
     HydrateFallback: () => null,
-    Component: () => {
-      const loaderData = useLoaderData<typeof homeRoute.loader>()
-      const Home = homeRoute.default
-      // @ts-expect-error
-      return <Home loaderData={loaderData} />
-    },
-    // @ts-expect-error
+    Component: homeRoute.default,
     ErrorBoundary: homeRoute.ErrorBoundary,
   },
 ])
