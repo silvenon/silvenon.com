@@ -23,32 +23,31 @@ This is my blog, it's based on the [Remix Indie Stack](https://github.com/remix-
 You only need to run this once:
 
   ```sh
-  npm run setup
+  pnpm setup
   ```
 
 ## Development
 
   ```sh
-  npm run dev
+  pnpm dev
   ```
 
 ## Validate
 
   ```sh
-  npm run lint # lint code
-  npm run pretty # check formatting
-  npm test # run unit and end-to-end tests
-  npm run test:unit # run unit tests
-  npm run test:e2e # run end-to-end tests
-  npm run typecheck # check types
+  pnpm lint # lint code
+  pnpm pretty # check formatting
+  pnpm test # run unit tests
+  pnpm test:e2e # run end-to-end tests
+  pnpm typecheck # check types
 
-  npm run validate # run all of the above
+  pnpm validate # run all of the above
   ```
 
 ## Build
 
   ```sh
-  npm run build
+  pnpm build
   ```
 
 ## Deployment
