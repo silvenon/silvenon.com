@@ -19,7 +19,9 @@ pre-push:
     - run: pnpm run lint
     - run: pnpm run pretty
     - run: pnpm run typecheck
-    - run: pnpm run test:unit
+    - run: pnpm run test
+      env:
+        CI: 'true'
     - group:
         piped: true
         jobs:

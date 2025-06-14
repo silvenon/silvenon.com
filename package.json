@@ -26,8 +26,7 @@
     "start": "react-router-serve ./build/server/index.js",
     "lint": "biome check .",
     "pretty": "prettier --check .",
-    "test": "vitest --ui",
-    "test:unit": "vitest run",
+    "test": "vitest",
     "test:e2e": "playwright test --reporter=list",
     "typecheck": "react-router typegen && tsc --build",
     "validate": "lefthook run pre-push --force"
