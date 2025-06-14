@@ -25,5 +25,5 @@ pre-push:
     - group:
         piped: true
         jobs:
-          - run: pnpm build --logLevel=silent
-          - run: pnpm test:e2e
+          - run: pnpm run build --logLevel=silent
+          - run: pnpm run test:e2e
