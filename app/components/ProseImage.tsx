@@ -28,6 +28,7 @@ interface Props extends React.ImgHTMLAttributes<HTMLImageElement> {
 }
 
 export default function ProseImage({
+  alt,
   width,
   height,
   cloudinaryId,
@@ -37,9 +38,9 @@ export default function ProseImage({
 
   return (
     <div className="not-prose mx-auto" style={{ maxWidth }}>
-      {/* biome-ignore lint/a11y/useAltText: alt is passed through props */}
       <img
         {...props}
+        alt={alt}
         className={clsx(
           props.className,
           'aspect-[var(--width)/var(--height)] w-full rounded-lg',
