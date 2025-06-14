@@ -37,33 +37,32 @@ export default function ProseImage({
 
   return (
     <div className="not-prose mx-auto" style={{ maxWidth }}>
-      <div
-        className="aspect-h-[--height] aspect-w-[--width]"
+      {/* biome-ignore lint/a11y/useAltText: alt is passed through props */}
+      <img
+        {...props}
+        className={clsx(
+          props.className,
+          'aspect-[var(--width)/var(--height)] w-full rounded-lg',
+        )}
         style={{
           '--width': width,
           '--height': height,
         }}
-      >
-        {/* biome-ignore lint/a11y/useAltText: alt is passed through props */}
-        <img
-          {...props}
-          className={clsx(props.className, 'rounded-lg')}
-          loading="lazy"
-          src={getImageUrl(cloudinaryId, 1024)}
-          srcSet={imageSizes
-            .filter((size) => size < width)
-            .concat(width)
-            .map((size) => `${getImageUrl(cloudinaryId, size)} ${size}w`)
-            .join(', ')}
-          sizes={[
-            `(min-width: ${import.meta.env.SCREEN_2XL}) ${proseMaxWidth['2xl']}`,
-            `(min-width: ${import.meta.env.SCREEN_XL}) ${proseMaxWidth.xl}`,
-            `(min-width: ${import.meta.env.SCREEN_LG}) ${proseMaxWidth.lg}`,
-            `(min-width: ${import.meta.env.SCREEN_SM}) ${proseMaxWidth.sm}`,
-            `calc(100vw - (var(--page-padding) * 2))`,
-          ].join(', ')}
-        />
-      </div>
+        loading="lazy"
+        src={getImageUrl(cloudinaryId, 1024)}
+        srcSet={imageSizes
+          .filter((size) => size < width)
+          .concat(width)
+          .map((size) => `${getImageUrl(cloudinaryId, size)} ${size}w`)
+          .join(', ')}
+        sizes={[
+          `(min-width: ${import.meta.env.SCREEN_2XL}) ${proseMaxWidth['2xl']}`,
+          `(min-width: ${import.meta.env.SCREEN_XL}) ${proseMaxWidth.xl}`,
+          `(min-width: ${import.meta.env.SCREEN_LG}) ${proseMaxWidth.lg}`,
+          `(min-width: ${import.meta.env.SCREEN_SM}) ${proseMaxWidth.sm}`,
+          `calc(100vw - (var(--page-padding) * 2))`,
+        ].join(', ')}
+      />
     </div>
   )
 }

@@ -2,7 +2,6 @@ import colors from 'tailwindcss/colors'
 import plugin from 'tailwindcss/plugin'
 import typography from '@tailwindcss/typography'
 import forms from '@tailwindcss/forms'
-import aspectRatio from '@tailwindcss/aspect-ratio'
 import typographyStyles from '@tailwindcss/typography/src/styles'
 
 const js = plugin(({ addVariant }) => {
@@ -35,10 +34,7 @@ export default {
     'token', // syntax highlighting
     'twitter-tweet', // tweets are being loaded using a library
   ],
-  corePlugins: {
-    aspectRatio: false,
-  },
-  plugins: [typography, forms, aspectRatio, js, light, a11y],
+  plugins: [typography, forms, js, light, a11y],
   darkMode: 'class',
   theme: {
     extend: {
