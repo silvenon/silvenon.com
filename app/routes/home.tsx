@@ -46,15 +46,15 @@ export function meta(_: Route.MetaArgs) {
 export default function Home({ loaderData }: Route.ComponentProps) {
   return (
     <>
-      <section className="relative mb-10 mt-4 border-b-2 border-t-2 border-purple-400 bg-purple-300 px-4 dark:border-purple-400 dark:bg-purple-800">
+      <section className="relative mt-4 mb-10 border-t-2 border-b-2 border-purple-400 bg-purple-300 px-4 dark:border-purple-400 dark:bg-purple-800">
         <div
           className="absolute inset-0 opacity-70 dark:opacity-30"
           style={{ backgroundImage: `url("${circuitBoard}")` }}
         />
-        <div className="relative -my-3.5 mx-auto max-w-sm text-center sm:max-w-xl sm:text-left lg:max-w-3xl xl:max-w-4xl 2xl:max-w-5xl">
-          <div className="rounded-lg bg-white p-3 ring-2 ring-purple-400 dark:bg-gray-800 sm:flex">
+        <div className="relative mx-auto -my-3.5 max-w-sm text-center sm:max-w-xl sm:text-left lg:max-w-3xl xl:max-w-4xl 2xl:max-w-5xl">
+          <div className="rounded-lg bg-white p-3 ring-2 ring-purple-400 sm:flex dark:bg-gray-800">
             <Prose className="p-3 pb-4 sm:order-2 sm:flex-1 sm:self-center lg:px-5 lg:py-3">
-              <h1 className="!mb-0">{author.name}</h1>
+              <h1 className="mb-0!">{author.name}</h1>
               <p>{author.bio}</p>
             </Prose>
             <div className="sm:order-1 sm:w-40">
@@ -74,7 +74,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
                 <span className="sr-only">{network.name}</span>
                 <span
                   className={clsx(
-                    'block rounded-full border-2 border-transparent bg-purple-400 p-1.5 text-white transition duration-200 group-hover:scale-125 group-hover:text-white dark:bg-purple-400 dark:text-black dark:group-hover:border-white dark:group-hover:shadow sm:p-2',
+                    'block rounded-full border-2 border-transparent bg-purple-400 p-1.5 text-white transition duration-200 group-hover:scale-125 group-hover:text-white sm:p-2 dark:bg-purple-400 dark:text-black dark:group-hover:border-white dark:group-hover:shadow-sm',
                     network.name === 'GitHub' && 'group-hover:bg-github',
                     network.name === 'Bluesky' && 'group-hover:bg-bluesky',
                     network.name === 'LinkedIn' && 'group-hover:bg-linkedin',

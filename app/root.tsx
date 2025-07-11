@@ -85,10 +85,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <AnalyticsProvider>
       <DarkMode.Provider sessionValue={error !== null || data?.darkMode}>
-        <DarkMode.Html
-          lang="en"
-          className={clsx('h-full', import.meta.env.SSR ? 'no-js' : 'js')}
-        >
+        <DarkMode.Html lang="en" className="h-full">
           <head>
             {data?.appName === 'silvenon-staging' && (
               <meta name="robots" content="noindex" />
@@ -104,16 +101,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <meta name="twitter:site" content="@silvenon" />
             <Meta />
             <Links />
-            <script
-              dangerouslySetInnerHTML={{
-                __html: `
-                  document.documentElement.classList.replace('no-js', 'js')
-                `,
-              }}
-            />
             <DarkMode.Head />
           </head>
-          <body className="h-full bg-page text-black selection:bg-amber-300 selection:text-black dark:bg-page-dark dark:text-white">
+          <body className="bg-page dark:bg-page-dark h-full text-black selection:bg-amber-300 selection:text-black dark:text-white">
             {children}
             <ScrollRestoration />
             {import.meta.env.PROD && <AnalyticsScript />}

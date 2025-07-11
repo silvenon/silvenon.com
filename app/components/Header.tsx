@@ -18,7 +18,7 @@ export default function Header() {
         <div className="py-3">
           <Link to="/">
             <svg
-              className="h-7 w-7 rounded lg:h-10 lg:w-10 lg:rounded-lg"
+              className="size-7 rounded-sm lg:size-10 lg:rounded-lg"
               role="img"
               aria-labelledby="logo-title"
               viewBox="0 0 64 64"

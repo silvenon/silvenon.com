@@ -45,7 +45,7 @@ export default function Post(props: Props) {
       <main>
         <article>
           {isSeries ? (
-            <h1 className="space-y-2 text-center [text-wrap:balance] lg:space-y-4">
+            <h1 className="space-y-2 text-center text-balance lg:space-y-4">
               <div>
                 {props.series.title}
                 <span className="sr-only">:</span>
@@ -59,7 +59,7 @@ export default function Post(props: Props) {
               </div>
             </h1>
           ) : (
-            <h1 className="text-center [text-wrap:balance]">
+            <h1 className="text-center text-balance">
               {props.htmlTitle ? (
                 <span dangerouslySetInnerHTML={{ __html: props.htmlTitle }} />
               ) : (
@@ -118,7 +118,7 @@ export default function Post(props: Props) {
       </main>
 
       <footer className="px-2.5">
-        <hr className="!mb-2" />
+        <hr className="mb-2!" />
         <Comments
           key={
             isSeries ? `${props.series.slug}-${props.seriesPart}` : props.slug

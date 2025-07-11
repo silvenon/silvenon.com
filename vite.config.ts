@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite'
 import { defaultExclude } from 'vitest/config'
+import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import { reactRouter } from '@react-router/dev/vite'
@@ -10,16 +11,14 @@ import remarkSmartypants from 'remark-smartypants'
 import rehypeUnwrapImages from 'rehype-unwrap-images'
 import rehypePrettyCodeConfigured from './etc/rehype-pretty-code-configured'
 import cloudinary from './etc/vite-plugin-cloudinary'
-import resolveConfig from 'tailwindcss/resolveConfig'
-import tailwindConfig from './tailwind.config.js'
 import { PORT } from './consts'
 
 const isVitest = process.env.VITEST === 'true'
-const fullTailwindConfig = resolveConfig(tailwindConfig)
 
 export default defineConfig({
   plugins: [
     tsconfigPaths(),
+    tailwindcss(),
     isVitest && react(),
     mdx({
       remarkPlugins: [
@@ -34,7 +33,13 @@ export default defineConfig({
   ],
   define: {
     ...Object.fromEntries(
-      Object.entries(fullTailwindConfig.theme.screens).map(([key, value]) => [
+      Object.entries({
+        sm: '40rem', // 640px
+        md: '48rem', // 768px
+        lg: '64rem', // 1024px
+        xl: '80rem', // 1280px
+        '2xl': '96rem', // 1536px
+      }).map(([key, value]) => [
         `import.meta.env.SCREEN_${key.toUpperCase()}`,
         JSON.stringify(value),
       ]),

@@ -1,54 +1,9 @@
-import colors from 'tailwindcss/colors'
-import plugin from 'tailwindcss/plugin'
-import typography from '@tailwindcss/typography'
-import forms from '@tailwindcss/forms'
 import typographyStyles from '@tailwindcss/typography/src/styles'
-
-const js = plugin(({ addVariant }) => {
-  addVariant('no-js', '.no-js &')
-  addVariant('js', '.js &')
-})
-const light = plugin(({ addVariant }) => {
-  addVariant('light', '&:not(html:not(.dark) &)')
-})
-const a11y = plugin(({ addVariant }) => {
-  addVariant('a11y-expanded', [
-    '&[aria-expanded="true"]',
-    '[aria-expanded="true"] &',
-  ])
-  addVariant('a11y-selected', [
-    '&[aria-selected="true"]',
-    '[aria-selected="true"] &',
-  ])
-})
 
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    'app/**/*.{ts,tsx,mdx}',
-    'posts/**/*.mdx',
-    'scripts/**/*.ts',
-    'etc/**/*.ts',
-  ],
-  safelist: [
-    'token', // syntax highlighting
-    'twitter-tweet', // tweets are being loaded using a library
-  ],
-  plugins: [typography, forms, js, light, a11y],
-  darkMode: 'class',
   theme: {
     extend: {
-      spacing: {
-        page: 'var(--page-padding)',
-      },
-      colors: {
-        gray: colors.zinc,
-        page: colors.white,
-        'page-dark': colors.zinc[900],
-        github: '#333',
-        bluesky: '#0a7aff',
-        linkedin: '#0077b5',
-      },
       typography: ({ theme }) => ({
         DEFAULT: {
           css: {
@@ -83,7 +38,7 @@ export default {
               borderWidth: 1,
               borderColor: theme('colors.gray.700'),
             },
-            ':is(code, pre)[data-theme=*=" "], :is(code, pre)[data-theme*=" "] span':
+            ':is(code, pre)[data-theme*="dark"], :is(code, pre)[data-theme*="dark"] span':
               {
                 color: 'var(--shiki-dark)',
                 backgroundColor: 'var(--shiki-dark-bg)',

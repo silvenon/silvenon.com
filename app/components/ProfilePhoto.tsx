@@ -46,7 +46,7 @@ export default function ProfilePhoto({ className }: Props) {
       <img
         alt=""
         className={clsx(
-          'aspect-[2/1] w-full rounded object-cover sm:aspect-[4/5]',
+          'aspect-2/1 w-full rounded-sm object-cover sm:aspect-4/5',
           className,
         )}
         src={cloudinary(ID, {
@@ -92,7 +92,7 @@ export default function ProfilePhoto({ className }: Props) {
           `}
         sizes={[
           `(min-width: ${import.meta.env.SCREEN_SM}) 160px`,
-          'min(360px, calc(100vw - var(--page-padding) * 2 - 0.75rem * 2))',
+          'min(360px, calc(100vw - var(--spacing-page) * 2 - 0.75rem * 2))',
         ].join(', ')}
       />
     </picture>

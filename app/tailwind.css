@@ -1,63 +1,195 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+/* safelist */
+@source inline("token"); /* syntax highlighting */
+@source inline("twitter-tweet"); /* tweets are being loaded using a library */
+
+@plugin "@tailwindcss/typography";
+@plugin "@tailwindcss/forms";
+
+/* solely there to configure the typography plugin */
+@config '../tailwind.config.js';
+
+@theme {
+  --color-github: #333;
+  --color-bluesky: #0a7aff;
+  --color-linkedin: #0077b5;
+}
+
+@theme inline {
+  --color-gray-*: initial;
+  --color-gray-50: var(--color-zinc-50);
+  --color-gray-100: var(--color-zinc-100);
+  --color-gray-200: var(--color-zinc-200);
+  --color-gray-300: var(--color-zinc-300);
+  --color-gray-400: var(--color-zinc-400);
+  --color-gray-500: var(--color-zinc-500);
+  --color-gray-600: var(--color-zinc-600);
+  --color-gray-700: var(--color-zinc-700);
+  --color-gray-800: var(--color-zinc-800);
+  --color-gray-900: var(--color-zinc-900);
+  --color-gray-950: var(--color-zinc-950);
+
+  --color-page: var(--color-white);
+  --color-page-dark: var(--color-zinc-900);
+
+  --spacing-page: --spacing(4);
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
 
 @layer base {
-
   :root {
-    --page-padding: theme('spacing.4');
-  }
-
-  :root {
-    --gitgraph-color-branch-one: theme('colors.gray.500');
-    --gitgraph-color-branch-two: theme('colors.purple.700');
-    --gitgraph-color-branch-three: theme('colors.amber.600');
+    --gitgraph-color-branch-one: var(--color-gray-500);
+    --gitgraph-color-branch-two: var(--color-purple-700);
+    --gitgraph-color-branch-three: var(--color-amber-600);
   }
   .dark {
-    --gitgraph-color-branch-one: theme('colors.gray.200');
-    --gitgraph-color-branch-two: theme('colors.purple.400');
-    --gitgraph-color-branch-three: theme('colors.amber.400');
+    --gitgraph-color-branch-one: var(--color-gray-200);
+    --gitgraph-color-branch-two: var(--color-purple-400);
+    --gitgraph-color-branch-three: var(--color-amber-400);
   }
-
 }
 
 @layer components {
-
   /* taken from https://cssloaders.github.io/ */
   .loader {
     width: 60px;
     height: 40px;
     position: relative;
     display: inline-block;
-    --base-color: theme('colors.page'); /*use your base color*/
-  }
-  .loader::before {
-    content: '';
-    left: 0;
-    top: 0;
-    position: absolute;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background-color: theme('colors.gray.400');
-    background-image: radial-gradient(circle 8px at 18px 18px, var(--base-color) 100%, transparent 0), radial-gradient(circle 4px at 18px 0px, var(--base-color) 100%, transparent 0), radial-gradient(circle 4px at 0px 18px, var(--base-color) 100%, transparent 0), radial-gradient(circle 4px at 36px 18px, var(--base-color) 100%, transparent 0), radial-gradient(circle 4px at 18px 36px, var(--base-color) 100%, transparent 0), radial-gradient(circle 4px at 30px 5px, var(--base-color) 100%, transparent 0), radial-gradient(circle 4px at 30px 5px, var(--base-color) 100%, transparent 0), radial-gradient(circle 4px at 30px 30px, var(--base-color) 100%, transparent 0), radial-gradient(circle 4px at 5px 30px, var(--base-color) 100%, transparent 0), radial-gradient(circle 4px at 5px 5px, var(--base-color) 100%, transparent 0);
-    background-repeat: no-repeat;
-    box-sizing: border-box;
-    animation: rotationBack 3s linear infinite;
-  }
-  .loader::after {
-    content: '';
-    left: 35px;
-    top: 15px;
-    position: absolute;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background-color: theme('colors.gray.400');
-    background-image: radial-gradient(circle 5px at 12px 12px, var(--base-color) 100%, transparent 0), radial-gradient(circle 2.5px at 12px 0px, var(--base-color) 100%, transparent 0), radial-gradient(circle 2.5px at 0px 12px, var(--base-color) 100%, transparent 0), radial-gradient(circle 2.5px at 24px 12px, var(--base-color) 100%, transparent 0), radial-gradient(circle 2.5px at 12px 24px, var(--base-color) 100%, transparent 0), radial-gradient(circle 2.5px at 20px 3px, var(--base-color) 100%, transparent 0), radial-gradient(circle 2.5px at 20px 3px, var(--base-color) 100%, transparent 0), radial-gradient(circle 2.5px at 20px 20px, var(--base-color) 100%, transparent 0), radial-gradient(circle 2.5px at 3px 20px, var(--base-color) 100%, transparent 0), radial-gradient(circle 2.5px at 3px 3px, var(--base-color) 100%, transparent 0);
-    background-repeat: no-repeat;
-    box-sizing: border-box;
-    animation: rotationBack 4s linear infinite reverse;
+    --base-color: var(--color-page); /*use your base color*/
+    @variant dark {
+      --base-color: var(--color-page-dark);
+    }
+    &::before {
+      content: '';
+      left: 0;
+      top: 0;
+      position: absolute;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background-color: var(--color-gray-400);
+      background-image:
+        radial-gradient(
+          circle 8px at 18px 18px,
+          var(--base-color) 100%,
+          transparent 0
+        ),
+        radial-gradient(
+          circle 4px at 18px 0px,
+          var(--base-color) 100%,
+          transparent 0
+        ),
+        radial-gradient(
+          circle 4px at 0px 18px,
+          var(--base-color) 100%,
+          transparent 0
+        ),
+        radial-gradient(
+          circle 4px at 36px 18px,
+          var(--base-color) 100%,
+          transparent 0
+        ),
+        radial-gradient(
+          circle 4px at 18px 36px,
+          var(--base-color) 100%,
+          transparent 0
+        ),
+        radial-gradient(
+          circle 4px at 30px 5px,
+          var(--base-color) 100%,
+          transparent 0
+        ),
+        radial-gradient(
+          circle 4px at 30px 5px,
+          var(--base-color) 100%,
+          transparent 0
+        ),
+        radial-gradient(
+          circle 4px at 30px 30px,
+          var(--base-color) 100%,
+          transparent 0
+        ),
+        radial-gradient(
+          circle 4px at 5px 30px,
+          var(--base-color) 100%,
+          transparent 0
+        ),
+        radial-gradient(
+          circle 4px at 5px 5px,
+          var(--base-color) 100%,
+          transparent 0
+        );
+      background-repeat: no-repeat;
+      box-sizing: border-box;
+      animation: rotationBack 3s linear infinite;
+    }
+    &::after {
+      content: '';
+      left: 35px;
+      top: 15px;
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background-color: var(--color-gray-400);
+      background-image:
+        radial-gradient(
+          circle 5px at 12px 12px,
+          var(--base-color) 100%,
+          transparent 0
+        ),
+        radial-gradient(
+          circle 2.5px at 12px 0px,
+          var(--base-color) 100%,
+          transparent 0
+        ),
+        radial-gradient(
+          circle 2.5px at 0px 12px,
+          var(--base-color) 100%,
+          transparent 0
+        ),
+        radial-gradient(
+          circle 2.5px at 24px 12px,
+          var(--base-color) 100%,
+          transparent 0
+        ),
+        radial-gradient(
+          circle 2.5px at 12px 24px,
+          var(--base-color) 100%,
+          transparent 0
+        ),
+        radial-gradient(
+          circle 2.5px at 20px 3px,
+          var(--base-color) 100%,
+          transparent 0
+        ),
+        radial-gradient(
+          circle 2.5px at 20px 3px,
+          var(--base-color) 100%,
+          transparent 0
+        ),
+        radial-gradient(
+          circle 2.5px at 20px 20px,
+          var(--base-color) 100%,
+          transparent 0
+        ),
+        radial-gradient(
+          circle 2.5px at 3px 20px,
+          var(--base-color) 100%,
+          transparent 0
+        ),
+        radial-gradient(
+          circle 2.5px at 3px 3px,
+          var(--base-color) 100%,
+          transparent 0
+        );
+      background-repeat: no-repeat;
+      box-sizing: border-box;
+      animation: rotationBack 4s linear infinite reverse;
+    }
   }
   @keyframes rotationBack {
     0% {
@@ -67,8 +199,4 @@
       transform: rotate(-360deg);
     }
   }
-  .dark .loader {
-    --base-color: theme('colors.page-dark');
-  }
-
 }
