@@ -12,7 +12,6 @@ import {
   useRouteLoaderData,
 } from 'react-router'
 import { DarkMode } from './services/dark-mode'
-import clsx from 'clsx'
 import Header from './components/Header'
 import { removeTrailingSlash, getDomainUrl } from './utils/http'
 import { author } from './consts'
@@ -42,7 +41,7 @@ export async function loader({ request }: Route.LoaderArgs) {
   )
 }
 
-export function meta({ error }: Route.MetaArgs) {
+export const meta: Route.MetaFunction = ({ error }) => {
   if (!error) return []
   let title: string
   if (isRouteErrorResponse(error)) {

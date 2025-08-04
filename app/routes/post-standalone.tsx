@@ -54,7 +54,8 @@ export function headers({ loaderHeaders }: Route.HeadersArgs) {
   return result
 }
 
-export function meta({ data }: Route.MetaArgs) {
+export const meta: Route.MetaFunction = ({ data }) => {
+  if (!data) return [] // TODO: handle error?
   const { title, description, published, lastModified } = data
   return [
     ...getMeta({ type: 'article', title, description }),

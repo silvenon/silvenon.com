@@ -72,7 +72,7 @@ const Gitgraph = ({ children }: Props) => {
           {children}
         </OriginalGitgraph>
       ) : (
-        <div className="border-y-2 border-y-slate-200 py-4 text-center font-sans text-lg font-light tracking-wide text-slate-400 dark:border-y-gray-600 dark:text-gray-500 md:text-xl">
+        <div className="border-y-2 border-y-slate-200 py-4 text-center font-sans text-lg font-light tracking-wide text-slate-400 md:text-xl dark:border-y-gray-600 dark:text-gray-500">
           JavaScript needs to be enabled for this Git illustration.
         </div>
       )}

@@ -29,7 +29,7 @@ export function headers({ loaderHeaders }: Route.HeadersArgs) {
   return result
 }
 
-export function meta(_: Route.MetaArgs) {
+export const meta: Route.MetaFunction = () => {
   return getMeta({
     type: 'website',
     title: author.name,
@@ -93,7 +93,11 @@ export default function Home({ loaderData }: Route.ComponentProps) {
         <Prose>
           <h2>Posts</h2>
           <Suspense
-            fallback={<div aria-label="Loading" className="loader pl-2" />}
+            fallback={
+              <div className="loader pl-2">
+                <div className="sr-only">Loading</div>
+              </div>
+            }
           >
             <Await resolve={loaderData.entries}>
               {(entries) =>

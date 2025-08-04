@@ -1,4 +1,4 @@
-import type CSS from 'csstype'
+import type * as CSS from 'csstype'
 import cloudinary from '../utils/cloudinary'
 import clsx from 'clsx'
 

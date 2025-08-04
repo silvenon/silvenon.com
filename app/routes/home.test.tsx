@@ -22,8 +22,10 @@ const HomeStub = createRoutesStub([
   {
     index: true,
     loader: homeRoute.loader,
+    // @ts-expect-error: stub route meta type is more generic
     meta: homeRoute.meta,
     HydrateFallback: () => null,
+    // @ts-expect-error: stub route component type is more generic
     Component: homeRoute.default,
     ErrorBoundary: homeRoute.ErrorBoundary,
   },
