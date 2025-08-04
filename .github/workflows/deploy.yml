@@ -120,7 +120,7 @@ jobs:
         run: pnpm install
 
       - name: Install browsers
-        run: pnpm playwright install --with-deps
+        run: pnpm playwright install --with-deps chromium webkit
 
       - name: Build app
         run: pnpm run build
