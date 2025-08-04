@@ -15,3 +15,16 @@ auto_stop_machines = "suspend"
 auto_start_machines = true
 min_machines_running = 0
 processes = ["app"]
+
+[http_service.concurrency]
+type = "requests"
+soft_limit = 20
+hard_limit = 25
+
+# Add basic health check
+[[http_service.checks]]
+grace_period = "10s"
+interval = "30s"
+method = "GET"
+timeout = "5s"
+path = "/"
